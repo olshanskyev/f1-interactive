@@ -1,0 +1,17 @@
+server:
+  port: 8081
+  servlet:
+    contextPath: /f1interactive
+  ssl:
+    enabled: false
+---
+spring:
+  config:
+    activate:
+      on-profile: local,default
+f1interactive:
+  heartbeatIntervalMillis: 15000
+  multithreading:
+    threadsToParallelEvents: 5
+    threadsToParallelConsumers: 2
+    # total number of threads = threadsToParallelEvents * threadsToParallelConsumers

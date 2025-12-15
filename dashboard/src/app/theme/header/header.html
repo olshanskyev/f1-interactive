@@ -1,0 +1,29 @@
+<mat-toolbar>
+  @if (showToggle()) {
+    <button matIconButton (click)="toggleSidenav.emit()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  }
+
+  @if (showBranding()) {
+    <app-branding />
+  }
+
+  <span class="flex-fill"></span>
+
+  <button matIconButton>
+    <mat-icon>search</mat-icon>
+  </button>
+
+  <app-translate />
+
+  <button matIconButton class="hide-small" (click)="toggleFullscreen()">
+    <mat-icon>fullscreen</mat-icon>
+  </button>
+
+  <app-user />
+
+  <button matIconButton class="hide-small" (click)="toggleSidenavNotice.emit()">
+    <mat-icon>list</mat-icon>
+  </button>
+</mat-toolbar>

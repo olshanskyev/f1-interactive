@@ -1,0 +1,64 @@
+{
+  "TopThree": {
+    "Withheld": false,
+    "Lines": [
+      {
+        "Position": "1",
+        "ShowPosition": true,
+        "RacingNumber": "1",
+        "Tla": "VER",
+        "BroadcastName": "M VERSTAPPEN",
+        "FullName": "Max VERSTAPPEN",
+        "FirstName": "Max",
+        "LastName": "Verstappen",
+        "Reference": "MAXVER01",
+        "Team": "Red Bull Racing",
+        "TeamColour": "4781D7",
+        "LapTime": "1:28.473",
+        "LapState": 1088,
+        "DiffToAhead": "LAP 58",
+        "DiffToLeader": "LAP 58",
+        "OverallFastest": false,
+        "PersonalFastest": false
+      },
+      {
+        "Position": "2",
+        "ShowPosition": true,
+        "RacingNumber": "81",
+        "Tla": "PIA",
+        "BroadcastName": "O PIASTRI",
+        "FullName": "Oscar PIASTRI",
+        "FirstName": "Oscar",
+        "LastName": "Piastri",
+        "Reference": "OSCPIA01",
+        "Team": "McLaren",
+        "TeamColour": "F47600",
+        "LapTime": "1:28.074",
+        "LapState": 1088,
+        "DiffToAhead": "+12.594",
+        "DiffToLeader": "+12.594",
+        "OverallFastest": false,
+        "PersonalFastest": false
+      },
+      {
+        "Position": "3",
+        "ShowPosition": true,
+        "RacingNumber": "4",
+        "Tla": "NOR",
+        "BroadcastName": "L NORRIS",
+        "FullName": "Lando NORRIS",
+        "FirstName": "Lando",
+        "LastName": "Norris",
+        "Reference": "LANNOR01",
+        "Team": "McLaren",
+        "TeamColour": "F47600",
+        "LapTime": "1:28.987",
+        "LapState": 1088,
+        "DiffToAhead": "+3.978",
+        "DiffToLeader": "+16.572",
+        "OverallFastest": false,
+        "PersonalFastest": false
+      }
+    ]
+  }
+}

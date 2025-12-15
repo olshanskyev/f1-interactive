@@ -1,0 +1,26 @@
+server:
+  port: 8080
+  servlet:
+    contextPath: /f1interactive/api
+  ssl:
+    enabled: false
+---
+spring:
+  config:
+    activate:
+      on-profile: local,default
+jwt:
+  publicKeyFile: ${user.dir}\src\main\resources\keys\public.pem
+datasource:
+  url: jdbc:postgresql://localhost:5432/F1INTERACTIVE
+  username: f1interactive
+  password: f1interactive
+  driverClassName: org.postgresql.Driver
+  defaultSchema:
+  maxPoolSize: 20
+  hibernate:
+    #hbm2ddl.method: update
+    hbm2ddl.method: none
+    show_sql: true
+    format_sql: true
+    dialect: org.hibernate.dialect.PostgreSQLDialect

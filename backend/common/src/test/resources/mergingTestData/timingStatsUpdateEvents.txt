@@ -1,0 +1,8 @@
+TimingStats,{"Lines":{"1":{"BestSpeeds":{"I1":{"Position":1,"Value":"284"}}}}},2025-12-07T13:03:48.643Z
+TimingStats,{"Lines":{"1":{"BestSpeeds":{"I1":{"Position":2}}},"4":{"BestSpeeds":{"I1":{"Position":1,"Value":"286"}}}}},2025-12-07T13:03:49.07Z
+TimingStats,{"Lines":{"1":{"BestSpeeds":{"I1":{"Position":7}}},"4":{"BestSpeeds":{"I1":{"Position":2}}},"5":{"BestSpeeds":{"I1":{"Position":9}}},"6":{"BestSpeeds":{"I1":{"Position":4}}},"14":{"BestSpeeds":{"I1":{"Position":5}}},"16":{"BestSpeeds":{"I1":{"Position":6}}},"31":{"BestSpeeds":{"I1":{"Position":1,"Value":"289"}}},"63":{"BestSpeeds":{"I1":{"Position":8}}},"81":{"BestSpeeds":{"I1":{"Position":3}}}}},2025-12-07T13:03:50.975Z
+TimingStats,{"Lines":{"1":{"BestSpeeds":{"FL":{"Position":1,"Value":"213"}}}}},2025-12-07T13:04:59.577Z
+TimingStats,{"Lines":{"1":{"BestSpeeds":{"FL":{"Position":5}}},"4":{"BestSpeeds":{"FL":{"Position":2}}},"14":{"BestSpeeds":{"FL":{"Position":4}}},"16":{"BestSpeeds":{"FL":{"Position":6}}},"63":{"BestSpeeds":{"FL":{"Position":1,"Value":"214"}}},"81":{"BestSpeeds":{"FL":{"Position":3}}}}},2025-12-07T13:05:03.32Z
+TimingStats,{"Lines":{"1":{"BestSectors":{"1":{"Position":2}}},"4":{"BestSectors":{"1":{"Position":3}}},"81":{"BestSectors":{"1":{"Position":1,"Value":"38.376"}}}}},2025-12-07T13:04:27.871Z
+TimingStats,{"Lines":{"16":{"BestSectors":{"1":{"Position":4,"Value":"38.861"}}}}},2025-12-07T13:04:28.666Z
+TimingStats,{"Lines":{"1":{"BestSectors":{"2":{"Position":1,"Value":"32.363"}}}}},2025-12-07T13:04:59.577Z

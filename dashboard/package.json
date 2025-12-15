@@ -1,0 +1,79 @@
+{
+  "name": "f1-interactive-dashboard",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "build:prod": "ng build --prod",
+    "lint": "ng lint --fix && npm run lint:scss",
+    "lint:ts": "eslint \"src/**/*.ts\" --fix",
+    "lint:scss": "stylelint \"src/**/*.scss\" --fix"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "angular"
+        }
+      }
+    ]
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/cdk": "^20.2.3",
+    "@angular/common": "^20.2.0",
+    "@angular/compiler": "^20.2.0",
+    "@angular/core": "^20.2.0",
+    "@angular/forms": "^20.2.0",
+    "@angular/material": "^20.2.3",
+    "@angular/material-date-fns-adapter": "^20.2.3",
+    "@angular/platform-browser": "^20.2.0",
+    "@angular/router": "^20.2.0",
+    "@ng-matero/extensions": "^20.3.0",
+    "@ng-matero/extensions-date-fns-adapter": "^20.0.0",
+    "@ngneat/overview": "6.1.1",
+    "@ngx-formly/core": "^7.0.0",
+    "@ngx-formly/material": "^7.0.0",
+    "@ngx-translate/core": "^17.0.0",
+    "@ngx-translate/http-loader": "^17.0.0",
+    "@ngxpert/hot-toast": "5.1.1",
+    "base64-js": "^1.5.1",
+    "date-fns": "^4.1.0",
+    "ng-matero": "^20.2.0",
+    "ngx-permissions": "^19.0.0",
+    "ngx-progressbar": "^14.0.0",
+    "photoviewer": "^3.10.3",
+    "rxjs": "~7.8.0",
+    "screenfull": "^6.0.2",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^20.2.2",
+    "@angular/cli": "^20.2.2",
+    "@angular/compiler-cli": "^20.2.0",
+    "@types/jasmine": "~5.1.0",
+    "angular-eslint": "^20.3.0",
+    "eslint": "^9.36.0",
+    "jasmine-core": "~5.9.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "parse5": "^8.0.0",
+    "prettier": "^3.6.0",
+    "stylelint": "^16.24.0",
+    "stylelint-config-recess-order": "^7.3.0",
+    "stylelint-config-recommended-scss": "^16.0.0",
+    "stylelint-config-standard": "^39.0.0",
+    "stylelint-order": "^7.0.0",
+    "typescript": "~5.9.2",
+    "typescript-eslint": "^8.44.0"
+  }
+}

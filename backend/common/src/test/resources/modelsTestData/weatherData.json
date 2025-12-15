@@ -1,0 +1,12 @@
+{
+  "WeatherData": {
+    "AirTemp": "25.9",
+    "Humidity": "66.0",
+    "Pressure": "1017.4",
+    "Rainfall": "0",
+    "TrackTemp": "28.9",
+    "WindDirection": "101",
+    "WindSpeed": "0.6",
+    "_kf": true
+  }
+}

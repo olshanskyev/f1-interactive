@@ -1,0 +1,7 @@
+TopThree,{"Lines":{"1":{"DiffToAhead":"+0.220","DiffToLeader":"+0.220"}}},2025-12-07T13:03:31.361Z
+TopThree,{"Lines":{"2":{"DiffToAhead":"+0.261","DiffToLeader":"+0.481"}}},2025-12-07T13:03:31.595Z
+TopThree,{"Lines":{"1":{"DiffToAhead":"+0.120","DiffToLeader":"+0.120"}}},2025-12-07T13:03:35.422Z
+TopThree,{"Lines":{"2":{"DiffToAhead":"+0.192","DiffToLeader":"+0.312"}}},2025-12-07T13:03:35.819Z
+TopThree,{"Lines":{"0":{"DiffToAhead":"LAP 2","DiffToLeader":"LAP 2"}}},2025-12-07T13:04:59.444Z
+TopThree,{"Lines":{"0":{"LapTime":"1:29.117"}}},2025-12-07T13:06:28.715Z
+TopThree,{"Lines":{"0":{"LapState":67,"OverallFastest":true,"PersonalFastest":true}}},2025-12-07T13:06:28.743Z
