@@ -69,7 +69,7 @@ public class Publisher {
 
 
 
-    private void sendToAll(String topic, String message) {
+    private void sendToAll(String topic, Object message) {
         consumers.forEach((uid,emitter) -> perConsumerEventExecutor.submit(() -> {
             try {
                 SseEventBuilder event = SseEmitter.event()
@@ -82,7 +82,7 @@ public class Publisher {
         }));
     }
 
-    public void publish(String topic, String message) {
+    public void publish(String topic, Object message) {
         if (consumers.isEmpty() || !publisherActive)
             return;
         perEventExecutor.execute(() -> sendToAll(topic, message));

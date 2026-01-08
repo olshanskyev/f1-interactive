@@ -88,7 +88,7 @@ public class StateHandlerTest {
         try (Scanner scanner = new Scanner(new File("src\\test\\resources\\mergingTestData\\savedSessions\\1stLapUpdates.txt"))) {
             while (scanner.hasNextLine()) {
                 String event = scanner.nextLine();
-                UpdateEvent updateEvent = EventsParser.parseUpdateEvent(event);
+                UpdateEvent updateEvent = EventsParser.parseUpdateEvent(event).updateEvent();
                 assertNotNull(updateEvent);
                 stateHandler.updateState(updateEvent);
             }

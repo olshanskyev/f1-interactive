@@ -80,19 +80,12 @@
           "builder": "@angular/build:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
-            "styles": [
-              "src/styles.scss"
-            ]
+            "providersFile": "src/test-providers.ts",
+            "buildTarget": "f1-interactive-dashboard:build:development",
+            "runner": "vitest"
           }
         },
         "lint": {
@@ -106,5 +99,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "104315a8-d568-4ef9-8a19-b73f36ab6b64"
   }
 }

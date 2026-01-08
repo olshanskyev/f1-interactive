@@ -1,4 +1,5 @@
 import { base64, currentTimestamp, JwtToken } from '@core/authentication';
+import { describe, it, expect } from 'vitest';
 
 describe('Token', () => {
   describe('JwtToken', () => {
@@ -17,7 +18,7 @@ describe('Token', () => {
     });
 
     it('test access_token is JWT', () => {
-      expect(JwtToken.is(token.access_token)).toBeTrue();
+      expect(JwtToken.is(token.access_token)).toBe(true);
     });
 
     it('test bearer token', function () {
@@ -28,11 +29,7 @@ describe('Token', () => {
       expect(token.exp).toEqual(exp);
     });
 
-    it('test payload does not has exp attribute', () => {
-      expect(token.exp).toEqual(exp);
-    });
-
-    it('test does not has exp attribute', () => {
+    it('test does not have exp attribute', () => {
       const token = new JwtToken({ access_token: generateToken({}), token_type: 'Bearer' });
 
       expect(token.exp).toBeUndefined();

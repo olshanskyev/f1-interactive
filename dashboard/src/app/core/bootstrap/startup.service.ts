@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { AuthService, User } from '@core/authentication';
-import { NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
+import { NgxRolesService } from 'ngx-permissions';
 import { switchMap, tap } from 'rxjs';
 import { Menu, MenuService } from './menu.service';
 
@@ -10,9 +10,14 @@ import { Menu, MenuService } from './menu.service';
 export class StartupService {
   private readonly authService = inject(AuthService);
   private readonly menuService = inject(MenuService);
-  private readonly permissonsService = inject(NgxPermissionsService);
   private readonly rolesService = inject(NgxRolesService);
 
+  private readonly allPermissions: {
+        [name: string]: string[];
+  } = {
+    ADMIN: ['*'],
+    USER: []
+  };
   /**
    * Load the application only after get the menu or other essential informations
    * such as permissions and roles.
@@ -39,13 +44,11 @@ export class StartupService {
   }
 
   private setPermissions(user: User) {
-    // In a real app, you should get permissions and roles from the user information.
-    const permissions = ['canAdd', 'canDelete', 'canEdit', 'canRead'];
-    this.permissonsService.loadPermissions(permissions);
-    this.rolesService.flushRoles();
-    this.rolesService.addRoles({ ADMIN: permissions });
 
-    // Tips: Alternatively you can add permissions with role at the same time.
-    // this.rolesService.addRolesWithPermissions({ ADMIN: permissions });
+    this.rolesService.flushRolesAndPermissions();
+    if (user.role && user.role in this.allPermissions) {
+      this.rolesService.addRoleWithPermissions(user.role, this.allPermissions[user.role]);
+    }
+
   }
 }

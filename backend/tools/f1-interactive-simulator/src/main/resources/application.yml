@@ -9,6 +9,9 @@ spring:
   config:
     activate:
       on-profile: local,default
+  servlet:
+    multipart:
+      max-file-size: 10MB
 f1interactive:
   heartbeatIntervalMillis: 15000
   multithreading:

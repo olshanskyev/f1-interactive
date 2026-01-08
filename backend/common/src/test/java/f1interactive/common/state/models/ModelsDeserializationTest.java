@@ -247,12 +247,11 @@ public class ModelsDeserializationTest {
 
     @Test
     @Disabled // high load
-    // ToDo collect list for update events test
     public void readingUpdateEventsTest() throws IOException {
         try (Scanner scanner = new Scanner(new File("src\\test\\resources\\modelsTestData\\2025_abu_dhabi_race_only_update_events.txt"))) {
             while (scanner.hasNextLine()) {
                 String event = scanner.nextLine();
-                UpdateEvent updateEvent = EventsParser.parseUpdateEvent(event);
+                UpdateEvent updateEvent = EventsParser.parseUpdateEvent(event).updateEvent();
                 assertNotNull(updateEvent);
             }
         }

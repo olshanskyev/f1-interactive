@@ -3,52 +3,114 @@ package f1interactive.tools.simulator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Scanner;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 public class Simulator implements Player {
+
+    public interface UpdateEventCallback {
+        void callback(int eventNumber, String message);
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(Simulator.class);
 
     private Simulator(){}
 
     private SimulatorState state = SimulatorState.NOT_INITIALIZED;
-    private float playbackSpeedRation = 1.0F;
-    private Scanner scanner;
-    private String fileName;
+    private float playbackSpeedRatio = 1.0F;
+    private int it = 0;
+    private final ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+    private CompletableFuture<Void> nextEventFuture;
+    private List<String> lines;
     private int numberOfEvents;
-    private boolean readingFirstLine = false;
-
-    private Thread sender;
-    private final int MAX_WAIT_INTERVAL = 2000;
-    private boolean interruptWaiting = false; // to interrupt waiting
+    private String fileName;
     private Consumer<String> initEventCallback;
-    private Consumer<String> updateEventCallback;
+    private UpdateEventCallback updateEventCallback;
+    private Runnable endOfEventsCallback;
 
+    public static Simulator init(InputStream inputStream, String fileName) throws IOException {
+        Simulator simulator = new Simulator();
+        try (InputStreamReader isr = new InputStreamReader(inputStream);
+            BufferedReader br = new BufferedReader(isr)) {
+
+            simulator.lines = br.lines().collect(Collectors.toList());
+            simulator.numberOfEvents = simulator.lines.size();
+            simulator.fileName = fileName;
+            simulator.state = SimulatorState.INITIALIZED;
+            logger.info("Simulator initialized");
+        }
+
+        return simulator;
+    }
     public static Simulator init(String inputFileName) throws IOException {
         Simulator simulator = new Simulator();
         // read file
+        simulator.lines = Files.readAllLines(Paths.get(inputFileName));
+        simulator.numberOfEvents = simulator.lines.size();
         simulator.fileName = inputFileName;
-
-        try (Stream<String> fileStream = Files.lines(Paths.get(inputFileName))) {
-            simulator.numberOfEvents =  (int)fileStream.count();
-        }
         simulator.state = SimulatorState.INITIALIZED;
         logger.info("Simulator initialized");
         return simulator;
     }
 
-    public void onUpdateEvent(Consumer<String> callback) {
+    public void onUpdateEvent(UpdateEventCallback callback) {
         this.updateEventCallback = callback;
     }
 
     public void onInitEvent(Consumer<String> callback) {
         this.initEventCallback = callback;
+    }
+
+    public void onEndOfEvents(Runnable callback) {
+        this.endOfEventsCallback = callback;
+    }
+
+    /**
+     * reads first init event (no delay)
+     * @return millis from init event
+     */
+    private long readFirstEvent() {
+        String event = lines.get(it++);
+        long currentMillis = TestDataReader.getMillisFromEvent(event);
+        if (initEventCallback != null)
+            initEventCallback.accept(event);
+        return currentMillis;
+    }
+
+    private void readNextEvent(long preMillis) {
+        if (lines.size() > it) {
+            // read next element to calculate delay
+            String nextEvent = lines.get(it);
+            long currentMillis = TestDataReader.getMillisFromEvent(nextEvent);
+            long delay = (preMillis == 0L)? 0L: (long)((currentMillis - preMillis) / playbackSpeedRatio);
+            nextEventFuture = CompletableFuture.runAsync(() -> {
+                String event = lines.get(it);
+                if (updateEventCallback != null) {
+                    updateEventCallback.callback(it, event);
+                }
+                it++;
+                if (state == SimulatorState.STARTED)
+                    readNextEvent(currentMillis);
+            },
+            CompletableFuture.delayedExecutor(delay, TimeUnit.MILLISECONDS,
+            singleThreadExecutor));
+        } else {
+            logger.info("End of events. Simulator stopped");
+            state = SimulatorState.STOPPED;
+            if (endOfEventsCallback != null)
+                endOfEventsCallback.run();
+        }
     }
 
     @Override
@@ -57,102 +119,36 @@ public class Simulator implements Player {
         if (state == SimulatorState.STARTED)
             return;
         if (state == SimulatorState.INITIALIZED || state == SimulatorState.STOPPED) {
-            // start new reading
-            try {
-                if (scanner != null)
-                    scanner.close();
-                scanner = new Scanner(new File(fileName));
-                readingFirstLine = true;
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException("Reading File Exception");
-            }
+            // first reading after initialization or stop
+            // reset iterator
+            it = 0;
+            logger.info("Simulator started");
+            long millis = readFirstEvent();
+            readNextEvent(millis);
+        } else { // resume reading
+            logger.info("Simulator resumed");
+            readNextEvent(0L);
         }
-        // for PAUSED state just resume reading
-        sender = new Thread(() -> {
-            long preMillis = 0L;
-            while (state == SimulatorState.STARTED && scanner.hasNextLine()) {
-                String event = scanner.nextLine();
-                long currentMillis = TestDataReader.getMillisFromEvent(event);
-                try {
-                    if (preMillis != 0L) {
-                        long millisToSleep = (long)((currentMillis - preMillis) / playbackSpeedRation);
-                        // sleeping with small intervals to make interruptable by stop/pause/new ratio events
-                        long numberOfSleeps = millisToSleep / MAX_WAIT_INTERVAL + 1;
-                        long lastSleepInterval = millisToSleep - MAX_WAIT_INTERVAL * (numberOfSleeps - 1);
-
-                        if (millisToSleep > 0) {// if < 0 events are close, don't wait
-                            interruptWaiting = false;
-                            for (int i = 1; i <= numberOfSleeps
-                                    && state == SimulatorState.STARTED
-                                    && !interruptWaiting; i++) {
-                                if (i == numberOfSleeps)
-                                    Thread.sleep(lastSleepInterval);
-                                else
-                                    Thread.sleep(MAX_WAIT_INTERVAL);
-                            }
-                            interruptWaiting = false;
-                        }
-                    }
-                    preMillis = currentMillis;
-                    if (readingFirstLine) { // first line contains full init state
-                        if (initEventCallback != null)
-                            initEventCallback.accept(event);
-                    } else {
-                        if (updateEventCallback != null)
-                            updateEventCallback.accept(event);
-                    }
-                    readingFirstLine = false;
-                } catch (InterruptedException e){
-                    logger.warn("Thread interrupted");
-                    throw new RuntimeException(e);
-                }
-
-            }
-            if (!scanner.hasNextLine()) { // end of file
-                logger.info("End of file. Simulator stopped");
-                state = SimulatorState.STOPPED;
-                scanner.close();
-                scanner = null;
-            }
-        });
-        sender.start();
         state = SimulatorState.STARTED;
-        logger.info("Simulator started");
     }
 
     @Override
     public void stop() {
         checkInitialized();
+        if (nextEventFuture != null)
+            nextEventFuture.cancel(true);
+        logger.info("Simulator stopped");
         state = SimulatorState.STOPPED;
-        try {
-            if (sender != null && sender.isAlive()) {
-                logger.info("Waiting {} ms to stop simulator", MAX_WAIT_INTERVAL);
-
-                sender.join(MAX_WAIT_INTERVAL + 10); // waiting thread stops
-                if (sender.isAlive()) {
-                    logger.info("Interrupting thread. Waited too long");
-                    sender.interrupt();
-                }
-
-            }
-        } catch (InterruptedException e) {
-            throw new RuntimeException("Join sender thread error", e);
-        } finally {
-            if (scanner != null) {
-                scanner.close();
-                scanner = null;
-            }
-
-            logger.info("Simulator stopped");
-        }
     }
 
     @Override
     public void pause() {
         checkInitialized();
         if (state == SimulatorState.STARTED) {
-            state = SimulatorState.PAUSED;
+            if (nextEventFuture != null)
+                nextEventFuture.cancel(false);
             logger.info("Simulator paused");
+            state = SimulatorState.PAUSED;
         }
     }
 
@@ -160,12 +156,14 @@ public class Simulator implements Player {
     public void setPlaybackSpeedRatio(float ratio) {
         checkInitialized();
         if (ratio <= 0) {
-            throw new IllegalArgumentException("playback speed ratio can't be negative of zero");
+            throw new IllegalArgumentException("Playback speed ratio can't be negative of zero");
         }
-        playbackSpeedRation = ratio;
-        interruptWaiting = true;
-
-        logger.info("New playback speed ratio {} set", playbackSpeedRation);
+        playbackSpeedRatio = ratio;
+        logger.info("New playback speed ratio {} set", playbackSpeedRatio);
+        if (state == SimulatorState.STARTED) { // restart to rebuild waiting time
+            pause();
+            start();
+        }
     }
 
     public int getNumberOfEvents() {
@@ -177,8 +175,13 @@ public class Simulator implements Player {
         return state;
     }
 
-    public float getPlaybackSpeedRation() {
-        return playbackSpeedRation;
+    public float getPlaybackSpeedRatio() {
+        return playbackSpeedRatio;
+    }
+
+    public String getFileName() {
+        checkInitialized();
+        return fileName;
     }
 
 

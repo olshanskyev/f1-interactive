@@ -1,0 +1,24 @@
+{
+  "menu": [
+    {
+      "route": "dashboard",
+      "name": "dashboard",
+      "type": "link",
+      "icon": "dashboard"
+    },
+    {
+      "route": "admin",
+      "name": "admin",
+      "type": "sub",
+      "icon": "admin_panel_settings",
+      "children": [
+        {
+          "route": "simulator",
+          "name": "simulator",
+          "type": "link",
+          "icon": "play_arrow"
+        }
+      ]
+    }
+  ]
+}

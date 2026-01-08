@@ -22,7 +22,7 @@ public class MergingEventsTest {
         try (Scanner updateScanner = new Scanner(new File("src\\test\\resources\\mergingTestData\\timingAppDataUpdateEvents.txt"))) {
             while (updateScanner.hasNextLine()) {
                 String updateEventString = updateScanner.nextLine();
-                UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString);
+                UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString).updateEvent();
                 root = updateEvent.merge(root);
             }
         }
@@ -65,7 +65,7 @@ public class MergingEventsTest {
         try (Scanner updateScanner = new Scanner(new File("src\\test\\resources\\mergingTestData\\driverListUpdateEvents.txt"))) {
             while (updateScanner.hasNextLine()) {
                 String updateEventString = updateScanner.nextLine();
-                UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString);
+                UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString).updateEvent();
                 root = updateEvent.merge(root);
             }
         }
@@ -91,7 +91,7 @@ public class MergingEventsTest {
         try (Scanner updateScanner = new Scanner(new File("src\\test\\resources\\mergingTestData\\topThreeUpdateEvents.txt"))) {
             while (updateScanner.hasNextLine()) {
                 String updateEventString = updateScanner.nextLine();
-                UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString);
+                UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString).updateEvent();
                 root = updateEvent.merge(root);
             }
         }
@@ -107,7 +107,7 @@ public class MergingEventsTest {
         try (Scanner updateScanner = new Scanner(new File("src\\test\\resources\\mergingTestData\\topThreeUpdateEventSwapPosition.txt"))) {
             while (updateScanner.hasNextLine()) {
                 String updateEventString = updateScanner.nextLine();
-                UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString);
+                UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString).updateEvent();
                 root = updateEvent.merge(root);
             }
         }
@@ -132,7 +132,7 @@ public class MergingEventsTest {
         try (Scanner updateScanner = new Scanner(new File("src\\test\\resources\\mergingTestData\\timingStatsUpdateEvents.txt"))) {
             while (updateScanner.hasNextLine()) {
                 String updateEventString = updateScanner.nextLine();
-                UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString);
+                UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString).updateEvent();
                 root = updateEvent.merge(root);
             }
         }
@@ -163,7 +163,7 @@ public class MergingEventsTest {
         try (Scanner updateScanner = new Scanner(new File("src\\test\\resources\\mergingTestData\\timingDataUpdateEvents.txt"))) {
             while (updateScanner.hasNextLine()) {
                 String updateEventString = updateScanner.nextLine();
-                UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString);
+                UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString).updateEvent();
                 root = updateEvent.merge(root);
             }
         }

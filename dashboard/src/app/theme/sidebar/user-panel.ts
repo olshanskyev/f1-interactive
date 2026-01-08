@@ -10,19 +10,23 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-user-panel',
   template: `
-    <div class="matero-user-panel" routerLink="/profile/overview">
-      <img class="matero-user-panel-avatar" [src]="user()?.avatar" alt="avatar" width="64" />
-      <div class="matero-user-panel-info">
-        <h4>{{ user()?.name }}</h4>
-        <h5>{{ user()?.email }}</h5>
+    @if (auth.check()) {
+      <div class="matero-user-panel" routerLink="/profile/overview">
+        @if (user()?.avatar) {
+          <img class="matero-user-panel-avatar" [src]="user()?.avatar" alt="avatar" width="64" />
+        }
+        <div class="matero-user-panel-info">
+          <h4>{{ user()?.name }}</h4>
+          <h5>{{ user()?.email }}</h5>
+        </div>
       </div>
-    </div>
+    }
   `,
   styleUrl: './user-panel.scss',
   encapsulation: ViewEncapsulation.None,
   imports: [RouterLink, MatButtonModule, MatIconModule, MatTooltipModule, TranslateModule],
 })
 export class UserPanel {
-  private readonly auth = inject(AuthService);
+  readonly auth = inject(AuthService);
   user = toSignal(this.auth.user());
 }

@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, input, output } from '@angular/core';
+import { Component,  ViewEncapsulation, inject, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -7,6 +7,8 @@ import screenfull from 'screenfull';
 import { Branding } from '../widgets/branding';
 import { TranslateButton } from '../widgets/translate-button';
 import { UserButton } from '../widgets/user-button';
+import { AuthService } from '@core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -23,14 +25,16 @@ import { UserButton } from '../widgets/user-button';
     Branding,
     TranslateButton,
     UserButton,
+    RouterLink
   ],
 })
 export class Header {
+  readonly authService = inject(AuthService);
+
   readonly showToggle = input(true);
   readonly showBranding = input(false);
 
   readonly toggleSidenav = output<void>();
-  readonly toggleSidenavNotice = output<void>();
 
   toggleFullscreen() {
     if (screenfull.isEnabled) {

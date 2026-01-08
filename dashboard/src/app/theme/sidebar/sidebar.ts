@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, input, output } from '@angular/core';
+import { Component, ViewEncapsulation, inject, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';

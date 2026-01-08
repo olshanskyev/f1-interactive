@@ -11,7 +11,7 @@ import { TokenFactory } from './token-factory.service';
   providedIn: 'root',
 })
 export class TokenService implements OnDestroy {
-  private readonly key = 'ng-matero-token';
+  private readonly key = 'f1-interactive-token';
 
   private readonly store = inject(LocalStorageService);
   private readonly factory = inject(TokenFactory);

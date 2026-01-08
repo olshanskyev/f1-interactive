@@ -1,7 +1,9 @@
 import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { BASE_URL, baseUrlInterceptor } from './base-url-interceptor';
+import { describe, beforeEach, afterEach, it, expect } from 'vitest';
+
+import { BASE_URL, BASE_URL_SIMULATOR, baseUrlInterceptor } from './base-url-interceptor';
 
 describe('BaseUrlInterceptor', () => {
   let httpMock: HttpTestingController;
@@ -14,10 +16,17 @@ describe('BaseUrlInterceptor', () => {
     http = TestBed.inject(HttpClient);
   };
 
+  const setSimulatorBaseUrl = (url: string | null) => {
+    TestBed.overrideProvider(BASE_URL_SIMULATOR, { useValue: url });
+    httpMock = TestBed.inject(HttpTestingController);
+    http = TestBed.inject(HttpClient);
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         { provide: BASE_URL, useValue: null },
+        { provide: BASE_URL_SIMULATOR, useValue: null },
         provideHttpClient(withInterceptors([baseUrlInterceptor])),
         provideHttpClientTesting(),
       ],
@@ -42,5 +51,13 @@ describe('BaseUrlInterceptor', () => {
 
     http.get('').subscribe(data => expect(data).toEqual({ success: true }));
     httpMock.expectOne(baseUrl).flush({ success: true });
+  });
+
+  it('should prepend simulator bse url when request url has simulator in request', () => {
+    setSimulatorBaseUrl(baseUrl);
+
+    http.get('/simulator/start').subscribe(data => expect(data).toEqual({ success: true }));
+    httpMock.expectOne(baseUrl + '/simulator/start').flush({ success: true });
+
   });
 });

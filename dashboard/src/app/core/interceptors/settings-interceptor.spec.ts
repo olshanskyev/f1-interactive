@@ -4,6 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { SettingsService } from '@core/bootstrap/settings.service';
 import { provideTranslateService } from '@ngx-translate/core';
 import { settingsInterceptor } from './settings-interceptor';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('SettingsInterceptor', () => {
   let httpMock: HttpTestingController;

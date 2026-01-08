@@ -1,21 +1,20 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { PageHeader } from '@shared';
-import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
-  imports: [PageHeader],
+  imports: [
+    PageHeader,
+  ],
 })
-export class Dashboard implements OnDestroy {
+export class Dashboard {
 
-  constructor(client: HttpClient) {
-    /*client.get('http://localhost:8081/f1interactive/simulator/live').subscribe(res => {
-      console.log(res);
-    })*/
-    const evtSource = new EventSource('http://localhost:8081/f1interactive/simulator/live');
+  constructor() {
+    
+    /*const evtSource = new EventSource('http://localhost:8081/f1interactive/simulator/live');
 
     const parseMyEvent = (evt: Event) => {
       const messageEvent = (evt as MessageEvent);  // <== This line is Important!!
@@ -24,11 +23,11 @@ export class Dashboard implements OnDestroy {
 
     evtSource.addEventListener('init', parseMyEvent);
     evtSource.addEventListener('update', parseMyEvent);
-  }
+    evtSource.addEventListener('heartbeat', parseMyEvent);
+  */
 
-  ngOnDestroy(): void {
-    console.log('OnDestroy');
 
+    
   }
 
 }

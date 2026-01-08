@@ -2,7 +2,9 @@ package f1interactive.common.state;
 
 import f1interactive.common.state.models.Root;
 import f1interactive.common.state.models.UpdateEvent;
+import org.springframework.stereotype.Component;
 
+@Component
 public class StateHandler {
     private Root state;
 
@@ -10,9 +12,9 @@ public class StateHandler {
         state = initState;
     }
 
-    public Root getState() { return this.state; }
+    public synchronized Root getState() { return this.state; }
 
-    public void updateState(UpdateEvent updateEvent){
+    public synchronized void updateState(UpdateEvent updateEvent){
         if (state == null) {
             throw new RuntimeException("State handler not initialized");
         }

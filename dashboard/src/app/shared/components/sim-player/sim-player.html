@@ -1,0 +1,57 @@
+<mat-card class="simulator">
+  <mat-card-header class="align-items-center justify-content-between">
+    <span>{{'simulator.player' | translate}}</span>
+    <div class="simulator-semaphore" [class]="semaphoreColor()"></div>
+  </mat-card-header>
+  <mat-card-content class="d-flex justify-content-center align-items-center">
+    <button matIconButton [disabled]="notInitialized()"
+      (click)="onStartPause()"
+    >
+      @if (started()) {
+        <mat-icon>pause</mat-icon>
+      } @else {
+        <mat-icon>play_arrow</mat-icon>
+      }
+        
+    </button>
+    <button matIconButton (click)="onStop()" [disabled]="!(started() || paused())">
+      <mat-icon>stop</mat-icon>
+    </button>
+    <button matIconButton (click)="adjustRatioUp()" (debounceClick)="callUpdateRatio()" [disabled]="notInitialized()">
+      <mat-icon>keyboard_arrow_up</mat-icon>
+    </button>
+    @if (this.simulatorState().playbackSpeedRatio ) {
+      <label>{{this.simulatorState().playbackSpeedRatio | number:'1.1-1'}}x</label>
+    }
+    <button matIconButton (click)="adjustRatioDown()" (debounceClick)="callUpdateRatio()" [disabled]="notInitialized()">
+      <mat-icon>keyboard_arrow_down</mat-icon>
+    </button>
+    <input hidden accept=".txt" (change)="onFileSelected($event.target.files)" #fileInput type="file" id="file">
+    <button matIconButton (click)="fileInput.click()">
+      <mat-icon>file_upload</mat-icon>
+    </button>
+
+  </mat-card-content>
+  <mat-card-footer class="p-b-8 p-t-8 d-flex justify-content-center flex-wrap">
+    <div class="w-full m-l-8 m-r-8">
+      <mat-progress-bar mode="determinate" [value]="(started() || paused())?progress():0"></mat-progress-bar>
+      {{eventNumber()}}
+    </div>
+    <div>
+      <small>
+        @if(simulatorState().fileName) {
+          {{simulatorState().fileName}}
+        } @else {
+            {{'simulator.file_not_selected' | translate}}
+        }
+      </small>
+    </div>
+    
+    
+  </mat-card-footer>
+</mat-card>
+
+
+
+
+

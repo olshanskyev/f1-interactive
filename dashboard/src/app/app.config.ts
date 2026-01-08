@@ -12,17 +12,15 @@ import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from 
 import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
 import { MAT_CARD_CONFIG } from '@angular/material/card';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
-import { MatPaginatorIntl } from '@angular/material/paginator';
 import { provideDateFnsDatetimeAdapter } from '@ng-matero/extensions-date-fns-adapter';
-import { FORMLY_CONFIG, provideFormlyCore } from '@ngx-formly/core';
-import { withFormlyMaterial } from '@ngx-formly/material';
-import { provideTranslateService, TranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideHotToastConfig } from '@ngxpert/hot-toast';
 import { NgxPermissionsModule } from 'ngx-permissions';
 
 import {
   BASE_URL,
+  BASE_URL_SIMULATOR,
   interceptors,
   SettingsService,
   StartupService,
@@ -39,6 +37,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     { provide: BASE_URL, useValue: environment.baseUrl },
+    { provide: BASE_URL_SIMULATOR, useValue: environment.baseUrlSimulator },
     provideAppInitializer(() => inject(TranslateLangService).load()),
     provideAppInitializer(() => inject(StartupService).load()),
     provideHttpClient(withInterceptors(interceptors)),

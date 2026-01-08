@@ -4,6 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { HotToastService, provideHotToastConfig } from '@ngxpert/hot-toast';
 import { errorInterceptor } from './error-interceptor';
+import { describe, beforeEach, afterEach, it, vi, expect } from 'vitest';
 
 describe('ErrorInterceptor', () => {
   let httpMock: HttpTestingController;
@@ -13,7 +14,7 @@ describe('ErrorInterceptor', () => {
   const emptyFn = () => {};
 
   function assertStatus(status: number, statusText: string) {
-    spyOn(router, 'navigateByUrl');
+    vi.spyOn(router, 'navigateByUrl');
 
     http.get('/user').subscribe({ next: emptyFn, error: emptyFn, complete: emptyFn });
 
@@ -42,8 +43,8 @@ describe('ErrorInterceptor', () => {
   afterEach(() => httpMock.verify());
 
   it('should handle status code 401', () => {
-    spyOn(router, 'navigateByUrl');
-    spyOn(toast, 'error');
+    vi.spyOn(router, 'navigateByUrl');
+    vi.spyOn(toast, 'error');
 
     http.get('/user').subscribe({ next: emptyFn, error: emptyFn, complete: emptyFn });
     httpMock.expectOne('/user').flush({}, { status: 401, statusText: 'Unauthorized' });
@@ -65,7 +66,7 @@ describe('ErrorInterceptor', () => {
   });
 
   it('should handle others status code', () => {
-    spyOn(toast, 'error');
+    vi.spyOn(toast, 'error');
 
     http.get('/user').subscribe({ next: emptyFn, error: emptyFn, complete: emptyFn });
 

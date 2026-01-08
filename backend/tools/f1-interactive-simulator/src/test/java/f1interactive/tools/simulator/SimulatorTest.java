@@ -4,10 +4,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,7 +20,8 @@ public class SimulatorTest {
 
     interface PublishInterface {
         void publishInit(String message);
-        void publishUpdate(String message);
+        void publishUpdate(int eventNumber, String message);
+        void endOfEvents();
     }
 
     @ParameterizedTest
@@ -53,26 +58,42 @@ public class SimulatorTest {
 
         float playbackRatio = 1.1F;
         simulator.setPlaybackSpeedRatio(playbackRatio);
-        assertEquals(playbackRatio,simulator.getPlaybackSpeedRation());
+        assertEquals(playbackRatio,simulator.getPlaybackSpeedRatio());
         assertThrows(IllegalArgumentException.class, () -> simulator.setPlaybackSpeedRatio(-1.0F));
     }
 
-
     @Test
     public void callBackendTest() throws IOException, InterruptedException {
-        Simulator simulator = Simulator.init("src/test/resources/saved_sessions/2025/partly_data.txt");
+        String path = "src/test/resources/saved_sessions/2025/partly_data.txt";
+        Simulator simulator = Simulator.init(path);
+        List<String> events = Files.readAllLines(Paths.get(path));
+
         PublishInterface serviceMock = Mockito.mock(PublishInterface.class);
         simulator.onInitEvent(serviceMock::publishInit);
         simulator.onUpdateEvent(serviceMock::publishUpdate);
+        simulator.onEndOfEvents(serviceMock::endOfEvents);
 
-        simulator.setPlaybackSpeedRatio(1000L); // less than 1 second for reading
+        simulator.setPlaybackSpeedRatio(100L); // less than 1 second for reading
         simulator.start();
-        Thread.sleep(500);
-        simulator.stop();
+        simulator.pause();
+        simulator.start();
+        Thread.sleep(10);
+        simulator.setPlaybackSpeedRatio(150L);
+        Thread.sleep(1000);
 
         assertEquals(SimulatorState.STOPPED, simulator.getState());
 
         verify(serviceMock, times(1)).publishInit(anyString());
-        verify(serviceMock, times(12)).publishUpdate(anyString());
+        verify(serviceMock, times(12)).publishUpdate(anyInt(), anyString());
+        verify(serviceMock, times(1)).endOfEvents();
+
+        // checking calling order
+        InOrder inOrder = inOrder(serviceMock);
+        inOrder.verify(serviceMock).publishInit(events.get(0));
+        for(int it = 1; it < events.size(); it++) {
+            inOrder.verify(serviceMock).publishUpdate(it, events.get(it));
+        }
+        inOrder.verify(serviceMock).endOfEvents();
+
     }
 }

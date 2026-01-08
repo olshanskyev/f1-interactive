@@ -6,12 +6,15 @@ import f1interactive.common.state.models.Root;
 import f1interactive.common.state.models.UpdateEvent;
 
 public class EventsParser {
+
+    public record UpdateEventRecord(String className, UpdateEvent updateEvent, String utc) {
+    }
     /**
      *
      * @param updateEvent comma separated eventName,{event as json},utcTimestamp
-     * @return UpdateEvent
+     * @return UpdateEventRecord
      */
-    public static UpdateEvent parseUpdateEvent(String updateEvent) {
+    public static UpdateEventRecord parseUpdateEvent(String updateEvent) {
         int firstCommaPos = updateEvent.indexOf(",");
         int lastCommaPos = updateEvent.lastIndexOf(",");
         if (firstCommaPos == -1 || lastCommaPos == -1 || lastCommaPos == firstCommaPos) {
@@ -19,7 +22,8 @@ public class EventsParser {
         }
         String className = updateEvent.substring(0, firstCommaPos);
         String objectString = updateEvent.substring(firstCommaPos + 1, lastCommaPos);
-        return parseUpdateEvent(className, objectString);
+        String utcString = updateEvent.substring(lastCommaPos + 1);
+        return new UpdateEventRecord(className, parseUpdateEvent(className, objectString), utcString);
 
     }
 

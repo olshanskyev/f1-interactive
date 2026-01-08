@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { TokenFactory, TokenService, currentTimestamp } from '@core/authentication';
 import { LocalStorageService, MemoryStorageService } from '@shared/services/storage.service';
+import { describe, beforeEach, it, expect } from 'vitest';
 import { tap } from 'rxjs';
 
 describe('TokenService', () => {
@@ -31,7 +32,7 @@ describe('TokenService', () => {
     expect(tokenService.getBearerToken()).toBe('');
   });
 
-  it('should not has exp when token has expires_in', () => {
+  it('should not have exp when token does not have expires_in', () => {
     tokenService.set({ access_token: 'token', token_type: 'bearer' });
 
     tokenService
@@ -40,7 +41,7 @@ describe('TokenService', () => {
       .subscribe();
   });
 
-  it('should has exp when token has expires_in', () => {
+  it('should have exp when token has expires_in', () => {
     const expiresIn = 3600;
     tokenService.set({ access_token: 'token', token_type: 'bearer', expires_in: expiresIn });
 
