@@ -1,0 +1,35 @@
+
+@font-face {
+  font-family: 'Formula 1';
+  src: url('../../../public/fonts/Formula1-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Formula 1';
+  src: url('../../../public/fonts/Formula1-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'Formula 1 Wide';
+  src: url('../../../public/fonts/Formula1-Wide.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+.font-formula {
+    font-family: 'Formula 1';
+}
+
+.font-formula-bold {
+    font-family: 'Formula 1';
+    font-weight: bold;
+}
+
+.font-formula-wide {
+    font-family: 'Formula 1 Wide';
+}

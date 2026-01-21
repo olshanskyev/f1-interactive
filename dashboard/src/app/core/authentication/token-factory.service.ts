@@ -10,7 +10,6 @@ export class TokenFactory {
     if (!attributes.access_token) {
       return undefined;
     }
-
     if (JwtToken.is(attributes.access_token)) {
       return new JwtToken(attributes);
     }

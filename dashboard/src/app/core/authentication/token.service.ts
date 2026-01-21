@@ -43,7 +43,6 @@ export class TokenService implements OnDestroy {
 
   set(token?: Token) {
     this.save(token);
-
     return this;
   }
 
@@ -85,7 +84,6 @@ export class TokenService implements OnDestroy {
 
   private buildRefresh() {
     this.clearRefresh();
-
     if (this.token?.needRefresh()) {
       this.timer$ = timer(this.token.getRefreshTime() * 1000).subscribe(() => {
         this.refresh$.next(this.token);

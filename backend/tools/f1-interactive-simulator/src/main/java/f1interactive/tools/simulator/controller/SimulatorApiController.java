@@ -2,6 +2,7 @@ package f1interactive.tools.simulator.controller;
 
 import f1interactive.common.sse.Publisher;
 import f1interactive.common.state.StateHandler;
+import f1interactive.common.state.models.Root;
 import f1interactive.common.state.models.deserializer.EventsParser;
 import f1interactive.tools.simulator.Simulator;
 import f1interactive.tools.simulator.SimulatorState;
@@ -26,6 +27,7 @@ class SimulatorApiController {
 
     record InitSimulatorRequest(String fileName) {}
     record PlaybackSpeedRatioRequest(float playbackSpeedRatio) {}
+    record RewindRequest(int position) {}
     record HttpErrorResponse(int code, String msg) {
         public HttpErrorResponse(String msg) {
             this(-1, msg);
@@ -34,7 +36,7 @@ class SimulatorApiController {
     record SimulatorStateResponse(SimulatorState state, Integer numberOfEvents, String fileName, Float playbackSpeedRatio) {}
     record UpdateStateResponse(SimulatorState state){}
     record SetRatioResponse(float playbackSpeedRatio, SimulatorState state) {}
-    record SimulatorUpdateEvent(int eventNumber, String event) {}
+    record SimulatorEvent(int eventNumber, Object event) {}
 
     private Simulator simulator;
     private final Object initStateMutex = new Object();
@@ -48,16 +50,19 @@ class SimulatorApiController {
     }
 
     private void setSimulatorCallbacks() {
-        simulator.onInitEvent(message -> {
-            stateHandler.init(EventsParser.parseInitEvent(message));
-            publisher.publish("init", message);
+        simulator.onInitEvent((message, isRewinding) -> {
+            Root initMessage = EventsParser.parseInitEvent(message);
+            stateHandler.init(initMessage);
+            if (!isRewinding)
+                publisher.publish("init", new SimulatorEvent(0, initMessage));
             logger.debug("init: {}", message);
         });
-        simulator.onUpdateEvent((eventNumber, message) -> {
+        simulator.onUpdateEvent((eventNumber, message, isRewinding) -> {
             EventsParser.UpdateEventRecord updateEventRecord = EventsParser.parseUpdateEvent(message);
             synchronized (initStateMutex) {
                 stateHandler.updateState(updateEventRecord.updateEvent());
-                publisher.publish("update", new SimulatorUpdateEvent(eventNumber, message));
+                if (!isRewinding)
+                    publisher.publish("update", new SimulatorEvent(eventNumber, updateEventRecord));
             }
 
             logger.debug("update: {}", message);
@@ -66,6 +71,8 @@ class SimulatorApiController {
             publisher.publish("endOfEvents", "{}");
             logger.debug("endOfEvents");
         });
+
+        simulator.onRewindFinished(() -> publisher.publish("init", new SimulatorEvent(simulator.getCurrentPosition(),stateHandler.getState())));
 
     }
 
@@ -77,6 +84,7 @@ class SimulatorApiController {
                 simulator.stop();
             }
             simulator = Simulator.init(file.getInputStream(), file.getOriginalFilename());
+            stateHandler.cleanState();
             setSimulatorCallbacks();
             return new ResponseEntity<>(new SimulatorStateResponse(simulator.getState(), simulator.getNumberOfEvents(), simulator.getFileName(), simulator.getPlaybackSpeedRatio()), HttpStatus.OK);
         } catch (IOException e) {
@@ -92,6 +100,7 @@ class SimulatorApiController {
                 simulator.stop();
             }
             simulator = Simulator.init(initRequest.fileName());
+            stateHandler.cleanState();
             setSimulatorCallbacks();
             return new ResponseEntity<>(new SimulatorStateResponse(simulator.getState(), simulator.getNumberOfEvents(), simulator.getFileName(), simulator.getPlaybackSpeedRatio()), HttpStatus.OK);
         } catch (IOException e) {
@@ -126,6 +135,7 @@ class SimulatorApiController {
             return notInitializedError();
 
         simulator.stop();
+        stateHandler.cleanState();
         return new ResponseEntity<>(new UpdateStateResponse(simulator.getState()), HttpStatus.ACCEPTED);
     }
 
@@ -149,7 +159,7 @@ class SimulatorApiController {
         synchronized (initStateMutex) {
             SseEmitter subscribe = publisher.subscribe();
             if (simulator != null && stateHandler.getState() != null) { // send one time init state
-                SseEmitter.SseEventBuilder event = SseEmitter.event().data(stateHandler.getState()).name("init");
+                SseEmitter.SseEventBuilder event = SseEmitter.event().data(new SimulatorEvent(simulator.getCurrentPosition(),stateHandler.getState())).name("init");
                 subscribe.send(event);
             }
             return subscribe;
@@ -161,6 +171,19 @@ class SimulatorApiController {
         return (simulator == null)
             ? new ResponseEntity<>(new SimulatorStateResponse(SimulatorState.NOT_INITIALIZED, null, null, null), HttpStatus.OK)
             : new ResponseEntity<>(new SimulatorStateResponse(simulator.getState(), simulator.getNumberOfEvents(), simulator.getFileName(), simulator.getPlaybackSpeedRatio()), HttpStatus.OK);
+    }
+
+    @PostMapping(path = "rewind")
+    public ResponseEntity<?> rewind(@RequestBody RewindRequest rewindRequest) {
+        logger.debug("Got rewind request with position: {}", rewindRequest.position);
+        if (simulator == null)
+            return notInitializedError();
+        try {
+            simulator.rewind(rewindRequest.position);
+        } catch (IllegalArgumentException ex) {
+            return new ResponseEntity<>(new HttpErrorResponse(ex.getMessage()), HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>(new UpdateStateResponse(simulator.getState()), HttpStatus.ACCEPTED);
     }
 
     @PreDestroy

@@ -56,7 +56,6 @@ export class JwtToken extends SimpleToken {
     try {
       const [_header] = accessToken.split('.');
       const header = JSON.parse(base64.decode(_header));
-
       return header.typ.toUpperCase().includes('JWT');
     } catch (e) {
       return false;

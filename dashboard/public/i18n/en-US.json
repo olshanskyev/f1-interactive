@@ -2,7 +2,7 @@
   "menu": {
     "dashboard": "Dashboard",
     "admin": "Admin",
-    "admin.simulator": "Simulator"
+    "admin.users": "Users"
   },
   "validation": {
     "required": "This field is required",
@@ -46,7 +46,8 @@
   "login_title": "Welcome Back",
   "have_no_account": "Don't have an account",
   "create_one_account": "Click here to create one",
-  "please_enter": "Please enter",
+  "please_enter_username": "Please enter user name",
+  "please_enter_password": "Please enter password",
   "username": "Username",
   "password": "Password",
   "confirm_password": "Confirm Password",

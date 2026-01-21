@@ -10,5 +10,15 @@ $utilities: (
     property: height,
     class: h,
     values: variables.$sizes
+  ),
+  'min-width': (
+    property: min-width,
+    class: min-w,
+    values: variables.$sizes
+  ),
+  'min-height': (
+    property: min-height,
+    class: min-h,
+    values: variables.$sizes
   )
 );

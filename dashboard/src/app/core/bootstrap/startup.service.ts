@@ -44,11 +44,12 @@ export class StartupService {
   }
 
   private setPermissions(user: User) {
-
     this.rolesService.flushRolesAndPermissions();
-    if (user.role && user.role in this.allPermissions) {
-      this.rolesService.addRoleWithPermissions(user.role, this.allPermissions[user.role]);
-    }
+    user.roles?.forEach(role => {
+      if (role in this.allPermissions) {
+        this.rolesService.addRoleWithPermissions(role, this.allPermissions[role]);
+      }
+    });
 
   }
 }

@@ -20,4 +20,5 @@ public class StateHandler {
         }
         this.state = updateEvent.merge(state);
     }
+    public void cleanState() {this.state = null;}
 }

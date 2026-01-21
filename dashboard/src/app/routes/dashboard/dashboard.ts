@@ -1,5 +1,9 @@
-import { Component } from '@angular/core';
-import { PageHeader } from '@shared';
+import { Component, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { LiveService } from '@core';
+import { BestLap } from '@core/types/custom';
+import { Leaderboard, SimPlayer } from '@shared';
+import { NgxRolesService } from 'ngx-permissions';
 
 
 @Component({
@@ -7,27 +11,43 @@ import { PageHeader } from '@shared';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
   imports: [
-    PageHeader,
+    Leaderboard,
+    SimPlayer
   ],
 })
 export class Dashboard {
 
-  constructor() {
-    
-    /*const evtSource = new EventSource('http://localhost:8081/f1interactive/simulator/live');
+  private readonly liveService = inject(LiveService);
+  private readonly roleService = inject(NgxRolesService);
+  roles = toSignal(this.roleService.roles$);
+  isAdmin = computed(() => {
+    return (this.roles()?.['ADMIN'] != null);
+  })
+  driverList = this.liveService.getDriverListSignal();
+  timingData = this.liveService.getTimingDataSignal();
+  timingAppData = this.liveService.getTimingAppDataSignal();
+  timingStats = this.liveService.getTimingStatsSignal();
+  newEvent = toSignal(this.liveService.live(undefined, undefined));
 
-    const parseMyEvent = (evt: Event) => {
-      const messageEvent = (evt as MessageEvent);  // <== This line is Important!!
-      console.log(messageEvent.data);
+  bestLap = computed<BestLap | undefined> (() => {
+    const timingStats = this.timingStats();
+    if (timingStats) {
+      const sorted = Object.entries(timingStats.Lines).sort(([,a], [,b]) => a.PersonalBestLapTime.Position - b.PersonalBestLapTime.Position)
+      return {
+        driverId: sorted[0][0],
+        value: sorted[0][1].PersonalBestLapTime.Value
+      }
+    } else {
+      return undefined;
     }
-
-    evtSource.addEventListener('init', parseMyEvent);
-    evtSource.addEventListener('update', parseMyEvent);
-    evtSource.addEventListener('heartbeat', parseMyEvent);
-  */
+  }, {equal: this.bestLapIsEqual}
+  );
 
 
-    
+  private bestLapIsEqual(c : BestLap | undefined, u: BestLap | undefined) {
+    return c?.driverId === u?.driverId && c?.value === u?.value;
   }
+
+
 
 }

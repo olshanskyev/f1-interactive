@@ -1,9 +1,10 @@
-.simulator {
-    max-width: 300px;
-}
-
 .simulator-semaphore {
     border-radius: 12px;
     width: 12px;
     height: 12px;
+}
+
+.progress {
+    flex: 1 1 0;
+    min-width: 250px
 }

@@ -7,7 +7,6 @@ import { Login } from './routes/sessions/login/login';
 import { Error403 } from './routes/sessions/error-403';
 import { Error404 } from './routes/sessions/error-404';
 import { Error500 } from './routes/sessions/error-500';
-import { Simulator } from './routes/admin/simulator/simulator';
 
 export const routes: Routes = [
   {
@@ -35,6 +34,6 @@ export const routes: Routes = [
       { path: 'login', component: Login },
     ],
   },
-  
+
   { path: '**', redirectTo: 'dashboard' },
 ];

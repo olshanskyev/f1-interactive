@@ -1,0 +1,101 @@
+<div class="d-flex flex-col gap-4">
+  <div class="d-grid align-items-center gap-8 default-grid-template-columns p-y-4">
+    <div class="d-flex justify-content-between p-l-4">
+      <div class="p-x-4 r-8 w-full">
+        <div class="m-0 f-s-14 d-flex justify-content-between">
+          <div>
+            <span>{{ driver()?.Tla}}</span>
+            <span class="font-formula f-s-12 p-l-4"
+              [style]="'color: #' + driver()?.TeamColour"
+            >
+              {{driver()?.RacingNumber}}
+            </span>
+          </div>
+          <div>
+            @if (calculateGridPosDiff(); as positionChange) {
+            <span class="f-s-12" [class]="(positionChange > 0? 'text-f1-green': 'text-f1-red')">
+              {{(positionChange > 0)?'▲': '▼'}} {{Math.abs(positionChange)}}
+            </span>
+            }
+          </div>
+        </div>
+        <p class="m-0 f-s-12 line-height-1" [style]="'color: #' + driver()?.TeamColour">{{ driver()?.TeamName }} </p>
+      </div>
+    </div>
+    <div class="d-flex align-items-center r-8 justify-content-center"
+      [class]="(timingData()?.InPit || timingData()?.PitOut)?'text-color-pit':'text-color-inactive'"
+    >
+      <div>
+        <p class="m-0 text-center f-s-14">PIT</p>
+        @if (timingData()?.PitOut) {
+          <p class="m-0 line-height-1 f-s-12 text-color-second text-center">out</p>
+        }
+      </div>
+    </div>
+    <div class="d-flex align-items-center gap-8">
+      @if (getLastStint(); as stint) {
+        <img [alt]="stint.Compound" loading="lazy" width="32" height="32" decoding="async" data-nimg="1" [src]="'images/tires/' + stint.Compound + '.svg'" style="color: transparent;">
+        <div>
+          <p class="m-0 f-s-14">
+            L {{stint.TotalLaps}}
+          </p>
+          <p class="m-0 line-height-1 f-s-12 text-color-second">
+            PIT {{getNumberOfPits()}}
+          </p>
+        </div>
+      }
+    </div>
+    <div class="place-self-start">
+
+          <p class="m-0 f-s-14"
+          [class]="getPositionAheadColorClass()">
+          @if(timingData()?.IntervalToPositionAhead?.Value; as posAhead){
+            {{posAhead}}
+          } @else {
+            -
+          }
+          </p>
+          @if (timingData()?.Line != 1) {
+            <p class="m-0 f-s-12 text-color-second line-height-1">
+              {{timingData()?.GapToLeader}}
+            </p>
+          }
+
+    </div>
+    <div class="place-self-start">
+          <p class="m-0 f-s-14"
+            [class]="(timingData()?.LastLapTime?.OverallFastest)?'text-f1-purple':
+                  (timingData()?.LastLapTime?.PersonalFastest)?'text-f1-green':''">
+            {{timingData()?.LastLapTime?.Value || '-'}}
+          </p>
+          <p class="m-0 f-s-12 line-height-1"
+            [class]="hasBestTime()?'text-f1-purple':'text-f1-green'"
+          >
+            {{timingData()?.BestLapTime?.Value}}
+          </p>
+    </div>
+    <div class="d-flex gap-8">
+      @for(sector of timingData()?.Sectors | keyvalue; track sector.key) {
+        <div class="d-flex flex-col">
+          <div class="d-flex flex-row gap-2 p-b-4">
+            @for(segment of sector.value.Segments | keyvalue; track segment.key) {
+              <div [class]="getSegmentClass(segment.value.Status)" style="width: 10px; height: 5px; border-radius: 2px;"></div>
+            }
+          </div>
+          @if (sector.value.Value) {
+            <div class="d-flex line-height-1 f-s-12" [class]="(sector.value.OverallFastest)?'text-f1-purple':
+                  (sector.value.PersonalFastest)?'text-f1-green':''">
+              {{sector.value.Value}}
+            </div>
+          } @else {
+            <div class="d-flex line-height-1 f-s-12 text-color-inactive">
+              {{sector.value.PreviousValue || '-'}}
+            </div>
+          }
+        </div>
+      }
+
+    </div>
+
+  </div>
+</div>

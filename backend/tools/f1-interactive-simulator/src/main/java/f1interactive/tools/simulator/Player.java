@@ -5,4 +5,5 @@ public interface Player {
     void stop();
     void pause();
     void setPlaybackSpeedRatio(float ratio);
+    void rewind(int position);
 }

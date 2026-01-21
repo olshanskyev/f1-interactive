@@ -1,2 +1,10 @@
-<page-header />
-Dashboard
+@if(isAdmin()) {
+    <sim-player class="font-formula"></sim-player>
+}
+<leaderboard [driverList]="driverList()"
+    [timingData]="timingData()"
+    [timingAppData]="timingAppData()"
+    [bestLap]="bestLap()"
+></leaderboard>
+
+

@@ -22,7 +22,9 @@ import {
   BASE_URL,
   BASE_URL_SIMULATOR,
   interceptors,
+  LiveService,
   SettingsService,
+  SimulatorService,
   StartupService,
   TranslateLangService,
 } from '@core';
@@ -30,7 +32,6 @@ import { environment } from '@env/environment';
 import { routes } from './app.routes';
 
 import { LoginService } from '@core/authentication/login.service';
-import { FakeLoginService } from './fake-login.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -56,9 +57,12 @@ export const appConfig: ApplicationConfig = {
     // ==================================================
     // 👇 ❌ Remove it in the realworld application
     //
-    { provide: LoginService, useClass: FakeLoginService },
+    { provide: LoginService, useClass: LoginService },
     //
     // ==================================================
+
+    //ToDo make conditional
+    { provide: LiveService, useClass: SimulatorService },
     {
       provide: MAT_DATE_LOCALE,
       useFactory: () => inject(SettingsService).getLocale(),

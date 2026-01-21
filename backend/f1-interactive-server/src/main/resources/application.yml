@@ -1,7 +1,7 @@
 server:
   port: 8080
   servlet:
-    contextPath: /f1interactive/api
+    contextPath: /f1interactive
   ssl:
     enabled: false
 ---
@@ -9,8 +9,8 @@ spring:
   config:
     activate:
       on-profile: local,default
-jwt:
-  publicKeyFile: ${user.dir}\src\main\resources\keys\public.pem
+  jackson:
+    default-property-inclusion: non_null
 datasource:
   url: jdbc:postgresql://localhost:5432/F1INTERACTIVE
   username: f1interactive
@@ -24,3 +24,6 @@ datasource:
     show_sql: true
     format_sql: true
     dialect: org.hibernate.dialect.PostgreSQLDialect
+rest:
+  cors:
+    allowedOriginPatterns: "http://localhost:4200"

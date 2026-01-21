@@ -13,10 +13,10 @@
       "icon": "admin_panel_settings",
       "children": [
         {
-          "route": "simulator",
-          "name": "simulator",
+          "route": "users",
+          "name": "users",
           "type": "link",
-          "icon": "play_arrow"
+          "icon": "group"
         }
       ]
     }

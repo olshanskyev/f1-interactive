@@ -8,44 +8,48 @@ import { SimulatorService, SimulatorState, SimulatorStateResponse } from '@core'
 import { TranslateModule } from '@ngx-translate/core';
 import { DebounceClickDirective } from '@shared/directives';
 import { MatProgressBarModule } from '@angular/material/progress-bar'
+import { MatSliderModule } from '@angular/material/slider'
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'sim-player',
   templateUrl: './sim-player.html',
   styleUrl: './sim-player.scss',
   imports: [
-    MatButtonModule, 
-    MatIconModule, 
-    MatCardModule, 
-    TranslateModule, 
-    DecimalPipe, 
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    TranslateModule,
+    DecimalPipe,
     DebounceClickDirective,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatSliderModule,
+    MatProgressSpinnerModule
   ],
 })
 export class SimPlayer {
   private readonly simService = inject(SimulatorService);
+
   simulatorState = signal<SimulatorStateResponse>({state: 'NOT_INITIALIZED'});
   eventNumber = signal<number | undefined>(undefined);
-  semaphoreColor = computed(() => 
-    (this.simulatorState().state === 'INITIALIZED' || this.simulatorState().state === 'STOPPED')?'bg-red-50':
-    (this.simulatorState().state === 'PAUSED')? 'bg-yellow-90':
-    (this.simulatorState().state === 'STARTED')? 'bg-green-60':''
+  semaphoreColor = computed(() =>
+    (this.simulatorState().state === 'INITIALIZED' || this.simulatorState().state === 'STOPPED')?'bg-f1-red':
+    (this.simulatorState().state === 'PAUSED')? 'bg-f1-yellow':
+    (this.simulatorState().state === 'STARTED')? 'bg-f1-green':''
   );
   notInitialized = computed(() => this.simulatorState().state === 'NOT_INITIALIZED');
   started = computed(() => this.simulatorState().state === 'STARTED');
   paused = computed(() => this.simulatorState().state === 'PAUSED');
-  progress = computed(() => ((this.eventNumber() != undefined) && this.simulatorState().numberOfEvents)
-    ? ((this.eventNumber()! + 1) / this.simulatorState().numberOfEvents!) * 100
+  progress = computed(() => (this.eventNumber() != undefined)
+    ? this.eventNumber()! + 1
     : 0);
 
-  newEvent = toSignal(this.simService.simulatorLive(
-      () => this.eventNumber.set(0),
-      undefined,
+  isRewinding = signal(false);
+  newEvent = toSignal(this.simService.simulatorControlStream(
       () => this.onEndOfEvents(),
       this.eventNumber
   ));
-  
+
   onEndOfEvents() {
     this.simService.state().subscribe(res => this.simulatorState.set(res));
   }
@@ -110,6 +114,20 @@ export class SimPlayer {
   callUpdateRatio() {
     if (this.simulatorState().playbackSpeedRatio)
       this.simService.setRatio({"playbackSpeedRatio": this.simulatorState().playbackSpeedRatio!}).subscribe(res => this.updateSpeedRatio(res.playbackSpeedRatio));
+  }
+
+  onRewind(position: number) {
+    if (position != this.simulatorState().numberOfEvents) {
+      this.isRewinding.set(true);
+      this.simService.rewind({ position: position }).subscribe({
+        next: (res) => this.updateState(res.state),
+        error: () => this.isRewinding.set(false),
+        complete: () => this.isRewinding.set(false),
+      });
+    } else { // click on the last
+      this.onStop();
+    }
+
   }
 
 }

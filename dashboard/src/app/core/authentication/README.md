@@ -8,7 +8,6 @@
    - `/auth/refresh` Refresh
    - `/auth/logout` Logout
    - `/user` Get user information
-   - `/user/menu` Get user menu
 
 3. If you have modified the login url (defaults to `auth/login`), you should correct it in the following files.
 

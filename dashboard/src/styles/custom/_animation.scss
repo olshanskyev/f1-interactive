@@ -1,0 +1,12 @@
+// next two because all control elements are unresponsive during transition
+::view-transition {
+  pointer-events: none !important;
+}
+
+:root {
+  view-transition-name: none;
+}
+
+::view-transition-group(.drivers-group) {
+  animation-duration: 1s !important;
+}

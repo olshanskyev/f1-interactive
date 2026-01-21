@@ -1,6 +1,7 @@
 @use 'sass:meta';
 @use '@angular/material' as mat;
 
+
 $mat-colors: (
   red: mat.$red-palette,
   green: mat.$green-palette,
@@ -18,6 +19,11 @@ $mat-colors: (
   black: black,
   light: rgba(white, .87),
   dark: rgba(black, .87),
+  f1-purple: #ad46ff,
+  f1-green: #00bc7d,
+  f1-yellow: #fbcc1c,
+  f1-red: #fb2c36,
+  f1-blue: #2563eb
 );
 
 @mixin generate-colors($prefix, $property) {

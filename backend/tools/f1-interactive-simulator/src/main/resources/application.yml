@@ -12,6 +12,8 @@ spring:
   servlet:
     multipart:
       max-file-size: 10MB
+  jackson:
+    default-property-inclusion: non_null
 f1interactive:
   heartbeatIntervalMillis: 15000
   multithreading:

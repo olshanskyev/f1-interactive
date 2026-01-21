@@ -1,55 +1,63 @@
-<mat-card class="simulator">
-  <mat-card-header class="align-items-center justify-content-between">
-    <span>{{'simulator.player' | translate}}</span>
-    <div class="simulator-semaphore" [class]="semaphoreColor()"></div>
-  </mat-card-header>
-  <mat-card-content class="d-flex justify-content-center align-items-center">
-    <button matIconButton [disabled]="notInitialized()"
-      (click)="onStartPause()"
-    >
-      @if (started()) {
-        <mat-icon>pause</mat-icon>
-      } @else {
-        <mat-icon>play_arrow</mat-icon>
-      }
-        
-    </button>
-    <button matIconButton (click)="onStop()" [disabled]="!(started() || paused())">
-      <mat-icon>stop</mat-icon>
-    </button>
-    <button matIconButton (click)="adjustRatioUp()" (debounceClick)="callUpdateRatio()" [disabled]="notInitialized()">
-      <mat-icon>keyboard_arrow_up</mat-icon>
-    </button>
-    @if (this.simulatorState().playbackSpeedRatio ) {
-      <label>{{this.simulatorState().playbackSpeedRatio | number:'1.1-1'}}x</label>
-    }
-    <button matIconButton (click)="adjustRatioDown()" (debounceClick)="callUpdateRatio()" [disabled]="notInitialized()">
-      <mat-icon>keyboard_arrow_down</mat-icon>
-    </button>
-    <input hidden accept=".txt" (change)="onFileSelected($event.target.files)" #fileInput type="file" id="file">
-    <button matIconButton (click)="fileInput.click()">
-      <mat-icon>file_upload</mat-icon>
-    </button>
+<mat-card>
+  <mat-card-content class="p-t-8">
+    <div class="d-flex align-items-center flex-wrap">
+      <div id="buttons" class="d-flex align-items-center">
+        <button matIconButton [disabled]="notInitialized()"
+          (click)="onStartPause()"
+        >
+          @if (started()) {
+            <mat-icon>pause</mat-icon>
+          } @else {
+            <mat-icon>play_arrow</mat-icon>
+          }
 
-  </mat-card-content>
-  <mat-card-footer class="p-b-8 p-t-8 d-flex justify-content-center flex-wrap">
-    <div class="w-full m-l-8 m-r-8">
-      <mat-progress-bar mode="determinate" [value]="(started() || paused())?progress():0"></mat-progress-bar>
-      {{eventNumber()}}
+        </button>
+        <button matIconButton (click)="onStop()" [disabled]="!(started() || paused())">
+          <mat-icon>stop</mat-icon>
+        </button>
+        <button matIconButton (click)="adjustRatioUp()" (debounceClick)="callUpdateRatio()" [disabled]="notInitialized()">
+          <mat-icon>keyboard_arrow_up</mat-icon>
+        </button>
+        @if (this.simulatorState().playbackSpeedRatio ) {
+          <div style="width:50px" class="text-center">
+            <label>{{this.simulatorState().playbackSpeedRatio | number:'1.1-1'}}x</label>
+          </div>
+        }
+        <button matIconButton (click)="adjustRatioDown()" (debounceClick)="callUpdateRatio()" [disabled]="notInitialized()">
+          <mat-icon>keyboard_arrow_down</mat-icon>
+        </button>
+        <input hidden accept=".txt" (change)="onFileSelected($event.target.files)" #fileInput type="file" id="file">
+        <button matIconButton (click)="fileInput.click()">
+          <mat-icon>file_upload</mat-icon>
+        </button>
+      </div>
+      <div id="progress" class="p-l-8 progress">
+        <div class="d-flex justify-content-center align-items-center">
+          @if (isRewinding()) {
+              <mat-spinner class="absolute" [diameter]="32"></mat-spinner>
+          }
+          <mat-slider [disabled]="isRewinding()" min="0" [max]="simulatorState().numberOfEvents" class="w-full">
+            <input matSliderThumb [value]="(started() || paused())?progress():0" (dragEnd)="onRewind($event.value)">
+          </mat-slider>
+
+        </div>
+      </div>
     </div>
-    <div>
-      <small>
+  </mat-card-content>
+  <mat-card-footer class="p-l-16 p-b-8 p-r-16">
+    <div class="d-flex align-items-center">
+      <small class="p-l-8">
         @if(simulatorState().fileName) {
           {{simulatorState().fileName}}
         } @else {
             {{'simulator.file_not_selected' | translate}}
         }
       </small>
+      <div class="simulator-semaphore m-l-16" [class]="semaphoreColor()"></div>
     </div>
-    
-    
   </mat-card-footer>
 </mat-card>
+
 
 
 

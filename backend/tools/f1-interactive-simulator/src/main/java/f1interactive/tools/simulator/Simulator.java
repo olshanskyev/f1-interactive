@@ -14,13 +14,16 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class Simulator implements Player {
 
     public interface UpdateEventCallback {
-        void callback(int eventNumber, String message);
+        void callback(int eventNumber, String message, boolean isRewinding);
+    }
+
+    public interface InitEventCallback {
+        void callback(String message, boolean isRewinding);
     }
 
     private static final Logger logger = LoggerFactory.getLogger(Simulator.class);
@@ -33,10 +36,10 @@ public class Simulator implements Player {
     private final ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
     private CompletableFuture<Void> nextEventFuture;
     private List<String> lines;
-    private int numberOfEvents;
     private String fileName;
-    private Consumer<String> initEventCallback;
+    private InitEventCallback initEventCallback;
     private UpdateEventCallback updateEventCallback;
+    private Runnable rewindFinished;
     private Runnable endOfEventsCallback;
 
     public static Simulator init(InputStream inputStream, String fileName) throws IOException {
@@ -45,7 +48,6 @@ public class Simulator implements Player {
             BufferedReader br = new BufferedReader(isr)) {
 
             simulator.lines = br.lines().collect(Collectors.toList());
-            simulator.numberOfEvents = simulator.lines.size();
             simulator.fileName = fileName;
             simulator.state = SimulatorState.INITIALIZED;
             logger.info("Simulator initialized");
@@ -57,7 +59,6 @@ public class Simulator implements Player {
         Simulator simulator = new Simulator();
         // read file
         simulator.lines = Files.readAllLines(Paths.get(inputFileName));
-        simulator.numberOfEvents = simulator.lines.size();
         simulator.fileName = inputFileName;
         simulator.state = SimulatorState.INITIALIZED;
         logger.info("Simulator initialized");
@@ -68,8 +69,12 @@ public class Simulator implements Player {
         this.updateEventCallback = callback;
     }
 
-    public void onInitEvent(Consumer<String> callback) {
+    public void onInitEvent(InitEventCallback callback) {
         this.initEventCallback = callback;
+    }
+
+    public void onRewindFinished(Runnable callback) {
+        this.rewindFinished = callback;
     }
 
     public void onEndOfEvents(Runnable callback) {
@@ -80,11 +85,11 @@ public class Simulator implements Player {
      * reads first init event (no delay)
      * @return millis from init event
      */
-    private long readFirstEvent() {
+    private long readFirstEvent(boolean isRewinding) {
         String event = lines.get(it++);
         long currentMillis = TestDataReader.getMillisFromEvent(event);
         if (initEventCallback != null)
-            initEventCallback.accept(event);
+            initEventCallback.callback(event, isRewinding);
         return currentMillis;
     }
 
@@ -97,7 +102,7 @@ public class Simulator implements Player {
             nextEventFuture = CompletableFuture.runAsync(() -> {
                 String event = lines.get(it);
                 if (updateEventCallback != null) {
-                    updateEventCallback.callback(it, event);
+                    updateEventCallback.callback(it, event, false);
                 }
                 it++;
                 if (state == SimulatorState.STARTED)
@@ -113,6 +118,11 @@ public class Simulator implements Player {
         }
     }
 
+    private void resumeReading() {
+        logger.info("Simulator resumed");
+        readNextEvent(0L);
+    }
+
     @Override
     public void start() {
         checkInitialized();
@@ -123,11 +133,10 @@ public class Simulator implements Player {
             // reset iterator
             it = 0;
             logger.info("Simulator started");
-            long millis = readFirstEvent();
+            long millis = readFirstEvent(false);
             readNextEvent(millis);
         } else { // resume reading
-            logger.info("Simulator resumed");
-            readNextEvent(0L);
+            resumeReading();
         }
         state = SimulatorState.STARTED;
     }
@@ -139,6 +148,7 @@ public class Simulator implements Player {
             nextEventFuture.cancel(true);
         logger.info("Simulator stopped");
         state = SimulatorState.STOPPED;
+        it = 0;
     }
 
     @Override
@@ -168,7 +178,7 @@ public class Simulator implements Player {
 
     public int getNumberOfEvents() {
         checkInitialized();
-        return numberOfEvents;
+        return lines.size();
     }
 
     public SimulatorState getState() {
@@ -184,8 +194,47 @@ public class Simulator implements Player {
         return fileName;
     }
 
+    public int getCurrentPosition() {
+        checkInitialized();
+        return it - 1;
+    }
+
 
     private void checkInitialized() {
         assert state != SimulatorState.NOT_INITIALIZED;
+    }
+
+    @Override
+    public void rewind(int position) {
+        checkInitialized();
+        if (position < 0 || position >= lines.size())
+            throw new IllegalArgumentException("Position must be > 0 and < number of events");
+        if (position == it) // nothing to do
+            return;
+        SimulatorState stateBeforeRewind = this.state;
+        logger.info("Rewind to position {}", position);
+
+        pause();
+        if (position < it) { // start from 1 event
+            it = 0;
+        }
+        if (it == 0) {
+            readFirstEvent(true);
+        }
+        if (updateEventCallback != null) {
+            while (it < position) {
+                updateEventCallback.callback(it, lines.get(it), true);
+                it++;
+            }
+        }
+
+        if (rewindFinished != null)
+            rewindFinished.run();
+        if (stateBeforeRewind == SimulatorState.STARTED) {
+            state = SimulatorState.STARTED;
+            resumeReading();
+        }
+        else
+            state = SimulatorState.PAUSED;
     }
 }

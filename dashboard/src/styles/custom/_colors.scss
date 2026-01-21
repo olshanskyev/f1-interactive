@@ -1,0 +1,27 @@
+:root {
+    --pit-stop-color: #9da3ff
+}
+
+.text-color-inactive {
+  color: var(--mat-sys-outline-variant) !important;
+}
+
+.border-color-inactive {
+  border-color: var(--mat-sys-outline-variant) !important;
+}
+
+.bg-color-inactive {
+  background-color: var(--mat-sys-outline-variant) !important;
+}
+
+.text-color-second {
+  color: var(--mat-sys-outline) !important;
+}
+
+.text-color-pit {
+  color: var(--pit-stop-color) !important;
+}
+
+.border-color-pit {
+  border-color: var(--pit-stop-color) !important;
+}
