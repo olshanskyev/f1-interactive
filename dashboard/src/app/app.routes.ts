@@ -2,11 +2,12 @@ import { Routes } from '@angular/router';
 import { adminGuard } from '@core';
 import { AdminLayout } from '@theme/admin-layout/admin-layout';
 import { AuthLayout } from '@theme/auth-layout/auth-layout';
-import { Dashboard } from './routes/dashboard/dashboard';
+import { DashboardComponent } from './routes/dashboard/dashboard';
 import { Login } from './routes/sessions/login/login';
 import { Error403 } from './routes/sessions/error-403';
 import { Error404 } from './routes/sessions/error-404';
 import { Error500 } from './routes/sessions/error-500';
+import { BuildLayoutComponent } from './routes/layouts/build-layout';
 
 export const routes: Routes = [
   {
@@ -16,7 +17,8 @@ export const routes: Routes = [
     //canActivateChild: [adminGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: Dashboard },
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'layouts', component:  BuildLayoutComponent},
       { path: 'admin',
         canActivate: [adminGuard],
         canActivateChild: [adminGuard],

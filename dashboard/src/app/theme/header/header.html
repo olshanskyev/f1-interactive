@@ -9,6 +9,10 @@
     <app-branding />
   }
 
+  @if (router.url.includes('dashboard')) {
+    <app-layouts/>
+  }
+
   <span class="flex-fill"></span>
 
   <app-translate />
@@ -24,6 +28,6 @@
       <mat-icon>login</mat-icon>
     </button>
   }
-  
+
 
 </mat-toolbar>

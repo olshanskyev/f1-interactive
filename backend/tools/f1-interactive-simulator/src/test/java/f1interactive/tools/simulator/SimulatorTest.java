@@ -11,6 +11,7 @@ import static org.mockito.Mockito.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -34,11 +35,24 @@ public class SimulatorTest {
     }
 
     private static Stream<Arguments> savedSessionsSourceNumberOfEvent() {
-        return Stream.of(
-                Arguments.of("src/test/resources/saved_sessions/2025/2025_abu_dhabi_qualification_data.txt", 11299),
-                Arguments.of("src/test/resources/saved_sessions/2025/2025_abu_dhabi_practice1_data.txt", 18237),
-                Arguments.of("src/test/resources/saved_sessions/2025/2025_abu_dhabi_race_data.txt", 67793)
+        return Stream.of( // - amount of Heartbeat messages that ignored by simulator
+                Arguments.of("src/test/resources/saved_sessions/2025/2025_abu_dhabi_qualification_data.txt", 11299 - 378),
+                Arguments.of("src/test/resources/saved_sessions/2025/2025_abu_dhabi_practice1_data.txt", 18237 - 281),
+                Arguments.of("src/test/resources/saved_sessions/2025/2025_abu_dhabi_race_data.txt", 67793 - 510)
         );
+    }
+
+    @Test
+    public void testSorting() {
+        List<String> dates = new ArrayList<>() {{
+            add("2025-12-07T13:05:24.483Z");
+            add("2025-12-07T13:05:24.383Z");
+            add("2025-12-07T13:05:06.383Z");
+            add("2025-12-07T11:05:06.000Z");
+            add("2025-12-07T13:05:26.383Z");
+        }};
+        List<String> list = dates.stream().sorted().toList();
+        System.out.println(list);
     }
 
     @Test
@@ -67,7 +81,7 @@ public class SimulatorTest {
     public void callBackendTest() throws IOException, InterruptedException {
         String path = "src/test/resources/saved_sessions/2025/partly_data.txt";
         Simulator simulator = Simulator.init(path);
-        List<String> events = Files.readAllLines(Paths.get(path));
+        List<String> events = Files.readAllLines(Paths.get(path)).stream().filter(item -> !item.startsWith("Heartbeat")).toList();
 
         PublishInterface serviceMock = Mockito.mock(PublishInterface.class);
         simulator.onInitEvent(serviceMock::publishInit);
@@ -85,7 +99,7 @@ public class SimulatorTest {
         assertEquals(SimulatorState.STOPPED, simulator.getState());
 
         verify(serviceMock, times(1)).publishInit(anyString(), eq(false));
-        verify(serviceMock, times(12)).publishUpdate(anyInt(), anyString(), eq(false));
+        verify(serviceMock, times(7)).publishUpdate(anyInt(), anyString(), eq(false));
         verify(serviceMock, times(1)).endOfEvents();
 
         // checking calling order
@@ -103,7 +117,7 @@ public class SimulatorTest {
     public void rewindingTest() throws IOException, InterruptedException {
         String path = "src/test/resources/saved_sessions/2025/partly_data.txt";
         Simulator simulator = Simulator.init(path);
-        List<String> events = Files.readAllLines(Paths.get(path));
+        List<String> events = Files.readAllLines(Paths.get(path)).stream().filter(item -> !item.startsWith("Heartbeat")).toList();
 
         PublishInterface serviceMock = Mockito.mock(PublishInterface.class);
         simulator.onInitEvent(serviceMock::publishInit);

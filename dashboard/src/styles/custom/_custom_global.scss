@@ -1,3 +1,5 @@
+@use "../grid/breakpoints";
+
 .mono-font {
     font-family: var(--code-font-family);
 }
@@ -8,4 +10,19 @@
 
 .place-self-start {
   place-self: start;
+}
+
+.dynamic-font-container {
+  container-type: inline-size;
+
+  h1 {
+    font-size: clamp(14px, 10cqi, 100px) !important;
+
+    mat-icon {
+      width: 1em;
+      height: 1em;
+      font-size: 1em;
+      vertical-align: middle;
+    }
+  }
 }

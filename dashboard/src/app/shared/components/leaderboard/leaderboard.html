@@ -1,7 +1,7 @@
 <div class="w-fit flex-col font-formula">
   @for (entry of timingDataMap(); track entry[0]) {
     <div class="d-flex" style="view-transition-class: drivers-group" [style.view-transition-name]="'driver-' + entry[1].RacingNumber">
-       <div style="min-width: 24px;" class="transition-all" class="d-flex flex-wrap align-content-center justify-content-center">
+       <div style="min-width: 24px;" class="d-flex flex-wrap align-content-center justify-content-center">
           @if (isMovingUp(entry[0])) {
             <mat-icon class="text-f1-green">keyboard_double_arrow_up</mat-icon>
           } @else {

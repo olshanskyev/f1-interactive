@@ -2,7 +2,13 @@
   "menu": [
     {
       "route": "dashboard",
-      "name": "dashboard",
+      "name": "live",
+      "type": "link",
+      "icon": "podcasts"
+    },
+    {
+      "route": "layouts",
+      "name": "layouts",
       "type": "link",
       "icon": "dashboard"
     },

@@ -21,11 +21,11 @@ export function tokenInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn)
 
   const handler = () => {
     if (req.url.includes('/auth/logout')) {
-      router.navigateByUrl('/dashboard');
+      router.navigateByUrl('/live');
     }
 
     if (router.url.includes('/auth/login')) {
-      router.navigateByUrl('/dashboard');
+      router.navigateByUrl('/live');
     }
   };
 

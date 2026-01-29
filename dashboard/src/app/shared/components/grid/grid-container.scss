@@ -1,0 +1,34 @@
+.grid-wrapper {
+    position: relative;
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns), var(--cell-size));
+    grid-template-rows: repeat(var(--grid-rows), var(--cell-size));
+    position: absolute;
+    place-content: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(var(--cell-size) * var(--grid-rows));
+}
+
+.grid-container.full-screen {
+    height: 100dvh;
+}
+
+.grid-container.portrait {
+    align-content: start;
+}
+
+.background-grid {
+    z-index: 1;
+}
+
+.overlay-grid {
+    z-index: 2;
+}
+
+.grid-cell {
+    border: 1px solid var(--mat-sys-outline-variant);
+}

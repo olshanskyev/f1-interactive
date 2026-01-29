@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-content class="p-t-8">
-    <div class="d-flex align-items-center flex-wrap">
-      <div id="buttons" class="d-flex align-items-center">
+    <div class="player-container">
+      <div id="buttons" class="d-flex align-items-center justify-content-center">
         <button matIconButton [disabled]="notInitialized()"
           (click)="onStartPause()"
         >
@@ -31,7 +31,7 @@
           <mat-icon>file_upload</mat-icon>
         </button>
       </div>
-      <div id="progress" class="p-l-8 progress">
+      <div id="progress">
         <div class="d-flex justify-content-center align-items-center">
           @if (isRewinding()) {
               <mat-spinner class="absolute" [diameter]="32"></mat-spinner>

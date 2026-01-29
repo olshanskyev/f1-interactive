@@ -42,15 +42,16 @@ public class Simulator implements Player {
     private Runnable rewindFinished;
     private Runnable endOfEventsCallback;
 
+
     public static Simulator init(InputStream inputStream, String fileName) throws IOException {
         Simulator simulator = new Simulator();
         try (InputStreamReader isr = new InputStreamReader(inputStream);
             BufferedReader br = new BufferedReader(isr)) {
-
-            simulator.lines = br.lines().collect(Collectors.toList());
+            // filter - ignore Heartbeat events
+            simulator.lines = br.lines().filter(item -> !item.startsWith("Heartbeat")).collect(Collectors.toList());
             simulator.fileName = fileName;
             simulator.state = SimulatorState.INITIALIZED;
-            logger.info("Simulator initialized");
+            logger.info("Simulator initialized with stream");
         }
 
         return simulator;
@@ -58,7 +59,7 @@ public class Simulator implements Player {
     public static Simulator init(String inputFileName) throws IOException {
         Simulator simulator = new Simulator();
         // read file
-        simulator.lines = Files.readAllLines(Paths.get(inputFileName));
+        simulator.lines = Files.readAllLines(Paths.get(inputFileName)).stream().filter(item -> !item.startsWith("Heartbeat")).toList();
         simulator.fileName = inputFileName;
         simulator.state = SimulatorState.INITIALIZED;
         logger.info("Simulator initialized");
@@ -93,18 +94,29 @@ public class Simulator implements Player {
         return currentMillis;
     }
 
+    long correction = 0L;
+    long liveMillis = 0L;
+    // preMillis == 0L -> resume
     private void readNextEvent(long preMillis) {
         if (lines.size() > it) {
+            if (liveMillis == 0L || preMillis == 0L){
+                liveMillis = System.currentTimeMillis();
+            }
             // read next element to calculate delay
             String nextEvent = lines.get(it);
             long currentMillis = TestDataReader.getMillisFromEvent(nextEvent);
-            long delay = (preMillis == 0L)? 0L: (long)((currentMillis - preMillis) / playbackSpeedRatio);
+            long delay = (preMillis == 0L)? 0L: ((long)((currentMillis - preMillis) / playbackSpeedRatio)) - correction;
+            long expectedNextEventMillis = liveMillis + delay;
+
             nextEventFuture = CompletableFuture.runAsync(() -> {
                 String event = lines.get(it);
                 if (updateEventCallback != null) {
                     updateEventCallback.callback(it, event, false);
                 }
+
                 it++;
+                liveMillis = System.currentTimeMillis();
+                correction = liveMillis - expectedNextEventMillis;
                 if (state == SimulatorState.STARTED)
                     readNextEvent(currentMillis);
             },
@@ -123,11 +135,13 @@ public class Simulator implements Player {
         readNextEvent(0L);
     }
 
+    long startMillis;
     @Override
     public void start() {
         checkInitialized();
         if (state == SimulatorState.STARTED)
             return;
+        liveMillis = 0L;
         if (state == SimulatorState.INITIALIZED || state == SimulatorState.STOPPED) {
             // first reading after initialization or stop
             // reset iterator

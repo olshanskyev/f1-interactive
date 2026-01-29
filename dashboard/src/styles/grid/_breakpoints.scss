@@ -34,3 +34,29 @@
     @content;
   }
 }
+
+@mixin container-gt($name, $breakpoints: variables.$breakpoints) {
+  $min: bp($name, $breakpoints);
+
+  @if $min {
+    @container (min-width: #{$min}) {
+      @content;
+    }
+  }
+  @else {
+    @content;
+  }
+}
+
+@mixin container-lt($name, $breakpoints: variables.$breakpoints) {
+  $max: bp($name, $breakpoints) - 1px;
+
+  @if $max {
+    @container (max-width: #{$max}) {
+      @content;
+    }
+  }
+  @else {
+    @content;
+  }
+}

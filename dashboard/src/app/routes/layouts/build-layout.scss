@@ -1,0 +1,14 @@
+
+.widget {
+    opacity: 0.8;
+}
+
+.widget.draggable {
+    cursor: grab;
+
+}
+
+.widget.draggable:active {
+    cursor: grabbing;
+    opacity: 0.5;
+}

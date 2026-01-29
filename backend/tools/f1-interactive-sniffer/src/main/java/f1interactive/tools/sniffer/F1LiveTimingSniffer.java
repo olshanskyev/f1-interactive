@@ -4,6 +4,7 @@ package f1interactive.tools.sniffer;
 
 import f1interactive.common.websocket.F1LiveTimingProxy;
 import f1interactive.common.websocket.F1SignalRCoreProxy;
+import f1interactive.common.websocket.F1SignalRProxy;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class F1LiveTimingSniffer {
         }
 
         F1LiveTimingProxy client = new F1SignalRCoreProxy();
+        //F1LiveTimingProxy client = new F1SignalRProxy();
 
         try (FileEventsSaver saver = new FileEventsSaver(fileName, false)) {
             client.onInitStateMessage(saver::save);

@@ -1,8 +1,9 @@
 {
   "menu": {
-    "dashboard": "Dashboard",
+    "live": "Live Timing",
     "admin": "Admin",
-    "admin.users": "Users"
+    "admin.users": "Users",
+    "layouts": "Layouts"
   },
   "validation": {
     "required": "This field is required",
@@ -57,5 +58,11 @@
   "register_title": "It only takes a few seconds to create your account",
   "read_and_agree": "I have read and agree to the terms of service",
   "have_an_account": "Already have an account",
-  "restore_defaults": "Restore defaults"
+  "restore_defaults": "Restore defaults",
+  "layout_settings": "Layout Settings",
+  "default_layout": "Default Layout",
+  "create_layout": "Create Layout",
+  "layout_presets": "Layout Presets",
+  "my_layouts": "My Layouts",
+  "nothing_found": "Nothing found"
 }

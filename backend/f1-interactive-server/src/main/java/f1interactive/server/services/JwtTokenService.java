@@ -22,7 +22,7 @@ public class JwtTokenService {
 
     private final SecretKey secretKey = Jwts.SIG.HS256.key().build();;
 
-    // ToDo not implemented. How to invalidate? save token in DB?
+    // ToDo not implemented. How to invalidate? save tokens in DB?
     public void invalidateToken(String token) {
 
     }

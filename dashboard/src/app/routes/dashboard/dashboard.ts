@@ -1,8 +1,10 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { LiveService } from '@core';
+import { LayoutsService, LiveService, WidgetFactory } from '@core';
 import { BestLap } from '@core/types/custom';
-import { Leaderboard, SimPlayer } from '@shared';
+import { DisplayWidget, Layout } from '@core/types/widgets';
+import { GridContainerComponent, Leaderboard, SimPlayer, WidgetContainerDirective } from '@shared';
 import { NgxRolesService } from 'ngx-permissions';
 
 
@@ -12,17 +14,27 @@ import { NgxRolesService } from 'ngx-permissions';
   styleUrl: './dashboard.scss',
   imports: [
     Leaderboard,
-    SimPlayer
+    SimPlayer,
+    GridContainerComponent,
+    CommonModule,
+    WidgetContainerDirective
+
   ],
 })
-export class Dashboard {
+export class DashboardComponent {
 
   private readonly liveService = inject(LiveService);
   private readonly roleService = inject(NgxRolesService);
+  private readonly layoutsService = inject(LayoutsService);
+  private readonly widgetFactory = inject(WidgetFactory);
+  selectedLayout = this.layoutsService.getSelectedLayout()
+  displayWidgets = signal<DisplayWidget[] | undefined>(undefined);
+
   roles = toSignal(this.roleService.roles$);
   isAdmin = computed(() => {
     return (this.roles()?.['ADMIN'] != null);
-  })
+  });
+
   driverList = this.liveService.getDriverListSignal();
   timingData = this.liveService.getTimingDataSignal();
   timingAppData = this.liveService.getTimingAppDataSignal();
@@ -48,6 +60,20 @@ export class Dashboard {
     return c?.driverId === u?.driverId && c?.value === u?.value;
   }
 
+  private loadWidgets(layout: Layout) {
+      const toDisplay: DisplayWidget[] = layout.widgets.map(item => {
+          const widget = this.widgetFactory.getWidgetByType(item.type);
+          return {...item, el: widget!.widgetPreview};
+      });
+      this.displayWidgets.set(toDisplay);
+  }
 
+  constructor() {
+      effect(() => {
+        if (this.selectedLayout()) {
+          this.loadWidgets(this.selectedLayout()!);
+        }
+      })
+  }
 
 }

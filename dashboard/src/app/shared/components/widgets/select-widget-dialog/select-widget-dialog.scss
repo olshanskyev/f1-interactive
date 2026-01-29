@@ -1,0 +1,11 @@
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-flow: row;
+    gap: 0.5rem;
+    padding: 1rem;
+}
+
+.thumb-item {
+    height: 150px;
+}

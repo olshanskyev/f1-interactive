@@ -7,8 +7,10 @@ import screenfull from 'screenfull';
 import { Branding } from '../widgets/branding';
 import { TranslateButton } from '../widgets/translate-button';
 import { UserButton } from '../widgets/user-button';
-import { AuthService } from '@core';
-import { RouterLink } from '@angular/router';
+import { AuthService, FullScreenServcie } from '@core';
+import { Router, RouterLink } from '@angular/router';
+import { LayoutsButton } from '@theme/widgets/layouts-button/layouts-button';
+
 
 @Component({
   selector: 'app-header',
@@ -25,20 +27,22 @@ import { RouterLink } from '@angular/router';
     Branding,
     TranslateButton,
     UserButton,
-    RouterLink
+    RouterLink,
+    LayoutsButton
   ],
 })
 export class Header {
   readonly authService = inject(AuthService);
+  readonly router = inject(Router);
 
   readonly showToggle = input(true);
   readonly showBranding = input(false);
-
   readonly toggleSidenav = output<void>();
 
+  private readonly fullScreenService = inject(FullScreenServcie);
+
   toggleFullscreen() {
-    if (screenfull.isEnabled) {
-      screenfull.toggle();
-    }
+    const element = document.querySelector('.matero-page-content') as HTMLElement;
+    this.fullScreenService.toggleFullScreen(element);
   }
 }

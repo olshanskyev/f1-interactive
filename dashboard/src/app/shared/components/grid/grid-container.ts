@@ -1,0 +1,61 @@
+import { AfterViewInit, Component, ElementRef, inject, input, OnDestroy, signal, ViewChild } from "@angular/core";
+import { FullScreenServcie } from "@core";
+
+
+@Component({
+    selector: 'grid-container',
+    styleUrl:'./grid-container.scss',
+    templateUrl: 'grid-container.html',
+    imports: [
+
+    ],
+    host: {
+        '[style.--grid-columns]': 'gridColumns()',
+        '[style.--grid-rows]': 'gridRows()',
+        '[style.--cell-size.px]': 'gridCellSize()'
+    }
+})
+export class GridContainerComponent implements AfterViewInit, OnDestroy {
+
+    @ViewChild('backgroundGrid') backgroundGrid!: ElementRef;
+
+    readonly gridColumns = input(32);
+    readonly gridRows = input(18);
+    readonly displayGrid = input(false);
+
+    gridCellSize = signal(0);
+    private resizeObserver!: ResizeObserver;
+    private readonly fullScreenService = inject(FullScreenServcie);
+    isFullScreen = this.fullScreenService.isFullScreen();
+    isPortrait = signal<boolean>(false);
+
+    ngAfterViewInit(): void {
+
+        this.resizeObserver = new ResizeObserver(entries => {
+            // 64 - fixed size of header + padding
+            const headerHeight = (this.isFullScreen())? 0: 80;
+
+            const availableWidth = entries[0].contentRect.width;
+            const availableHeight = window.innerHeight - headerHeight;
+
+            //const cellSize = Math.min((window.innerHeight - headerHeight)/ this.gridRows(), entries[0].contentRect.width / this.gridColumns());
+            let cellSize: number;
+            this.isPortrait.set(window.innerHeight > window.innerWidth);
+            if (this.isPortrait()) { //portrait
+                cellSize = availableWidth / this.gridColumns();
+            } else {
+                cellSize = Math.min(
+                    availableWidth / this.gridColumns(),
+                    availableHeight / this.gridRows()
+                );
+            }
+            setTimeout(() => this.gridCellSize.set(cellSize));
+        });
+        this.resizeObserver.observe(this.backgroundGrid.nativeElement);
+    }
+
+    ngOnDestroy(): void {
+        this.resizeObserver.unobserve(this.backgroundGrid.nativeElement);
+    }
+
+}

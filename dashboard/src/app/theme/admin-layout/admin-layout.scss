@@ -142,8 +142,7 @@
   }
 }
 
-.matero-page-content {
-  position: relative;
+.outer-padding {
   padding: var(--gutter);
 
   .matero-header+&,
@@ -151,4 +150,8 @@
   .matero-navbar-top & {
     padding-top: 0;
   }
+}
+
+.matero-page-content {
+  position: relative;
 }

@@ -44,6 +44,7 @@ class AuthController {
             String userName = jwtTokenService.getUsernameFromToken(request.refresh_token());
             final String accessToken = jwtTokenService.generateAccessToken(userName);
             final String refreshToken = jwtTokenService.generateRefreshToken(userName);
+            jwtTokenService.invalidateToken(request.refresh_token());
             return ResponseEntity.ok(new JwtResponse(accessToken, refreshToken,"Bearer"));
         } else {
             throw new Exception("Not Authenticated");

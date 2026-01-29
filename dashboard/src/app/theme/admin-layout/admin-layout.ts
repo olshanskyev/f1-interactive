@@ -10,10 +10,7 @@ import { Subscription, filter } from 'rxjs';
 import { AppSettings, SettingsService } from '@core';
 import { Header } from '../header/header';
 import { Sidebar } from '../sidebar/sidebar';
-
-const MOBILE_MEDIAQUERY = 'screen and (max-width: 599px)';
-const TABLET_MEDIAQUERY = 'screen and (min-width: 600px) and (max-width: 959px)';
-const MONITOR_MEDIAQUERY = 'screen and (min-width: 960px)';
+import { MOBILE_MEDIAQUERY, MONITOR_MEDIAQUERY, TABLET_MEDIAQUERY } from '@theme/media_queries';
 
 @Component({
   selector: 'app-admin-layout',
@@ -129,4 +126,5 @@ export class AdminLayout implements OnDestroy {
     this.settings.setDirection();
     this.settings.setTheme();
   }
+
 }

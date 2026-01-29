@@ -21,10 +21,11 @@
         [showToggle]="!options.sidenavCollapsed"
         (toggleSidenav)="sidenav.toggle()"
         />
-
-      <main class="matero-page-content">
-        <router-outlet />
-      </main>
+      <div class="outer-padding">
+        <main class="matero-page-content">
+          <router-outlet />
+        </main>
+      </div>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
