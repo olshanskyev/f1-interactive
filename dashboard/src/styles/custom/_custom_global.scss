@@ -1,7 +1,8 @@
+@use '@angular/material' as mat;
 @use "../grid/breakpoints";
 
-.mono-font {
-    font-family: var(--code-font-family);
+:root {
+  --small-icons-size: 18px;
 }
 
 .line-height-1 {
@@ -11,6 +12,7 @@
 .place-self-start {
   place-self: start;
 }
+
 
 .dynamic-font-container {
   container-type: inline-size;
@@ -26,3 +28,31 @@
     }
   }
 }
+
+.custom-layouts-container {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 1fr;
+  gap: 4px;
+}
+
+
+.small-button {
+    @include mat.icon-button-density(-5);
+}
+
+.small-icon {
+  width: var(--small-icons-size) !important;
+  height: var(--small-icons-size) !important;
+  font-size: var(--small-icons-size) !important;
+  line-height: var(--small-icons-size) !important;
+}
+
+.widget-preview-container {
+  height: 100%;
+  outline: 2px solid var(--mat-sys-inverse-primary) !important;
+  border-radius: 0.5rem 0.5rem 0 !important;
+  box-shadow: 0 0 5px var(--mat-sys-on-secondary-container);
+}
+
+

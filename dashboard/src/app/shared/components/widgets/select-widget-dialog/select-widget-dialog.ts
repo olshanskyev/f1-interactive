@@ -1,9 +1,9 @@
-import { CommonModule } from "@angular/common";
-import { Component, inject } from "@angular/core";
-import { MatCardModule } from "@angular/material/card";
-import { MatDialogModule, MatDialogRef } from "@angular/material/dialog";
-import { WidgetFactory } from "@core";
-import { Widget, WidgetType } from "@core/types/widgets";
+import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { WidgetFactory } from '@core';
+import { Widget, WidgetType } from '@core/types/widgets';
 
 @Component({
     selector: 'select-widget-dialog',
@@ -18,7 +18,7 @@ import { Widget, WidgetType } from "@core/types/widgets";
 export class SelectWidgetDialog {
     private readonly widgetFactory = inject(WidgetFactory);
     readonly dialogRef = inject(MatDialogRef);
-    widgetsMap: Map<WidgetType, Widget> = new Map();
+    widgetsMap = new Map<WidgetType, Widget>();
 
     constructor() {
         this.widgetsMap = this.widgetFactory.getWidgets();

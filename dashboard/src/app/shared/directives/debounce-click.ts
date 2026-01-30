@@ -1,4 +1,4 @@
-import { Directive, OnDestroy, input, ElementRef, AfterViewInit, output } from '@angular/core';
+import { Directive, OnDestroy, input, ElementRef, AfterViewInit, output, inject } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -11,7 +11,8 @@ export class DebounceClickDirective implements OnDestroy, AfterViewInit {
     debounceTimeMs = input(500); // Customizable debounce time
     private subscription?: Subscription;
   
-    constructor(private elementRef: ElementRef) {}
+    private elementRef = inject(ElementRef); // Use inject() here
+
     ngAfterViewInit(): void {
         const eventStream$ = fromEvent(this.elementRef.nativeElement, 'click').pipe(
             debounceTime(this.debounceTimeMs())

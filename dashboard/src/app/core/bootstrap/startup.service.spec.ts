@@ -2,7 +2,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { TestBed } from '@angular/core/testing';
 import { NgxPermissionsModule, NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
 import { LocalStorageService, MemoryStorageService } from '@shared/services/storage.service';
-import { admin, TokenService } from '@core/authentication';
+import { TokenService, User } from '@core/authentication';
 import { MenuService } from '@core/bootstrap/menu.service';
 import { StartupService } from '@core/bootstrap/startup.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -53,15 +53,22 @@ describe('StartupService', () => {
   afterEach(() => httpMock.verify());
 
   it('should load menu when token changed and token valid', () => {
-    const menu = { menu: [] }
-      
+    const menu = { menu: [] };
+    const admin: User = {
+      id: 1,
+      name: 'EugeneOff',
+      email: 'olshanskyev@gmail.com',
+      avatar: 'images/admin.png',
+      roles: ['ADMIN']
+    };
+
     const permissions = ['*'];
     vi.spyOn(menuService, 'addNamespace');
     vi.spyOn(menuService, 'set');
 
     vi.spyOn(mockRolesService, 'flushRolesAndPermissions');
     vi.spyOn(mockRolesService, 'addRoleWithPermissions');
-    vi.spyOn(mockRolesService, 'getRole').mockReturnValue({name: admin.role!, validationFunction: ['*']});
+    vi.spyOn(mockRolesService, 'getRole').mockReturnValue({name: admin.roles![0], validationFunction: ['*']});
 
     startup.load();
     httpMock.expectOne('data/menu.json'); //not authorized, load default menu
@@ -87,13 +94,13 @@ describe('StartupService', () => {
     const defaultMenu = {
       menu: [
         {
-          "route": "dashboard",
-          "name": "dashboard",
-          "type": "link",
-          "icon": "dashboard"
+          route: 'dashboard',
+          name: 'dashboard',
+          type: 'link',
+          icon: 'dashboard'
         }
       ]
-    }
+    };
     vi.spyOn(menuService, 'addNamespace');
     vi.spyOn(menuService, 'set');
     vi.spyOn(mockRolesService, 'getRole').mockReturnValue({name: 'ADMIN', validationFunction: ['*']});

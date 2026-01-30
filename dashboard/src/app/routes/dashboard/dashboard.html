@@ -1,5 +1,5 @@
 @if(isAdmin()) {
-    <sim-player class="font-formula"></sim-player>
+    <sim-player class="font-formula" />
 }
 
 @if (selectedLayout(); as layout) {
@@ -13,9 +13,9 @@
                         position: item.position,
                         size: item.size
                     }"
-                    [widgetId]="$index+''"
+                    [widgetIndex]="$index"
                 >
-                    <ng-container [ngComponentOutlet]="item.el"></ng-container>
+                    <ng-container [ngComponentOutlet]="item.el" />
                 </div>
             }
         </grid-container>
@@ -25,7 +25,7 @@
         [timingData]="timingData()"
         [timingAppData]="timingAppData()"
         [bestLap]="bestLap()"
-    ></leaderboard>
+    />
 }
 
 

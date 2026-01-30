@@ -12,9 +12,7 @@ export class StartupService {
   private readonly menuService = inject(MenuService);
   private readonly rolesService = inject(NgxRolesService);
 
-  private readonly allPermissions: {
-        [name: string]: string[];
-  } = {
+  private readonly allPermissions: Record<string, string[]> = {
     ADMIN: ['*'],
     USER: []
   };

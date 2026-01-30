@@ -1,14 +1,15 @@
 .grid-wrapper {
     position: relative;
 }
+
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(var(--grid-columns), var(--cell-size));
-    grid-template-rows: repeat(var(--grid-rows), var(--cell-size));
     position: absolute;
-    place-content: center;
     top: 0;
     left: 0;
+    display: grid;
+    grid-template-rows: repeat(var(--grid-rows), var(--cell-size));
+    grid-template-columns: repeat(var(--grid-columns), var(--cell-size));
+    place-content: center;
     width: 100%;
     height: calc(var(--cell-size) * var(--grid-rows));
 }

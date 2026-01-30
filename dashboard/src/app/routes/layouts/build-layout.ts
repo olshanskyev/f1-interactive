@@ -1,11 +1,12 @@
-import { CommonModule } from "@angular/common";
-import { Component, inject, signal, Type } from "@angular/core";
-import { WidgetFactory,  } from "@core/services/widget-factory";
-import { GridContainerComponent, SelectWidgetDialog, WidgetContainerDirective } from "@shared";
+import { CommonModule } from '@angular/common';
+import { Component, inject, signal } from '@angular/core';
+import { WidgetFactory,  } from '@core/services/widget-factory';
+import { GridContainerComponent, SelectWidgetDialog, WidgetContainerDirective, WidgetResizeHandleDirective } from '@shared';
 import { MatDialog } from '@angular/material/dialog';
-import { CdkDrag } from '@angular/cdk/drag-drop'
-import { DisplayWidget, Layout, LayoutGrids } from "@core/types/widgets";
-import { LayoutsService } from "@core";
+import { CdkDrag } from '@angular/cdk/drag-drop';
+import { DisplayWidget, Layout, LayoutGrids, WidgetContainer } from '@core/types/widgets';
+import { LayoutsService } from '@core';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
     selector: 'app-build-layout',
@@ -15,7 +16,9 @@ import { LayoutsService } from "@core";
         CommonModule,
         GridContainerComponent,
         WidgetContainerDirective,
-        CdkDrag
+        CdkDrag,
+        WidgetResizeHandleDirective,
+        MatIconModule
     ]
 })
 export class BuildLayoutComponent {
@@ -45,12 +48,21 @@ export class BuildLayoutComponent {
     }
 
     constructor() {
-        const preSelectedLayout = this.layoutsService.getSelectedLayout()();
+        /*const preSelectedLayout = this.layoutsService.getSelectedLayout()();
         if (preSelectedLayout) {
             this.selectedLayout.set(preSelectedLayout);
             this.loadWidgets(preSelectedLayout);
-        }
+        }*/
+       const preSelectedLayout = this.layoutsService.getCustomLayouts()[0];
+       this.selectedLayout.set(preSelectedLayout);
+       this.loadWidgets(preSelectedLayout);
+    }
 
+    onUpdateWidgetView(event: {widgetIndex: number, container: WidgetContainer}) {
+        this.selectedLayout().widgets[event.widgetIndex].position = event.container.position;
+        this.selectedLayout().widgets[event.widgetIndex].size = event.container.size;
+        this.loadWidgets(this.selectedLayout());
 
     }
+
 }

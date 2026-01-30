@@ -46,7 +46,7 @@ describe('authGuard function unit test', () => {
     router = TestBed.inject(Router);
     authService = TestBed.inject(AuthService);
     tokenService = TestBed.inject(TokenService);
-    rolesService = TestBed.inject(NgxRolesService)
+    rolesService = TestBed.inject(NgxRolesService);
   });
 
   it('should be created', () => {

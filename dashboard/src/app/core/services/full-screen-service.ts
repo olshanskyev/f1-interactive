@@ -1,5 +1,5 @@
-import { Injectable, signal } from "@angular/core";
-import screenfull from "screenfull";
+import { Injectable, signal } from '@angular/core';
+import screenfull from 'screenfull';
 
 @Injectable({
     providedIn: 'root'

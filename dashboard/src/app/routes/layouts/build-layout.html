@@ -8,11 +8,17 @@
                     position: item.position,
                     size: item.size
                 }"
-                [widgetId]="$index+''"
+                [widgetIndex]="$index"
                 cdkDrag
                 [cdkDragDisabled]="!item.draggable"
+                (widgetViewChanged)="onUpdateWidgetView($event)"
             >
-                <ng-container [ngComponentOutlet]="item.el"></ng-container>
+                @if (item.resizable) {
+                    <div widgetResizeHandle class="resize-handle">
+                        <mat-icon class="small-icon">south_east</mat-icon>
+                    </div>
+                }
+                <ng-container [ngComponentOutlet]="item.el" />
             </div>
         }
     </grid-container>

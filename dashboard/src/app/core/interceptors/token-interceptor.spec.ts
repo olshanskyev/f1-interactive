@@ -93,23 +93,23 @@ describe('TokenInterceptor', () => {
     expect(tokenService.clear).toHaveBeenCalled();
   });
 
-  it('should navigate /auth/login when api url is /auth/logout and token is valid', () => {
+  it('should navigate / when api url is /auth/logout and token is valid', () => {
     init('', 'token');
     const navigateByUrl = vi.spyOn(router, 'navigateByUrl');
     navigateByUrl.mockReturnValue(Promise.resolve(true));
 
     mockRequest('/auth/logout');
 
-    expect(navigateByUrl).toHaveBeenCalledWith('/auth/login');
+    expect(navigateByUrl).toHaveBeenCalledWith('/');
   });
 
-  it('should navigate /auth/login when api url is /auth/logout and token is invalid', () => {
+  it('should navigate / when api url is /auth/logout and token is invalid', () => {
     init('', '');
     const navigateByUrl = vi.spyOn(router, 'navigateByUrl');
     navigateByUrl.mockReturnValue(Promise.resolve(true));
 
     mockRequest('/auth/logout');
 
-    expect(navigateByUrl).toHaveBeenCalledWith('/auth/login');
+    expect(navigateByUrl).toHaveBeenCalledWith('/');
   });
 });

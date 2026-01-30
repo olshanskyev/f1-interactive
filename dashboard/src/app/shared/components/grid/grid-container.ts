@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ElementRef, inject, input, OnDestroy, signal, ViewChild } from "@angular/core";
-import { FullScreenServcie } from "@core";
+import { AfterViewInit, Component, ElementRef, inject, input, OnDestroy, signal, ViewChild } from '@angular/core';
+import { FullScreenServcie } from '@core';
 
 
 @Component({

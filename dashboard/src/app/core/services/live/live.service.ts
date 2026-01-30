@@ -1,8 +1,8 @@
-import { HttpClient } from "@angular/common/http";
-import { inject, Injectable } from "@angular/core";
-import { tap } from "rxjs";
-import { SseClient } from "ngx-sse-client"
-import { AvailableSignalsType, StateHandler } from "./state/state-handler";
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { tap } from 'rxjs';
+import { SseClient } from 'ngx-sse-client';
+import { AvailableSignalsType, StateHandler } from './state/state-handler';
 
 export interface UpdateEventRecord {
   className: string;
@@ -48,19 +48,19 @@ export class LiveService {
   }
 
   getDriverListSignal() {
-    return this.stateHandler.updateSignals["DriverList"].asReadonly();
+    return this.stateHandler.updateSignals['DriverList'].asReadonly();
   }
 
   getTimingDataSignal() {
-    return this.stateHandler.updateSignals["TimingData"].asReadonly();
+    return this.stateHandler.updateSignals['TimingData'].asReadonly();
   }
 
   getTimingAppDataSignal() {
-    return this.stateHandler.updateSignals["TimingAppData"].asReadonly();
+    return this.stateHandler.updateSignals['TimingAppData'].asReadonly();
   }
 
    getTimingStatsSignal() {
-    return this.stateHandler.updateSignals["TimingStats"].asReadonly();
+    return this.stateHandler.updateSignals['TimingStats'].asReadonly();
   }
 
 

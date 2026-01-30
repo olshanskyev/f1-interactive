@@ -1,22 +1,22 @@
-import { Injectable, WritableSignal } from "@angular/core";
-import { tap } from "rxjs";
+import { Injectable, WritableSignal } from '@angular/core';
+import { tap } from 'rxjs';
 
-import { LiveService, UpdateEventRecord } from "./live.service";
+import { LiveService, UpdateEventRecord } from './live.service';
 
 export type SimulatorState = 'NOT_INITIALIZED'|'INITIALIZED'|'STARTED'|'STOPPED'|'PAUSED';
 
-export type SimulatorStateResponse = {
+export interface SimulatorStateResponse {
   state: SimulatorState,
   numberOfEvents?: number,
   fileName?: string,
   playbackSpeedRatio?: number
 }
 
-export type UpdateStateResponse = {
+export interface UpdateStateResponse {
   state: SimulatorState
 }
 
-export type SetRatioResponse = {
+export interface SetRatioResponse {
   playbackSpeedRatio: number,
   state: SimulatorState
 }

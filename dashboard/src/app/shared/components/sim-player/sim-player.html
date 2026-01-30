@@ -20,7 +20,7 @@
         </button>
         @if (this.simulatorState().playbackSpeedRatio ) {
           <div style="width:50px" class="text-center">
-            <label>{{this.simulatorState().playbackSpeedRatio | number:'1.1-1'}}x</label>
+            <span>{{this.simulatorState().playbackSpeedRatio | number:'1.1-1'}}x</span>
           </div>
         }
         <button matIconButton (click)="adjustRatioDown()" (debounceClick)="callUpdateRatio()" [disabled]="notInitialized()">
@@ -34,7 +34,7 @@
       <div id="progress">
         <div class="d-flex justify-content-center align-items-center">
           @if (isRewinding()) {
-              <mat-spinner class="absolute" [diameter]="32"></mat-spinner>
+              <mat-spinner class="absolute" [diameter]="32" />
           }
           <mat-slider [disabled]="isRewinding()" min="0" [max]="simulatorState().numberOfEvents" class="w-full">
             <input matSliderThumb [value]="(started() || paused())?progress():0" (dragEnd)="onRewind($event.value)">

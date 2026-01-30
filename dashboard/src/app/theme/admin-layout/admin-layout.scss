@@ -23,9 +23,7 @@
     height: calc(100% - var(--mat-toolbar-standard-height)) !important;
 
     @include breakpoints.bp-lt(small) {
-      & {
-        height: calc(100% - var(--mat-toolbar-mobile-height)) !important;
-      }
+      height: calc(100% - var(--mat-toolbar-mobile-height)) !important;
     }
   }
 
@@ -89,11 +87,6 @@
       margin-left: auto !important;
     }
   }
-
-  &[dir='rtl'] .matero-content {
-    margin-right: var(--sidenav-collapsed-width) !important;
-    margin-left: auto !important;
-  }
 }
 
 // Layout control
@@ -123,9 +116,7 @@
     top: var(--mat-toolbar-standard-height);
 
     @include breakpoints.bp-lt(small) {
-      & {
-        top: var(--mat-toolbar-mobile-height);
-      }
+      top: var(--mat-toolbar-mobile-height);
     }
   }
 }

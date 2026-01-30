@@ -32,7 +32,11 @@ export class Leaderboard {
           if (!this.transitionStarted) {
             this.transitionStarted = true;
             // sorting driver positions base on TimingData.Lines.Line
-            const newTimingDataMap = new Map(Object.entries(this.timingData()!.Lines).sort((([,a], [,b]) => a.Line - b.Line)));
+            const newTimingDataMap = new Map(
+              Object.entries(this.timingData()!.Lines).sort(
+                (([ , a], [ , b]) => a.Line - b.Line)
+              )
+            );
             if (!areMapKeySequencesEqual(this.timingDataMap(), newTimingDataMap)) { // avoid unneccessary transitions
               this.movements.set(calculateSequenceChanges(this.timingDataMap(), newTimingDataMap));
               if (!document.startViewTransition) { // startViewTransition not supported by browser
@@ -41,7 +45,7 @@ export class Leaderboard {
               } else {
                 document.startViewTransition(() =>  //start animation
                   this.timingDataMap.set(newTimingDataMap)
-                ).finished.then(() => {this.transitionStarted = false; this.movements.set({})});
+                ).finished.then(() => {this.transitionStarted = false; this.movements.set({});});
               }
             } else {
               this.transitionStarted = false;
@@ -49,7 +53,7 @@ export class Leaderboard {
 
             clearInterval(interval);
           }
-        }, 100)
+        }, 100);
       }
 
     });

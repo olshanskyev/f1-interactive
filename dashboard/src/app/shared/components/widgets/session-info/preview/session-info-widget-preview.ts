@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'session-info-widget-preview',
@@ -6,7 +6,7 @@ import { Component } from "@angular/core";
 
     ],
     template: `
-        <div class="h-full bg-f1-green">SessionInfoPreview</div>
+        <div class="widget-preview-container">SessionInfoPreview</div>
     `
 })
 export class SessionInfoWidgetPreview {

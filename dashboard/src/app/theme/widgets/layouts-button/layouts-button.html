@@ -12,7 +12,7 @@
             </button>
         </div>
 
-        <mat-divider></mat-divider>
+        <mat-divider />
         <h4 class="p-x-12 m-y-8">{{ 'my_layouts' | translate }}</h4>
         @if (customLayouts().length === 0) {
           <div class="m-8 text-color-second">
@@ -38,7 +38,7 @@
             }
           </div>
         }
-        <mat-divider></mat-divider>
+        <mat-divider />
         <button mat-menu-item (click)="onCreateNewLayout()">
           <mat-icon>dashboard_customize</mat-icon>
           <span>{{ 'create_layout' | translate }}</span>

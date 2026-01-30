@@ -7,8 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { SimulatorService, SimulatorState, SimulatorStateResponse } from '@core';
 import { TranslateModule } from '@ngx-translate/core';
 import { DebounceClickDirective } from '@shared/directives';
-import { MatProgressBarModule } from '@angular/material/progress-bar'
-import { MatSliderModule } from '@angular/material/slider'
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSliderModule } from '@angular/material/slider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
@@ -70,7 +70,7 @@ export class SimPlayer {
   private updateState(state: SimulatorState) {
     this.simulatorState.update(curr => ({
         ...curr,
-        state: state
+        state
       }));
   }
 
@@ -113,13 +113,15 @@ export class SimPlayer {
 
   callUpdateRatio() {
     if (this.simulatorState().playbackSpeedRatio)
-      this.simService.setRatio({"playbackSpeedRatio": this.simulatorState().playbackSpeedRatio!}).subscribe(res => this.updateSpeedRatio(res.playbackSpeedRatio));
+      this.simService.setRatio({
+        playbackSpeedRatio: this.simulatorState().playbackSpeedRatio!
+      }).subscribe(res => this.updateSpeedRatio(res.playbackSpeedRatio));
   }
 
   onRewind(position: number) {
     if (position != this.simulatorState().numberOfEvents) {
       this.isRewinding.set(true);
-      this.simService.rewind({ position: position }).subscribe({
+      this.simService.rewind({ position }).subscribe({
         next: (res) => this.updateState(res.state),
         error: () => this.isRewinding.set(false),
         complete: () => this.isRewinding.set(false),

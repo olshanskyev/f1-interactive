@@ -27,12 +27,12 @@ export class DashboardComponent {
   private readonly roleService = inject(NgxRolesService);
   private readonly layoutsService = inject(LayoutsService);
   private readonly widgetFactory = inject(WidgetFactory);
-  selectedLayout = this.layoutsService.getSelectedLayout()
+  selectedLayout = this.layoutsService.getSelectedLayout();
   displayWidgets = signal<DisplayWidget[] | undefined>(undefined);
 
   roles = toSignal(this.roleService.roles$);
   isAdmin = computed(() => {
-    return (this.roles()?.['ADMIN'] != null);
+    const roles = this.roles(); return (roles?.['ADMIN'] != null);
   });
 
   driverList = this.liveService.getDriverListSignal();
@@ -44,11 +44,12 @@ export class DashboardComponent {
   bestLap = computed<BestLap | undefined> (() => {
     const timingStats = this.timingStats();
     if (timingStats) {
-      const sorted = Object.entries(timingStats.Lines).sort(([,a], [,b]) => a.PersonalBestLapTime.Position - b.PersonalBestLapTime.Position)
+      const sorted = Object.entries(timingStats.Lines)
+        .sort(([,a], [,b]) => a.PersonalBestLapTime.Position - b.PersonalBestLapTime.Position);
       return {
         driverId: sorted[0][0],
         value: sorted[0][1].PersonalBestLapTime.Value
-      }
+      };
     } else {
       return undefined;
     }
@@ -73,7 +74,7 @@ export class DashboardComponent {
         if (this.selectedLayout()) {
           this.loadWidgets(this.selectedLayout()!);
         }
-      })
+      });
   }
 
 }

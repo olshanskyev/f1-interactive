@@ -3,7 +3,7 @@
 <div mat-dialog-content class="container">
     @for (widget of widgetsMap; track widget[0]) {
         <div class="thumb-item">
-            <ng-container [ngComponentOutlet]="widget[1].widgetThumb"></ng-container>
+            <ng-container [ngComponentOutlet]="widget[1].widgetThumb" />
         </div>
     }
 </div>

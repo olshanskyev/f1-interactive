@@ -1,19 +1,8 @@
-@use '@angular/material' as mat;
 
 .custom-layouts-container {
   display: grid;
-  grid-template-columns: 1fr;
   grid-template-rows: auto;
+  grid-template-columns: 1fr;
   gap: 4px;
-}
-.small-button {
-    @include mat.icon-button-density(-5);
-}
-
-.small-icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-  line-height: 18px;
 }
 

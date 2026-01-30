@@ -15,19 +15,21 @@ export class LeaderboardDriver {
   driver = input<DriverListItem>();
   timingData = input<TimingDataLinesItem>();
   timingAppData = input<TimingAppDataLinesItem>();
-  hasBestTime = input<Boolean>(false);
+  hasBestTime = input<boolean>(false);
   Math = Math;
 
   getLastStint(): Stint | undefined {
-    return (this.timingAppData()?.Stints)
-      ? getLastNummericItem(this.timingAppData()!.Stints)
+    const timingAppData = this.timingAppData();
+    return (timingAppData?.Stints)
+      ? getLastNummericItem(timingAppData.Stints)
       : undefined;
   }
 
   getNumberOfPits() { // based on stints count (numberOfPitStops not precise?)
-    return (this.timingAppData()?.Stints)?
-      Object.keys(this.timingAppData()?.Stints!).length - 1
-      : 0;
+    const timingAppData = this.timingAppData();
+    return (timingAppData)?(timingAppData.Stints)?
+      Object.keys(timingAppData.Stints).length - 1: 0
+    : 0;
   }
 
   getPositionAheadColorClass() {
@@ -36,10 +38,10 @@ export class LeaderboardDriver {
   }
 
   calculateGridPosDiff() {
-    const currPosition = this.timingData()?.Line!;
-    const startPosition = +this.timingAppData()?.GridPos!;
+    const currPosition = this.timingData()?.Line;
+    const startPosition = this.timingAppData()?.GridPos ?? undefined;
     if (currPosition != null && startPosition != null)
-      return startPosition - currPosition;
+      return +startPosition - currPosition;
     else
       return 0;
   }

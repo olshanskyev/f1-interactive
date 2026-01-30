@@ -1,14 +1,33 @@
 
 .widget {
+    position: relative;
     opacity: 0.8;
 }
 
 .widget.draggable {
     cursor: grab;
+}
 
+.widget.draggable:hover {
+    opacity: 0.6;
 }
 
 .widget.draggable:active {
     cursor: grabbing;
-    opacity: 0.5;
+}
+
+.resize-handle {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    width: calc(var(--small-icons-size) * 2);
+    height: calc(var(--small-icons-size) * 2);
+    cursor: nwse-resize;
+    background-color: var(--mat-sys-inverse-primary);
+
+    mat-icon {
+        margin: auto;
+        font-weight: 600;
+    }
 }

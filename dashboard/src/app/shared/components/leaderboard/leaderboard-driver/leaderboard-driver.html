@@ -55,7 +55,7 @@
             -
           }
           </p>
-          @if (timingData()?.Line != 1) {
+          @if (timingData()?.Line !== 1) {
             <p class="m-0 f-s-12 text-color-second line-height-1">
               {{timingData()?.GapToLeader}}
             </p>

@@ -1,5 +1,5 @@
 
-export type Root = {
+export interface Root {
 	Heartbeat?: Heartbeat;
 	ExtrapolatedClock?: ExtrapolatedClock;
 	TopThree?: TopThree;
@@ -16,26 +16,24 @@ export type Root = {
 	TimingData?: TimingData;
 	TeamRadio?: TeamRadio;
     PitLaneTimeCollection?: PitLaneTimeCollection;
-};
+}
 
-export type Heartbeat = {
+export interface Heartbeat {
 	Utc: string;
-};
+}
 
-export type ExtrapolatedClock = {
+export interface ExtrapolatedClock {
 	Utc: string;
 	Remaining: string;
 	Extrapolating: boolean;
-};
+}
 
-export type TopThree = {
+export interface TopThree {
 	Withheld: boolean;
-    Lines: {
-		[key: number]: TopThreeLinesItem;
-	};
-};
+    Lines: Record<number, TopThreeLinesItem>;
+}
 
-export type TopThreeLinesItem = {
+export interface TopThreeLinesItem {
 	Position: string;
 	ShowPosition: boolean;
 	RacingNumber: string;
@@ -53,71 +51,61 @@ export type TopThreeLinesItem = {
 	DiffToLeader: string;
 	OverallFastest: boolean;
 	PersonalFastest: boolean;
-};
+}
 
-export type TimingStats = {
+export interface TimingStats {
 	Withheld: boolean;
-	Lines: {
-		[key: string]: TimingStatsLinesItem;
-	};
+	Lines: Record<string, TimingStatsLinesItem>;
 	SessionType: string;
-};
+}
 
-export type TimingStatsLinesItem = {
+export interface TimingStatsLinesItem {
 	Line: number;
 	RacingNumber: string;
 	PersonalBestLapTime: PersonalBestLapTime;
-	BestSectors: {
-        [key: number]: BestSectorsItem;
-    }
-	BestSpeeds: {
-		[key: string]: BestSpeedsItem;
-	};
-};
+	BestSectors: Record<number, BestSectorsItem>
+	BestSpeeds: Record<string, BestSpeedsItem>;
+}
 
-export type PersonalBestLapTime = {
+export interface PersonalBestLapTime {
     Lap: number;
     Position: number;
 	Value: string;
-};
+}
 
-export type BestSectorsItem = {
+export interface BestSectorsItem {
     Position: number;
 	Value: string;
-};
+}
 
-export type BestSpeedsItem = {
+export interface BestSpeedsItem {
     Position: number;
 	Value: string;
-};
+}
 
-export type TimingAppData = {
-	Lines: {
-		[key: string]: TimingAppDataLinesItem;
-	};
-};
+export interface TimingAppData {
+	Lines: Record<string, TimingAppDataLinesItem>;
+}
 
-export type TimingAppDataLinesItem = {
+export interface TimingAppDataLinesItem {
 	RacingNumber: string;
 	Line: number;
 	GridPos: string;
-    Stints: {
-        [key: number]: Stint;
-    }
-};
+    Stints: Record<number, Stint>
+}
 
-export type Stint = {
+export interface Stint {
     LapTime: string;
     LapNumber: number;
     LapFlags: number;
-	Compound: "SOFT" | "MEDIUM" | "HARD" | "INTERMEDIATE" | "WET" | "UNKNOWN";
+	Compound: 'SOFT' | 'MEDIUM' | 'HARD' | 'INTERMEDIATE' | 'WET' | 'UNKNOWN';
 	New: string; // TRUE | FALSE
     TyresNotChanged: string;
     TotalLaps: number;
     StartLaps: number;
-};
+}
 
-export type WeatherData = {
+export interface WeatherData {
 	AirTemp: string;
 	Humidity: string;
 	Pressure: string;
@@ -125,20 +113,18 @@ export type WeatherData = {
 	TrackTemp: string;
 	WindDirection: string;
 	WindSpeed: string;
-};
+}
 
-export type TrackStatus = {
+export interface TrackStatus {
 	Status: string;
 	Message: string;
-};
+}
 
-export type DriverList = {
-    Lines: {
-        [key: string]: DriverListItem;
-    }
-};
+export interface DriverList {
+    Lines: Record<string, DriverListItem>
+}
 
-export type DriverListItem = {
+export interface DriverListItem {
 	RacingNumber: string;
 	BroadcastName: string;
 	FullName: string;
@@ -151,28 +137,26 @@ export type DriverListItem = {
 	Reference: string;
 	HeadshotUrl: string;
 	PublicIdRight: string;
-};
+}
 
-export type RaceControlMessages = {
-	Messages: {
-        [key: number]: Message;
-    }
-};
+export interface RaceControlMessages {
+	Messages: Record<number, Message>
+}
 
-export type Message = {
+export interface Message {
 	Utc: string;
 	Lap: number;
-	Category: "Other" | "Sector" | "Flag" | "Drs" | "SafetyCar" | string;
-	Flag: "BLACK AND WHITE" | "BLUE" | "CLEAR" | "YELLOW" | "GREEN" | "DOUBLE YELLOW" | "RED" | "CHEQUERED";
-	Scope: "Driver" | "Track" | "Sector";
+	Category: 'Other' | 'Sector' | 'Flag' | 'Drs' | 'SafetyCar' | string;
+	Flag: 'BLACK AND WHITE' | 'BLUE' | 'CLEAR' | 'YELLOW' | 'GREEN' | 'DOUBLE YELLOW' | 'RED' | 'CHEQUERED';
+	Scope: 'Driver' | 'Track' | 'Sector';
     Message: string;
 	Sector: number;
-	Status: "ENABLED" | "DISABLED";
+	Status: 'ENABLED' | 'DISABLED';
     Mode: string;
     RacingNumber: string;
-};
+}
 
-export type SessionInfo = {
+export interface SessionInfo {
 	Meeting: Meeting;
     SessionStatus: string;
 	ArchiveStatus: ArchiveStatus;
@@ -184,9 +168,9 @@ export type SessionInfo = {
 	EndDate: string;
 	GmtOffset: string;
 	Path: string;
-};
+}
 
-export type Meeting = {
+export interface Meeting {
 	Key: number;
 	Name: string;
 	OfficialName: string;
@@ -194,63 +178,57 @@ export type Meeting = {
     Number: number;
 	Country: Country;
 	Circuit: Circuit;
-};
+}
 
-export type ArchiveStatus = {
+export interface ArchiveStatus {
 	Status: string;
-};
+}
 
-export type Circuit = {
+export interface Circuit {
 	Key: number;
 	ShortName: string;
-};
+}
 
-export type Country = {
+export interface Country {
 	Key: number;
 	Code: string;
 	Name: string;
-};
+}
 
-export type SessionData = {
-    Series: {
-        [key: number]: Series;
-    }
-    StatusSeries: {
-        [key: number]: StatusSeries;
-    }
-};
+export interface SessionData {
+    Series: Record<number, Series>
+    StatusSeries: Record<number, StatusSeries>
+}
 
-export type SessinStatusType = "Inactive" | "Started" | "Finished" | "Finalised" | "Ends";
+export type SessinStatusType = 'Inactive' | 'Started' | 'Finished' | 'Finalised' | 'Ends';
 
-export type StatusSeries = {
+export interface StatusSeries {
 	Utc: string;
 	TrackStatus: string;
 	SesionStatus: SessinStatusType;
-};
+}
 
-export type Series = {
+export interface Series {
 	Utc: string;
 	Lap: number;
-};
+}
 
-export type SessionStatus = {
+export interface SessionStatus {
 	Status: SessinStatusType;
     Started: string;
-};
+}
 
-export type LapCount = {
+export interface LapCount {
 	CurrentLap: number;
 	TotalLaps: number;
-};
+}
 
-export type TimingData = {
-	Lines: {
-		[key: string]: TimingDataLinesItem;
-	};
+export interface TimingData {
+	Lines: Record<string, TimingDataLinesItem>;
 	Withheld?: boolean;
-};
+}
 
-export type TimingDataLinesItem = {
+export interface TimingDataLinesItem {
 	GapToLeader: string;
     IntervalToPositionAhead: IntervalToPositionAhead;
     TimeDiffToFastest: string;
@@ -266,82 +244,72 @@ export type TimingDataLinesItem = {
 	Status: number;
     NumberOfLaps: number;
     NumberOfPitStops: number;
-	Sectors: {
-        [key: number]: SectorsItem;
-    };
-	Speeds: {
-        [key: string]: SpeedsItem;
-    };
+	Sectors: Record<number, SectorsItem>;
+	Speeds: Record<string, SpeedsItem>;
 	BestLapTime: BestLapTime;
 	LastLapTime: LastLapTime;
-};
+}
 
-export type SectorsItem = {
+export interface SectorsItem {
 	Stopped: boolean;
     PreviousValue: string;
-    Segments: {
-		[key: number]: SegmentsItem;
-	};
+    Segments: Record<number, SegmentsItem>;
 	Value: string;
 	Status: number;
 	OverallFastest: boolean;
 	PersonalFastest: boolean;
-};
+}
 
-export type SpeedsItem = {
+export interface SpeedsItem {
     Position: number;
 	Value: string;
 	Status: number;
 	OverallFastest: boolean;
 	PersonalFastest: boolean;
-};
+}
 
-export type SegmentsItem = {
+export interface SegmentsItem {
     Status: number;
 }
 
-export type BestLapTime = {
+export interface BestLapTime {
     Value: string;
     Lap: number;
-};
+}
 
-export type LastLapTime = {
+export interface LastLapTime {
     Value: string;
     Status: number;
     OverallFastest: boolean;
 	PersonalFastest: boolean;
-};
+}
 
 
-export type IntervalToPositionAhead = {
+export interface IntervalToPositionAhead {
     Value: string;
     Catching: boolean;
 }
 
-export type TeamRadio = {
-    Captures: {
-        [key: number]: Capture;
-    }
-};
+export interface TeamRadio {
+    Captures: Record<number, Capture>
+}
 
-export type Capture = {
+export interface Capture {
 	Utc: string;
 	RacingNumber: string;
 	Path: string;
-};
+}
 
-export type PitLaneTimeCollection = {
+export interface PitLaneTimeCollection {
     PitTimes: PitTimes;
-};
+}
 
-export type PitTimes = {
-    Lines: {
-        [key: string]: PitTimesItem;
-    };
+export interface PitTimes {
+    Lines: Record<string, PitTimesItem>;
     _deleted: string[];
 }
 
-export type PitTimesItem = {
+export interface PitTimesItem {
     RacingNumber: string;
     Duration: string;
     Lap: string;

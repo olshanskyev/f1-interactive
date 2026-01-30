@@ -1,9 +1,14 @@
-import { Type } from "@angular/core";
+import { Type } from '@angular/core';
 
-export type WidgetPosition = {colStart: number, rowStart: number};
-export type WidgetSize = { colSpan: number, rowSpan: number };
+export interface WidgetPosition {colStart: number, rowStart: number}
+export interface WidgetSize { colSpan: number, rowSpan: number }
 
-export type Widget = {
+export interface WidgetContainer {
+    position: WidgetPosition
+    size: WidgetSize
+}
+
+export interface Widget {
     type: WidgetType,
     defaultSizes: [WidgetSize | 'fullscreen'],
     widgetView: Type<any>,
@@ -11,21 +16,21 @@ export type Widget = {
     widgetThumb: Type<any>
 }
 
-export type LayoutGridSize = {
+export interface LayoutGridSize {
         gridColumns: number,
         gridRows: number,
 }
 
 export const LayoutGrids = {
-    'landscape': {
+    landscape: {
         gridColumns: 32,
         gridRows: 18
     },
-    'mobile_portrait': {
+    mobile_portrait: {
         gridColumns: 16,
         gridRows: 38
     }
-}
+};
 
 export enum WidgetType
 {
@@ -33,11 +38,12 @@ export enum WidgetType
     VideoPlayerWidget = 'VideoPlayerWidget'
 }
 
-export type LayoutWidget = {
+export interface LayoutWidget {
     type: WidgetType,
     position: WidgetPosition,
     size: WidgetSize,
     draggable: boolean,
+    resizable: boolean
 }
 
 
@@ -45,7 +51,7 @@ export type DisplayWidget = LayoutWidget & {
     el: Type<any>,
 }
 
-export type Layout = {
+export interface Layout {
     layoutName: string;
     gridSize: LayoutGridSize,
     widgets: LayoutWidget[];

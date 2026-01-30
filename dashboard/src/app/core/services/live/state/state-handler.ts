@@ -1,6 +1,6 @@
-import { signal, WritableSignal } from "@angular/core";
-import { DriverList, Root, TimingAppData, TimingData, TimingStats, WeatherData } from "@core/types/f1types";
-import { UpdateEventRecord } from "../live.service";
+import { signal, WritableSignal } from '@angular/core';
+import { DriverList, Root, TimingAppData, TimingData, TimingStats, WeatherData } from '@core/types/f1types';
+import { UpdateEventRecord } from '../live.service';
 
 interface SignalTypeMap {
     WeatherData: WeatherData;
@@ -15,7 +15,9 @@ export type AvailableSignalsType = keyof SignalTypeMap;
 export class StateHandler {
     private _state = signal<Root | undefined>(undefined);
     readonly updateSignals: {
-            [K in keyof SignalTypeMap]: WritableSignal<SignalTypeMap[K] | undefined>
+            [K in keyof SignalTypeMap]: WritableSignal<
+                    SignalTypeMap[K] | undefined
+                >
         } = {
             WeatherData: signal<WeatherData | undefined>(undefined),
             TimingData: signal<TimingData | undefined>(undefined),
@@ -28,20 +30,21 @@ export class StateHandler {
         return this._state.asReadonly();
     };
 
-    private updateSignal<K extends keyof SignalTypeMap>(key: K, value: SignalTypeMap[K] | undefined) {
-        this.updateSignals[key].set(value);
+    private updateSignal<K extends keyof SignalTypeMap>
+        (key: K, value: SignalTypeMap[K] | undefined) {
+            this.updateSignals[key].set(value);
     }
 
     init(initState: Root) {
         this._state.set(initState);
-       (Object.keys(this.updateSignals) as Array<AvailableSignalsType>).forEach(key => {
+       (Object.keys(this.updateSignals) as AvailableSignalsType[]).forEach(key => {
             this.updateSignal(key, this._state()![key]);
         });
     }
 
     updateState(updateRecord: UpdateEventRecord) {
         if (this._state()) {
-            let mergedState = {...this._state()!} as Root;
+            const mergedState = {...this._state()!} as Root;
             const key = updateRecord.className as keyof Root;
             mergedState[key] = (key in mergedState)
                 ? this.merge(mergedState[key], updateRecord.updateEvent) // key found in state, merge
@@ -50,7 +53,10 @@ export class StateHandler {
             this._state.set(mergedState);
 
             if (this.updateSignals[key as AvailableSignalsType]) { // send update signal
-                this.updateSignal(key as AvailableSignalsType, {...mergedState[key as AvailableSignalsType]!})
+                this.updateSignal(
+                    key as AvailableSignalsType,
+                    {...mergedState[key as AvailableSignalsType]!}
+                );
             }
         }
     }

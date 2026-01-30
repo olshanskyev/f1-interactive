@@ -4,16 +4,16 @@ import { UpdateEventRecord } from '../live.service';
 import { StateHandler } from './state-handler';
 
 describe('StateHandler', () => {
-    let stateHandler: StateHandler
+    let stateHandler: StateHandler;
     const initState: Root = {
         ExtrapolatedClock: {
-            'Extrapolating': false,
-			'Remaining': '01:00:00',
-			'Utc': '2025-12-05T09:28:49.438Z',
+            Extrapolating: false,
+			Remaining: '01:00:00',
+			Utc: '2025-12-05T09:28:49.438Z',
         },
         RaceControlMessages: {
 			Messages: {
-				'0': {
+				0: {
 					Category: 'Other',
 					Flag: 'CLEAR',
 					Lap: 0,
@@ -29,7 +29,7 @@ describe('StateHandler', () => {
 		},
         TimingAppData: {
             Lines: {
-                '0' : {
+                0 : {
                     RacingNumber: '1',
                     Line: 1,
                     GridPos: '2',
@@ -41,7 +41,7 @@ describe('StateHandler', () => {
 
     beforeEach(() => {
         stateHandler = new StateHandler();
-        stateHandler.init(initState)
+        stateHandler.init(initState);
     });
 
     it('should be created', () => {
@@ -55,7 +55,7 @@ describe('StateHandler', () => {
                 AirTemp: '27.3'
             },
             utc: '2025-12-07T12:35:07.32Z'
-        }
+        };
         stateHandler.updateState(updateWeatherData);
         expect(stateHandler.fullStateSignal()?.WeatherData).toBe(updateWeatherData.updateEvent);
         expect(stateHandler.fullStateSignal()?.ExtrapolatedClock?.Remaining).toBe('01:00:00');
@@ -70,9 +70,10 @@ describe('StateHandler', () => {
                 Extrapolating: 'true'
             },
             utc: '2025-12-07T12:35:07.32Z'
-        }
+        };
         stateHandler.updateState(updateExtrapolatinClock);
-        expect(stateHandler.fullStateSignal()?.ExtrapolatedClock).toStrictEqual(updateExtrapolatinClock.updateEvent);
+        expect(stateHandler.fullStateSignal()?.ExtrapolatedClock)
+            .toStrictEqual(updateExtrapolatinClock.updateEvent);
     });
 
     it('should update list', () => {
@@ -80,19 +81,23 @@ describe('StateHandler', () => {
             className: 'RaceControlMessages',
             updateEvent: {
                 Messages: {
-                    '1': {
-                        'Category': 'Other',
-                        'Lap': 1,
-                        'Message': 'RISK OF RAIN FOR F1 RACE IS 0%',
-                        'Utc': '2025-12-07T12:45:02.000Z'
+                    1: {
+                        Category: 'Other',
+                        Lap: 1,
+                        Message: 'RISK OF RAIN FOR F1 RACE IS 0%',
+                        Utc: '2025-12-07T12:45:02.000Z'
 				    }
                 }
             },
             utc: '2025-12-07T12:35:07.32Z'
-        }
+        };
         stateHandler.updateState(updateRaceControlMessage);
-        expect(stateHandler.fullStateSignal()?.RaceControlMessages?.Messages['0']).toBe(initState.RaceControlMessages?.Messages['0']);
-        expect(stateHandler.fullStateSignal()?.RaceControlMessages?.Messages['1']).toBe(updateRaceControlMessage.updateEvent.Messages['1']);
+        const expectedMessage = initState.RaceControlMessages?.Messages['0'];
+        const actualMessage = stateHandler.fullStateSignal()?.RaceControlMessages?.Messages['0'];
+        expect(actualMessage).toBe(expectedMessage);
+        const expectedMessage1 = updateRaceControlMessage.updateEvent.Messages['1'];
+        expect(stateHandler.fullStateSignal()?.RaceControlMessages?.Messages['1'])
+            .toBe(expectedMessage1);
     });
 
 
@@ -101,28 +106,29 @@ describe('StateHandler', () => {
             className: 'RaceControlMessages',
             updateEvent: {
                 Messages: {
-                    '0': {
-                        'Category': 'Other',
-                        'Lap': 1,
-                        'Message': 'RISK OF RAIN FOR F1 RACE IS 0%',
-                        'Utc': '2025-12-07T12:45:02.000Z'
+                    0: {
+                        Category: 'Other',
+                        Lap: 1,
+                        Message: 'RISK OF RAIN FOR F1 RACE IS 0%',
+                        Utc: '2025-12-07T12:45:02.000Z'
 				    }
                 }
             },
             utc: '2025-12-07T12:35:07.32Z'
-        }
+        };
         stateHandler.updateState(updateRaceControlMessage);
-        expect(stateHandler.fullStateSignal()?.RaceControlMessages?.Messages['0']).containSubset({...updateRaceControlMessage.updateEvent.Messages['0']});
+        expect(stateHandler.fullStateSignal()?.RaceControlMessages?.Messages['0'])
+            .containSubset({...updateRaceControlMessage.updateEvent.Messages['0']});
     });
 
     it('should call update signal', () => {
-        let updateWeatherData: UpdateEventRecord = {
+        const updateWeatherData: UpdateEventRecord = {
             className: 'WeatherData',
             updateEvent: {
                 AirTemp: '27.3'
             },
             utc: '2025-12-07T12:35:07.32Z'
-        }
+        };
 
         // create new sub element
         stateHandler.updateState(updateWeatherData);
