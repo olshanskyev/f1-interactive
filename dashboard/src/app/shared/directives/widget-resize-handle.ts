@@ -53,6 +53,7 @@ export class WidgetResizeHandleDirective {
 
         event.stopPropagation(); // Prevent drag from starting
         event.preventDefault(); // Prevent text selection
+        this.widgetDirective.displayShadow();
     }
 
 
@@ -78,17 +79,13 @@ export class WidgetResizeHandleDirective {
         newRowSpan = Math.min(newRowSpan, maxRowSpan);
 
         this.newSize = { colSpan: newColSpan, rowSpan: newRowSpan };
-        this.widgetDirective.render({
-            ...this.widgetDirective.widgetContainer(), 
-            size: this.newSize
-        });
-
+        const container = {...this.widgetDirective.widgetContainer(), size: this.newSize };
+        this.widgetDirective.render(container);
     }
 
 
-
     private onResizeEnd(event?: MouseEvent | TouchEvent) {
-
+        this.widgetDirective.removeShadow();
         if (this.isResizing) {
             this.isResizing = false;
             // Clean up global listeners
@@ -100,7 +97,7 @@ export class WidgetResizeHandleDirective {
             this.widgetDirective.widgetViewChanged.emit({
                  widgetIndex: this.widgetDirective.widgetIndex(),
                  container: {
-                    ...this.widgetDirective.widgetContainer(), 
+                    ...this.widgetDirective.widgetContainer(),
                     size: this.newSize
                 }
             });

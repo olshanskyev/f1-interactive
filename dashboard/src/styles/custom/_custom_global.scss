@@ -1,8 +1,11 @@
 @use '@angular/material' as mat;
 @use "../grid/breakpoints";
+@use '../../app/shared/directives/widget-container-shadow.scss' as *;
 
 :root {
   --small-icons-size: 18px;
+  --shadow-color: rgba(21, 57, 56, 0.18);
+  --shadow-border-color: #153938;
 }
 
 .line-height-1 {
@@ -29,14 +32,6 @@
   }
 }
 
-.custom-layouts-container {
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: 1fr;
-  gap: 4px;
-}
-
-
 .small-button {
     @include mat.icon-button-density(-5);
 }
@@ -50,9 +45,8 @@
 
 .widget-preview-container {
   height: 100%;
-  outline: 2px solid var(--mat-sys-inverse-primary) !important;
+  border: 3px solid var(--mat-sys-inverse-primary) !important;
   border-radius: 0.5rem 0.5rem 0 !important;
-  box-shadow: 0 0 5px var(--mat-sys-on-secondary-container);
 }
 
 
