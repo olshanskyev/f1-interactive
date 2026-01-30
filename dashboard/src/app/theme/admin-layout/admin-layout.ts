@@ -5,6 +5,7 @@ import { MatSidenav, MatSidenavContent, MatSidenavModule } from '@angular/materi
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { NgProgressbar } from 'ngx-progressbar';
 import { NgProgressRouter } from 'ngx-progressbar/router';
+import { signal, computed, effect } from '@angular/core';
 import { Subscription, filter } from 'rxjs';
 
 import { AppSettings, SettingsService } from '@core';
@@ -27,8 +28,8 @@ import { MOBILE_MEDIAQUERY, MONITOR_MEDIAQUERY, TABLET_MEDIAQUERY } from '@theme
     Sidebar
   ],
   host: {
-    '[class.matero-content-width-fix]': 'contentWidthFix',
-    '[class.matero-sidenav-collapsed-fix]': 'collapsedWidthFix',
+    '[class.matero-content-width-fix]': 'contentWidthFix()',
+    '[class.matero-sidenav-collapsed-fix]': 'collapsedWidthFix()',
   },
 })
 export class AdminLayout implements OnDestroy {
@@ -39,37 +40,29 @@ export class AdminLayout implements OnDestroy {
   private readonly router = inject(Router);
   private readonly settings = inject(SettingsService);
 
-  options = this.settings.options;
+  // Signals for state
+  readonly options = signal(this.settings.options);
+  readonly isMobileScreen = signal(false);
+  readonly isContentWidthFixed = signal(true);
+  readonly isCollapsedWidthFixed = signal(false);
 
   get themeColor() {
     return this.settings.getThemeColor();
   }
 
-  get isOver() {
-    return this.isMobileScreen;
-  }
+  readonly isOver = computed(() => this.isMobileScreen());
 
-  private isMobileScreen = false;
+  readonly contentWidthFix = computed(() =>
+    this.isContentWidthFixed() &&
+    this.options().navPos === 'side' &&
+    this.options().sidenavOpened &&
+    !this.isOver()
+  );
 
-  private isContentWidthFixed = true;
-
-  get contentWidthFix() {
-    return (
-      this.isContentWidthFixed &&
-      this.options.navPos === 'side' &&
-      this.options.sidenavOpened &&
-      !this.isOver
-    );
-  }
-
-  get collapsedWidthFix() {
-    return (
-      this.isCollapsedWidthFixed &&
-      (this.options.navPos === 'top' || (this.options.sidenavOpened && this.isOver))
-    );
-  }
-
-  private isCollapsedWidthFixed = false;
+  readonly collapsedWidthFix = computed(() =>
+    this.isCollapsedWidthFixed() &&
+    (this.options().navPos === 'top' || (this.options().sidenavOpened && this.isOver()))
+  );
 
   private layoutChangesSubscription = Subscription.EMPTY;
 
@@ -78,18 +71,25 @@ export class AdminLayout implements OnDestroy {
       .observe([MOBILE_MEDIAQUERY, TABLET_MEDIAQUERY, MONITOR_MEDIAQUERY])
       .subscribe(state => {
         // SidenavOpened must be reset true when layout changes
-        this.options.sidenavOpened = true;
+        this.options.update(opt => ({ ...opt, sidenavOpened: true }));
 
-        this.isMobileScreen = state.breakpoints[MOBILE_MEDIAQUERY];
-        this.options.sidenavCollapsed = state.breakpoints[TABLET_MEDIAQUERY];
-        this.isContentWidthFixed = state.breakpoints[MONITOR_MEDIAQUERY];
+        this.isMobileScreen.set(state.breakpoints[MOBILE_MEDIAQUERY]);
+        this.options.update(opt => ({
+          ...opt,
+          sidenavCollapsed: state.breakpoints[TABLET_MEDIAQUERY],
+        }));
+        this.isContentWidthFixed.set(state.breakpoints[MONITOR_MEDIAQUERY]);
       });
 
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(e => {
-      if (this.isOver) {
+      if (this.isOver()) {
         this.sidenav().close();
       }
       this.content().scrollTo({ top: 0 });
+    });
+
+    effect(() => {
+      this.settings.setOptions(this.options());
     });
   }
 
@@ -98,30 +98,22 @@ export class AdminLayout implements OnDestroy {
   }
 
   toggleCollapsed() {
-    this.isContentWidthFixed = false;
-    this.options.sidenavCollapsed = !this.options.sidenavCollapsed;
-    this.resetCollapsedState();
-  }
-
-  // TODO: Trigger when transition end
-  resetCollapsedState(timer = 400) {
-    setTimeout(() => {
-      this.settings.setOptions(this.options);
-    }, timer);
+    this.isContentWidthFixed.set(false);
+    this.options.update(opt => ({ ...opt, sidenavCollapsed: !opt.sidenavCollapsed }));
   }
 
   onSidenavClosedStart() {
-    this.isContentWidthFixed = false;
+    this.isContentWidthFixed.set(false);
   }
 
   onSidenavOpenedChange(isOpened: boolean) {
-    this.isCollapsedWidthFixed = !this.isOver;
-    this.options.sidenavOpened = isOpened;
-    this.settings.setOptions(this.options);
+    this.isCollapsedWidthFixed.set(!this.isOver());
+    this.options.update(opt => ({ ...opt, sidenavOpened: isOpened }));
+    this.settings.setOptions(this.options());
   }
 
   updateOptions(options: AppSettings) {
-    this.options = options;
+    this.options.set(options);
     this.settings.setOptions(options);
     this.settings.setDirection();
     this.settings.setTheme();
