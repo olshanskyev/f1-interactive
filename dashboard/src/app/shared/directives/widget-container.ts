@@ -1,4 +1,5 @@
-import { CdkDragMove, CdkDragStart, Point } from '@angular/cdk/drag-drop';
+
+import { CdkDragEnd, CdkDragMove, CdkDragStart, Point } from '@angular/cdk/drag-drop';
 import { Directive, effect, ElementRef, Host, inject, input, output, Renderer2 } from '@angular/core';
 import { WidgetContainer, WidgetPosition } from '@core/types/widgets';
 import { GridContainerComponent } from '@shared/components';
@@ -9,7 +10,7 @@ import { GridContainerComponent } from '@shared/components';
     host: {
         '(cdkDragMoved)': 'onDragging($event)',
         '(cdkDragStarted)': 'onDragStart($event)',
-        '(cdkDragEnded)': 'onDragEnd()',
+        '(cdkDragEnded)': 'onDragEnd($event)',
     }
 })
 export class WidgetContainerDirective {
@@ -21,11 +22,36 @@ export class WidgetContainerDirective {
     readonly widgetContainer = input.required<WidgetContainer>();
     readonly widgetIndex = input.required<number>();
     widgetViewChanged = output<{widgetIndex: number, container: WidgetContainer}>();
+    private newPositionSet = false;
 
     constructor() {
         effect(() => { // effect to dynamically track input changes
             this.render(this.widgetContainer());
         });
+    }
+
+    removeShadow() {
+        const shadow = (this as any)._shadowPreview;
+        if (shadow && shadow.parentElement) {
+            shadow.parentElement.removeChild(shadow);
+            (this as any)._shadowPreview = null;
+        }
+    }
+
+    displayShadow(container?: WidgetContainer) {
+        this.removeShadow();
+
+        const parent = this.el.nativeElement.parentElement;
+        const shadow = document.createElement('div');
+        shadow.className = 'widget-shadow-preview';
+        const containerToDisplay = container ?? this.widgetContainer();
+        shadow.style.gridColumn = `${containerToDisplay.position.colStart} / span ${containerToDisplay.size.colSpan}`;
+        shadow.style.gridRow = `${containerToDisplay.position.rowStart} / span ${containerToDisplay.size.rowSpan}`;
+
+        // Place shadow in the same grid container
+        parent.appendChild(shadow);
+        // Store reference for later removal
+        (this as any)._shadowPreview = shadow;
     }
 
 
@@ -73,6 +99,10 @@ export class WidgetContainerDirective {
 
     // to save mause position related to container and container offset
     onDragStart(event: CdkDragStart) {
+        const containerToDisplay = this.newPositionSet ?
+            { ...this.widgetContainer(), position: this.newPosition } :
+            this.widgetContainer();
+        this.displayShadow(containerToDisplay);
         this.calcDragOffset(event.event,
             event.source.element.nativeElement.getBoundingClientRect());
         this.calcParentContainerOffset();
@@ -93,14 +123,15 @@ export class WidgetContainerDirective {
         };
     }
 
-    private boundePosition(snapped: Point): WidgetPosition {
+    private snappedPosition(snapped: Point): WidgetPosition {
         const cellSize = this.parentGrid.gridCellSize();
-        const floorX = snapped.x / cellSize;
-        const floorY = snapped.y / cellSize;
-        const position = {
-            colStart: Math.floor(floorX) + 1,
-            rowStart: Math.floor(floorY) + 1
+        return {
+            colStart: Math.round(snapped.x / cellSize) + 1,
+            rowStart: Math.round(snapped.y / cellSize) + 1
         };
+    }
+
+    private boundedPosition(position: WidgetPosition): WidgetPosition {
 
         // Bounding (ensure it stays within grid limits)
         const maxCol = this.parentGrid.gridColumns() - (this.widgetContainer().size.colSpan - 1);
@@ -112,22 +143,32 @@ export class WidgetContainerDirective {
     }
 
     private newPosition: WidgetPosition = {
-        colStart: -1,
-        rowStart: -1
+        colStart: 0,
+        rowStart: 0
     };
+
     onDragging(event: CdkDragMove) {
         const snapped = this.computeSnap(event);
-        this.newPosition = this.boundePosition(snapped);
 
-        event.source.reset(); // to stop default cdkDrag event
-        this.render({...this.widgetContainer(), position: this.newPosition});
+        const newSnappedPosition = this.snappedPosition(snapped);
+
+        if (newSnappedPosition.colStart !== this.newPosition.colStart
+            || newSnappedPosition.rowStart !== this.newPosition.rowStart) {
+            this.newPositionSet = true;
+            this.newPosition = this.boundedPosition(newSnappedPosition);
+            this.displayShadow({...this.widgetContainer(), position: this.newPosition});
+            return;
+        }
     }
 
-    onDragEnd() {
-       this.widgetViewChanged.emit(
+    onDragEnd(event: CdkDragEnd) {
+        event.source.reset();
+        this.removeShadow();
+        const newContainer = {...this.widgetContainer(), position: this.newPosition};
+        this.widgetViewChanged.emit(
         {
             widgetIndex: this.widgetIndex(),
-            container: {...this.widgetContainer(), position: this.newPosition}
+            container: newContainer
         });
     }
 }

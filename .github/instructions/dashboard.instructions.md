@@ -1,4 +1,8 @@
-# Gemini Project Context: f1-interactive-dashboard
+---
+applyTo: "dashboard/**/*"
+---
+
+# Project Context: f1-interactive-dashboard
 
 This document provides context for the `f1-interactive-dashboard` project, an Angular-based web application.
 
@@ -94,4 +98,5 @@ The dashboard layouts and widgets are currently hardcoded in the `layouts-servic
 - Use styles already defined in project
 - Use relative imports and NOT a path alias
 - Use apostrophes for strings declarations
-- Start npm run lint after code generation
+- Start npm run lint after code generation for created or modified files
+- Use angular material components where possible
