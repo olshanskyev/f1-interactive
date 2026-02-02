@@ -5,3 +5,6 @@ export * from './video/video-player-widget';
 export * from './video/preview/video-player-widget-preview';
 export * from './video/thumb/video-player-widget-thumb';
 export * from './select-widget-dialog/select-widget-dialog';
+export * from './weather/weather-widget';
+export * from './weather/preview/weather-widget-preview';
+export * from './weather/thumb/weather-widget-thumb';

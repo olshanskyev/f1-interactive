@@ -64,7 +64,7 @@ export class DashboardComponent {
   private loadWidgets(layout: Layout) {
       const toDisplay: DisplayWidget[] = layout.widgets.map(item => {
           const widget = this.widgetFactory.getWidgetByType(item.type);
-          return {...item, el: widget!.widgetPreview};
+          return {...item, ...widget!};
       });
       this.displayWidgets.set(toDisplay);
   }

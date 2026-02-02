@@ -1,6 +1,6 @@
 
 import { CdkDragEnd, CdkDragMove, CdkDragStart, Point } from '@angular/cdk/drag-drop';
-import { Directive, effect, ElementRef, Host, inject, input, output, Renderer2 } from '@angular/core';
+import { computed, Directive, effect, ElementRef, Host, inject, input, output, Renderer2, Signal } from '@angular/core';
 import { WidgetContainer, WidgetPosition } from '@core/types/widgets';
 import { GridContainerComponent } from '@shared/components';
 
@@ -15,13 +15,18 @@ import { GridContainerComponent } from '@shared/components';
 })
 export class WidgetContainerDirective {
 
+    @Host() private parentGrid = inject(GridContainerComponent);
     private el = inject(ElementRef);
     private renderer = inject(Renderer2);
-    @Host() parentGrid = inject(GridContainerComponent);
 
     readonly widgetContainer = input.required<WidgetContainer>();
     readonly widgetIndex = input.required<number>();
     widgetViewChanged = output<{widgetIndex: number, container: WidgetContainer}>();
+
+    cellSize = this.parentGrid.cellSize();
+    gridRows = this.parentGrid.gridRows;
+    gridColumns = this.parentGrid.gridColumns;
+
     private newPositionSet = false;
 
     constructor() {
@@ -70,9 +75,9 @@ export class WidgetContainerDirective {
         const parentGrid = this.parentGrid;
         // Calculate the centering "whitespace"
         const totalGridWidth = parentGrid.gridColumns()
-            * parentGrid.gridCellSize();
+            * this.cellSize();
         const totalGridHeight = parentGrid.gridRows()
-            * parentGrid.gridCellSize();
+            * this.cellSize();
         const containerOffsetX = (containerRect.width - totalGridWidth) / 2;
         const containerOffsetY = (containerRect.height - totalGridHeight) / 2;
 
@@ -116,7 +121,7 @@ export class WidgetContainerDirective {
         const relativeY = y - this.containerOffset.y - this.dragOffset.y;
 
         // Snap based on the relative position
-        const cellSize = this.parentGrid.gridCellSize();
+        const cellSize = this.cellSize();
         return {
             x: Math.round(relativeX / cellSize) * cellSize,
             y: Math.round(relativeY / cellSize) * cellSize
@@ -124,7 +129,7 @@ export class WidgetContainerDirective {
     }
 
     private snappedPosition(snapped: Point): WidgetPosition {
-        const cellSize = this.parentGrid.gridCellSize();
+        const cellSize = this.cellSize();
         return {
             colStart: Math.round(snapped.x / cellSize) + 1,
             rowStart: Math.round(snapped.y / cellSize) + 1
@@ -170,5 +175,10 @@ export class WidgetContainerDirective {
             widgetIndex: this.widgetIndex(),
             container: newContainer
         });
+    }
+
+    height(): Signal<number> {
+            return computed(() => this.cellSize() * this.widgetContainer().size.rowSpan
+        )
     }
 }

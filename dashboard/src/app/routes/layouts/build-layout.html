@@ -1,5 +1,5 @@
-<div >
-    <grid-container
+<div>
+    <grid-container #gridContainer
         [gridRows]="selectedLayout().gridSize.gridRows"
         [gridColumns]="selectedLayout().gridSize.gridColumns"
         [displayGrid]="true" class="w-full">
@@ -18,7 +18,7 @@
                         <mat-icon class="small-icon">south_east</mat-icon>
                     </div>
                 }
-                <ng-container [ngComponentOutlet]="item.el" />
+                <ng-container [ngComponentOutlet]="item.widgetPreview" />
             </div>
         }
     </grid-container>

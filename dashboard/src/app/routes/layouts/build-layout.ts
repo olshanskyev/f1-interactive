@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgComponentOutlet } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { WidgetFactory,  } from '@core/services/widget-factory';
 import { GridContainerComponent, SelectWidgetDialog, WidgetContainerDirective, WidgetResizeHandleDirective } from '@shared';
@@ -42,7 +42,7 @@ export class BuildLayoutComponent {
     private loadWidgets(layout: Layout) {
         const toDisplay: DisplayWidget[] = layout.widgets.map(item => {
             const widget = this.widgetFactory.getWidgetByType(item.type);
-            return {...item, el: widget!.widgetPreview};
+            return {...item, ...widget!};
         });
         this.displayWidgets.set(toDisplay);
     }

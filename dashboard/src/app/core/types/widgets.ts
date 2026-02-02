@@ -4,13 +4,15 @@ export interface WidgetPosition {colStart: number, rowStart: number}
 export interface WidgetSize { colSpan: number, rowSpan: number }
 
 export interface WidgetContainer {
-    position: WidgetPosition
-    size: WidgetSize
+    position: WidgetPosition,
+    size: WidgetSize,
 }
 
 export interface Widget {
     type: WidgetType,
     defaultSizes: [WidgetSize | 'fullscreen'],
+    draggable: boolean,
+    resizable: boolean,
     widgetView: Type<any>,
     widgetPreview: Type<any>,
     widgetThumb: Type<any>
@@ -35,21 +37,18 @@ export const LayoutGrids = {
 export enum WidgetType
 {
     SessionInfoWidget = 'SessionInfoWidget',
-    VideoPlayerWidget = 'VideoPlayerWidget'
+    VideoPlayerWidget = 'VideoPlayerWidget',
+    WeatherWidget = 'WeatherWidget'
 }
 
 export interface LayoutWidget {
     type: WidgetType,
     position: WidgetPosition,
-    size: WidgetSize,
-    draggable: boolean,
-    resizable: boolean
+    size: WidgetSize
 }
 
 
-export type DisplayWidget = LayoutWidget & {
-    el: Type<any>,
-}
+export type DisplayWidget = LayoutWidget & Widget;
 
 export interface Layout {
     layoutName: string;
