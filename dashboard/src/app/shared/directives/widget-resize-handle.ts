@@ -13,6 +13,7 @@ import { Point } from '@angular/cdk/drag-drop';
 export class WidgetResizeHandleDirective {
 
     @Host() private widgetDirective = inject(WidgetContainerDirective);
+    cellSize = this.widgetDirective.cellSize;
 
     private renderer = inject(Renderer2);
     private initialMousePosition: Point = { x: 0, y: 0 };
@@ -66,15 +67,18 @@ export class WidgetResizeHandleDirective {
         const client = this.getMousePosition(event);
         const dx = client.x - this.initialMousePosition.x;
         const dy = client.y - this.initialMousePosition.y;
-        const colDelta = Math.round(dx / this.widgetDirective.parentGrid.gridCellSize());
-        const rowDelta = Math.round(dy / this.widgetDirective.parentGrid.gridCellSize());
 
-        const parentGrid = this.widgetDirective.parentGrid;
+        const colDelta = Math.round(dx / this.cellSize());
+        const rowDelta = Math.round(dy / this.cellSize());
+
+        //const parentGrid = this.widgetDirective.parentGrid;
         const widgetContainer = this.widgetDirective.widgetContainer();
         let newColSpan = Math.max(1, this.initialSize.colSpan + colDelta);
         let newRowSpan = Math.max(1, this.initialSize.rowSpan + rowDelta);
-        const maxColSpan = parentGrid.gridColumns() - widgetContainer.position.colStart + 1;
-        const maxRowSpan = parentGrid.gridRows() - widgetContainer.position.rowStart + 1;
+        const maxColSpan = this.widgetDirective.gridColumns() -
+            widgetContainer.position.colStart + 1;
+        const maxRowSpan = this.widgetDirective.gridRows() -
+            widgetContainer.position.rowStart + 1;
         newColSpan = Math.min(newColSpan, maxColSpan);
         newRowSpan = Math.min(newRowSpan, maxRowSpan);
 
@@ -84,7 +88,7 @@ export class WidgetResizeHandleDirective {
     }
 
 
-    private onResizeEnd(event?: MouseEvent | TouchEvent) {
+    private onResizeEnd() {
         this.widgetDirective.removeShadow();
         if (this.isResizing) {
             this.isResizing = false;

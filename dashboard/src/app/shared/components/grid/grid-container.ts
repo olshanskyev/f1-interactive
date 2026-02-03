@@ -23,7 +23,12 @@ export class GridContainerComponent implements AfterViewInit, OnDestroy {
     readonly gridRows = input(18);
     readonly displayGrid = input(false);
 
-    gridCellSize = signal(0);
+    private gridCellSize = signal(0);
+
+    cellSize() {
+        return this.gridCellSize.asReadonly();
+    }
+
     private resizeObserver!: ResizeObserver;
     private readonly fullScreenService = inject(FullScreenServcie);
     isFullScreen = this.fullScreenService.isFullScreen();

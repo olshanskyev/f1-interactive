@@ -1,0 +1,55 @@
+<div class="carousel-container" carouselContainer>
+  <div class="carousel-track" carouselTrack [speed]="0.6" [loopPauseMs]="0">
+
+    <div class="carousel-item" carouselItem>
+      <mat-icon class="weather-icon text-f1-red">thermostat</mat-icon>
+      <div class="d-flex flex-col align-items-center">
+        <p class="m-0 f-s-14 line-height-1">{{ weatherData()?.AirTemp ?? '0'}}</p>
+        <p class="m-0 f-s-12 text-color-second line-height-1">Air</p>
+      </div>
+    </div>
+
+    <div class="carousel-item" carouselItem>
+      <mat-icon class="weather-icon text-f1-yellow">thermostat</mat-icon>
+      <div class="d-flex flex-col align-items-center">
+        <p class="m-0 f-s-14 line-height-1">{{ weatherData()?.TrackTemp ?? '0' }}</p>
+        <p class="m-0 f-s-12 text-color-second line-height-1">Track</p>
+      </div>
+    </div>
+
+    <div class="carousel-item" carouselItem>
+      <mat-icon class="weather-icon">
+        {{ conditionIcon() || 'wb_cloudy' }}
+      </mat-icon>
+      <div class="d-flex flex-col align-items-center">
+        <p class="m-0 f-s-14 line-height-1">{{ condition() }}</p>
+        <p class="m-0 f-s-12 text-color-second line-height-1">Condition</p>
+      </div>
+    </div>
+
+    <div class="carousel-item" carouselItem>
+      <mat-icon class="weather-icon text-f1-blue">water_drop</mat-icon>
+      <div class="d-flex flex-col align-items-center">
+        <p class="m-0 f-s-14 line-height-1">{{ weatherData()?.Humidity ?? '0'}}</p>
+        <p class="m-0 f-s-12 text-color-second line-height-1">Humidity</p>
+      </div>
+    </div>
+
+    <div class="carousel-item" carouselItem>
+      <mat-icon class="weather-icon">speed</mat-icon>
+      <div class="d-flex flex-col align-items-center">
+        <p class="m-0 f-s-14 line-height-1">{{ weatherData()?.Pressure ?? '0'}}</p>
+        <p class="m-0 f-s-12 text-color-second line-height-1">Pressure</p>
+      </div>
+    </div>
+
+    <div class="carousel-item" carouselItem>
+      <mat-icon class="weather-icon text-blue-80">air</mat-icon>
+      <div class="d-flex flex-col align-items-center">
+        <p class="m-0 f-s-14 line-height-1">{{ weatherData()?.WindSpeed ?? '0'}} km/h</p>
+        <p class="m-0 f-s-12 text-color-second line-height-1">Wind | {{ windDirection() }}</p>
+      </div>
+    </div>
+
+  </div>
+</div>

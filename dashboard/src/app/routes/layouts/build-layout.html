@@ -1,24 +1,24 @@
-<div >
-    <grid-container
+<div>
+    <grid-container #gridContainer
         [gridRows]="selectedLayout().gridSize.gridRows"
         [gridColumns]="selectedLayout().gridSize.gridColumns"
         [displayGrid]="true" class="w-full">
         @for (item of displayWidgets(); track $index) {
-            <div class="widget" [class]="(item.draggable)?'draggable':''" [widgetContainer]= "{
+            <div class="widget" [class]="(!item.fixed)?'draggable':''" [widgetContainer]= "{
                     position: item.position,
                     size: item.size
                 }"
                 [widgetIndex]="$index"
                 cdkDrag
-                [cdkDragDisabled]="!item.draggable"
+                [cdkDragDisabled]="item.fixed"
                 (widgetViewChanged)="onUpdateWidgetView($event)"
             >
-                @if (item.resizable) {
+                @if (!item.fixed) {
                     <div widgetResizeHandle class="resize-handle">
                         <mat-icon class="small-icon">south_east</mat-icon>
                     </div>
                 }
-                <ng-container [ngComponentOutlet]="item.el" />
+                <ng-container [ngComponentOutlet]="item.widgetPreview" />
             </div>
         }
     </grid-container>
