@@ -1,19 +1,18 @@
-import { AfterViewInit, ContentChild, Directive, ElementRef, OnDestroy } from '@angular/core';
+import { AfterViewInit, ContentChild, Directive, ElementRef, inject, OnDestroy } from '@angular/core';
 import { CarouselTrackDirective } from './carousel-track';
 
 @Directive({
   selector: '[carouselContainer]',
   standalone: true,
   host: {
-    'style': 'position: relative; overflow-x: hidden; overflow-y: hidden;',
+    style: 'position: relative; overflow-x: hidden; overflow-y: hidden;',
   },
 })
 export class CarouselContainerDirective implements AfterViewInit, OnDestroy {
   @ContentChild(CarouselTrackDirective) track!: CarouselTrackDirective;
 
   private resizeObserver: ResizeObserver | null = null;
-
-  constructor(private el: ElementRef<HTMLElement>) {}
+  private el = inject(ElementRef<HTMLElement>);
 
   ngAfterViewInit() {
     this.startCarouselIfNeeded();
@@ -37,9 +36,7 @@ export class CarouselContainerDirective implements AfterViewInit, OnDestroy {
     if (!trackEl) return;
 
     if (trackEl.scrollWidth > container.clientWidth) {
-      this.track.startAnimation(container.clientWidth);
-    } else {
-      trackEl.style.transform = 'translateX(0)';
+      this.track.startAnimation();
     }
   }
 }

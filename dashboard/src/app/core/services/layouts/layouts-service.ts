@@ -16,17 +16,20 @@ export class LayoutsService {
             {
                 type: WidgetType.VideoPlayerWidget,
                 size: {colSpan: 32, rowSpan: 18},
-                position: {colStart: 1, rowStart: 1}
+                position: {colStart: 1, rowStart: 1},
+                fixed: true
             },
             {
                 type: WidgetType.SessionInfoWidget,
                 position: {colStart: 2, rowStart: 10},
-                size: {colSpan: 6, rowSpan: 2}
+                size: {colSpan: 6, rowSpan: 2},
+                fixed: false
             },
             {
                 type: WidgetType.WeatherWidget,
                 position: {colStart: 2, rowStart: 2},
-                size: {colSpan: 14, rowSpan: 2}
+                size: {colSpan: 14, rowSpan: 2},
+                fixed: false
             }
         ],
     };
@@ -38,7 +41,8 @@ export class LayoutsService {
             {
                 type: WidgetType.VideoPlayerWidget,
                 size: {colSpan: 32, rowSpan: 18},
-                position: {colStart: 1, rowStart: 1}
+                position: {colStart: 1, rowStart: 1},
+                fixed: true
             }
         ],
     };
@@ -50,7 +54,8 @@ export class LayoutsService {
             {
                 type: WidgetType.VideoPlayerWidget,
                 size: {colSpan: 16, rowSpan: 9},
-                position: {colStart: 1, rowStart: 1}
+                position: {colStart: 1, rowStart: 1},
+                fixed: true
             }
         ],
     };

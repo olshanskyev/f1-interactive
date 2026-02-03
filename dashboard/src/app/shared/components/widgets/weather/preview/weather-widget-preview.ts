@@ -1,8 +1,7 @@
-import { AfterViewInit, Component, effect, Host, inject} from '@angular/core';
+import { Component} from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { WeatherWidget } from '../weather-widget';
 import { WeatherData } from '@core/types/f1types';
-import { WidgetContainerDirective } from '@shared/directives';
 
 
 @Component({
@@ -13,7 +12,7 @@ import { WidgetContainerDirective } from '@shared/directives';
     ],
     template: `
         <div class="widget-preview-container">
-                <weather-widget [weatherData]="weatherData"></weather-widget>
+                <weather-widget [weatherData]="weatherData" />
         </div>
     `
 })

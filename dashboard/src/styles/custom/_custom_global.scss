@@ -50,17 +50,17 @@
 }
 
 .carousel-track {
-  gap: 4px;
+  gap: 0.5rem;
   align-items: center;
   justify-content: space-around;
-  white-space: nowrap;
   height: 100%;
+  white-space: nowrap;
 }
 
 .carousel-item {
   flex-direction: column;
-  align-items: center;
   gap: 4px;
+  align-items: center;
 }
 
 

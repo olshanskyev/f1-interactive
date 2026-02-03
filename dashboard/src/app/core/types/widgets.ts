@@ -8,11 +8,9 @@ export interface WidgetContainer {
     size: WidgetSize,
 }
 
-export interface Widget {
+export interface WidgetComponent {
     type: WidgetType,
     defaultSizes: [WidgetSize | 'fullscreen'],
-    draggable: boolean,
-    resizable: boolean,
     widgetView: Type<any>,
     widgetPreview: Type<any>,
     widgetThumb: Type<any>
@@ -44,11 +42,12 @@ export enum WidgetType
 export interface LayoutWidget {
     type: WidgetType,
     position: WidgetPosition,
-    size: WidgetSize
+    size: WidgetSize,
+    fixed: boolean
 }
 
 
-export type DisplayWidget = LayoutWidget & Widget;
+export type DisplayWidget = LayoutWidget & WidgetComponent;
 
 export interface Layout {
     layoutName: string;

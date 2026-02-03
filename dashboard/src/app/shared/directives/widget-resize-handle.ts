@@ -75,8 +75,10 @@ export class WidgetResizeHandleDirective {
         const widgetContainer = this.widgetDirective.widgetContainer();
         let newColSpan = Math.max(1, this.initialSize.colSpan + colDelta);
         let newRowSpan = Math.max(1, this.initialSize.rowSpan + rowDelta);
-        const maxColSpan = this.widgetDirective.gridColumns() - widgetContainer.position.colStart + 1;
-        const maxRowSpan = this.widgetDirective.gridRows() - widgetContainer.position.rowStart + 1;
+        const maxColSpan = this.widgetDirective.gridColumns() -
+            widgetContainer.position.colStart + 1;
+        const maxRowSpan = this.widgetDirective.gridRows() -
+            widgetContainer.position.rowStart + 1;
         newColSpan = Math.min(newColSpan, maxColSpan);
         newRowSpan = Math.min(newRowSpan, maxRowSpan);
 

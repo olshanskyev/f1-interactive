@@ -21,8 +21,8 @@
     position: absolute;
     right: 0;
     bottom: 0;
-    display: grid;
     z-index:50;
+    display: none;
     width: calc(var(--small-icons-size) * 2);
     height: calc(var(--small-icons-size) * 2);
     cursor: nwse-resize;
@@ -32,5 +32,13 @@
         margin: auto;
         font-weight: 600;
     }
+}
+
+.widget:hover .resize-handle {
+    display: grid;
+}
+
+.resize-handle:active{
+    display: grid;
 }
 

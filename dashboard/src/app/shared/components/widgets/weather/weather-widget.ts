@@ -9,7 +9,12 @@ import { CarouselContainerDirective, CarouselItemDirective, CarouselTrackDirecti
   selector: 'weather-widget',
   templateUrl: './weather-widget.html',
   styleUrl: './weather-widget.scss',
-  imports: [MatIconModule, CarouselTrackDirective, CarouselContainerDirective, CarouselItemDirective],
+  imports: [
+    MatIconModule,
+    CarouselTrackDirective,
+    CarouselContainerDirective,
+    CarouselItemDirective
+  ],
 })
 export class WeatherWidget {
 

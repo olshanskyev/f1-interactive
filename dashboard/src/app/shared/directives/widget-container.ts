@@ -179,6 +179,6 @@ export class WidgetContainerDirective {
 
     height(): Signal<number> {
             return computed(() => this.cellSize() * this.widgetContainer().size.rowSpan
-        )
+        );
     }
 }
