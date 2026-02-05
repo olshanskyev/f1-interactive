@@ -1,6 +1,7 @@
 
 .widget {
     position: relative;
+    container-type: size;
     opacity: 0.8;
 }
 
@@ -23,13 +24,17 @@
     bottom: 0;
     z-index:50;
     display: none;
-    width: calc(var(--small-icons-size) * 2);
-    height: calc(var(--small-icons-size) * 2);
+    width: clamp(min(100cqh, 1.5rem), 50cqh, calc(var(--small-icons-size) * 2));
+    height: clamp(min(100cqh, 1.5rem), 50cqh, calc(var(--small-icons-size) * 2));
+    container-type: size;
     cursor: nwse-resize;
     background-color: var(--mat-sys-inverse-primary);
 
     mat-icon {
+        width: 50cqh !important;
+        height: 50cqh !important;
         margin: auto;
+        font-size: 50cqh !important;
         font-weight: 600;
     }
 }
@@ -40,5 +45,12 @@
 
 .resize-handle:active{
     display: grid;
+}
+
+.tools-panel {
+    position: absolute;
+    top: calc(100vh - 10rem);
+    right: 1rem;
+    z-index: 100;
 }
 

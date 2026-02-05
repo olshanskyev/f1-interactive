@@ -1,19 +1,20 @@
+
 <div class="carousel-container" carouselContainer>
   <div class="carousel-track" carouselTrack [speed]="0.6" [loopPauseMs]="0">
 
     <div class="carousel-item" carouselItem>
       <mat-icon class="weather-icon text-f1-red">thermostat</mat-icon>
       <div class="d-flex flex-col align-items-center">
-        <p class="m-0 f-s-14 line-height-1">{{ weatherData()?.AirTemp ?? '0'}}</p>
-        <p class="m-0 f-s-12 text-color-second line-height-1">Air</p>
+        <p class="value">{{ weatherData()?.AirTemp ?? '0'}}</p>
+        <p class="subline">{{ 'weather.air' | translate }}</p>
       </div>
     </div>
 
     <div class="carousel-item" carouselItem>
       <mat-icon class="weather-icon text-f1-yellow">thermostat</mat-icon>
       <div class="d-flex flex-col align-items-center">
-        <p class="m-0 f-s-14 line-height-1">{{ weatherData()?.TrackTemp ?? '0' }}</p>
-        <p class="m-0 f-s-12 text-color-second line-height-1">Track</p>
+        <p class="value">{{ weatherData()?.TrackTemp ?? '0' }}</p>
+        <p class="subline">{{ 'weather.track' | translate }}</p>
       </div>
     </div>
 
@@ -22,34 +23,36 @@
         {{ conditionIcon() || 'wb_cloudy' }}
       </mat-icon>
       <div class="d-flex flex-col align-items-center">
-        <p class="m-0 f-s-14 line-height-1">{{ condition() }}</p>
-        <p class="m-0 f-s-12 text-color-second line-height-1">Condition</p>
+        <p class="value">{{ condition() | translate}}</p>
+        <p class="subline">{{ 'weather.condition' | translate }}</p>
       </div>
     </div>
 
     <div class="carousel-item" carouselItem>
       <mat-icon class="weather-icon text-f1-blue">water_drop</mat-icon>
       <div class="d-flex flex-col align-items-center">
-        <p class="m-0 f-s-14 line-height-1">{{ weatherData()?.Humidity ?? '0'}}</p>
-        <p class="m-0 f-s-12 text-color-second line-height-1">Humidity</p>
+        <p class="value">{{ weatherData()?.Humidity ?? '0'}}</p>
+        <p class="subline">{{ 'weather.humidity' | translate }}</p>
       </div>
     </div>
 
     <div class="carousel-item" carouselItem>
       <mat-icon class="weather-icon">speed</mat-icon>
       <div class="d-flex flex-col align-items-center">
-        <p class="m-0 f-s-14 line-height-1">{{ weatherData()?.Pressure ?? '0'}}</p>
-        <p class="m-0 f-s-12 text-color-second line-height-1">Pressure</p>
+        <p class="value">{{ weatherData()?.Pressure ?? '0'}}</p>
+        <p class="subline">{{ 'weather.pressure' | translate }}</p>
       </div>
     </div>
 
     <div class="carousel-item" carouselItem>
       <mat-icon class="weather-icon text-blue-80">air</mat-icon>
       <div class="d-flex flex-col align-items-center">
-        <p class="m-0 f-s-14 line-height-1">{{ weatherData()?.WindSpeed ?? '0'}} km/h</p>
-        <p class="m-0 f-s-12 text-color-second line-height-1">Wind | {{ windDirection() }}</p>
+        <p class="value">{{ weatherData()?.WindSpeed ?? '0'}} km/h</p>
+        <p class="subline">{{ 'weather.wind' | translate }} | {{ windDirection() }}</p>
       </div>
     </div>
 
   </div>
 </div>
+
+

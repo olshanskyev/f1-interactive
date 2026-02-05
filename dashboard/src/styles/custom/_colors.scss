@@ -1,25 +1,31 @@
 :root {
-    --pit-stop-color: #9da3ff
+    --pit-stop-color: #9da3ff;
+    --second-color: var(--mat-sys-outline);
+    --inactive-color: var(--mat-sys-outline-variant);
 }
 
 .text-color-inactive {
-  color: var(--mat-sys-outline-variant) !important;
+  color: var(--inactive-color) !important;
 }
 
 .border-color-inactive {
-  border-color: var(--mat-sys-outline-variant) !important;
+  border-color: var(--inactive-color) !important;
 }
 
 .bg-color-inactive {
-  background-color: var(--mat-sys-outline-variant) !important;
+  background-color: var(--inactive-color) !important;
 }
 
 .text-color-second {
-  color: var(--mat-sys-outline) !important;
+  color: var(--second-color) !important;
+}
+
+.border-color-second {
+  border-color: var(--second-color) !important;
 }
 
 .bg-color-second {
-  background-color: var(--mat-sys-outline) !important;
+  background-color: var(--second-color) !important;
 }
 
 .text-color-pit {
@@ -28,4 +34,8 @@
 
 .border-color-pit {
   border-color: var(--pit-stop-color) !important;
+}
+
+.bg-color-pit {
+  background-color: var(--pit-stop-color) !important;
 }

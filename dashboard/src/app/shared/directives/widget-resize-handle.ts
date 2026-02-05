@@ -71,7 +71,6 @@ export class WidgetResizeHandleDirective {
         const colDelta = Math.round(dx / this.cellSize());
         const rowDelta = Math.round(dy / this.cellSize());
 
-        //const parentGrid = this.widgetDirective.parentGrid;
         const widgetContainer = this.widgetDirective.widgetContainer();
         let newColSpan = Math.max(1, this.initialSize.colSpan + colDelta);
         let newRowSpan = Math.max(1, this.initialSize.rowSpan + rowDelta);
@@ -97,7 +96,9 @@ export class WidgetResizeHandleDirective {
             this.mouseUpListener?.();
             this.touchMoveListener?.();
             this.touchEndListener?.();
-
+            if (this.newSize.colSpan < 0 || this.newSize.rowSpan < 0) {
+                return;
+            }
             this.widgetDirective.widgetViewChanged.emit({
                  widgetIndex: this.widgetDirective.widgetIndex(),
                  container: {

@@ -1,6 +1,7 @@
 
 import { CdkDragEnd, CdkDragMove, CdkDragStart, Point } from '@angular/cdk/drag-drop';
 import { computed, Directive, effect, ElementRef, Host, inject, input, output, Renderer2, Signal } from '@angular/core';
+import { calcGridOffset } from '@core/lib/offsets';
 import { WidgetContainer, WidgetPosition } from '@core/types/widgets';
 import { GridContainerComponent } from '@shared/components';
 
@@ -68,7 +69,7 @@ export class WidgetContainerDirective {
     }
 
     private containerOffset = { x: 0, y: 0};
-    private calcParentContainerOffset() {
+    /*private calcParentContainerOffset() {
         // Get the container's position on the screen
         const containerRect = this.parentGrid.backgroundGrid.nativeElement.getBoundingClientRect();
 
@@ -86,7 +87,7 @@ export class WidgetContainerDirective {
             x: containerRect.left + containerOffsetX,
             y: containerRect.top + containerOffsetY
         };
-    }
+    }*/
 
     private dragOffset = { x: 0, y: 0 };
     private calcDragOffset(nativeEvent: MouseEvent | TouchEvent, rect: any) {
@@ -110,7 +111,7 @@ export class WidgetContainerDirective {
         this.displayShadow(containerToDisplay);
         this.calcDragOffset(event.event,
             event.source.element.nativeElement.getBoundingClientRect());
-        this.calcParentContainerOffset();
+        this.containerOffset = calcGridOffset(this.parentGrid);
     }
 
     private computeSnap(event: CdkDragMove): Point {

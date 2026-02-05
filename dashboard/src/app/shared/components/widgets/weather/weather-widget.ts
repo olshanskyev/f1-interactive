@@ -1,40 +1,47 @@
-import { AfterViewInit, Component, effect, Host, inject, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { WeatherData } from '@core/types/f1types';
-import { CarouselContainerDirective, CarouselItemDirective, CarouselTrackDirective, WidgetContainerDirective } from '@shared/directives';
-
-
+import {
+  CarouselContainerDirective, CarouselItemDirective, CarouselTrackDirective,
+} from '@shared/directives';
+import { Widget } from '../widget';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'weather-widget',
   templateUrl: './weather-widget.html',
   styleUrl: './weather-widget.scss',
+  host: {
+        '[style.--dynamic-height.px]': '(dynamicHeight && dynamicHeight() > 0)? dynamicHeight() : defaultHeight',
+        '[style.--default-height.px]': 'defaultHeight',
+  },
   imports: [
     MatIconModule,
     CarouselTrackDirective,
     CarouselContainerDirective,
-    CarouselItemDirective
+    CarouselItemDirective,
+    TranslateModule
   ],
 })
-export class WeatherWidget {
+export class WeatherWidget extends Widget {
 
-  @Host() container = inject(WidgetContainerDirective);
-  height = this.container.height();
-
-  weatherData = input<WeatherData>();
+  readonly defaultHeight = 54;
+  presetWeatherData = input<WeatherData | undefined>(undefined);
+  weatherData = computed(() => (this.presetWeatherData())? this.presetWeatherData()
+    : this.liveService.getWeatherDataSignal()());
 
   conditionIcon() {
     return (Number(this.weatherData()?.Rainfall)) ? 'rainy' : 'sunny';
   }
 
   condition() {
-    return (Number(this.weatherData()?.Rainfall)) ? 'Rain' : 'No rain';
+    return (Number(this.weatherData()?.Rainfall)) ? 'weather.rain' : 'weather.no_rain';
   }
 
   windDirection() {
     // convert wind direction for example from 84 into NE 84°
     const deg = Number(this.weatherData()?.WindDirection);
-    if (!deg) return;
+    if (isNaN(deg)) return;
     const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'];
     const idx = Math.round(deg / 45) % 8;
     return `${directions[idx]} ${deg}°`;

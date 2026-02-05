@@ -64,5 +64,21 @@
   "create_layout": "Create Layout",
   "layout_presets": "Layout Presets",
   "my_layouts": "My Layouts",
-  "nothing_found": "Nothing found"
+  "nothing_found": "Nothing found",
+  "widgets": "Widgets",
+  "weather": {
+    "air": "Air",
+    "track": "Track",
+    "condition": "Condition",
+    "humidity": "Humidity",
+    "pressure": "Pressure",
+    "wind": "Wind",
+    "rain": "Rain",
+    "no_rain": "No rain"
+  },
+  "widget": {
+    "VideoPlayerWidget": "Video Player",
+    "WeatherWidget": "Weather",
+    "SessionInfoWidget": "Session Info"
+  }
 }

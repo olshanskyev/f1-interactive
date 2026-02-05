@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { tap } from 'rxjs';
 import { SseClient } from 'ngx-sse-client';
-import { AvailableSignalsType, StateHandler } from './state/state-handler';
+import { StateHandler } from './state/state-handler';
 
 export interface UpdateEventRecord {
   className: string;
@@ -59,8 +59,12 @@ export class LiveService {
     return this.stateHandler.updateSignals['TimingAppData'].asReadonly();
   }
 
-   getTimingStatsSignal() {
+  getTimingStatsSignal() {
     return this.stateHandler.updateSignals['TimingStats'].asReadonly();
+  }
+
+  getWeatherDataSignal() {
+    return this.stateHandler.updateSignals['WeatherData'].asReadonly();
   }
 
 

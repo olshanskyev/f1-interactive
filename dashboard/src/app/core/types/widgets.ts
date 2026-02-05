@@ -10,10 +10,10 @@ export interface WidgetContainer {
 
 export interface WidgetComponent {
     type: WidgetType,
-    defaultSizes: [WidgetSize | 'fullscreen'],
+    defaultSizes: [WidgetSize],
     widgetView: Type<any>,
     widgetPreview: Type<any>,
-    widgetThumb: Type<any>
+    widgetThumb: string
 }
 
 export interface LayoutGridSize {

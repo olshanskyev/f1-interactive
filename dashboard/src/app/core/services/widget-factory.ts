@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { WidgetComponent, WidgetType } from '@core/types/widgets';
-import { SessionInfoWidget, SessionInfoWidgetThumb, VideoPlayerWidget, WeatherWidget, WeatherWidgetPreview, WeatherWidgetThumb } from '@shared';
+import { SessionInfoWidget, VideoPlayerWidget, WeatherWidget, WeatherWidgetPreview } from '@shared';
 import { SessionInfoWidgetPreview } from '@shared/components/widgets/session-info/preview/session-info-widget-preview';
 import { VideoPlayerWidgetPreview } from '@shared/components/widgets/video/preview/video-player-widget-preview';
-import { VideoPlayerWidgetThumb } from '@shared/components/widgets/video/thumb/video-player-widget-thumb';
 
 @Injectable({
     providedIn: 'root'
@@ -13,24 +12,24 @@ export class WidgetFactory {
     private widgets = new Map<WidgetType, WidgetComponent>([
         [WidgetType.VideoPlayerWidget, {
             type: WidgetType.VideoPlayerWidget,
-            defaultSizes: ['fullscreen'],
+            defaultSizes: [{colSpan: 16, rowSpan: 9}],
             widgetView: VideoPlayerWidget,
             widgetPreview: VideoPlayerWidgetPreview,
-            widgetThumb: VideoPlayerWidgetThumb,
+            widgetThumb: 'images/thumbs/video-player-widget-thumb.png',
         }],
         [WidgetType.SessionInfoWidget, {
             type: WidgetType.SessionInfoWidget,
             defaultSizes: [{colSpan: 6, rowSpan: 2}],
             widgetView: SessionInfoWidget,
             widgetPreview: SessionInfoWidgetPreview,
-            widgetThumb: SessionInfoWidgetThumb
+            widgetThumb: 'images/thumbs/weather-widget-thumb.png',
         }],
         [WidgetType.WeatherWidget, {
             type: WidgetType.WeatherWidget,
             defaultSizes: [{colSpan: 14, rowSpan: 2}],
             widgetView: WeatherWidget,
             widgetPreview: WeatherWidgetPreview,
-            widgetThumb: WeatherWidgetThumb
+            widgetThumb: 'images/thumbs/weather-widget-thumb.png',
         }],
     ]);
 

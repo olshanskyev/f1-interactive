@@ -21,11 +21,13 @@
         </grid-container>
     </div>
 } @else {
+    <weather-widget />
     <leaderboard [driverList]="driverList()"
         [timingData]="timingData()"
         [timingAppData]="timingAppData()"
         [bestLap]="bestLap()"
     />
+
 }
 
 

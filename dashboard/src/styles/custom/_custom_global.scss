@@ -1,6 +1,5 @@
 @use '@angular/material' as mat;
 @use "../grid/breakpoints";
-@use '../../app/shared/directives/widget-container-shadow.scss' as *;
 
 :root {
   --small-icons-size: 18px;
@@ -17,7 +16,7 @@
 }
 
 
-.dynamic-font-container {
+.dynamic-header-size {
   container-type: inline-size;
 
   h1 {
@@ -40,7 +39,6 @@
   width: var(--small-icons-size) !important;
   height: var(--small-icons-size) !important;
   font-size: var(--small-icons-size) !important;
-  line-height: var(--small-icons-size) !important;
 }
 
 .widget-preview-container {
@@ -52,15 +50,22 @@
 .carousel-track {
   gap: 0.5rem;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   height: 100%;
   white-space: nowrap;
 }
 
-.carousel-item {
-  flex-direction: column;
-  gap: 4px;
-  align-items: center;
+.widget-shadow-preview {
+  z-index: 1;
+  display: block;
+  grid-row: auto;
+  grid-column: auto;
+  margin: 2px;
+  pointer-events: none;
+  background: var(--shadow-color);
+  border: 2px solid var(--shadow-border-color);
+  border-radius: 6px
 }
+
 
 

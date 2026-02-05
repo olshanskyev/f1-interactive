@@ -1,9 +1,28 @@
-<h2 mat-dialog-title>Widgets</h2>
+<h2 mat-dialog-title
+    cdkDrag
+    cdkDragRootElement=".cdk-overlay-pane"
+    class="d-flex align-items-center gap-8 p-y-8"
+>
+    <mat-icon cdkDragHandle class="drag-handle">drag_indicator</mat-icon>
+    {{'widgets' | translate}}
+</h2>
 
-<div mat-dialog-content class="container">
+<div mat-dialog-content class="container" cdkDropList>
     @for (widget of widgetsMap; track widget[0]) {
-        <div class="thumb-item">
-            <ng-container [ngComponentOutlet]="widget[1].widgetThumb" />
-        </div>
+        <mat-card class="m-0" cdkDrag (cdkDragStarted)="onDragStarted($event, widget[1])" (cdkDragEnded)="onDragEnded($event, widget[0])">
+            <mat-card-content class="thumb-item p-x-4 p-y-0">
+                <img [src]="widget[1].widgetThumb" [alt]="'widget.' + widget[0] | translate"/>
+                <div class="widget-label">{{'widget.' + widget[0] | translate}}</div>
+            </mat-card-content>
+            <div *cdkDragPreview class="m-0 widget-shadow-preview"
+                [ngStyle]="{
+                    width: widgetWidth() + 'px',
+                    height: widgetHeight() + 'px',
+                    maxWidth: widgetWidth() + 'px',
+                    maxHeight: widgetHeight() + 'px'
+                }"
+            >
+            </div>
+        </mat-card>
     }
 </div>

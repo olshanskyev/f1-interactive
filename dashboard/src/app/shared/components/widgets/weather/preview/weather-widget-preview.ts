@@ -12,7 +12,7 @@ import { WeatherData } from '@core/types/f1types';
     ],
     template: `
         <div class="widget-preview-container">
-                <weather-widget [weatherData]="weatherData" />
+                <weather-widget [presetWeatherData]="weatherData" />
         </div>
     `
 })

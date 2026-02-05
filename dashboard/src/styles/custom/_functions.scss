@@ -1,0 +1,3 @@
+@function min-responsive($r, $default, $dynamic) {
+    @return min(calc(#{$r} * #{$dynamic}), calc(#{$r} * #{$default}));
+}

@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
         MatIconModule
     ],
     template: `
-        <div class="h-full bg-color-inactive d-flex justify-content-center dynamic-font-container">
+        <div class="h-full bg-color-inactive d-flex justify-content-center dynamic-header-size">
                 <h1 class="d-flex align-items-center gap-8">
                     <mat-icon>video_camera_back</mat-icon>
                     Video

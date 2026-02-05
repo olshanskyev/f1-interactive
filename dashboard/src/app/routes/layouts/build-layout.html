@@ -15,14 +15,16 @@
             >
                 @if (!item.fixed) {
                     <div widgetResizeHandle class="resize-handle">
-                        <mat-icon class="small-icon">south_east</mat-icon>
+                        <mat-icon>south_east</mat-icon>
                     </div>
                 }
                 <ng-container [ngComponentOutlet]="item.widgetPreview" />
             </div>
         }
     </grid-container>
+    <tools-panel [cellSize]="gridContainer.cellSize()()" cdkDrag class="tools-panel" (widgetAdded)="onWidgetAdded($event)" />
 </div>
+
 
 
 
