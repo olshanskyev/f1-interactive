@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { ContaineredWidget } from '../../containered-widget';
 
 @Component({
     selector: 'video-player-widget-preview',
@@ -15,6 +16,6 @@ import { MatIconModule } from '@angular/material/icon';
         </div>
     `
 })
-export class VideoPlayerWidgetPreview {
+export class VideoPlayerWidgetPreview extends ContaineredWidget {
 
 }

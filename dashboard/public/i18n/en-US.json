@@ -40,6 +40,9 @@
   "confirm_delete": "Confirm delete?",
   "ok": "Ok",
   "close": "Close",
+  "save": "Save",
+  "cancel": "Cancel",
+  "settings": "Settings",
   "profile": "Profile",
   "edit_profile": "Edit profile",
   "logout": "logout",
@@ -59,11 +62,6 @@
   "read_and_agree": "I have read and agree to the terms of service",
   "have_an_account": "Already have an account",
   "restore_defaults": "Restore defaults",
-  "layout_settings": "Layout Settings",
-  "default_layout": "Default Layout",
-  "create_layout": "Create Layout",
-  "layout_presets": "Layout Presets",
-  "my_layouts": "My Layouts",
   "nothing_found": "Nothing found",
   "widgets": "Widgets",
   "weather": {
@@ -79,6 +77,31 @@
   "widget": {
     "VideoPlayerWidget": "Video Player",
     "WeatherWidget": "Weather",
-    "SessionInfoWidget": "Session Info"
+    "SessionInfoWidget": "Session Info",
+    "settings": {
+      "source": "Source",
+      "embedCode": "Embed code",
+      "airTemp": "Air Temperature",
+      "trackTemp": "Track Temperature",
+      "condition": "Condition",
+      "humidity": "Humidity",
+      "pressure": "Pressure",
+      "wind": "Wind"
+    }
+  },
+  "layout": {
+    "layout": "Layout",
+    "layout_name": "Layout Name",
+    "my_layouts": "My Layouts",
+    "layout_settings": "Layout Settings",
+    "default_layout": "Default Layout",
+    "create_layout": "Create Layout",
+    "layout_presets": "Layout Presets",
+    "grid": "Grid",
+    "add_widget": "Add Widget",
+    "grid_size": {
+      "landscape": "Landscape (16:9)",
+      "mobile_portrait": "Mobile Portrait"
+    }
   }
 }

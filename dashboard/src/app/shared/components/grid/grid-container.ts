@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, inject, input, OnDestroy, signal, ViewChild } from '@angular/core';
-import { FullScreenServcie } from '@core';
+import { FullScreenService } from '@core';
 
 
 @Component({
@@ -30,7 +30,7 @@ export class GridContainerComponent implements AfterViewInit, OnDestroy {
     }
 
     private resizeObserver!: ResizeObserver;
-    private readonly fullScreenService = inject(FullScreenServcie);
+    private readonly fullScreenService = inject(FullScreenService);
     isFullScreen = this.fullScreenService.isFullScreen();
     isPortrait = signal<boolean>(false);
 
@@ -43,7 +43,6 @@ export class GridContainerComponent implements AfterViewInit, OnDestroy {
             const availableWidth = entries[0].contentRect.width;
             const availableHeight = window.innerHeight - headerHeight;
 
-            //const cellSize = Math.min((window.innerHeight - headerHeight)/ this.gridRows(), entries[0].contentRect.width / this.gridColumns());
             let cellSize: number;
             this.isPortrait.set(window.innerHeight > window.innerWidth);
             if (this.isPortrait()) { //portrait

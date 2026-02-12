@@ -91,7 +91,7 @@ The application uses Angular Signals for state management. The `live.service.ts`
 
 ### Layouts and Widgets
 
-The dashboard layouts and widgets are currently hardcoded in the `layouts-service.ts` and `widget-factory.ts` respectively. To add a new layout or widget, you need to modify these files.
+The dashboard layouts and widgets are managed by `layouts-service.ts` and `widget-factory.ts` respectively. To add a new widget, you need to modify widget factory.
 
 ### Additional Coding Preferences
 - Keep project dependencies minimal

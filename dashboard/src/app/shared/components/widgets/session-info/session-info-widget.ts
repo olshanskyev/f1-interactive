@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ContaineredWidget } from '../containered-widget';
 
 @Component({
     selector: 'session-info-widget',
@@ -8,6 +9,6 @@ import { Component } from '@angular/core';
 
     ]
 })
-export class SessionInfoWidget {
+export class SessionInfoWidget extends ContaineredWidget {
 
 }

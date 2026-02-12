@@ -3,7 +3,7 @@
 
 :root {
   --small-icons-size: 18px;
-  --shadow-color: rgba(21, 57, 56, 0.18);
+  --shadow-color: rgba(21, 57, 56, 0.4);
   --shadow-border-color: #153938;
 }
 
@@ -31,8 +31,12 @@
   }
 }
 
-.small-button {
+.button-5 {
     @include mat.icon-button-density(-5);
+}
+
+.form-field-5 {
+  @include mat.form-field-density(-5);
 }
 
 .small-icon {
@@ -44,7 +48,7 @@
 .widget-preview-container {
   height: 100%;
   border: 3px solid var(--mat-sys-inverse-primary) !important;
-  border-radius: 0.5rem 0.5rem 0 !important;
+  border-radius: 0.5rem !important;
 }
 
 .carousel-track {
@@ -66,6 +70,12 @@
   border: 2px solid var(--shadow-border-color);
   border-radius: 6px
 }
+
+.static-container-option.mat-mdc-option[aria-disabled="true"] {
+    pointer-events: auto !important;
+}
+
+
 
 
 

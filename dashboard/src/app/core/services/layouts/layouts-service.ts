@@ -1,82 +1,69 @@
-import { Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 
 import { Layout, LayoutGrids, WidgetType } from '@core/types/widgets';
+import { LocalStorageService } from '@shared';
 
 @Injectable({
     providedIn: 'root'
 })
 export class LayoutsService {
 
-    private selectedLayout = signal<Layout | undefined>(undefined);
+    private readonly layoutsKey = 'layouts';
 
-    private readonly customLayout1: Layout = {
-        layoutName: 'FullScreen Video FHD',
-        gridSize: LayoutGrids['landscape'],
-        widgets: [
-            {
-                type: WidgetType.VideoPlayerWidget,
-                size: {colSpan: 32, rowSpan: 18},
-                position: {colStart: 1, rowStart: 1},
-                fixed: true
-            },
-            {
-                type: WidgetType.SessionInfoWidget,
-                position: {colStart: 2, rowStart: 10},
-                size: {colSpan: 6, rowSpan: 2},
-                fixed: false
-            },
-            {
-                type: WidgetType.WeatherWidget,
-                position: {colStart: 2, rowStart: 2},
-                size: {colSpan: 14, rowSpan: 2},
-                fixed: false
-            }
-        ],
-    };
+    private readonly store = inject(LocalStorageService);
+    private selectedLayoutId = signal<string | undefined>(undefined);
 
-    private readonly customLayout2:Layout = {
-        layoutName: 'FullScreen Video FHD Pads',
-        gridSize: LayoutGrids['landscape'],
-        widgets: [
-            {
-                type: WidgetType.VideoPlayerWidget,
-                size: {colSpan: 32, rowSpan: 18},
-                position: {colStart: 1, rowStart: 1},
-                fixed: true
-            }
-        ],
-    };
-
-    private readonly customLayout3:Layout = {
-        layoutName: 'Video on TOP Mobiles',
-        gridSize: LayoutGrids['mobile_portrait'],
-        widgets: [
-            {
-                type: WidgetType.VideoPlayerWidget,
-                size: {colSpan: 16, rowSpan: 9},
-                position: {colStart: 1, rowStart: 1},
-                fixed: true
-            }
-        ],
-    };
-
-    public getCustomLayouts():Layout[] {
-        return [
-            this.customLayout1,
-            this.customLayout2,
-            this.customLayout3
-        ];
+    private generateId() {
+        return Math.random().toString(36).substring(2, 9);
     }
 
-    public selectLayout(layout: Layout | undefined) {
-        this.selectedLayout.set(layout);
+    public createDefaultLayout(): Layout {
+        return {
+            id: this.generateId(),
+            layoutName: 'My Layout',
+            gridSize: LayoutGrids.landscape,
+            widgets: []
+        };
+    }
+
+    public getCustomLayouts(): Layout[] {
+        return (Object.values(this.store.get(this.layoutsKey)) || []);
+    }
+
+    public getLayoutById(id: string): Layout | undefined {
+        const layouts = this.getCustomLayouts();
+        return layouts.find(layout => layout.id === id);
+     }
+
+    public selectLayout(id: string) {
+        this.selectedLayoutId.set(id);
     }
 
     public selectDefaultLayout() {
-        this.selectedLayout.set(undefined);
+        this.selectedLayoutId.set(undefined);
     }
 
     public getSelectedLayout() {
-        return this.selectedLayout.asReadonly();
+        return computed(() => {
+            return (this.selectedLayoutId())
+            ? this.getLayoutById(this.selectedLayoutId()!)
+            : undefined;
+        });
+    }
+
+    public saveLayout(layout: Layout) {
+        const customLayouts = this.getCustomLayouts();
+        const existingIndex = customLayouts.findIndex(l => l.id === layout.id);
+        if (existingIndex !== -1) {
+            customLayouts[existingIndex] = layout;
+        } else {
+            customLayouts.push(layout);
+        }
+        this.store.set(this.layoutsKey, customLayouts);
+    }
+
+    public deleteLayout(id: string) {
+        const customLayouts = this.getCustomLayouts().filter(l => l.id !== id);
+        this.store.set(this.layoutsKey, customLayouts);
     }
 }

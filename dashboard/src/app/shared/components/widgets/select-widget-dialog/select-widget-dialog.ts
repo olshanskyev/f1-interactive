@@ -36,8 +36,8 @@ export class SelectWidgetDialog {
     }
 
     onDragStarted(event: CdkDragStart, widget: WidgetComponent) {
-        this.widgetHeight.set(this.data.cellSize() * widget.defaultSizes[0].rowSpan);
-        this.widgetWidth.set(this.data.cellSize() * widget.defaultSizes[0].colSpan);
+        this.widgetHeight.set(this.data.cellSize() * widget.meta.defaultSizes[0].rowSpan);
+        this.widgetWidth.set(this.data.cellSize() * widget.meta.defaultSizes[0].colSpan);
         this.dialogRef.addPanelClass('invisible-dialog');
     }
 

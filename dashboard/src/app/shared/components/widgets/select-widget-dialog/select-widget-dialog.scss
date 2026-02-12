@@ -39,9 +39,11 @@ mat-card {
     padding-bottom: 2rem;
     font-weight: 600;
     text-align: end;
-    background-color: color-mix(in srgb, var(--mat-sys-surface), transparent 40%);
+    background-color: color-mix(in srgb, var(--mat-sys-surface), transparent 70%);
     border-bottom-right-radius: var(--mat-sys-corner-medium);
     border-bottom-left-radius: var(--mat-sys-corner-medium);
+    backdrop-filter: blur(1px);
+    backdrop-filter: blur(1px);
 }
 
 .invisible-dialog {

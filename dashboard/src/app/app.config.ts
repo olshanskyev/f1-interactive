@@ -32,7 +32,6 @@ import { environment } from '@env/environment';
 import { routes } from './app.routes';
 
 import { LoginService } from '@core/authentication/login.service';
-import { FullscreenOverlayContainer, OverlayContainer } from '@angular/cdk/overlay';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -60,8 +59,6 @@ export const appConfig: ApplicationConfig = {
 
     //ToDo make conditional
     { provide: LiveService, useClass: SimulatorService },
-    // for showing dialogs in fullscreen mode
-    { provide: OverlayContainer, useClass: FullscreenOverlayContainer },
 
     {
       provide: MAT_DATE_LOCALE,

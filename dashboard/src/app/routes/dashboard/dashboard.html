@@ -15,18 +15,16 @@
                     }"
                     [widgetIndex]="$index"
                 >
-                    <ng-container [ngComponentOutlet]="item.widgetView" />
+                    <ng-container [ngComponentOutlet]="item.widgetView" [ngComponentOutletInputs]="{settings: item.settings}"/>
                 </div>
             }
         </grid-container>
     </div>
 } @else {
-    <weather-widget />
-    <leaderboard [driverList]="driverList()"
-        [timingData]="timingData()"
-        [timingAppData]="timingAppData()"
-        [bestLap]="bestLap()"
-    />
+    <div>
+        <weather-widget/>
+        <leaderboard/>
+    </div>
 
 }
 

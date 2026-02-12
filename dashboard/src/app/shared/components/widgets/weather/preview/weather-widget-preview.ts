@@ -1,23 +1,13 @@
-import { Component} from '@angular/core';
+import { Component, signal, Injectable } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { WeatherWidget } from '../weather-widget';
 import { WeatherData } from '@core/types/f1types';
+import { ContaineredWidget } from '../../containered-widget';
+import { LiveService } from '@core/services/live/live.service';
 
-
-@Component({
-    selector: 'weather-widget-preview',
-    imports: [
-        MatIconModule,
-        WeatherWidget
-    ],
-    template: `
-        <div class="widget-preview-container">
-                <weather-widget [presetWeatherData]="weatherData" />
-        </div>
-    `
-})
-export class WeatherWidgetPreview {
-    weatherData: WeatherData = {
+@Injectable()
+class MockLiveService {
+    weatherData = signal<WeatherData>({
         AirTemp: '22',
         TrackTemp: '20',
         Rainfall: '0',
@@ -25,5 +15,26 @@ export class WeatherWidgetPreview {
         Pressure: '1013',
         WindSpeed: '5',
         WindDirection: '91'
-    };
+    });
+    getWeatherDataSignal() {
+        return this.weatherData;
+    }
+}
+
+@Component({
+    selector: 'weather-widget-preview',
+    imports: [
+        MatIconModule,
+        WeatherWidget
+    ],
+    providers: [
+        { provide: LiveService, useClass: MockLiveService }
+    ],
+    template: `
+        <div class="widget-preview-container">
+                <weather-widget [settings]="settings()"/>
+        </div>
+    `
+})
+export class WeatherWidgetPreview extends ContaineredWidget {
 }

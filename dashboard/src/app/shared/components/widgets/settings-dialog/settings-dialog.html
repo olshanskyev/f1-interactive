@@ -1,0 +1,60 @@
+<h2 mat-dialog-title>{{ 'widget.' + data.widgetTitle | translate }} {{ 'settings' | translate }}</h2>
+
+<mat-dialog-content>
+  <form class="settings-form">
+    @for (setting of data.settingsList | keyvalue; track setting.key) {
+      <div class="setting-item">
+
+        <!-- String Input -->
+        @if (setting.value.type === 'string') {
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'widget.settings.' + setting.key | translate }}</mat-label>
+            <input matInput
+                   [(ngModel)]="settings[setting.key]"
+                   [name]="setting.key"
+                   >
+          </mat-form-field>
+        }
+
+        <!-- Number Input -->
+        @if (setting.value.type === 'number') {
+           <mat-form-field appearance="outline">
+            <mat-label>{{ 'widget.settings.' + setting.key | translate }}</mat-label>
+            <input matInput type="number"
+                   [(ngModel)]="settings[setting.key]"
+                   [name]="setting.key">
+          </mat-form-field>
+        }
+
+        <!-- Boolean Checkbox -->
+        @if (setting.value.type === 'boolean') {
+          <mat-checkbox
+              [(ngModel)]="settings[setting.key]"
+              [name]="setting.key">
+            {{ 'widget.settings.' + setting.key | translate }}
+          </mat-checkbox>
+        }
+
+        <!-- Dropdown (Array) -->
+        @if (isOptionList(setting.value.type)) {
+           <mat-form-field appearance="outline">
+            <mat-label>{{ 'widget.settings.' + setting.key | translate }}</mat-label>
+            <mat-select
+                [(ngModel)]="settings[setting.key]"
+                [name]="setting.key">
+              @for (option of asOptionList(setting.value.type); track option) {
+                <mat-option [value]="option">{{ option }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
+
+      </div>
+    }
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="cancel()">{{ 'cancel' | translate }}</button>
+  <button mat-flat-button color="primary" (click)="save()">{{ 'save' | translate }}</button>
+</mat-dialog-actions>

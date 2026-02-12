@@ -6,7 +6,7 @@
   <mat-sidenav-container class="matero-container" autosize autoFocus>
     <mat-sidenav #sidenav class="matero-sidenav"
       [mode]="isOver() ? 'over' : 'side'"
-      [opened]="options().sidenavOpened && !isOver()"
+      [opened]="options().sidenavOpened && !isOver() && !isFullScreen()"
       (openedChange)="onSidenavOpenedChange($event)"
       (closedStart)="onSidenavClosedStart()">
       <app-sidebar
@@ -18,10 +18,11 @@
 
     <mat-sidenav-content #content class="matero-content">
       <app-header
+        [class.hidden]="isFullScreen()"
         [showToggle]="!options().sidenavCollapsed"
         (toggleSidenav)="sidenav.toggle()"
         />
-      <div class="outer-padding">
+      <div [class.outer-padding]="!isFullScreen()">
         <main class="matero-page-content">
           <router-outlet />
         </main>

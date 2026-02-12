@@ -1,10 +1,11 @@
-import { Component,  computed,  effect, input, signal } from '@angular/core';
+import { Component,  computed,  effect, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { DriverList, TimingAppData, TimingData, TimingDataLinesItem } from '@core/types/f1types';
+import { TimingDataLinesItem } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';
 import { LeaderboardDriver } from './leaderboard-driver/leaderboard-driver';
 import { areMapKeySequencesEqual, calculateSequenceChanges } from '@core/lib/arrays_maps';
 import { BestLap } from '@core/types/custom';
+import { ContaineredWidget } from '../containered-widget';
 
 @Component({
   selector: 'leaderboard',
@@ -12,12 +13,32 @@ import { BestLap } from '@core/types/custom';
   styleUrl: './leaderboard.scss',
   imports: [MatIconModule, TranslateModule, LeaderboardDriver, MatIconModule],
 })
-export class Leaderboard {
-  driverList = input<DriverList | undefined>();
-  timingData = input<TimingData | undefined>();
-  timingAppData = input<TimingAppData | undefined>();
+export class Leaderboard extends ContaineredWidget{
+
   timingDataMap = signal<Map<string, TimingDataLinesItem>>(new Map());
-  bestLap = input<BestLap | undefined>();
+  driverList = this.liveService.getDriverListSignal();
+  timingData = this.liveService.getTimingDataSignal();
+  timingAppData = this.liveService.getTimingAppDataSignal();
+  timingStats = this.liveService.getTimingStatsSignal();
+
+  bestLap = computed<BestLap | undefined> (() => {
+      const timingStats = this.timingStats();
+      if (timingStats) {
+        const sorted = Object.entries(timingStats.Lines)
+          .sort(([,a], [,b]) => a.PersonalBestLapTime.Position - b.PersonalBestLapTime.Position);
+        return {
+          driverId: sorted[0][0],
+          value: sorted[0][1].PersonalBestLapTime.Value
+        };
+      } else {
+        return undefined;
+      }
+    }, {equal: this.bestLapIsEqual}
+  );
+
+  private bestLapIsEqual(c : BestLap | undefined, u: BestLap | undefined) {
+    return c?.driverId === u?.driverId && c?.value === u?.value;
+  }
 
   transitionStarted = false;
   movements = signal<Record<string, 'up' | 'down' | null>>({});
@@ -26,6 +47,7 @@ export class Leaderboard {
   });
 
   constructor() {
+    super();
     effect(() => { // for animating driver positions changing
       if (this.timingData()) {
         const interval = setInterval(() => {

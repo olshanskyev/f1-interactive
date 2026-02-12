@@ -1,10 +1,10 @@
-import { Component, computed, input } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { WeatherData } from '@core/types/f1types';
 import {
   CarouselContainerDirective, CarouselItemDirective, CarouselTrackDirective,
 } from '@shared/directives';
-import { Widget } from '../widget';
+import { ContaineredWidget } from '../containered-widget';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -23,12 +23,10 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule
   ],
 })
-export class WeatherWidget extends Widget {
+export class WeatherWidget extends ContaineredWidget {
 
   readonly defaultHeight = 54;
-  presetWeatherData = input<WeatherData | undefined>(undefined);
-  weatherData = computed(() => (this.presetWeatherData())? this.presetWeatherData()
-    : this.liveService.getWeatherDataSignal()());
+  weatherData = this.liveService.getWeatherDataSignal();
 
   conditionIcon() {
     return (Number(this.weatherData()?.Rainfall)) ? 'rainy' : 'sunny';

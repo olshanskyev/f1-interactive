@@ -9,7 +9,7 @@ import { LayoutsService } from '@core';
 import { Layout } from '@core/types/widgets';
 
 @Component({
-  selector: 'app-layouts',
+  selector: 'app-layouts-button',
   templateUrl: './layouts-button.html',
   styleUrl: './layouts-button.scss',
   imports: [MatButtonModule, MatIconModule, MatMenuModule, TranslateModule, MatDividerModule],
@@ -29,21 +29,26 @@ export class LayoutsButton {
   }
 
   onDeleteCustomLayout(layout: Layout) {
+    this.layoutsService.deleteLayout(layout.id);
+    this.customLayouts.set(this.layoutsService.getCustomLayouts());
+    this.activateDefault();
   }
 
   onEditCustomLayout(layout: Layout) {
-    this.layoutsService.selectLayout(layout);
+    this.layoutsService.selectLayout(layout.id);
     this.router.navigateByUrl('/layouts');
   }
 
   onCreateNewLayout(){
-      this.layoutsService.selectLayout(undefined);
+      const layout = this.layoutsService.createDefaultLayout();
+      this.layoutsService.saveLayout(layout);
+      this.layoutsService.selectLayout(layout.id);
       this.router.navigateByUrl('/layouts');
   }
 
 
   activateLayout(layout: Layout) {
-    this.layoutsService.selectLayout(layout);
+    this.layoutsService.selectLayout(layout.id);
   }
 
 }

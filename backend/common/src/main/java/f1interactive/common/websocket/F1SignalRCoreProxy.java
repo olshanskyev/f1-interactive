@@ -1,19 +1,24 @@
 package f1interactive.common.websocket;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.microsoft.signalr.HubConnection;
 import com.microsoft.signalr.HubConnectionBuilder;
 import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class F1SignalRCoreProxy implements F1LiveTimingProxy{
 
     private static final Logger logger = LoggerFactory.getLogger(F1SignalRCoreProxy.class);
     private HubConnection hubConnection;
-
+    private final CompositeDisposable disposables = new CompositeDisposable();
     private final List<String> TOPICS = Arrays.asList(
             "Heartbeat",
             "ExtrapolatedClock",
@@ -36,13 +41,15 @@ public class F1SignalRCoreProxy implements F1LiveTimingProxy{
             "Position.z",
             "ChampionshipPrediction",
             "PitLaneTimeCollection",
+            "AudioStreams",
+            "ContentStreams",
             // Only available after a session?
             "PitStopSeries"
     );
 
     private UpdateStateCallback updateStateCallback;
     private InitialStateCallback initStateMessageCallback;
-
+    private boolean isManualStop = false;
 
     @Override
     public void onInitStateMessage(InitialStateCallback callback) {
@@ -54,6 +61,33 @@ public class F1SignalRCoreProxy implements F1LiveTimingProxy{
         updateStateCallback = callback;
     }
 
+    private void connectAndSubscribe() {
+        disposables.clear();
+        Disposable startDisposable = hubConnection.start()
+            .subscribe(() -> {
+                // successful connection, subscribe
+                disposables.add(hubConnection.invoke(JsonObject.class, "Subscribe", TOPICS)
+                    .subscribe(result -> {
+                        if (initStateMessageCallback != null) {
+                            initStateMessageCallback.callback(result.toString());
+                        }
+                    }, err -> {
+                        logger.error("Subscribe error: {}", err.getMessage());
+                    })
+                );
+            }, err -> {
+                // error by starting, server not responds
+                logger.error("Start error: {}", err.getMessage());
+                reconnectAfterDelay();
+            });
+        disposables.add(startDisposable);
+    }
+
+    private void reconnectAfterDelay() {
+        CompletableFuture.delayedExecutor(5, TimeUnit.SECONDS).execute(this::connectAndSubscribe);
+    }
+
+
     @Override
     public void connect() {
         hubConnection = HubConnectionBuilder.create("wss://livetiming.formula1.com/signalrcore")
@@ -61,27 +95,34 @@ public class F1SignalRCoreProxy implements F1LiveTimingProxy{
                 .build();
 
         hubConnection.on("feed", (type, message, dateTime) ->{
+            if (message == null) return;
+            String event = (message instanceof String)?
+                (String)message : (new Gson()).toJson(message);
+
             if (updateStateCallback != null)
-                updateStateCallback.callback(type,message.toString(),dateTime);
-        }, String.class, JsonObject.class, String.class);
+                updateStateCallback.callback(type,event,dateTime);
+        }, String.class, Object.class, String.class);
 
         hubConnection.onClosed( (ex -> {
             if (ex != null) {
-                ex.printStackTrace();
+                logger.error("Connection closed with error {}", ex.getMessage());
             } else {
-                logger.info("Connection closed");
+                if (isManualStop) {
+                    logger.info("Connection closed by client");
+                } else {
+                    logger.info("Connection closed by server");
+                    reconnectAfterDelay();
+                }
             }
         }));
 
-        hubConnection.start().blockingAwait();
-
-        Single<JsonObject> subscribe = hubConnection.invoke(JsonObject.class, "Subscribe", TOPICS);
-        if (subscribe != null)
-            initStateMessageCallback.callback(subscribe.blockingGet().toString());
+        connectAndSubscribe();
     }
 
     @Override
     public void disconnect() {
+        isManualStop = true;
+        disposables.dispose();
         hubConnection.close();
     }
 }

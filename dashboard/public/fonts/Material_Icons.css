@@ -1,13 +1,12 @@
 @font-face {
-  font-family: 'Material Icons';
+  font-family: 'Material Symbols Rounded';
   font-style: normal;
   font-weight: 400;
-  font-display: block;
-  src: url(./flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2) format('woff2');
+  src: url(./Material_Icons_Rounded.woff2) format('woff2');
 }
 
 .material-icons {
-  font-family: 'Material Icons';
+  font-family: 'Material Symbols Rounded';
   font-weight: normal;
   font-style: normal;
   font-size: 24px;
@@ -19,5 +18,7 @@
   word-wrap: normal;
   direction: ltr;
   font-feature-settings: 'liga';
+  -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
 }
+

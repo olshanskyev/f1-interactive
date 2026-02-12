@@ -1,0 +1,18 @@
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  padding-top: 1rem;
+}
+
+.setting-item {
+  width: 100%;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-dialog-actions {
+  justify-content: flex-end;
+}

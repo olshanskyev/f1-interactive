@@ -2,12 +2,11 @@ import { Component,  ViewEncapsulation, inject, input, output } from '@angular/c
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import screenfull from 'screenfull';
 
 import { Branding } from '../widgets/branding';
 import { TranslateButton } from '../widgets/translate-button';
 import { UserButton } from '../widgets/user-button';
-import { AuthService, FullScreenServcie } from '@core';
+import { AuthService, FullScreenService } from '@core';
 import { Router, RouterLink } from '@angular/router';
 import { LayoutsButton } from '@theme/widgets/layouts-button/layouts-button';
 
@@ -39,10 +38,9 @@ export class Header {
   readonly showBranding = input(false);
   readonly toggleSidenav = output<void>();
 
-  private readonly fullScreenService = inject(FullScreenServcie);
+  private readonly fullScreenService = inject(FullScreenService);
 
   toggleFullscreen() {
-    const element = document.querySelector('.matero-page-content') as HTMLElement;
-    this.fullScreenService.toggleFullScreen(element);
+    this.fullScreenService.toggleFullScreen();
   }
 }

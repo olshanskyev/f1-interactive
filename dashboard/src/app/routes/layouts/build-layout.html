@@ -1,28 +1,61 @@
 <div>
     <grid-container #gridContainer
-        [gridRows]="selectedLayout().gridSize.gridRows"
-        [gridColumns]="selectedLayout().gridSize.gridColumns"
+        [gridRows]="layout()!.gridSize.gridRows"
+        [gridColumns]="layout()!.gridSize.gridColumns"
         [displayGrid]="true" class="w-full">
         @for (item of displayWidgets(); track $index) {
-            <div class="widget" [class]="(!item.fixed)?'draggable':''" [widgetContainer]= "{
+            <div class="widget"
+                [class]="(!item.pinned)?'draggable':''"
+                [class.pinned]="item.pinned"
+                [widgetContainer]= "{
                     position: item.position,
                     size: item.size
                 }"
                 [widgetIndex]="$index"
                 cdkDrag
-                [cdkDragDisabled]="item.fixed"
-                (widgetViewChanged)="onUpdateWidgetView($event)"
+                [cdkDragDisabled]="item.pinned"
+                (widgetViewChanged)="onWidgetViewChanged($event)"
             >
-                @if (!item.fixed) {
-                    <div widgetResizeHandle class="resize-handle">
+                @if (!item.pinned) {
+                    <div widgetResizeHandle class="resize-handle hideable_panel icon-container">
                         <mat-icon>south_east</mat-icon>
                     </div>
                 }
-                <ng-container [ngComponentOutlet]="item.widgetPreview" />
+                <div class="widget-control-panel hideable_panel">
+                    <div class="icon-container"
+                        role="button"
+                        tabindex="0"
+                        (click)="onPinWidget($index)"
+                        (keyup.enter)="onPinWidget($index)"
+                        (keyup.space)="onPinWidget($index)">
+                        <mat-icon>{{(!item.pinned) ? 'keep' : 'keep_off'}}</mat-icon>
+                    </div>
+                    <div class="icon-container"
+                        role="button"
+                        tabindex="0"
+                        (click)="onWidgetSettings($index)"
+                        (keyup.enter)="onWidgetSettings($index)"
+                        (keyup.space)="onWidgetSettings($index)">
+                        <mat-icon>settings</mat-icon>
+                    </div>
+                    <div class="icon-container"
+                        role="button"
+                        tabindex="0"
+                        (click)="onDeleteWidget($index)"
+                        (keyup.enter)="onDeleteWidget($index)"
+                        (keyup.space)="onDeleteWidget($index)">
+                        <mat-icon>delete</mat-icon>
+                    </div>
+                </div>
+                <ng-container [ngComponentOutlet]="item.widgetPreview" [ngComponentOutletInputs]="{settings: item.settings}"/>
             </div>
         }
     </grid-container>
-    <tools-panel [cellSize]="gridContainer.cellSize()()" cdkDrag class="tools-panel" (widgetAdded)="onWidgetAdded($event)" />
+    <tools-panel [(selectedLayout)]="layout"
+     [cellSize]="gridContainer.cellSize()()"
+     cdkDrag class="tools-panel"
+     (widgetAdded)="onWidgetAdded($event)"
+     (layoutSelected)="onLayoutSelected($event)"/>
 </div>
 
 

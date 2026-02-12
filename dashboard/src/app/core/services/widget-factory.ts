@@ -12,21 +12,40 @@ export class WidgetFactory {
     private widgets = new Map<WidgetType, WidgetComponent>([
         [WidgetType.VideoPlayerWidget, {
             type: WidgetType.VideoPlayerWidget,
-            defaultSizes: [{colSpan: 16, rowSpan: 9}],
+            meta : {
+                settingsList: {
+                    source: {type: ['VK','YouYube'], defaultValue: 'VK'},
+                    embedCode: {type: 'string'},
+                },
+                defaultSizes: [{colSpan: 16, rowSpan: 9}],
+            },
             widgetView: VideoPlayerWidget,
             widgetPreview: VideoPlayerWidgetPreview,
             widgetThumb: 'images/thumbs/video-player-widget-thumb.png',
         }],
         [WidgetType.SessionInfoWidget, {
             type: WidgetType.SessionInfoWidget,
-            defaultSizes: [{colSpan: 6, rowSpan: 2}],
+            meta : {
+                settingsList: {},
+                defaultSizes: [{colSpan: 6, rowSpan: 2}],
+            },
             widgetView: SessionInfoWidget,
             widgetPreview: SessionInfoWidgetPreview,
             widgetThumb: 'images/thumbs/weather-widget-thumb.png',
         }],
         [WidgetType.WeatherWidget, {
             type: WidgetType.WeatherWidget,
-            defaultSizes: [{colSpan: 14, rowSpan: 2}],
+            meta : {
+                settingsList: {
+                    airTemp: {type: 'boolean', defaultValue: true},
+                    trackTemp: {type: 'boolean', defaultValue: true},
+                    condition: {type: 'boolean', defaultValue: true},
+                    humidity: {type: 'boolean', defaultValue: true},
+                    pressure: {type: 'boolean', defaultValue: true},
+                    wind: {type: 'boolean', defaultValue: true}
+                },
+                defaultSizes: [{colSpan: 14, rowSpan: 2}],
+            },
             widgetView: WeatherWidget,
             widgetPreview: WeatherWidgetPreview,
             widgetThumb: 'images/thumbs/weather-widget-thumb.png',

@@ -17,7 +17,7 @@
 }
 
 .weather-icon {
-  --r: 0.6;
+  --r: 0.4;
 
   width: min-responsive(var(--r));
   height: min-responsive(var(--r));
@@ -33,10 +33,14 @@
 }
 
 .subline {
-  --r: 0.28;
+  --r: 0.24;
 
   margin: 0;
   font-size: min-responsive(var(--r));
   line-height: 1;
   color: var(--mat-sys-outline);
+}
+
+.hidden {
+  display: none !important;
 }

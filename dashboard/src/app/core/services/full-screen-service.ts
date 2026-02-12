@@ -4,12 +4,12 @@ import screenfull from 'screenfull';
 @Injectable({
     providedIn: 'root'
 })
-export class FullScreenServcie {
+export class FullScreenService {
     private isFullScreenSignal = signal<boolean>(false);
 
-    public toggleFullScreen(element?: Element) {
+    public toggleFullScreen() {
         if (screenfull.isEnabled) {
-            screenfull.toggle(element);
+            screenfull.toggle();
             this.isFullScreenSignal.set(!this.isFullScreenSignal());
         }
     }

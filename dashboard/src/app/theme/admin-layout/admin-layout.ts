@@ -12,6 +12,7 @@ import { AppSettings, SettingsService } from '@core';
 import { Header } from '../header/header';
 import { Sidebar } from '../sidebar/sidebar';
 import { MOBILE_MEDIAQUERY, MONITOR_MEDIAQUERY, TABLET_MEDIAQUERY } from '@theme/media_queries';
+import { FullScreenService } from '@core';
 
 @Component({
   selector: 'app-admin-layout',
@@ -39,12 +40,14 @@ export class AdminLayout implements OnDestroy {
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly router = inject(Router);
   private readonly settings = inject(SettingsService);
+  private readonly fullScreenService = inject(FullScreenService);
 
   // Signals for state
   readonly options = signal(this.settings.options);
   readonly isMobileScreen = signal(false);
   readonly isContentWidthFixed = signal(true);
   readonly isCollapsedWidthFixed = signal(false);
+  readonly isFullScreen = this.fullScreenService.isFullScreen();
 
   get themeColor() {
     return this.settings.getThemeColor();
