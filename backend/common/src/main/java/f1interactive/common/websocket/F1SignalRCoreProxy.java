@@ -106,6 +106,7 @@ public class F1SignalRCoreProxy implements F1LiveTimingProxy{
         hubConnection.onClosed( (ex -> {
             if (ex != null) {
                 logger.error("Connection closed with error {}", ex.getMessage());
+                reconnectAfterDelay();
             } else {
                 if (isManualStop) {
                     logger.info("Connection closed by client");

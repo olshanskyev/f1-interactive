@@ -1,0 +1,22 @@
+<driver-chip [driver]="driver()" [timingData]="timingData()" [timingAppData]="timingAppData()"/>
+<current-tyres-chip [timingAppData]="timingAppData()"/>
+<div class="d-flex gap-4">
+  @for(stint of timingAppData()?.Stints | keyvalue; track stint.key; let i = $index, total = $count) {
+    <!-- width: 100% if no numberOfLaps or total stints = 1-->
+    <!-- if the last stint taking the remaining space -->
+    <!-- otherwise calculate percentage based on stint length -->
+    <div
+        [style.width]="(!timingData()?.NumberOfLaps || total === 1)? '100%' :
+          (i === (total - 1))? '':
+          getStintLength(stint.value) / timingData()?.NumberOfLaps! * 100 + '%'"
+        [style.flex]="(i === (total - 1))? '1' : ''">
+      <div class="place-self-end f-s-14">
+          {{getStintLength(stint.value)}}
+      </div>
+      <div class="stint-item w-full"
+        [style.background-color]="getStintColor(stint.value)"
+      >
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,50 @@
+.scroll-container {
+    overflow-y: auto;
+    overflow-y: auto;
+    height: 100% !important;
+    view-transition-class: leaderboard-scroll;
+    // view-transition-name: leaderboard-scroll; <-- moved to style.view-transition-name in html template to avoid duplicate errors
+}
+.transition-container {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
+    view-transition-class: drivers-group;
+    view-transition-group: nearest;
+}
+
+.column-names {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: grid !important;
+    align-items: start;
+    font-size: small;
+    white-space: nowrap;
+    background-color:  color-mix(in srgb, var(--mat-sys-surface-container), transparent 10%);
+    backdrop-filter: blur(2px);
+}
+
+.table-buttons {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1.5rem;
+}
+
+
+.leaderboard-laps-template-columns {
+    grid-template-columns: 1.5rem 7.5rem 3.5rem 5.5rem 5rem 5.5rem auto;
+}
+
+.leaderboard-sectors-template-columns {
+    grid-template-columns: 1.5rem 7.5rem 5rem 5.5rem 5rem 5rem 5rem;
+}
+
+.leaderboard-speeds-template-columns {
+    grid-template-columns: 1.5rem 7.5rem 5rem 5.5rem 3.6rem 3.6rem 3.6rem 3.6rem;
+}
+
+.leaderboard-tyres-template-columns {
+    grid-template-columns: 1.5rem 7.5rem 5.5rem minmax(21.5rem, 1fr);
+}
+

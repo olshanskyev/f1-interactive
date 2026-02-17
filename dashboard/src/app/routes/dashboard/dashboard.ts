@@ -3,7 +3,7 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { LayoutsService, LiveService, WidgetFactory } from '@core';
 import { DisplayWidget, Layout } from '@core/types/widgets';
-import { GridContainerComponent, Leaderboard, SimPlayer, WeatherWidget, WidgetContainerDirective } from '@shared';
+import { GridContainerComponent, Leaderboard, SimPlayer, WidgetContainerDirective } from '@shared';
 import { NgxRolesService } from 'ngx-permissions';
 
 
@@ -16,8 +16,7 @@ import { NgxRolesService } from 'ngx-permissions';
     SimPlayer,
     GridContainerComponent,
     CommonModule,
-    WidgetContainerDirective,
-    WeatherWidget
+    WidgetContainerDirective
   ],
 })
 export class DashboardComponent {

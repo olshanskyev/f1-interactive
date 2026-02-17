@@ -23,4 +23,8 @@ export class FullScreenService {
             screenfull.onchange(() => this.isFullScreenSignal.set(screenfull.isFullscreen));
         }
     }
+
+    public isFullScreenEnabled() {
+        return screenfull.isEnabled;
+    }
 }

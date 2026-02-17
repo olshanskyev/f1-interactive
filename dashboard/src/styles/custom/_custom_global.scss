@@ -1,4 +1,3 @@
-@use '@angular/material' as mat;
 @use "../grid/breakpoints";
 
 :root {
@@ -15,6 +14,10 @@
   place-self: start;
 }
 
+.place-self-end {
+  place-self: end;
+}
+
 
 .dynamic-header-size {
   container-type: inline-size;
@@ -29,14 +32,6 @@
       vertical-align: middle;
     }
   }
-}
-
-.button-5 {
-    @include mat.icon-button-density(-5);
-}
-
-.form-field-5 {
-  @include mat.form-field-density(-5);
 }
 
 .small-icon {
@@ -59,7 +54,7 @@
   white-space: nowrap;
 }
 
-.widget-shadow-preview {
+.widget-preview_shadow {
   z-index: 1;
   display: block;
   grid-row: auto;
@@ -71,10 +66,9 @@
   border-radius: 6px
 }
 
-.static-container-option.mat-mdc-option[aria-disabled="true"] {
-    pointer-events: auto !important;
+.default-widget-background {
+    background-color: color-mix(in srgb, var(--mat-sys-surface-container), transparent 20%);
 }
-
 
 
 

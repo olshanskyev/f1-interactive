@@ -1,4 +1,5 @@
 import { Type } from '@angular/core';
+import { Leaderboard } from '@shared';
 import { ContaineredWidget } from '@shared/components/widgets/containered-widget';
 
 export interface WidgetPosition {colStart: number, rowStart: number}
@@ -24,8 +25,8 @@ export interface LayoutGridSize {
 
 export const LayoutGrids = {
     landscape: {
-        gridColumns: 32,
-        gridRows: 18
+        gridColumns: 48,
+        gridRows: 27
     },
     mobile_portrait: {
         gridColumns: 16,
@@ -37,7 +38,8 @@ export enum WidgetType
 {
     SessionInfoWidget = 'SessionInfoWidget',
     VideoPlayerWidget = 'VideoPlayerWidget',
-    WeatherWidget = 'WeatherWidget'
+    WeatherWidget = 'WeatherWidget',
+    LeaderboardWidget = 'LeaderboardWidget'
 }
 
 export type SettingType = 'string' | 'number' | 'boolean' | string[];

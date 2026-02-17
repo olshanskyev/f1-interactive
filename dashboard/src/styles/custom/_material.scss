@@ -1,5 +1,6 @@
-/** Custom Material styles */
+@use '@angular/material' as mat;
 
+/** Custom Material styles */
 mat-card {
   margin-bottom: var(--gutter);
 }
@@ -18,8 +19,16 @@ mat-card-header + mat-card-content {
   --mat-divider-color: var(--mat-sys-outline-variant);
   --mat-sys-title-large-font: 'Roboto', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
     'Lucida Grande', sans-serif;
+  --mat-checkbox-touch-target-size: 40px;
 }
 
+.icon-button-5 {
+    @include mat.icon-button-density(-5);
+}
+
+.form-field-5 {
+  @include mat.form-field-density(-5);
+}
 
 .bordered-dialog .mat-mdc-dialog-container .mdc-dialog__surface{
   border: 1px solid var(--mat-sys-outline-variant);
@@ -38,4 +47,12 @@ mat-card-header + mat-card-content {
   align-items: center;
   justify-content: space-between;
   width: 100%
+}
+
+.mat-mdc-tab-group .mat-mdc-tab-body-wrapper {
+  margin-top: 0.5rem;
+}
+
+.static-container-option.mat-mdc-option[aria-disabled="true"] {
+    pointer-events: auto !important;
 }

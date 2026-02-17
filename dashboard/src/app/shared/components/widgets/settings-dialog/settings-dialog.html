@@ -3,11 +3,11 @@
 <mat-dialog-content>
   <form class="settings-form">
     @for (setting of data.settingsList | keyvalue; track setting.key) {
-      <div class="setting-item">
+      <div class="w-full">
 
         <!-- String Input -->
         @if (setting.value.type === 'string') {
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" class="form-field-5">
             <mat-label>{{ 'widget.settings.' + setting.key | translate }}</mat-label>
             <input matInput
                    [(ngModel)]="settings[setting.key]"
@@ -18,7 +18,7 @@
 
         <!-- Number Input -->
         @if (setting.value.type === 'number') {
-           <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" class="form-field-5">
             <mat-label>{{ 'widget.settings.' + setting.key | translate }}</mat-label>
             <input matInput type="number"
                    [(ngModel)]="settings[setting.key]"
@@ -37,13 +37,13 @@
 
         <!-- Dropdown (Array) -->
         @if (isOptionList(setting.value.type)) {
-           <mat-form-field appearance="outline">
+           <mat-form-field appearance="outline" class="form-field-5">
             <mat-label>{{ 'widget.settings.' + setting.key | translate }}</mat-label>
             <mat-select
                 [(ngModel)]="settings[setting.key]"
                 [name]="setting.key">
               @for (option of asOptionList(setting.value.type); track option) {
-                <mat-option [value]="option">{{ option }}</mat-option>
+                <mat-option [value]="option">{{ option | translate}}</mat-option>
               }
             </mat-select>
           </mat-form-field>

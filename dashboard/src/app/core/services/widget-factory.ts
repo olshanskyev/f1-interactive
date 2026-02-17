@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { WidgetComponent, WidgetType } from '@core/types/widgets';
-import { SessionInfoWidget, VideoPlayerWidget, WeatherWidget, WeatherWidgetPreview } from '@shared';
+import { Leaderboard, LeaderboardWidgetPreview, SessionInfoWidget, VideoPlayerWidget, WeatherWidget, WeatherWidgetPreview } from '@shared';
 import { SessionInfoWidgetPreview } from '@shared/components/widgets/session-info/preview/session-info-widget-preview';
 import { VideoPlayerWidgetPreview } from '@shared/components/widgets/video/preview/video-player-widget-preview';
 
@@ -22,6 +22,19 @@ export class WidgetFactory {
             widgetView: VideoPlayerWidget,
             widgetPreview: VideoPlayerWidgetPreview,
             widgetThumb: 'images/thumbs/video-player-widget-thumb.png',
+        }],
+        [WidgetType.LeaderboardWidget, {
+            type: WidgetType.LeaderboardWidget,
+            meta : {
+                settingsList: {
+                    showHeader: {type: 'boolean', defaultValue: true},
+                    mode: {type: ['all', 'laps', 'sectors', 'speeds', 'tyres'], defaultValue: 'all'},
+                },
+                defaultSizes: [{colSpan: 16, rowSpan: 9}],
+            },
+            widgetView: Leaderboard,
+            widgetPreview: LeaderboardWidgetPreview,
+            widgetThumb: 'images/thumbs/leaderboard-widget-thumb.png',
         }],
         [WidgetType.SessionInfoWidget, {
             type: WidgetType.SessionInfoWidget,

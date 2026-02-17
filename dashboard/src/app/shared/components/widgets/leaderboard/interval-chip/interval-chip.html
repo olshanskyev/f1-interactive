@@ -1,0 +1,15 @@
+<div class="place-self-start">
+    <p class="m-0 f-s-14"
+        [class]="getPositionAheadColorClass()">
+        @if(timingData()?.IntervalToPositionAhead?.Value; as posAhead){
+            {{posAhead}}
+        } @else {
+            -
+        }
+    </p>
+    @if (timingData()?.Line !== 1) {
+        <p class="m-0 f-s-12 text-color-second line-height-1">
+        {{timingData()?.GapToLeader}}
+        </p>
+    }
+</div>

@@ -14,7 +14,7 @@
                 <img [src]="widget[1].widgetThumb" [alt]="'widget.' + widget[0] | translate"/>
                 <div class="widget-label">{{'widget.' + widget[0] | translate}}</div>
             </mat-card-content>
-            <div *cdkDragPreview class="m-0 widget-shadow-preview"
+            <div *cdkDragPreview class="m-0 widget-preview_shadow"
                 [ngStyle]="{
                     width: widgetWidth() + 'px',
                     height: widgetHeight() + 'px',

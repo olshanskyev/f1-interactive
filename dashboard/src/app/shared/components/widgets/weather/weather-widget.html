@@ -1,59 +1,69 @@
 
-<div class="carousel-container" carouselContainer>
+<div class="carousel-container default-widget-background p-x-8" carouselContainer>
   <div class="carousel-track" carouselTrack [speed]="0.6" [loopPauseMs]="0">
 
-    <div class="carousel-item" carouselItem [class.hidden]="settings()?.['airTemp'] === false">
-      <mat-icon class="weather-icon text-red-50">thermostat</mat-icon>
-      <div class="d-flex flex-col align-items-start">
-        <p class="value">{{ weatherData()?.AirTemp ?? '0'}}°C</p>
-        <p class="subline">{{ 'weather.air' | translate }}</p>
+    @if (!(settings()?.['airTemp'] === false)) {
+      <div class="carousel-item" carouselItem>
+        <mat-icon class="weather-icon text-red-50">thermostat</mat-icon>
+        <div class="d-flex flex-col align-items-start">
+          <p class="value">{{ weatherData()?.AirTemp ?? '0'}}°C</p>
+          <p class="subline">{{ 'weather.air' | translate }}</p>
+        </div>
       </div>
-    </div>
+    }
 
-    <div class="carousel-item" carouselItem [class.hidden]="settings()?.['trackTemp'] === false">
-      <mat-icon class="weather-icon text-orange-60">thermostat</mat-icon>
-      <div class="d-flex flex-col align-items-start">
-        <p class="value">{{ weatherData()?.TrackTemp ?? '0' }}°C</p>
-        <p class="subline">{{ 'weather.track' | translate }}</p>
+    @if (!(settings()?.['trackTemp'] === false)) {
+      <div class="carousel-item" carouselItem>
+        <mat-icon class="weather-icon text-orange-60">thermostat</mat-icon>
+        <div class="d-flex flex-col align-items-start">
+          <p class="value">{{ weatherData()?.TrackTemp ?? '0' }}°C</p>
+          <p class="subline">{{ 'weather.track' | translate }}</p>
+        </div>
       </div>
-    </div>
+    }
 
-    <div class="carousel-item" carouselItem [class.hidden]="settings()?.['condition'] === false">
-      <mat-icon class="weather-icon"
-      [class.text-f1-yellow]="conditionIcon() === 'sunny'"
-      [class.text-blue-50]="conditionIcon() === 'rainy'">
-        {{ conditionIcon() || 'wb_cloudy' }}
-      </mat-icon>
-      <div class="d-flex flex-col align-items-start">
-        <p class="value">{{ condition() | translate}}</p>
-        <p class="subline">{{ 'weather.condition' | translate }}</p>
+    @if (!(settings()?.['condition'] === false)) {
+      <div class="carousel-item" carouselItem>
+        <mat-icon class="weather-icon"
+        [class.text-f1-yellow]="conditionIcon() === 'sunny'"
+        [class.text-blue-50]="conditionIcon() === 'rainy'">
+          {{ conditionIcon() || 'wb_cloudy' }}
+        </mat-icon>
+        <div class="d-flex flex-col align-items-start">
+          <p class="value">{{ condition() | translate}}</p>
+          <p class="subline">{{ 'weather.condition' | translate }}</p>
+        </div>
       </div>
-    </div>
+    }
 
-    <div class="carousel-item" carouselItem [class.hidden]="settings()?.['humidity'] === false">
-      <mat-icon class="weather-icon text-blue-60">water_drop</mat-icon>
-      <div class="d-flex flex-col align-items-start">
-        <p class="value">{{ weatherData()?.Humidity ?? '0'}}%</p>
-        <p class="subline">{{ 'weather.humidity' | translate }}</p>
+    @if (!(settings()?.['humidity'] === false)) {
+      <div class="carousel-item" carouselItem>
+        <mat-icon class="weather-icon text-blue-60">water_drop</mat-icon>
+        <div class="d-flex flex-col align-items-start">
+          <p class="value">{{ weatherData()?.Humidity ?? '0'}}%</p>
+          <p class="subline">{{ 'weather.humidity' | translate }}</p>
+        </div>
       </div>
-    </div>
-
-    <div class="carousel-item" carouselItem [class.hidden]="settings()?.['pressure'] === false">
-      <mat-icon class="weather-icon text-azure-70">speed</mat-icon>
-      <div class="d-flex flex-col align-items-start">
-        <p class="value">{{ weatherData()?.Pressure ?? '0'}} hPa</p>
-        <p class="subline">{{ 'weather.pressure' | translate }}</p>
+    }
+    @if (!(settings()?.['pressure'] === false)) {
+      <div class="carousel-item" carouselItem>
+        <mat-icon class="weather-icon text-azure-70">speed</mat-icon>
+        <div class="d-flex flex-col align-items-start">
+          <p class="value">{{ weatherData()?.Pressure ?? '0'}} hPa</p>
+          <p class="subline">{{ 'weather.pressure' | translate }}</p>
+        </div>
       </div>
-    </div>
+    }
 
-    <div class="carousel-item" carouselItem [class.hidden]="settings()?.['wind'] === false">
-      <mat-icon class="weather-icon text-blue-80">air</mat-icon>
-      <div class="d-flex flex-col align-items-start">
-        <p class="value">{{ weatherData()?.WindSpeed ?? '0'}} km/h</p>
-        <p class="subline">{{ 'weather.wind' | translate }} | {{ windDirection() }}</p>
+    @if (!(settings()?.['wind'] === false)) {
+      <div class="carousel-item" carouselItem>
+        <mat-icon class="weather-icon text-blue-80">air</mat-icon>
+        <div class="d-flex flex-col align-items-start">
+          <p class="value">{{ weatherData()?.WindSpeed ?? '0'}} km/h</p>
+          <p class="subline">{{ 'weather.wind' | translate }} | {{ windDirection() }}</p>
+        </div>
       </div>
-    </div>
-
+    }
   </div>
 </div>
 

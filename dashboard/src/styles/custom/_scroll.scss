@@ -1,0 +1,34 @@
+// Firefox
+//.custom-scroll {
+//  scrollbar-width: thin;
+//  scrollbar-color: #888 transparent;
+//}
+
+// Chrome, Safari,Edge
+@media (pointer: fine) {
+  ::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--mat-sys-surface-bright), transparent 10%);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--mat-sys-outline-variant);
+  }
+
+  ::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}

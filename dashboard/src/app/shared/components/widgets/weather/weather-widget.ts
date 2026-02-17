@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { WeatherData } from '@core/types/f1types';
 import {
   CarouselContainerDirective, CarouselItemDirective, CarouselTrackDirective,
 } from '@shared/directives';

@@ -1,23 +1,120 @@
-<div class="w-fit flex-col font-formula">
-  @for (entry of timingDataMap(); track entry[0]) {
-    <div class="d-flex" style="view-transition-class: drivers-group" [style.view-transition-name]="'driver-' + entry[1].RacingNumber">
-       <div style="min-width: 24px;" class="d-flex flex-wrap align-content-center justify-content-center">
-          @if (isMovingUp(entry[0])) {
-            <mat-icon class="text-f1-green">keyboard_double_arrow_up</mat-icon>
-          } @else {
-            @if (isMovingDown(entry[0])) {
-              <mat-icon class="text-f1-red">keyboard_double_arrow_down</mat-icon>
-            } @else {
-              <div>{{entry[1]?.Line}}</div>
-            }
+<div class="font-formula h-full default-widget-background d-flex flex-col" >
+    @if (settingsMode() === 'all') {
+      <mat-divider/>
+      <div class="table-buttons">
+        <mat-chip-listbox [(ngModel)]="mode" required >
+          <mat-chip-option (selectionChange)="onModeSelectionChange($event)" value="laps">{{'laps' | translate}}</mat-chip-option>
+          <mat-chip-option (selectionChange)="onModeSelectionChange($event)" value="sectors">{{'sectors' | translate}}</mat-chip-option>
+          <mat-chip-option (selectionChange)="onModeSelectionChange($event)" value="speeds">{{'speeds' | translate}}</mat-chip-option>
+          <mat-chip-option (selectionChange)="onModeSelectionChange($event)" value="tyres">{{'tyres' | translate}}</mat-chip-option>
+        </mat-chip-listbox>
+      </div>
+      <mat-divider/>
+    }
+
+    <div class="scroll-container" [style.view-transition-name]="'scroll-container-' + uniqueId">
+      <div class="h-full d-inline-block min-w-full w-fit" >
+
+        @if (showHeader()) {
+          @if (mode()==='laps') {
+            <div class="column-names gap-8 text-color-second leaderboard-laps-template-columns p-y-8">
+              <span></span>
+              <span>{{'driver' | translate}}</span>
+              <span></span>
+              <span>{{'tyres' | translate}}</span>
+              <span>{{'interval' | translate}}</span>
+              <span>{{'lap_time' | translate}}</span>
+              <span>{{'mini_sectors' | translate}}</span>
+            </div>
           }
-       </div>
-      <leaderboard-driver
-        [driver]="driverList()?.Lines?.[entry[0]]"
-        [timingData]="timingData()?.Lines?.[entry[0]]"
-        [timingAppData]="timingAppData()?.Lines?.[entry[0]]"
-        [hasBestTime]="bestLap()?.driverId === entry[0]"
-        />
+          @if (mode() === 'sectors') {
+            <div class="column-names gap-8 text-color-second leaderboard-sectors-template-columns p-y-8">
+              <span></span>
+              <span>{{'driver' | translate}}</span>
+              <span>{{'interval' | translate}}</span>
+              <span>{{'lap_time' | translate}}</span>
+              <span>{{'sector' | translate}} 1</span>
+              <span>{{'sector' | translate}} 2</span>
+              <span>{{'sector' | translate}} 3</span>
+            </div>
+          }
+          @if (mode() === 'speeds') {
+            <div class="column-names gap-8 text-color-second leaderboard-speeds-template-columns p-y-8">
+              <span></span>
+              <span>{{'driver' | translate}}</span>
+              <span>{{'interval' | translate}}</span>
+              <span>{{'lap_time' | translate}}</span>
+              <span>I1 <span class="f-s-10">kph</span></span>
+              <span>I2 <span class="f-s-10">kph</span></span>
+              <span>FL <span class="f-s-10">kph</span></span>
+              <span>ST <span class="f-s-10">kph</span></span>
+            </div>
+          }
+          @if (mode() === 'tyres') {
+            <div class="column-names gap-8 text-color-second leaderboard-tyres-template-columns p-y-8">
+              <span></span>
+              <span>{{'driver' | translate}}</span>
+              <span>{{'current_tyres' | translate}}</span>
+            </div>
+          }
+          <mat-divider/>
+        }
+        <div class="d-grid align-items-center gap-8 p-y-4"
+          [class.leaderboard-laps-template-columns]="mode() === 'laps'"
+          [class.leaderboard-sectors-template-columns]="mode() === 'sectors'"
+          [class.leaderboard-speeds-template-columns]="mode() === 'speeds'"
+          [class.leaderboard-tyres-template-columns]="mode() === 'tyres'"
+        >
+
+          @for (entry of timingDataMap(); track entry[0]) {
+            <div class="transition-container" [style.view-transition-name]="'driver-' + uniqueId + '-' + entry[1].RacingNumber">
+              <div class="d-flex flex-wrap align-content-center justify-content-center">
+                  @if (isMovingUp(entry[0])) {
+                    <mat-icon class="text-f1-green">keyboard_double_arrow_up</mat-icon>
+                  } @else {
+                    @if (isMovingDown(entry[0])) {
+                      <mat-icon class="text-f1-red">keyboard_double_arrow_down</mat-icon>
+                    } @else {
+                      <div>{{entry[1]?.Line}}</div>
+                    }
+                  }
+              </div>
+              @if (mode() === 'laps') {
+                  <leaderboard-lap
+                    [driver]="driverList()?.Lines?.[entry[0]]"
+                    [timingData]="timingData()?.Lines?.[entry[0]]"
+                    [timingAppData]="timingAppData()?.Lines?.[entry[0]]"
+                    [timingStat]="timingStats()?.Lines?.[entry[0]]"
+
+                  />
+              }
+              @if (mode() === 'sectors') {
+                  <leaderboard-sector
+                    [driver]="driverList()?.Lines?.[entry[0]]"
+                    [timingData]="timingData()?.Lines?.[entry[0]]"
+                    [timingAppData]="timingAppData()?.Lines?.[entry[0]]"
+                    [timingStat]="timingStats()?.Lines?.[entry[0]]"
+                  />
+              }
+              @if (mode() === 'speeds') {
+                  <leaderboard-speed
+                    [driver]="driverList()?.Lines?.[entry[0]]"
+                    [timingData]="timingData()?.Lines?.[entry[0]]"
+                    [timingAppData]="timingAppData()?.Lines?.[entry[0]]"
+                    [timingStat]="timingStats()?.Lines?.[entry[0]]"
+                  />
+              }
+              @if (mode() === 'tyres') {
+                  <leaderboard-tyres
+                    [driver]="driverList()?.Lines?.[entry[0]]"
+                    [timingData]="timingData()?.Lines?.[entry[0]]"
+                    [timingAppData]="timingAppData()?.Lines?.[entry[0]]"
+                  />
+              }
+            </div>
+          }
+        </div>
+      </div>
     </div>
-  }
+
 </div>

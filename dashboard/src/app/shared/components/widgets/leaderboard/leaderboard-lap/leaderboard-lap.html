@@ -1,0 +1,36 @@
+    <driver-chip [driver]="driver()" [timingData]="timingData()" [timingAppData]="timingAppData()"/>
+    <div class="d-flex align-items-center r-8 justify-content-center"
+      [class]="(timingData()?.InPit || timingData()?.PitOut)?'text-color-pit':'text-color-inactive'"
+    >
+      <div>
+        <p class="m-0 text-center f-s-14">PIT</p>
+        @if (timingData()?.PitOut) {
+          <p class="m-0 line-height-1 f-s-12 text-color-second text-center">out</p>
+        }
+      </div>
+    </div>
+    <current-tyres-chip [timingAppData]="timingAppData()" />
+    <interval-chip [timingData]="timingData()" />
+    <lap-chip [timingData]="timingData()" [timingStat]="timingStat()" />
+    <div class="d-flex gap-8">
+      @for(sector of timingData()?.Sectors | keyvalue; track sector.key) {
+        <div class="d-flex flex-col">
+          <div class="d-flex flex-row gap-2 p-b-4">
+            @for(segment of sector.value.Segments | keyvalue; track segment.key) {
+              <div [class]="getSegmentClass(segment.value.Status)" style="width: 10px; height: 5px; border-radius: 2px;"></div>
+            }
+          </div>
+          @if (sector.value.Value) {
+            <div class="d-flex line-height-1 f-s-12" [class]="(sector.value.OverallFastest)?'text-f1-purple':
+                  (sector.value.PersonalFastest)?'text-f1-green':''">
+              {{sector.value.Value}}
+            </div>
+          } @else {
+            <div class="d-flex line-height-1 f-s-12 text-color-inactive">
+              {{sector.value.PreviousValue || ''}}
+            </div>
+          }
+        </div>
+      }
+
+    </div>

@@ -49,7 +49,7 @@ export class WidgetContainerDirective {
 
         const parent = this.el.nativeElement.parentElement;
         const shadow = document.createElement('div');
-        shadow.className = 'widget-shadow-preview';
+        shadow.className = 'widget-preview_shadow';
         const containerToDisplay = container ?? this.widgetContainer();
         shadow.style.gridColumn = `${containerToDisplay.position.colStart} / span ${containerToDisplay.size.colSpan}`;
         shadow.style.gridRow = `${containerToDisplay.position.rowStart} / span ${containerToDisplay.size.rowSpan}`;
@@ -69,26 +69,6 @@ export class WidgetContainerDirective {
     }
 
     private containerOffset = { x: 0, y: 0};
-    /*private calcParentContainerOffset() {
-        // Get the container's position on the screen
-        const containerRect = this.parentGrid.backgroundGrid.nativeElement.getBoundingClientRect();
-
-        const parentGrid = this.parentGrid;
-        // Calculate the centering "whitespace"
-        const totalGridWidth = parentGrid.gridColumns()
-            * this.cellSize();
-        const totalGridHeight = parentGrid.gridRows()
-            * this.cellSize();
-        const containerOffsetX = (containerRect.width - totalGridWidth) / 2;
-        const containerOffsetY = (containerRect.height - totalGridHeight) / 2;
-
-        // Find the EXACT start of the first cell on the screen
-        this.containerOffset = {
-            x: containerRect.left + containerOffsetX,
-            y: containerRect.top + containerOffsetY
-        };
-    }*/
-
     private dragOffset = { x: 0, y: 0 };
     private calcDragOffset(nativeEvent: MouseEvent | TouchEvent, rect: any) {
         let clientX: number;

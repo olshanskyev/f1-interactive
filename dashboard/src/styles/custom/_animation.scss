@@ -10,3 +10,7 @@
 ::view-transition-group(.drivers-group) {
   animation-duration: 1s !important;
 }
+
+::view-transition-group(.leaderboard-scroll) {
+  overflow: clip;
+}

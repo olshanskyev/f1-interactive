@@ -64,6 +64,18 @@
   "restore_defaults": "Restore defaults",
   "nothing_found": "Nothing found",
   "widgets": "Widgets",
+  "tyres": "Tyres",
+  "interval": "Interval",
+  "lap_time": "Lap Time",
+  "mini_sectors": "Mini Sectors",
+  "driver": "Driver",
+  "all": "All",
+  "laps": "Laps",
+  "sectors": "Sectors",
+  "speeds": "Speeds",
+  "sector": "Sector",
+  "speed": "Speed",
+  "current_tyres": "Current",
   "weather": {
     "air": "Air",
     "track": "Track",
@@ -78,6 +90,7 @@
     "VideoPlayerWidget": "Video Player",
     "WeatherWidget": "Weather",
     "SessionInfoWidget": "Session Info",
+    "LeaderboardWidget": "Leaderboard",
     "settings": {
       "source": "Source",
       "embedCode": "Embed code",
@@ -86,7 +99,9 @@
       "condition": "Condition",
       "humidity": "Humidity",
       "pressure": "Pressure",
-      "wind": "Wind"
+      "wind": "Wind",
+      "showHeader": "Show Header",
+      "mode": "Mode"
     }
   },
   "layout": {

@@ -1,0 +1,25 @@
+<driver-chip [driver]="driver()" [timingData]="timingData()" [timingAppData]="timingAppData()"/>
+<interval-chip [timingData]="timingData()"/>
+<lap-chip [timingData]="timingData()" [timingStat]="timingStat()"/>
+
+@for(sector of timingData()?.Sectors | keyvalue; track sector.key) {
+  <div>
+    <p class="m-0 f-s-14"> <!-- current sector time -->
+      @if (sector.value.Value) {
+        <div [class]="(sector.value.OverallFastest)?'text-f1-purple':
+              (sector.value.PersonalFastest)?'text-f1-green':''">
+          {{sector.value.Value}}
+        </div>
+      } @else {
+        <div class="text-color-inactive">
+          {{sector.value.PreviousValue || ''}}
+        </div>
+      }
+    </p>
+    <p class="m-0 f-s-12 line-height-1"
+      [class]="hasBestSector(+sector.key)?'text-f1-purple':'text-f1-green'">
+        <!-- best personal sector time -->
+      {{timingStat()?.BestSectors?.[+sector.key]?.Value || ''}}
+    </p>
+  </div>
+}
