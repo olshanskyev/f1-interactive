@@ -1,3 +1,4 @@
+import { Content } from '@ngneat/overview';
 
 export interface Root {
 	Heartbeat?: Heartbeat;
@@ -16,6 +17,10 @@ export interface Root {
 	TimingData?: TimingData;
 	TeamRadio?: TeamRadio;
     PitLaneTimeCollection?: PitLaneTimeCollection;
+	'CarData.z': string;
+	'Position.z'?: string;
+	ContentStreams?: ContentStreams;
+    AudioStreams?: AudioStreams;
 }
 
 export interface Heartbeat {
@@ -313,4 +318,21 @@ export interface PitTimesItem {
     RacingNumber: string;
     Duration: string;
     Lap: string;
+}
+
+export interface ContentStreams {
+	Streams: Record<number, Stream>
+}
+
+export interface AudioStreams {
+	Streams: Record<number, Stream>
+}
+
+export interface Stream {
+	Type: string;
+	Name: string;
+	Language: string;
+	Uri: string;
+	Path: string;
+	Utc: string | Date;
 }

@@ -183,5 +183,39 @@ public class MergingEventsTest {
         assertEquals(9, root.timingData.lines.get("44").sectors.get(1).segments.size());
     }
 
+    @Test
+    public void mergeContentStreamsTest() throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Root root = objectMapper.readValue(new File("src\\test\\resources\\mergingTestData\\contentStreamsInitState.json"), Root.class);
+        try (Scanner updateScanner = new Scanner(new File("src\\test\\resources\\mergingTestData\\contentStreamsUpdateEvents.txt"))) {
+            while (updateScanner.hasNextLine()) {
+                String updateEventString = updateScanner.nextLine();
+                UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString).updateEvent();
+                root = updateEvent.merge(root);
+            }
+        }
+
+        assertEquals(2, root.contentStreams.streams.size());
+        assertEquals("new_uri", root.contentStreams.streams.get(0).uri);
+        assertEquals("new_name", root.contentStreams.streams.get(1).name);
+    }
+
+    @Test
+    public void mergeDataZTest() throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Root root = objectMapper.readValue(new File("src\\test\\resources\\mergingTestData\\dataZInitState.json"), Root.class);
+        assertEquals("CarValue1", root.carDataZ.getValue());
+        assertEquals("PositionValue1", root.positionZ.getValue());
+        try (Scanner updateScanner = new Scanner(new File("src\\test\\resources\\mergingTestData\\dataZUpdateEvents.txt"))) {
+            while (updateScanner.hasNextLine()) {
+                String updateEventString = updateScanner.nextLine();
+                UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString).updateEvent();
+                root = updateEvent.merge(root);
+            }
+        }
+
+        assertEquals("CarDataLastValue", root.carDataZ.getValue());
+        assertEquals("PositionLastValue", root.positionZ.getValue());
+    }
 
 }

@@ -35,4 +35,12 @@ public class Root{
     public TeamRadio teamRadio;
     @JsonProperty("PitLaneTimeCollection") 
     public PitLaneTimeCollection pitLaneTimeCollection;
+    @JsonProperty("ContentStreams")
+    public ContentStreams contentStreams;
+    @JsonProperty("AudioStreams")
+    public AudioStreams audioStreams;
+    @JsonProperty("CarData.z")
+    public CarDataZ carDataZ;
+    @JsonProperty("Position.z")
+    public PositionZ positionZ;
 }

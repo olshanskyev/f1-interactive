@@ -1,10 +1,10 @@
 .scroll-container {
-    overflow-y: auto;
-    overflow-y: auto;
     height: 100% !important;
+    overflow-y: auto;
     view-transition-class: leaderboard-scroll;
     // view-transition-name: leaderboard-scroll; <-- moved to style.view-transition-name in html template to avoid duplicate errors
 }
+
 .transition-container {
     display: grid;
     grid-template-columns: subgrid;

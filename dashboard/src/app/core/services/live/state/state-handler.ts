@@ -8,6 +8,8 @@ interface SignalTypeMap {
     TimingAppData: TimingAppData;
     TimingStats: TimingStats;
     DriverList: DriverList;
+    'CarData.z': string;
+    'Position.z': string;
 }
 
 export type AvailableSignalsType = keyof SignalTypeMap;
@@ -19,11 +21,13 @@ export class StateHandler {
                     SignalTypeMap[K] | undefined
                 >
         } = {
-            WeatherData: signal<WeatherData | undefined>(undefined),
-            TimingData: signal<TimingData | undefined>(undefined),
-            TimingAppData: signal<TimingAppData | undefined>(undefined),
-            TimingStats: signal<TimingStats | undefined>(undefined),
-            DriverList: signal<DriverList | undefined>(undefined)
+            'WeatherData': signal<WeatherData | undefined>(undefined),
+            'TimingData': signal<TimingData | undefined>(undefined),
+            'TimingAppData': signal<TimingAppData | undefined>(undefined),
+            'TimingStats': signal<TimingStats | undefined>(undefined),
+            'DriverList': signal<DriverList | undefined>(undefined),
+            'CarData.z': signal<string | undefined>(undefined),
+            'Position.z': signal<string | undefined>(undefined)
     };
 
     get fullStateSignal() {
@@ -49,14 +53,22 @@ export class StateHandler {
             mergedState[key] = (key in mergedState)
                 ? this.merge(mergedState[key], updateRecord.updateEvent) // key found in state, merge
                 : updateRecord.updateEvent; // key not found just copy
-
             this._state.set(mergedState);
 
             if (this.updateSignals[key as AvailableSignalsType]) { // send update signal
-                this.updateSignal(
-                    key as AvailableSignalsType,
-                    {...mergedState[key as AvailableSignalsType]!}
-                );
+                const value = mergedState[key as AvailableSignalsType];
+                if (typeof value === 'string') {
+                    this.updateSignal(
+                        key as AvailableSignalsType,
+                        value);
+                } else {
+                    this.updateSignal(
+                        key as AvailableSignalsType,
+                        {...value!}
+                    );
+                }
+
+
             }
         }
     }

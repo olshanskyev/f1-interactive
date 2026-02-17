@@ -246,6 +246,35 @@ public class ModelsDeserializationTest {
     }
 
     @Test
+    public void contentStreamsTest() throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\contentStreams.json"), Root.class);
+        assertNotNull(root.contentStreams);
+        assertEquals(2, root.contentStreams.streams.size());
+        assertEquals("Commentary", root.contentStreams.streams.get(0).type);
+        assertEquals("Live coverage (EN)", root.contentStreams.streams.get(1).name);
+    }
+
+    @Test
+    public void audioStreamsTest() throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\audioStreams.json"), Root.class);
+        assertNotNull(root.audioStreams);
+        assertEquals(1, root.audioStreams.streams.size());
+        assertEquals("Live_coverage_(EN)-en/stream.m3u8", root.audioStreams.streams.get(0).path);
+    }
+
+    @Test
+    public void dataZTest() throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\dataZ.json"), Root.class);
+        assertNotNull(root.carDataZ);
+        assertNotNull(root.positionZ);
+        assertEquals(276, root.carDataZ.getValue().length());
+        assertEquals(308, root.positionZ.getValue().length());
+    }
+
+    @Test
     @Disabled // high load
     public void readingUpdateEventsTest() throws IOException {
         try (Scanner scanner = new Scanner(new File("src\\test\\resources\\modelsTestData\\2025_abu_dhabi_race_only_update_events.txt"))) {
