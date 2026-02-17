@@ -67,5 +67,13 @@ export class LiveService {
     return this.stateHandler.updateSignals['WeatherData'].asReadonly();
   }
 
+  getCarDataZSignal() {
+    return this.stateHandler.updateSignals['CarData.z'].asReadonly();
+  }
+
+  getPositionZSignal() {
+    return this.stateHandler.updateSignals['Position.z'].asReadonly();
+  }
+
 
 }

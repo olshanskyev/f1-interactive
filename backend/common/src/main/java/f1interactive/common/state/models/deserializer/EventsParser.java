@@ -2,6 +2,8 @@ package f1interactive.common.state.models.deserializer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import f1interactive.common.state.models.CarDataZ;
+import f1interactive.common.state.models.PositionZ;
 import f1interactive.common.state.models.Root;
 import f1interactive.common.state.models.UpdateEvent;
 
@@ -29,6 +31,10 @@ public class EventsParser {
 
     public static UpdateEvent parseUpdateEvent(String eventClassName, String payload) {
         try {
+            if (eventClassName.equals("CarData.z")) //workaround because of not possible class name
+                return new CarDataZ(payload);
+            if (eventClassName.equals("Position.z"))
+                return new PositionZ(payload);
             Class<?> clazz = Class.forName("f1interactive.common.state.models." + eventClassName);
             ObjectMapper objectMapper = new ObjectMapper();
             return (UpdateEvent) objectMapper.readValue(payload, clazz);
