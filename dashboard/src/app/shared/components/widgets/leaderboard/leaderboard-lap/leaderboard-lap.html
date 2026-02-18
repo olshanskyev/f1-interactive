@@ -16,7 +16,7 @@
       @for(sector of timingData()?.Sectors | keyvalue; track sector.key) {
         <div class="d-flex flex-col">
           <div class="d-flex flex-row gap-2 p-b-4">
-            @for(segment of sector.value.Segments | keyvalue; track segment.key) {
+            @for(segment of sector.value.Segments | keyvalue: keepOrder; track segment.key) {
               <div [class]="getSegmentClass(segment.value.Status)" style="width: 10px; height: 5px; border-radius: 2px;"></div>
             }
           </div>

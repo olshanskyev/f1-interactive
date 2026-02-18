@@ -103,7 +103,7 @@ export interface Stint {
     LapTime: string;
     LapNumber: number;
     LapFlags: number;
-	Compound: 'SOFT' | 'MEDIUM' | 'HARD' | 'INTERMEDIATE' | 'WET' | 'UNKNOWN';
+	Compound: 'SOFT' | 'MEDIUM' | 'HARD' | 'INTERMEDIATE' | 'WET' | 'UNKNOWN' | 'TEST_UNKNOWN';
 	New: string; // TRUE | FALSE
     TyresNotChanged: string;
     TotalLaps: number;

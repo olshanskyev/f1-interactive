@@ -1,3 +1,5 @@
+import { KeyValue } from "@angular/common";
+
 export function areMapKeySequencesEqual<K, V1, V2>(map1: Map<K, V1>, map2: Map<K, V2>): boolean {
     if (map1.size !== map2.size) return false;
 
@@ -39,3 +41,5 @@ export function convertObjectIntoSortedArray<V>(object: Record<number | string, 
 export function getLastNummericItem<V>(object: Record<number | string, V>): V {
     return object[Object.keys(object).length - 1];
 }
+
+export const keepOrder = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => 0;

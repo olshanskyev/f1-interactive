@@ -17,9 +17,11 @@
 
   <app-translate />
 
-  <button matIconButton class="hide-small" (click)="toggleFullscreen()">
-    <mat-icon>fullscreen</mat-icon>
-  </button>
+  @if (fullScreenService.isFullScreenEnabled()) {
+    <button matIconButton class="hide-small" (click)="toggleFullscreen()">
+      <mat-icon>fullscreen</mat-icon>
+    </button>
+  }
 
   @if (authService.check()) {
     <app-user />

@@ -6,6 +6,7 @@ import { DriverChip } from '../driver-chip/driver-chip';
 
 import { CurrentTyresChip } from '../current-tyres-chip/current-tyres-chip';
 import { KeyValuePipe } from '@angular/common';
+import { keepOrder } from '@core/lib/arrays_maps';
 
 
 @Component({
@@ -22,7 +23,7 @@ export class LeaderboardTyres{
   driver = input<DriverListItem>();
   timingData = input<TimingDataLinesItem>();
   timingAppData = input<TimingAppDataLinesItem>();
-
+  keepOrder = keepOrder;
 
   getStintColor(stint: Stint) {
     switch (stint.Compound) {

@@ -38,7 +38,7 @@ export class Header {
   readonly showBranding = input(false);
   readonly toggleSidenav = output<void>();
 
-  private readonly fullScreenService = inject(FullScreenService);
+  readonly fullScreenService = inject(FullScreenService);
 
   toggleFullscreen() {
     this.fullScreenService.toggleFullScreen();

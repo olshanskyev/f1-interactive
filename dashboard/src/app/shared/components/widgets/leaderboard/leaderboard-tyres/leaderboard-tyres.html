@@ -1,7 +1,7 @@
 <driver-chip [driver]="driver()" [timingData]="timingData()" [timingAppData]="timingAppData()"/>
 <current-tyres-chip [timingAppData]="timingAppData()"/>
 <div class="d-flex gap-4">
-  @for(stint of timingAppData()?.Stints | keyvalue; track stint.key; let i = $index, total = $count) {
+  @for(stint of timingAppData()?.Stints | keyvalue: keepOrder; track stint.key; let i = $index, total = $count) {
     <!-- width: 100% if no numberOfLaps or total stints = 1-->
     <!-- if the last stint taking the remaining space -->
     <!-- otherwise calculate percentage based on stint length -->

@@ -58,7 +58,8 @@ export const appConfig: ApplicationConfig = {
     { provide: LoginService, useClass: LoginService },
 
     //ToDo make conditional
-    { provide: LiveService, useClass: SimulatorService },
+    //{ provide: LiveService, useClass: SimulatorService },
+    { provide: LiveService, useClass: LiveService },
 
     {
       provide: MAT_DATE_LOCALE,

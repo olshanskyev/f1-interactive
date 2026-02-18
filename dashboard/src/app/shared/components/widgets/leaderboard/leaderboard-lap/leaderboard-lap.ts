@@ -1,13 +1,13 @@
-import { KeyValuePipe } from '@angular/common';
+import { KeyValue, KeyValuePipe } from '@angular/common';
 import { Component, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { getLastNummericItem } from '@core/lib/arrays_maps';
-import { DriverListItem, Stint, TimingAppDataLinesItem, TimingDataLinesItem, TimingStatsLinesItem } from '@core/types/f1types';
+import { DriverListItem, TimingAppDataLinesItem, TimingDataLinesItem, TimingStatsLinesItem } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';
 import { DriverChip } from '../driver-chip/driver-chip';
 import { LapChip } from '../lap-chip/lap-chip';
 import { IntervalChip } from '../interval-chip/interval-chip';
 import { CurrentTyresChip } from '../current-tyres-chip/current-tyres-chip';
+import { keepOrder } from '@core/lib/arrays_maps';
 
 @Component({
   selector: 'leaderboard-lap',
@@ -25,6 +25,8 @@ export class LeaderboardDriver {
   timingData = input<TimingDataLinesItem>();
   timingAppData = input<TimingAppDataLinesItem>();
   timingStat = input<TimingStatsLinesItem>();
+
+  keepOrder = keepOrder;
 
   getSegmentClass(status: number) {
     switch(status) {

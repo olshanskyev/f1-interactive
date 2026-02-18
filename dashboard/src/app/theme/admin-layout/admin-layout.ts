@@ -34,8 +34,8 @@ import { FullScreenService } from '@core';
   },
 })
 export class AdminLayout implements OnDestroy {
-  readonly sidenav = viewChild.required<MatSidenav>('sidenav');
-  readonly content = viewChild.required<MatSidenavContent>('content');
+  readonly sidenav = viewChild<MatSidenav>('sidenav');
+  readonly content = viewChild<MatSidenavContent>('content');
 
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly router = inject(Router);
@@ -86,9 +86,9 @@ export class AdminLayout implements OnDestroy {
 
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(e => {
       if (this.isOver()) {
-        this.sidenav().close();
+        this.sidenav()?.close();
       }
-      this.content().scrollTo({ top: 0 });
+      this.content()?.scrollTo({ top: 0 });
     });
 
     effect(() => {
