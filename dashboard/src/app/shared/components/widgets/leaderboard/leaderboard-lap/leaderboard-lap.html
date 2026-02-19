@@ -2,19 +2,24 @@
     <div class="d-flex align-items-center r-8 justify-content-center"
       [class]="(timingData()?.InPit || timingData()?.PitOut)?'text-color-pit':'text-color-inactive'"
     >
-      <div>
-        <p class="m-0 text-center f-s-14">PIT</p>
-        @if (timingData()?.PitOut) {
-          <p class="m-0 line-height-1 f-s-12 text-color-second text-center">out</p>
-        }
-      </div>
+      @if (timingData()?.Stopped) {
+        <p class="m-0 text-center f-s-12">STOPPED</p>
+      } @else {
+        <div>
+          <p class="m-0 text-center f-s-14">PIT</p>
+          @if (timingData()?.PitOut) {
+            <p class="m-0 line-height-1 f-s-12 text-color-second text-center">out</p>
+          }
+        </div>
+      }
     </div>
     <current-tyres-chip [timingAppData]="timingAppData()" />
     <interval-chip [timingData]="timingData()" />
     <lap-chip [timingData]="timingData()" [timingStat]="timingStat()" />
+    <lap-count-chip [timingData]="timingData()"/>
     <div class="d-flex gap-8">
       @for(sector of timingData()?.Sectors | keyvalue; track sector.key) {
-        <div class="d-flex flex-col">
+        <div class="d-flex flex-col justify-content-center">
           <div class="d-flex flex-row gap-2 p-b-4">
             @for(segment of sector.value.Segments | keyvalue: keepOrder; track segment.key) {
               <div [class]="getSegmentClass(segment.value.Status)" style="width: 10px; height: 5px; border-radius: 2px;"></div>
@@ -27,7 +32,7 @@
             </div>
           } @else {
             <div class="d-flex line-height-1 f-s-12 text-color-inactive">
-              {{sector.value.PreviousValue || ''}}
+              {{sector.value.PreviousValue || '-'}}
             </div>
           }
         </div>

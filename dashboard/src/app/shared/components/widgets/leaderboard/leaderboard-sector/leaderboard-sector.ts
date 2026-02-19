@@ -6,6 +6,7 @@ import { DriverChip } from '../driver-chip/driver-chip';
 import { IntervalChip } from '../interval-chip/interval-chip';
 import { LapChip } from '../lap-chip/lap-chip';
 import { KeyValuePipe } from '@angular/common';
+import { LapCountChip } from '../lap-count-chip/lap-count-chip';
 
 @Component({
   selector: 'leaderboard-sector',
@@ -15,7 +16,8 @@ import { KeyValuePipe } from '@angular/common';
     DriverChip,
     IntervalChip,
     LapChip,
-    KeyValuePipe
+    KeyValuePipe,
+    LapCountChip
   ],
 })
 export class LeaderboardSector{

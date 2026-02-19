@@ -12,4 +12,13 @@ export class IntervalChip {
         const catching = this.timingData()?.IntervalToPositionAhead?.Catching;
         return (catching)? 'text-f1-green': '';
     }
+
+    toPositionAhead(): string {
+        return this.timingData()?.IntervalToPositionAhead?.Value ??
+            this.timingData()?.TimeDiffToPositionAhead ?? '-';
+    }
+
+    toLeader(): string {
+        return this.timingData()?.GapToLeader ?? this.timingData()?.TimeDiffToFastest ?? '';
+    }
 }

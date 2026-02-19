@@ -147,6 +147,22 @@
   position: relative;
 }
 
+// Fullscreen mode: hide chrome, remove padding, fill viewport
+.matero-fullscreen {
+  .matero-sidenav {
+    display: none !important;
+  }
+
+  .matero-content {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .outer-padding {
+    padding: 0;
+  }
+}
+
 .hidden {
   display: none !important;
 }

@@ -1,6 +1,7 @@
 <driver-chip [driver]="driver()" [timingData]="timingData()" [timingAppData]="timingAppData()"/>
 <interval-chip [timingData]="timingData()"/>
 <lap-chip [timingData]="timingData()" [timingStat]="timingStat()"/>
+<lap-count-chip [timingData]="timingData()"/>
 
 @for(sector of timingData()?.Sectors | keyvalue; track sector.key) {
   <div>

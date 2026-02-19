@@ -76,6 +76,7 @@
   "sector": "Sector",
   "speed": "Speed",
   "current_tyres": "Current",
+  "lap_count": "Laps",
   "weather": {
     "air": "Air",
     "track": "Track",

@@ -8,6 +8,7 @@ import { LapChip } from '../lap-chip/lap-chip';
 import { IntervalChip } from '../interval-chip/interval-chip';
 import { CurrentTyresChip } from '../current-tyres-chip/current-tyres-chip';
 import { keepOrder } from '@core/lib/arrays_maps';
+import { LapCountChip } from '../lap-count-chip/lap-count-chip';
 
 @Component({
   selector: 'leaderboard-lap',
@@ -17,7 +18,8 @@ import { keepOrder } from '@core/lib/arrays_maps';
     DriverChip,
     LapChip,
     IntervalChip,
-    CurrentTyresChip
+    CurrentTyresChip,
+    LapCountChip
   ],
 })
 export class LeaderboardDriver {

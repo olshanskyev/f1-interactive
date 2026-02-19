@@ -18,7 +18,7 @@ public class AudioStreams implements UpdateEvent{
     public Root merge(Root state) {
         if (state.audioStreams == null)
             state.audioStreams = new AudioStreams();
-        Merger.mergeAllNotNull(state.contentStreams, this);
+        Merger.mergeAllNotNull(state.audioStreams, this);
         return state;
     }
 }
