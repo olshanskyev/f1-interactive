@@ -1,0 +1,112 @@
+<div>
+    @if (points() && points()!.length > 0 && bounds()) {
+
+        <svg
+                [attr.viewBox]="`${bounds()!.minX} ${bounds()!.minY} ${bounds()!.widthX} ${bounds()!.widthY}`"
+                class="h-full w-full"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    class="background-stroke"
+                    [attr.d]="'M' + points()![0].x + ',' + points()![0].y + ' ' + joinPoints(points())"
+                />
+
+                @for (sector of renderedSectors(); track $index) {
+                    <path
+                        [class]="sector.color"
+                        class="sector-item"
+                        [style.stroke-width]="sector.strokeWidth"
+                        [attr.d]="sector.d"
+                    />
+                }
+
+                @if (finishLine()) {
+                    <rect
+                        [attr.x]="finishLine()!.x - 150"
+                        [attr.y]="finishLine()!.y"
+                        class="stroke-f1-red"
+                        [style.stroke-width]="100"
+                        [style.height]="0.1"
+                        [style.width]="300"
+                        [attr.transform]="'rotate(' + (finishLine()!.startAngle + 90) + ', ' + finishLine()!.x + ', ' + finishLine()!.y + ')'"
+
+                    />
+                }
+
+                @if (showCornerNumbers()) {
+                    @for (corner of corners(); track $index) {
+                        <text
+                            [attr.key]="'corner.number.' + corner.number"
+                            [attr.x]="corner.labelPos.x"
+                            [attr.y]="corner.labelPos.y"
+                            class="corner-label font-formula"
+                        >
+                            {{ corner.number }}
+                        </text>
+                    }
+
+                }
+
+                @if (driverDots() && positions() && center()) {
+                    @for (dot of driverDots(); track $index) {
+                        @if (onTrack(dot.driver.RacingNumber)) {
+                            <g car-dot
+                                [attr.key]="'map.driver.' + dot.driver.RacingNumber"
+                                [favouriteDriver]="false"
+                                [name]="dot.driver.Tla"
+                                [color]="'#' + dot.driver.TeamColour"
+                                [pit]="dot.pit"
+                                [hidden]="dot.hidden"
+                                [pos]="positions()![dot.driver.RacingNumber]"
+                                [rotation]="rotation()"
+                                [centerX]="center()!.x"
+                                [centerY]="center()!.y"
+                            />
+                        }
+
+                    }
+                }
+
+                <!--
+
+                {centerX && centerY && positions && drivers && (
+                    <>
+                        {positions["241"] && positions["241"].Z !== 0 && (
+                            // Aston Martin
+                            <SafetyCar
+                                                                rotation={rotation}
+                                centerX={centerX}
+                                centerY={centerY}
+                                pos={positions["241"]}
+                                color="229971"
+                            />
+                        )}
+
+                        {positions["242"] && positions["242"].Z !== 0 && (
+                            // Aston Martin
+                            <SafetyCar
+
+                                rotation={rotation}
+                                centerX={centerX}
+                                centerY={centerY}
+                                pos={positions["242"]}
+                                color="229971"
+                            />
+                        )}
+
+                        {positions["243"] && positions["243"].Z !== 0 && (
+                            // Mercedes
+                            <SafetyCar
+
+                                rotation={rotation}
+                                centerX={centerX}
+                                centerY={centerY}
+                                pos={positions["243"]}
+                                color="B90F09"
+                            />
+                        )}
+                    </>
+            )}-->
+            </svg>
+    }
+</div>

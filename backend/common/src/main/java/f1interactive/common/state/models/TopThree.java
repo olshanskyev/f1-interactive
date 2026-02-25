@@ -15,6 +15,9 @@ public class TopThree implements UpdateEvent{
     public LinkedHashMap<Integer, TopThreeLinesItem> lines = new LinkedHashMap<>();
     public Boolean _kf;
 
+    @JsonProperty("SessionPart")
+    public Integer sessionPart;
+
     @Override
     public Root merge(Root state) {
         if (state.topThree == null)

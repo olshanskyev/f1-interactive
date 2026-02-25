@@ -1,5 +1,5 @@
 import { signal, WritableSignal } from '@angular/core';
-import { DriverList, Root, TimingAppData, TimingData, TimingStats, WeatherData } from '@core/types/f1types';
+import { DriverList, RaceControlMessages, Root, SessionData, SessionInfo, TimingAppData, TimingData, TimingStats, TrackStatus, WeatherData } from '@core/types/f1types';
 import { UpdateEventRecord } from '../live.service';
 
 interface SignalTypeMap {
@@ -8,8 +8,12 @@ interface SignalTypeMap {
     TimingAppData: TimingAppData;
     TimingStats: TimingStats;
     DriverList: DriverList;
+    SessionInfo: SessionInfo;
+    SessionData: SessionData;
+    TrackStatus: TrackStatus;
     'CarData.z': string;
     'Position.z': string;
+    RaceControlMessages: RaceControlMessages;
 }
 
 export type AvailableSignalsType = keyof SignalTypeMap;
@@ -26,8 +30,12 @@ export class StateHandler {
             'TimingAppData': signal<TimingAppData | undefined>(undefined),
             'TimingStats': signal<TimingStats | undefined>(undefined),
             'DriverList': signal<DriverList | undefined>(undefined),
+            'SessionInfo': signal<SessionInfo | undefined>(undefined),
+            'SessionData': signal<SessionData | undefined>(undefined),
+            'TrackStatus': signal<TrackStatus | undefined>(undefined),
             'CarData.z': signal<string | undefined>(undefined),
-            'Position.z': signal<string | undefined>(undefined)
+            'Position.z': signal<string | undefined>(undefined),
+            'RaceControlMessages': signal<RaceControlMessages | undefined>(undefined),
     };
 
     get fullStateSignal() {

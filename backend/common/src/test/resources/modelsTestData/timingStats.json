@@ -8,7 +8,10 @@
         "PersonalBestLapTime": {
           "Lap": 39,
           "Position": 5,
-          "Value": "1:27.625"
+          "Value": "1:27.625",
+          "_deleted": [
+            "Position"
+          ]
         },
         "BestSectors": [
           {

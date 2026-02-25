@@ -54,6 +54,7 @@ public class ModelsDeserializationTest {
             assertEquals(3, item.bestSectors.size());
             assertEquals(4, item.bestSpeeds.size());
         });
+        assertEquals("Position", root.timingStats.lines.get("1").personalBestLapTime._deleted.get(0));
 
         TimingStatsLinesItem timingStatsLinesItem = root.timingStats.lines.get("63");
         assertEquals(57, timingStatsLinesItem.personalBestLapTime.lap);
@@ -201,6 +202,16 @@ public class ModelsDeserializationTest {
         assertEquals("1:29.022", timingDataLinesItem.lastLapTime.value);
         assertEquals("timeDiffToFastestValue", timingDataLinesItem.timeDiffToFastest);
         assertEquals("TimeDiffToPositionAheadValue", timingDataLinesItem.timeDiffToPositionAhead);
+
+        timingDataLinesItem = root.timingData.lines.get("1");
+        assertEquals(3, timingDataLinesItem.bestLapTimes.size());
+        assertEquals("Value", timingDataLinesItem.bestLapTimes.get(0).value);
+        assertEquals(3, timingDataLinesItem.stats.size());
+        assertEquals("TimeDifftoPositionAhead", timingDataLinesItem.stats.get(1).timeDifftoPositionAhead);
+
+        assertEquals(3, root.timingData.noEntries.size());
+        assertEquals(10, root.timingData.noEntries.get(2));
+        assertEquals("107", root.timingData.cutOffPercentage);
     }
 
     @Test

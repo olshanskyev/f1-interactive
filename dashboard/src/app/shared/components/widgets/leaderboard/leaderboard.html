@@ -71,7 +71,10 @@
 
           @for (entry of timingDataMap(); track entry[0]) {
             <div class="transition-container" [style.view-transition-name]="'driver-' + uniqueId + '-' + entry[1].RacingNumber">
-              <div class="d-flex flex-wrap align-content-center justify-content-center">
+              <div class="d-flex flex-wrap align-content-center justify-content-center"
+                [class.elimination-zone]="isInEliminationZone(entry[1].Line)"
+                [class.bg-f1-red]="qualifyingPart() && entry[1].Line === 1"
+              >
                   @if (isMovingUp(entry[0])) {
                     <mat-icon class="text-f1-green">keyboard_double_arrow_up</mat-icon>
                   } @else {
@@ -88,6 +91,7 @@
                     [timingData]="timingData()?.Lines?.[entry[0]]"
                     [timingAppData]="timingAppData()?.Lines?.[entry[0]]"
                     [timingStat]="timingStats()?.Lines?.[entry[0]]"
+                    [qualifyingPart]="qualifyingPart()"
 
                   />
               }
@@ -97,6 +101,7 @@
                     [timingData]="timingData()?.Lines?.[entry[0]]"
                     [timingAppData]="timingAppData()?.Lines?.[entry[0]]"
                     [timingStat]="timingStats()?.Lines?.[entry[0]]"
+                    [qualifyingPart]="qualifyingPart()"
                   />
               }
               @if (mode() === 'speeds') {
@@ -105,6 +110,7 @@
                     [timingData]="timingData()?.Lines?.[entry[0]]"
                     [timingAppData]="timingAppData()?.Lines?.[entry[0]]"
                     [timingStat]="timingStats()?.Lines?.[entry[0]]"
+                    [qualifyingPart]="qualifyingPart()"
                   />
               }
               @if (mode() === 'tyres') {

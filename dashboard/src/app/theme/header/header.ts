@@ -1,4 +1,4 @@
-import { Component,  ViewEncapsulation, inject, input, output } from '@angular/core';
+import { Component,  ViewEncapsulation, computed, inject, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -9,6 +9,10 @@ import { UserButton } from '../widgets/user-button';
 import { AuthService, FullScreenService } from '@core';
 import { Router, RouterLink } from '@angular/router';
 import { LayoutsButton } from '@theme/widgets/layouts-button/layouts-button';
+import { SimulatorButton } from '@theme/widgets/simulator-button';
+import { isAdmin } from '@core/lib/roles';
+import { NgxRolesService } from 'ngx-permissions';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 
 @Component({
@@ -27,7 +31,8 @@ import { LayoutsButton } from '@theme/widgets/layouts-button/layouts-button';
     TranslateButton,
     UserButton,
     RouterLink,
-    LayoutsButton
+    LayoutsButton,
+    SimulatorButton
   ],
 })
 export class Header {
@@ -39,6 +44,12 @@ export class Header {
   readonly toggleSidenav = output<void>();
 
   readonly fullScreenService = inject(FullScreenService);
+  private readonly roleService = inject(NgxRolesService);
+  roles = toSignal(this.roleService.roles$);
+
+  isAdmin = computed(() =>
+    isAdmin(this.roles())
+  );
 
   toggleFullscreen() {
     this.fullScreenService.toggleFullScreen();

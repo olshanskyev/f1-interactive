@@ -1,4 +1,3 @@
-import { Content } from '@ngneat/overview';
 
 export interface Root {
 	Heartbeat?: Heartbeat;
@@ -17,7 +16,7 @@ export interface Root {
 	TimingData?: TimingData;
 	TeamRadio?: TeamRadio;
     PitLaneTimeCollection?: PitLaneTimeCollection;
-	'CarData.z': string;
+	'CarData.z'?: string;
 	'Position.z'?: string;
 	ContentStreams?: ContentStreams;
     AudioStreams?: AudioStreams;
@@ -36,6 +35,7 @@ export interface ExtrapolatedClock {
 export interface TopThree {
 	Withheld: boolean;
     Lines: Record<number, TopThreeLinesItem>;
+	SessionPart: number;
 }
 
 export interface TopThreeLinesItem {
@@ -76,6 +76,7 @@ export interface PersonalBestLapTime {
     Lap: number;
     Position: number;
 	Value: string;
+	_deleted: Record<number, string>;
 }
 
 export interface BestSectorsItem {
@@ -142,6 +143,7 @@ export interface DriverListItem {
 	Reference: string;
 	HeadshotUrl: string;
 	PublicIdRight: string;
+	_deleted: Record<number, string>;
 }
 
 export interface RaceControlMessages {
@@ -216,6 +218,7 @@ export interface StatusSeries {
 export interface Series {
 	Utc: string;
 	Lap: number;
+	QualifyingPart: number;
 }
 
 export interface SessionStatus {
@@ -228,9 +231,18 @@ export interface LapCount {
 	TotalLaps: number;
 }
 
+export interface StatItem {
+	TimeDifftoPositionAhead: string;
+    TimeDiffToFastest: string;
+}
+
 export interface TimingData {
 	Lines: Record<string, TimingDataLinesItem>;
 	Withheld?: boolean;
+	NoEntries: Record<number, number>;
+	SessionPart: number;
+	CutOffTime: string;
+	CutOffPercentage: string;
 }
 
 export interface TimingDataLinesItem {
@@ -253,6 +265,11 @@ export interface TimingDataLinesItem {
 	Speeds: Record<string, SpeedsItem>;
 	BestLapTime: BestLapTime;
 	LastLapTime: LastLapTime;
+
+	KnockedOut: boolean;
+	Cutoff: boolean;
+	BestLapTimes: Record<number, BestLapTime>;
+	Stats: Record<number, StatItem>;
 }
 
 export interface SectorsItem {
@@ -280,6 +297,7 @@ export interface SegmentsItem {
 export interface BestLapTime {
     Value: string;
     Lap: number;
+	_deleted: Record<number, string>;
 }
 
 export interface LastLapTime {
@@ -335,4 +353,24 @@ export interface Stream {
 	Uri: string;
 	Path: string;
 	Utc: string | Date;
+}
+
+
+//Position.z
+export interface Position {
+	Position: PositionItem[];
+}
+
+export interface PositionItem {
+	Timestamp: string;
+	Entries: Positions;
+}
+
+export type Positions = Record<string, PositionCar>;
+
+export interface PositionCar {
+	Status: string;
+	X: number;
+	Y: number;
+	Z: number;
 }

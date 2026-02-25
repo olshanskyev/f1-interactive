@@ -100,4 +100,10 @@ export class SettingsService {
   getLocale() {
     return this.localeMap[this.getTranslateLang()];
   }
+
+  getUseSimulator() {
+    return this.options.useSimulator;
+  }
+
+
 }

@@ -35,7 +35,7 @@ class RootController {
     private final Object initStateMutex = new Object();
 
     private void onInit(String event) {
-        Root initMessage = EventsParser.parseInitEvent(event);
+        Root initMessage = EventsParser.parseRoot(event);
         stateHandler.init(initMessage);
         publisher.publish("init", initMessage);
         logger.debug("init: {}", event);

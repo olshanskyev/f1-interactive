@@ -1,0 +1,17 @@
+:host {
+	fill: var(--inactive-color);
+	transition: all 1s linear;
+
+	&.hidden {
+		opacity: 0 !important;
+	}
+
+	&.opacity-30 {
+		opacity: 0.3 !important;
+	}
+}
+
+.dot-favourite {
+	stroke: var(--favourite-driver-color);
+	stroke-width: 80 !important;
+}

@@ -11,22 +11,28 @@ public class EventsParser {
 
     public record UpdateEventRecord(String className, UpdateEvent updateEvent, String utc) {
     }
+
+    record EventFromString(String className, String event, String utc) {}
+
+    private static EventFromString parseEventString(String event) {
+        int firstCommaPos = event.indexOf(",");
+        int lastCommaPos = event.lastIndexOf(",");
+        if (firstCommaPos == -1 || lastCommaPos == -1 || lastCommaPos == firstCommaPos) {
+            throw new RuntimeException("Unexpected update event format");
+        }
+        return new EventFromString(
+                event.substring(0, firstCommaPos),
+                event.substring(firstCommaPos + 1, lastCommaPos),
+                event.substring(lastCommaPos + 1));
+    }
     /**
      *
      * @param updateEvent comma separated eventName,{event as json},utcTimestamp
      * @return UpdateEventRecord
      */
     public static UpdateEventRecord parseUpdateEvent(String updateEvent) {
-        int firstCommaPos = updateEvent.indexOf(",");
-        int lastCommaPos = updateEvent.lastIndexOf(",");
-        if (firstCommaPos == -1 || lastCommaPos == -1 || lastCommaPos == firstCommaPos) {
-            throw new RuntimeException("Unexpected update event format");
-        }
-        String className = updateEvent.substring(0, firstCommaPos);
-        String objectString = updateEvent.substring(firstCommaPos + 1, lastCommaPos);
-        String utcString = updateEvent.substring(lastCommaPos + 1);
-        return new UpdateEventRecord(className, parseUpdateEvent(className, objectString), utcString);
-
+        EventFromString eventRecord = parseEventString(updateEvent);
+        return new UpdateEventRecord(eventRecord.className, parseUpdateEvent(eventRecord.className, eventRecord.event), eventRecord.utc);
     }
 
     public static UpdateEvent parseUpdateEvent(String eventClassName, String payload) {
@@ -45,12 +51,28 @@ public class EventsParser {
         }
     }
 
-    public static Root parseInitEvent(String initEvent) {
+    /**
+     *
+     * @param rootJsonString root as json string
+     * @return
+     */
+    public static Root parseRoot(String rootJsonString) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.readValue(initEvent, Root.class);
+            return objectMapper.readValue(rootJsonString, Root.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Init event deserialization error: " + e.getMessage());
         }
+    }
+
+    /**
+     * @param initEvent comma separated event Root, {}, utc
+     * @return
+     */
+    public static Root parseInitEvent(String initEvent) {
+        EventFromString eventRecord = parseEventString(initEvent);
+        if (!eventRecord.className.equals("Root"))
+            throw new RuntimeException("Unexpected class, expected Root");
+        return parseRoot(eventRecord.event);
     }
 }

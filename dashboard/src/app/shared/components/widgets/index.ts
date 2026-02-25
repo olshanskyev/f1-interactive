@@ -8,3 +8,4 @@ export * from './weather/preview/weather-widget-preview';
 export * from './settings-dialog/settings-dialog';
 export * from './leaderboard/leaderboard';
 export * from './leaderboard/preview/leaderboard-widget-preview';
+export * from './track-map/track-map-widget';

@@ -50,11 +50,11 @@ class SimulatorApiController {
     }
 
     private void setSimulatorCallbacks() {
-        simulator.onInitEvent((message, isRewinding) -> {
+        simulator.onInitEvent((eventNumber, message, isRewinding) -> {
             Root initMessage = EventsParser.parseInitEvent(message);
             stateHandler.init(initMessage);
             if (!isRewinding)
-                publisher.publish("init", new SimulatorEvent(0, initMessage));
+                publisher.publish("init", new SimulatorEvent(eventNumber, initMessage));
             logger.debug("init: {}", message);
         });
         simulator.onUpdateEvent((eventNumber, message, isRewinding) -> {

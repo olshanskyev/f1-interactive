@@ -25,6 +25,7 @@ export class LeaderboardSector{
   timingData = input<TimingDataLinesItem>();
   timingAppData = input<TimingAppDataLinesItem>();
   timingStat = input<TimingStatsLinesItem>();
+  qualifyingPart = input<number>();
 
   hasBestSector(sectorNumber: number): boolean {
     return this.timingStat()?.BestSectors[sectorNumber].Position === 1;

@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SimulatorTest {
 
     interface PublishInterface {
-        void publishInit(String message, boolean isRewinding);
+        void publishInit(int eventNumber, String message, boolean isRewinding);
         void publishUpdate(int eventNumber, String message, boolean isRewinding);
         void endOfEvents();
         void rewindFinished();
@@ -98,13 +98,13 @@ public class SimulatorTest {
 
         assertEquals(SimulatorState.STOPPED, simulator.getState());
 
-        verify(serviceMock, times(1)).publishInit(anyString(), eq(false));
+        verify(serviceMock, times(1)).publishInit(anyInt(), anyString(), eq(false));
         verify(serviceMock, times(7)).publishUpdate(anyInt(), anyString(), eq(false));
         verify(serviceMock, times(1)).endOfEvents();
 
         // checking calling order
         InOrder inOrder = inOrder(serviceMock);
-        inOrder.verify(serviceMock).publishInit(events.get(0), false);
+        inOrder.verify(serviceMock).publishInit(0, events.get(0), false);
         for(int it = 1; it < events.size(); it++) {
             inOrder.verify(serviceMock).publishUpdate(it, events.get(it), false);
         }
@@ -129,17 +129,36 @@ public class SimulatorTest {
         simulator.rewind(rewindPos);
         assertEquals(SimulatorState.PAUSED, simulator.getState());
 
-        verify(serviceMock, times(1)).publishInit(anyString(), eq(true));
+        verify(serviceMock, times(1)).publishInit(anyInt(), anyString(), eq(true));
         verify(serviceMock, times(4)).publishUpdate(anyInt(), anyString(), eq(true));
         verify(serviceMock, times(1)).rewindFinished();
         simulator.setPlaybackSpeedRatio(150L);
         simulator.start();
         Thread.sleep(1000);
         InOrder inOrder = inOrder(serviceMock);
-        inOrder.verify(serviceMock).publishInit(events.get(0), true);
+        inOrder.verify(serviceMock).publishInit(0, events.get(0), true);
         for(int it = 1; it < events.size(); it++) {
             inOrder.verify(serviceMock).publishUpdate(it, events.get(it), (it < rewindPos));
         }
         inOrder.verify(serviceMock).endOfEvents();
+    }
+
+    @Test
+    public void interFullStateTest() throws IOException, InterruptedException {
+        String path = "src/test/resources/inter-full-state.txt";
+        Simulator simulator = Simulator.init(path);
+        List<String> events = Files.readAllLines(Paths.get(path)).stream().filter(item -> !item.startsWith("Heartbeat")).toList();
+        PublishInterface serviceMock = Mockito.mock(PublishInterface.class);
+        simulator.onInitEvent(serviceMock::publishInit);
+        simulator.onUpdateEvent(serviceMock::publishUpdate);
+        simulator.onEndOfEvents(serviceMock::endOfEvents);
+        simulator.onRewindFinished(serviceMock::rewindFinished);
+        simulator.setPlaybackSpeedRatio(150L);
+        simulator.start();
+        Thread.sleep(1000);
+        verify(serviceMock, times(2)).publishInit(anyInt(), anyString(), eq(false));
+        verify(serviceMock, times(4)).publishUpdate(anyInt(), anyString(), eq(false));
+        verify(serviceMock, times(1)).endOfEvents();
+        verify(serviceMock, times(0)).rewindFinished();
     }
 }

@@ -8,6 +8,7 @@ import f1interactive.common.websocket.F1SignalRProxy;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Scanner;
 
 public class F1LiveTimingSniffer {
@@ -31,7 +32,7 @@ public class F1LiveTimingSniffer {
         //F1LiveTimingProxy client = new F1SignalRProxy();
 
         try (FileEventsSaver saver = new FileEventsSaver(fileName, false)) {
-            client.onInitStateMessage(saver::save);
+            client.onInitStateMessage((message) -> saver.save("Root" + "," + message + "," + Instant.now()));
             client.onUpdateMessage((type, message, time) -> saver.save(type+ "," + message + "," + time));
             client.connect();
             // waiting for nextLine input to close

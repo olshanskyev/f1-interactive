@@ -9,4 +9,6 @@ public class Series{
     public Date utc;
     @JsonProperty("Lap") 
     public Integer lap;
+    @JsonProperty("QualifyingPart")
+    public Integer qualifyingPart;
 }

@@ -1,0 +1,20 @@
+.background-stroke {
+    fill: transparent;
+    stroke: var(--mat-sys-outline-variant);
+    stroke-width: 300;
+    stroke-linecap: round;
+}
+
+.sector-item {
+    fill: transparent;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.corner-label {
+    font-size: 250px;
+    font-weight: bold;
+    alignment-baseline: central;
+    text-anchor: middle;
+    fill: white;
+}

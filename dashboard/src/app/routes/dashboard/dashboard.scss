@@ -1,0 +1,12 @@
+.default-grid {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 1rem;
+    align-items: center;
+}
+
+@media (width <= 1400px) {
+    .default-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,4 +1,4 @@
-import { KeyValue } from "@angular/common";
+import { KeyValue } from '@angular/common';
 
 export function areMapKeySequencesEqual<K, V1, V2>(map1: Map<K, V1>, map2: Map<K, V2>): boolean {
     if (map1.size !== map2.size) return false;

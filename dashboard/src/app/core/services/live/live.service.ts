@@ -1,8 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { tap } from 'rxjs';
+import { computed, inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { SseClient } from 'ngx-sse-client';
 import { StateHandler } from './state/state-handler';
+import { inflate } from '@core/lib/inflate';
+import { Position, PositionCar } from '@core/types/f1types';
+import { StackContainer } from '@core/lib/StackContainer';
 
 export interface UpdateEventRecord {
   className: string;
@@ -10,38 +13,17 @@ export interface UpdateEventRecord {
   utc: string;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
-export class LiveService {
+@Injectable()
+export abstract class LiveService {
+
   protected readonly sseClient = inject(SseClient);
   protected readonly http = inject(HttpClient);
   protected readonly stateHandler = new StateHandler();
 
-  live(
+  abstract live (
         onInit: ((event: any) => void) | undefined,
-        onUpdate: ((event: UpdateEventRecord) => void) | undefined,
-  ) {
-    return this.sseClient.stream('/live').pipe(tap((event) => {
-      const messageEvent = (event as MessageEvent<any>);
-      if (messageEvent.data) {
-        const data = JSON.parse(messageEvent.data);
-        if (event.type === 'init') {
-            this.stateHandler.init(data);
-            if (onInit)
-              onInit(data);
-        }
-
-        if (event.type === 'update') {
-            this.stateHandler.updateState(data);
-            if (onUpdate)
-              onUpdate(data);
-        }
-      }
-
-    }
-    ));
-  }
+        onUpdate: ((event: UpdateEventRecord) => void) | undefined
+  ): Observable<any>;
 
   get fullStateSignal() {
     return this.stateHandler.fullStateSignal;
@@ -67,13 +49,46 @@ export class LiveService {
     return this.stateHandler.updateSignals['WeatherData'].asReadonly();
   }
 
+  getSessionInfoSignal() {
+    return this.stateHandler.updateSignals['SessionInfo'].asReadonly();
+  }
+
+  getSessionDataSignal() {
+    return this.stateHandler.updateSignals['SessionData'].asReadonly();
+  }
+
+  getRaceControlMessagesSignal() {
+    return this.stateHandler.updateSignals['RaceControlMessages'].asReadonly();
+  }
+
+  getTrackStatusSignal() {
+    return this.stateHandler.updateSignals['TrackStatus'].asReadonly();
+  }
+
   getCarDataZSignal() {
     return this.stateHandler.updateSignals['CarData.z'].asReadonly();
   }
 
-  getPositionZSignal() {
-    return this.stateHandler.updateSignals['Position.z'].asReadonly();
+  positions = computed(() => {
+        const posZ = this.stateHandler.updateSignals['Position.z']();
+        return (posZ)? inflate<Position>(posZ).Position: [];
+  });
+
+  posStackContainer = new StackContainer<PositionCar>(this.positions);
+
+  getPositionsLiveSignal(frequency?: 'max' | 'normal') {
+    if (frequency === 'max') {
+      return this.posStackContainer.liveValue();
+    } else
+    return computed(() => {
+        const posZ = this.stateHandler.updateSignals['Position.z']();
+        const array = (posZ)? inflate<Position>(posZ).Position: [];
+        // return last value from array
+        return array.length > 0 ? array[array.length - 1].Entries : undefined;
+    });
   }
 
-
+  isPositionZAvailable() {
+    return this.stateHandler.updateSignals['Position.z']() !== undefined;
+  }
 }

@@ -14,6 +14,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { LeaderboardSector } from './leaderboard-sector/leaderboard-sector';
 import { LeaderboardSpeed } from './leaderboard-speed/leaderboard-speed';
 import { LeaderboardTyres } from './leaderboard-tyres/leaderboard-tyres';
+import { sortTimingDataByPosition } from '@core/lib/sorting';
 
 @Component({
   selector: 'leaderboard',
@@ -41,6 +42,13 @@ export class Leaderboard extends ContaineredWidget {
   timingData = this.liveService.getTimingDataSignal();
   timingAppData = this.liveService.getTimingAppDataSignal();
   timingStats = this.liveService.getTimingStatsSignal();
+  sessionData = this.liveService.getSessionDataSignal();
+
+  qualifyingPart = computed(() => {
+      //get last sessionData.series
+      const lastSeries = Object.values(this.sessionData()!.Series).reverse()[0];
+      return lastSeries?.QualifyingPart;
+  });
   readonly uniqueId = Math.random().toString(36).substring(2, 9);
 
   settingsMode = computed(() => this.settings()?.['mode'] ?? 'all');
@@ -57,11 +65,7 @@ export class Leaderboard extends ContaineredWidget {
     effect(() => { // for animating driver positions changing
       if (this.timingData()) {
         // sorting driver positions based on TimingData.Lines.Line
-        const newTimingDataMap = new Map(
-          Object.entries(this.timingData()!.Lines).sort(
-            (([ , a], [ , b]) => a.Line - b.Line)
-          )
-        );
+        const newTimingDataMap = sortTimingDataByPosition(this.timingData()!.Lines);
         if (!areMapKeySequencesEqual(this.timingDataMap(), newTimingDataMap)) { // avoid unnecessary transitions
           const version = ++this.transitionVersion;
           this.movements.set(calculateSequenceChanges(this.timingDataMap(), newTimingDataMap));
@@ -91,5 +95,15 @@ export class Leaderboard extends ContaineredWidget {
     if (!event.selected) {
       event.source.select();
     }
+  }
+
+  isInEliminationZone(position: number): boolean {
+    if (this.qualifyingPart() === 1 && position > 15) {
+      return true;
+    }
+    if (this.qualifyingPart() === 2 && position > 10) {
+      return true;
+    }
+    return false;
   }
 }

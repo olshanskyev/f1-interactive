@@ -5,17 +5,25 @@
       @if (timingData()?.Stopped) {
         <p class="m-0 text-center f-s-12">STOPPED</p>
       } @else {
-        <div>
-          <p class="m-0 text-center f-s-14">PIT</p>
-          @if (timingData()?.PitOut) {
-            <p class="m-0 line-height-1 f-s-12 text-color-second text-center">out</p>
+        @if (timingData()?.Retired) {
+          <p class="m-0 text-center f-s-12">RETIRED</p>
+        } @else {
+          @if (timingData()?.KnockedOut ) {
+            <p class="m-0 text-center f-s-10">KNOCKED OUT</p>
+          } @else {
+            <div>
+              <p class="m-0 text-center f-s-14">PIT</p>
+              @if (timingData()?.PitOut) {
+                <p class="m-0 line-height-1 f-s-12 text-color-second text-center">out</p>
+              }
+            </div>
           }
-        </div>
+        }
       }
     </div>
     <current-tyres-chip [timingAppData]="timingAppData()" />
-    <interval-chip [timingData]="timingData()" />
-    <lap-chip [timingData]="timingData()" [timingStat]="timingStat()" />
+    <interval-chip [timingData]="timingData()" [qualifyingPart]="qualifyingPart()" />
+    <lap-chip [timingData]="timingData()" [timingStat]="timingStat()" [qualifyingPart]="qualifyingPart()" />
     <lap-count-chip [timingData]="timingData()"/>
     <div class="d-flex gap-8">
       @for(sector of timingData()?.Sectors | keyvalue; track sector.key) {

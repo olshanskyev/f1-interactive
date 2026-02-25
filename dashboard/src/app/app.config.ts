@@ -22,7 +22,7 @@ import {
   BASE_URL,
   BASE_URL_SIMULATOR,
   interceptors,
-  LiveService,
+  F1InteractiveService,
   SettingsService,
   SimulatorService,
   StartupService,
@@ -32,6 +32,7 @@ import { environment } from '@env/environment';
 import { routes } from './app.routes';
 
 import { LoginService } from '@core/authentication/login.service';
+import { LiveService } from '@core/services/live/live.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -57,9 +58,15 @@ export const appConfig: ApplicationConfig = {
 
     { provide: LoginService, useClass: LoginService },
 
-    //ToDo make conditional
-    //{ provide: LiveService, useClass: SimulatorService },
-    { provide: LiveService, useClass: LiveService },
+    {
+      provide: LiveService,
+      useFactory: () => {
+        const settings: SettingsService = inject(SettingsService);
+        return (settings.getUseSimulator())?
+          inject(SimulatorService) : inject(F1InteractiveService);
+      }
+    },
+    //{ provide: LiveService, useClass: LiveService },
 
     {
       provide: MAT_DATE_LOCALE,

@@ -46,4 +46,16 @@ public class TimingDataLinesItem {
     public BestLapTime bestLapTime;
     @JsonProperty("LastLapTime")
     public LastLapTime lastLapTime;
+
+    @JsonProperty("KnockedOut")
+    public Boolean knockedOut;
+    @JsonProperty("Cutoff")
+    public Boolean cutOff;
+    @JsonProperty("BestLapTimes")
+    @JsonDeserialize(using = ArrayIntoMapDeserializer.class)
+    public LinkedHashMap<Integer, BestLapTime> bestLapTimes = new LinkedHashMap<>();
+    @JsonProperty("Stats")
+    @JsonDeserialize(using = ArrayIntoMapDeserializer.class)
+    public LinkedHashMap<Integer, StatItem> stats = new LinkedHashMap<>();
+
 }

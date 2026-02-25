@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { LayoutsService, LiveService, WidgetFactory } from '@core';
+import { LayoutsService, SettingsService, WidgetFactory } from '@core';
+import { isAdmin } from '@core/lib/roles';
+import { LiveService } from '@core/services/live/live.service';
 import { DisplayWidget, Layout } from '@core/types/widgets';
-import { GridContainerComponent, Leaderboard, SimPlayer, WidgetContainerDirective } from '@shared';
+import { GridContainerComponent, Leaderboard, SimPlayer, TrackMapWidget, WidgetContainerDirective } from '@shared';
 import { NgxRolesService } from 'ngx-permissions';
 
 
@@ -16,7 +18,8 @@ import { NgxRolesService } from 'ngx-permissions';
     SimPlayer,
     GridContainerComponent,
     CommonModule,
-    WidgetContainerDirective
+    WidgetContainerDirective,
+    TrackMapWidget
   ],
 })
 export class DashboardComponent {
@@ -25,13 +28,16 @@ export class DashboardComponent {
   private readonly roleService = inject(NgxRolesService);
   private readonly layoutsService = inject(LayoutsService);
   private readonly widgetFactory = inject(WidgetFactory);
+  private readonly settingsService = inject(SettingsService);
   selectedLayout = this.layoutsService.getSelectedLayout();
   displayWidgets = signal<DisplayWidget[] | undefined>(undefined);
 
   roles = toSignal(this.roleService.roles$);
-  isAdmin = computed(() => {
-    const roles = this.roles(); return (roles?.['ADMIN'] != null);
-  });
+  isAdmin = computed(() =>
+    isAdmin(this.roles())
+  );
+
+  useSimulator = this.settingsService.options.useSimulator;
 
   newEvent = toSignal(this.liveService.live(undefined, undefined));
 

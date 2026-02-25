@@ -1,7 +1,7 @@
 :root {
-    --pit-stop-color: #9da3ff;
     --second-color: var(--mat-sys-outline);
     --inactive-color: var(--mat-sys-outline-variant);
+    --favourite-driver-color: #abc7ff;
 }
 
 .text-color-inactive {
@@ -26,18 +26,6 @@
 
 .bg-color-second {
   background-color: var(--second-color) !important;
-}
-
-.text-color-pit {
-  color: var(--pit-stop-color) !important;
-}
-
-.border-color-pit {
-  border-color: var(--pit-stop-color) !important;
-}
-
-.bg-color-pit {
-  background-color: var(--pit-stop-color) !important;
 }
 
 .text-color-primary {

@@ -1,0 +1,16 @@
+<svg:circle [attr.r]="180" />
+<svg:text
+    class="font-formula"
+    [style.font-weight]="'bold'"
+    [style.font-size.px]="280"
+    [style.transform]="'translateX(150px) translateY(-120px)'"
+>
+    {{ name() }}
+</svg:text>
+
+@if (favouriteDriver()) {
+    <svg:circle
+        [attr.r]="180"
+        class="dot-favourite"
+    />
+}

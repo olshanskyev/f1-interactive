@@ -1,7 +1,36 @@
 {
   "TimingData": {
+    "NoEntries": [
+      20,
+      15,
+      10
+    ],
+    "SessionPart": 1,
+    "CutOffTime": "",
+    "CutOffPercentage": "107",
     "Lines": {
       "1": {
+        "BestLapTimes": [
+          {
+            "Value": "Value"
+          },
+          {},
+          {}
+        ],
+        "Stats": [
+          {
+            "TimeDiffToFastest": "",
+            "TimeDifftoPositionAhead": ""
+          },
+          {
+            "TimeDiffToFastest": "",
+            "TimeDifftoPositionAhead": "TimeDifftoPositionAhead"
+          },
+          {
+            "TimeDiffToFastest": "",
+            "TimeDifftoPositionAhead": ""
+          }
+        ],
         "GapToLeader": "LAP 58",
         "IntervalToPositionAhead": {
           "Value": "LAP 58",

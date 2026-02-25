@@ -1,4 +1,4 @@
-@if(isAdmin()) {
+@if(isAdmin() && useSimulator) {
     <sim-player class="font-formula" />
 }
 
@@ -21,9 +21,16 @@
         </grid-container>
     </div>
 } @else {
-    <div class="w-full">
-        <leaderboard/>
+
+    <div class="default-grid">
+        <div>
+            <leaderboard/>
+        </div>
+        <div>
+            <track-map-widget/>
+        </div>
     </div>
+
 
 }
 

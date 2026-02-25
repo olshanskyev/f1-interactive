@@ -23,7 +23,7 @@ public class Simulator implements Player {
     }
 
     public interface InitEventCallback {
-        void callback(String message, boolean isRewinding);
+        void callback(int eventNumber, String message, boolean isRewinding);
     }
 
     private static final Logger logger = LoggerFactory.getLogger(Simulator.class);
@@ -90,7 +90,7 @@ public class Simulator implements Player {
         String event = lines.get(it++);
         long currentMillis = TestDataReader.getMillisFromEvent(event);
         if (initEventCallback != null)
-            initEventCallback.callback(event, isRewinding);
+            initEventCallback.callback(0, event, isRewinding);
         return currentMillis;
     }
 
@@ -110,7 +110,9 @@ public class Simulator implements Player {
 
             nextEventFuture = CompletableFuture.runAsync(() -> {
                 String event = lines.get(it);
-                if (updateEventCallback != null) {
+                if (TestDataReader.isFullStateEvent(event) && initEventCallback != null) {
+                    initEventCallback.callback(it, event, false);
+                } else if (updateEventCallback != null) {
                     updateEventCallback.callback(it, event, false);
                 }
 
@@ -235,9 +237,13 @@ public class Simulator implements Player {
         if (it == 0) {
             readFirstEvent(true);
         }
-        if (updateEventCallback != null) {
+        if (updateEventCallback != null && initEventCallback != null) {
             while (it < position) {
-                updateEventCallback.callback(it, lines.get(it), true);
+                String event = lines.get(it);
+                if (TestDataReader.isFullStateEvent(event))
+                    initEventCallback.callback(it, event, true);
+                else
+                    updateEventCallback.callback(it, event, true);
                 it++;
             }
         }
