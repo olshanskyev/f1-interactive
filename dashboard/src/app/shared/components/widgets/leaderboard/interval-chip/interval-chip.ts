@@ -23,7 +23,7 @@ export class IntervalChip {
     toPositionAhead(): string {
         // at qualification stat array is not empty
         if (this.qualifyingPart()) {
-            const stat = this.timingData()!.Stats[this.qualifyingPart()! - 1]
+            const stat = this.timingData()!.Stats?.[this.qualifyingPart()! - 1];
             return stat?.TimeDifftoPositionAhead ?? '-';
         }
 
@@ -33,7 +33,7 @@ export class IntervalChip {
 
     toLeader(): string {
         if (this.qualifyingPart()) {
-            const stat = this.timingData()!.Stats[this.qualifyingPart()! - 1]
+            const stat = this.timingData()!.Stats?.[this.qualifyingPart()! - 1];
             return stat?.TimeDiffToFastest ?? '-';
         }
         return this.timingData()?.GapToLeader ?? this.timingData()?.TimeDiffToFastest ?? '';

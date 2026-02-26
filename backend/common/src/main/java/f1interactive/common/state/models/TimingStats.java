@@ -9,7 +9,7 @@ public class TimingStats implements UpdateEvent{
     @JsonProperty("Withheld")
     public Boolean withheld;
     @JsonProperty("Lines") 
-    public LinkedHashMap<String, TimingStatsLinesItem> lines = new LinkedHashMap<>();
+    public LinkedHashMap<String, TimingStatsLinesItem> lines;
     @JsonProperty("SessionType") 
     public String sessionType;
     public Boolean _kf;

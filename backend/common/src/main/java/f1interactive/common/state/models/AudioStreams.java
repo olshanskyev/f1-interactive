@@ -1,17 +1,21 @@
 package f1interactive.common.state.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import f1interactive.common.state.models.deserializer.ArrayIntoMapDeserializer;
-import f1interactive.common.state.models.merge.Merger;
 
-import java.util.LinkedHashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import f1interactive.common.state.models.deserializer.ArrayWrapperDeserializer;
+import f1interactive.common.state.models.deserializer.ArrayWrapperSerializer;
+import f1interactive.common.state.models.merge.Merger;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 public class AudioStreams implements UpdateEvent{
 
     @JsonProperty("Streams")
-    @JsonDeserialize(using = ArrayIntoMapDeserializer.class)
-    public LinkedHashMap<Integer, StreamItem> streams = new LinkedHashMap<>();
+    @JsonDeserialize(using = ArrayWrapperDeserializer.class)
+    @JsonSerialize(using = ArrayWrapperSerializer.class)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public ArrayWrapper<Integer, StreamItem> streams = new ArrayWrapper<>();
     public Boolean _kf;
 
     @Override

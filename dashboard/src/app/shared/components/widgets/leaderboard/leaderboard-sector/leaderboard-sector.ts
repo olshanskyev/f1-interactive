@@ -28,6 +28,6 @@ export class LeaderboardSector{
   qualifyingPart = input<number>();
 
   hasBestSector(sectorNumber: number): boolean {
-    return this.timingStat()?.BestSectors[sectorNumber].Position === 1;
+    return this.timingStat()?.BestSectors?.[sectorNumber]?.Position === 1;
   }
 }

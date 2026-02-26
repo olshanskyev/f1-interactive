@@ -1,10 +1,11 @@
 package f1interactive.common.state.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import f1interactive.common.state.models.deserializer.ArrayIntoMapDeserializer;
-
-import java.util.LinkedHashMap;
+import f1interactive.common.state.models.deserializer.ArrayWrapperDeserializer;
+import f1interactive.common.state.models.deserializer.ArrayWrapperSerializer;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 public class BestLapTime{
     @JsonProperty("Value")
@@ -13,6 +14,8 @@ public class BestLapTime{
     public Integer lap;
 
     @JsonProperty("_deleted")
-    @JsonDeserialize(using = ArrayIntoMapDeserializer.class)
-    public LinkedHashMap<Integer, String> _deleted = new LinkedHashMap<>();
+    @JsonDeserialize(using = ArrayWrapperDeserializer.class)
+    @JsonSerialize(using = ArrayWrapperSerializer.class)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public ArrayWrapper<Integer, String> _deleted = new ArrayWrapper<>();
 }

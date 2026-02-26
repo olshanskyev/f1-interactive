@@ -91,4 +91,8 @@ export abstract class LiveService {
   isPositionZAvailable() {
     return this.stateHandler.updateSignals['Position.z']() !== undefined;
   }
+
+  getTeamRadioSignal() {
+    return this.stateHandler.updateSignals['TeamRadio'].asReadonly();
+  }
 }

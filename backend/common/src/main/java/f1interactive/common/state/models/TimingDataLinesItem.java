@@ -1,8 +1,11 @@
 package f1interactive.common.state.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import f1interactive.common.state.models.deserializer.ArrayIntoMapDeserializer;
+import f1interactive.common.state.models.deserializer.ArrayWrapperDeserializer;
+import f1interactive.common.state.models.deserializer.ArrayWrapperSerializer;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 import java.util.LinkedHashMap;
 
@@ -38,10 +41,12 @@ public class TimingDataLinesItem {
     @JsonProperty("NumberOfPitStops")
     public Integer numberOfPitStops;
     @JsonProperty("Sectors")
-    @JsonDeserialize(using = ArrayIntoMapDeserializer.class)
-    public LinkedHashMap<Integer, SectorsItem> sectors = new LinkedHashMap<>();
+    @JsonDeserialize(using = ArrayWrapperDeserializer.class)
+    @JsonSerialize(using = ArrayWrapperSerializer.class)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public ArrayWrapper<Integer, SectorsItem> sectors = new ArrayWrapper<>();
     @JsonProperty("Speeds")
-    public LinkedHashMap<String, SpeedsItem> speeds = new LinkedHashMap<>();
+    public LinkedHashMap<String, SpeedsItem> speeds;
     @JsonProperty("BestLapTime")
     public BestLapTime bestLapTime;
     @JsonProperty("LastLapTime")
@@ -52,10 +57,14 @@ public class TimingDataLinesItem {
     @JsonProperty("Cutoff")
     public Boolean cutOff;
     @JsonProperty("BestLapTimes")
-    @JsonDeserialize(using = ArrayIntoMapDeserializer.class)
-    public LinkedHashMap<Integer, BestLapTime> bestLapTimes = new LinkedHashMap<>();
+    @JsonDeserialize(using = ArrayWrapperDeserializer.class)
+    @JsonSerialize(using = ArrayWrapperSerializer.class)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public ArrayWrapper<Integer, BestLapTime> bestLapTimes = new ArrayWrapper<>();
     @JsonProperty("Stats")
-    @JsonDeserialize(using = ArrayIntoMapDeserializer.class)
-    public LinkedHashMap<Integer, StatItem> stats = new LinkedHashMap<>();
+    @JsonDeserialize(using = ArrayWrapperDeserializer.class)
+    @JsonSerialize(using = ArrayWrapperSerializer.class)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public ArrayWrapper<Integer, StatItem> stats = new ArrayWrapper<>();
 
 }

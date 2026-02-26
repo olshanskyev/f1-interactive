@@ -1,8 +1,5 @@
 package f1interactive.common.websocket;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import f1interactive.common.websocket.POJO.NegotiationResponse;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -12,6 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
@@ -100,30 +100,26 @@ public class F1SignalRProxy implements F1LiveTimingProxy {
             @Override
             public void onMessage(String message) {
                 ObjectMapper objectMapper = new ObjectMapper();
-                try {
-                    JsonNode jsonTree = objectMapper.readTree(message);
-                    JsonNode initJson = jsonTree.get("R");
-                    if (initJson != null && initStateMessageCallback != null) {
-                        initStateMessageCallback.callback(initJson.toString());
-                    }
 
-                    // get update message from json
-                    JsonNode updateMessage = jsonTree.get("C");
-                    if (updateMessage != null && updateStateCallback != null) {
-                        JsonNode messagePayloadArray = jsonTree.get("M");
-                        if (messagePayloadArray.isArray()) {
-                            for (final JsonNode objNode : messagePayloadArray) {
-                                JsonNode dataArray = objNode.get("A");
-                                //remove leading and trailing quotes
-                                String type = dataArray.get(0).toString().replaceAll("^\"|\"$", "");
-                                String time = dataArray.get(2).toString().replaceAll("^\"|\"$", "");
-                                updateStateCallback.callback(type, dataArray.get(1).toString(), time);
-                            }
+                JsonNode jsonTree = objectMapper.readTree(message);
+                JsonNode initJson = jsonTree.get("R");
+                if (initJson != null && initStateMessageCallback != null) {
+                    initStateMessageCallback.callback(initJson.toString());
+                }
+
+                // get update message from json
+                JsonNode updateMessage = jsonTree.get("C");
+                if (updateMessage != null && updateStateCallback != null) {
+                    JsonNode messagePayloadArray = jsonTree.get("M");
+                    if (messagePayloadArray.isArray()) {
+                        for (final JsonNode objNode : messagePayloadArray) {
+                            JsonNode dataArray = objNode.get("A");
+                            //remove leading and trailing quotes
+                            String type = dataArray.get(0).toString().replaceAll("^\"|\"$", "");
+                            String time = dataArray.get(2).toString().replaceAll("^\"|\"$", "");
+                            updateStateCallback.callback(type, dataArray.get(1).toString(), time);
                         }
                     }
-
-                } catch (JsonProcessingException e) {
-                    logger.error("Json Parsing error: {}", e.getMessage());
                 }
             }
 

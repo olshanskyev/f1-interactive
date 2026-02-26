@@ -31,7 +31,6 @@ export class DashboardComponent {
   private readonly settingsService = inject(SettingsService);
   selectedLayout = this.layoutsService.getSelectedLayout();
   displayWidgets = signal<DisplayWidget[] | undefined>(undefined);
-
   roles = toSignal(this.roleService.roles$);
   isAdmin = computed(() =>
     isAdmin(this.roles())
@@ -50,11 +49,11 @@ export class DashboardComponent {
   }
 
   constructor() {
-      effect(() => {
-        if (this.selectedLayout()) {
-          this.loadWidgets(this.selectedLayout()!);
-        }
-      });
+    effect(() => {
+      if (this.selectedLayout()) {
+        this.loadWidgets(this.selectedLayout()!);
+      }
+    });
   }
 
 }

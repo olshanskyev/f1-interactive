@@ -46,6 +46,7 @@ export class Leaderboard extends ContaineredWidget {
 
   qualifyingPart = computed(() => {
       //get last sessionData.series
+      if (!this.sessionData()?.Series) return undefined;
       const lastSeries = Object.values(this.sessionData()!.Series).reverse()[0];
       return lastSeries?.QualifyingPart;
   });
@@ -98,12 +99,10 @@ export class Leaderboard extends ContaineredWidget {
   }
 
   isInEliminationZone(position: number): boolean {
-    if (this.qualifyingPart() === 1 && position > 15) {
-      return true;
-    }
-    if (this.qualifyingPart() === 2 && position > 10) {
-      return true;
-    }
-    return false;
+    const qualifyingPart = this.qualifyingPart();
+    if (!qualifyingPart) return false;
+
+    return ((qualifyingPart === 1 && position > 15) ||
+      (qualifyingPart >= 2 && position > 10));
   }
 }

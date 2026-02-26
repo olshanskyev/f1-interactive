@@ -1,8 +1,11 @@
 package f1interactive.common.state.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import f1interactive.common.state.models.deserializer.ArrayIntoMapDeserializer;
+import f1interactive.common.state.models.deserializer.ArrayWrapperDeserializer;
+import f1interactive.common.state.models.deserializer.ArrayWrapperSerializer;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 import java.util.LinkedHashMap;
 
@@ -14,8 +17,10 @@ public class TimingStatsLinesItem {
     @JsonProperty("PersonalBestLapTime")
     public PersonalBestLapTime personalBestLapTime;
     @JsonProperty("BestSectors")
-    @JsonDeserialize(using = ArrayIntoMapDeserializer.class)
-    public LinkedHashMap<Integer, BestSectorsItem> bestSectors = new LinkedHashMap<>();
+    @JsonDeserialize(using = ArrayWrapperDeserializer.class)
+    @JsonSerialize(using = ArrayWrapperSerializer.class)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public ArrayWrapper<Integer, BestSectorsItem> bestSectors = new ArrayWrapper<>();
     @JsonProperty("BestSpeeds")
-    public LinkedHashMap<String, BestSpeedsItem> bestSpeeds = new LinkedHashMap<>();
+    public LinkedHashMap<String, BestSpeedsItem> bestSpeeds;
 }

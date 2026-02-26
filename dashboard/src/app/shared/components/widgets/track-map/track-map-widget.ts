@@ -225,35 +225,41 @@ export class TrackMapWidget extends ContaineredWidget implements OnDestroy {
             if (!timingData || this.trackPoints().length === 0) return undefined;
             const res: Positions = {};
             Object.entries(timingData.Lines).forEach(([driverId, itemTimingData]) => {
-                const allSegments = Object.values(itemTimingData.Sectors).flatMap(
-                    (sector) => Object.values(sector.Segments));
-                const segmentIndex = this.findLastCompletedSegment(allSegments);
-                if (segmentIndex !== -1) {
-                    let trackPoint: TrackPosition;
-                    if (this.miniSectors().length < allSegments.length) {
-                        const ratio = (segmentIndex + 1) / Math.max(allSegments.length, 1);
-                        const positionIndex = Math.floor(ratio * (this.trackPoints().length - 1));
-                        trackPoint = this.trackPoints()[positionIndex];
+                if (itemTimingData.Sectors) {
+                    const allSegments = Object.values(itemTimingData.Sectors).flatMap(
+                        (sector) => (sector.Segments ?
+                            Object.values(sector.Segments) : [])
+                    );
+                    const segmentIndex = this.findLastCompletedSegment(allSegments);
+                    if (segmentIndex !== -1) {
+                        let trackPoint: TrackPosition;
+                        if (this.miniSectors().length < allSegments.length) {
+                            const ratio = (segmentIndex + 1) / Math.max(allSegments.length, 1);
+                            const positionIndex = Math.floor(
+                                ratio * (this.trackPoints().length - 1)
+                            );
+                            trackPoint = this.trackPoints()[positionIndex];
+                        } else {
+                            trackPoint = {
+                                x: this.miniSectors()[segmentIndex]?.end.x ?? 0,
+                                y: this.miniSectors()[segmentIndex]?.end.y ?? 0
+                            };
+                        }
+
+                        res[driverId] = {
+                            Status: '',
+                            X: trackPoint.x,
+                            Y: trackPoint.y,
+                            Z: 0
+                        };
                     } else {
-                        trackPoint = {
-                            x: this.miniSectors()[segmentIndex]?.end.x ?? 0,
-                            y: this.miniSectors()[segmentIndex]?.end.y ?? 0
+                        res[driverId] = {
+                            Status: '',
+                            X: 0,
+                            Y: 0,
+                            Z: 0
                         };
                     }
-
-                    res[driverId] = {
-                        Status: '',
-                        X: trackPoint.x,
-                        Y: trackPoint.y,
-                        Z: 0
-                    };
-                } else {
-                    res[driverId] = {
-                        Status: '',
-                        X: 0,
-                        Y: 0,
-                        Z: 0
-                    };
                 }
             });
             return res;

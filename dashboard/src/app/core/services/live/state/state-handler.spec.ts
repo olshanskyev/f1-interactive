@@ -13,18 +13,19 @@ describe('StateHandler', () => {
         },
         RaceControlMessages: {
 			Messages: {
-				0: {
-					Category: 'Other',
-					Flag: 'CLEAR',
-					Lap: 0,
-					Message: 'RISK OF RAIN FOR F1 FIRST PRACTICE SESSION IS 10%',
-					Mode: '',
-					RacingNumber: '',
-					Scope: 'Sector',
-					Sector: 0,
-					Status: 'ENABLED',
-					Utc: '2025-12-05T09:16:40.000Z'
-				}
+                0: {
+                    Category: 'Other',
+                    Flag: 'CLEAR',
+                    Lap: 0,
+                    Message: 'RISK OF RAIN FOR F1 FIRST PRACTICE SESSION IS 10%',
+                    Mode: '',
+                    RacingNumber: '',
+                    Scope: 'Sector',
+                    Sector: 0,
+                    Status: 'ENABLED',
+                    Utc: '2025-12-05T09:16:40.000Z'
+                }
+
 			}
 		},
         TimingAppData: {
@@ -86,17 +87,18 @@ describe('StateHandler', () => {
                         Lap: 1,
                         Message: 'RISK OF RAIN FOR F1 RACE IS 0%',
                         Utc: '2025-12-07T12:45:02.000Z'
-				    }
+                    }
+
                 }
             },
             utc: '2025-12-07T12:35:07.32Z'
         };
         stateHandler.updateState(updateRaceControlMessage);
-        const expectedMessage = initState.RaceControlMessages?.Messages['0'];
-        const actualMessage = stateHandler.fullStateSignal()?.RaceControlMessages?.Messages['0'];
+        const expectedMessage = initState.RaceControlMessages?.Messages?.['0'];
+        const actualMessage = stateHandler.fullStateSignal()?.RaceControlMessages?.Messages?.['0'];
         expect(actualMessage).toBe(expectedMessage);
         const expectedMessage1 = updateRaceControlMessage.updateEvent.Messages['1'];
-        expect(stateHandler.fullStateSignal()?.RaceControlMessages?.Messages['1'])
+        expect(stateHandler.fullStateSignal()?.RaceControlMessages?.Messages?.['1'])
             .toBe(expectedMessage1);
     });
 
@@ -117,8 +119,8 @@ describe('StateHandler', () => {
             utc: '2025-12-07T12:35:07.32Z'
         };
         stateHandler.updateState(updateRaceControlMessage);
-        expect(stateHandler.fullStateSignal()?.RaceControlMessages?.Messages['0'])
-            .containSubset({...updateRaceControlMessage.updateEvent.Messages['0']});
+        expect(stateHandler.fullStateSignal()?.RaceControlMessages?.Messages?.['0'])
+            .containSubset({...updateRaceControlMessage.updateEvent.Messages?.['0']});
     });
 
     it('should call update signal', () => {

@@ -1,9 +1,9 @@
 package f1interactive.common.state;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import f1interactive.common.state.models.*;
 import f1interactive.common.state.models.deserializer.EventsParser;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,9 +64,10 @@ public class StateHandlerTest {
                     if (type.isAssignableFrom(LinkedHashMap.class) || type.isAssignableFrom(HashMap.class)) {
                         HashMap<Object, Object> expectedMap = (HashMap<Object, Object>)field.get(expected);
                         HashMap<Object, Object> actualMap = (HashMap<Object, Object>)field.get(actual);
-
-                        for (Object key : actualMap.keySet()) {
-                            compareAllFields(expectedMap.get(key), actualMap.get(key), ignoreClasses);
+                        if (actualMap != null) {
+                            for (Object key : actualMap.keySet()) {
+                                compareAllFields(expectedMap.get(key), actualMap.get(key), ignoreClasses);
+                            }
                         }
 
                     } else { // custom class
@@ -104,6 +105,7 @@ public class StateHandlerTest {
         exceptions.put(SessionData.class, List.of("_kf"));
         exceptions.put(LapCount.class, List.of("_kf"));
         exceptions.put(TimingData.class, List.of("_kf"));
+        exceptions.put(ArrayWrapper.class, List.of("fullState"));
         assertDoesNotThrow(() -> compareAllFields(expectedState, actualState, exceptions));
 
 

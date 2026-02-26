@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 
 public class TimingAppData implements UpdateEvent{
     @JsonProperty("Lines")
-    public LinkedHashMap<String, TimingAppDataLinesItem> lines = new LinkedHashMap<>();
+    public LinkedHashMap<String, TimingAppDataLinesItem> lines;
     public Boolean _kf;
 
     @Override

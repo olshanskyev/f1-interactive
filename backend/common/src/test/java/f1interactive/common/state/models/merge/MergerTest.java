@@ -5,6 +5,9 @@ import f1interactive.common.state.models.Stint;
 import f1interactive.common.state.models.TimingData;
 import f1interactive.common.state.models.TimingDataLinesItem;
 import org.junit.jupiter.api.Test;
+
+import java.util.LinkedHashMap;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MergerTest {
@@ -35,8 +38,15 @@ public class MergerTest {
         SpeedsItem item1Speed2 = new SpeedsItem();
         item1Speed2.value = "230";
         item1Speed2.position = 2;
+        item1.speeds = new LinkedHashMap<>();
         item1.speeds.put("S1", item1Speed1);
         item1.speeds.put("S2", item1Speed2);
+        item2.speeds = new LinkedHashMap<>();
+        SpeedsItem item2Speed1 = new SpeedsItem();
+        item2Speed1.value = "241";
+        item2Speed1.overallFastest = true;
+        item2.speeds.put("S1", item2Speed1);
+        fromTimingData.lines = new LinkedHashMap<>();
         fromTimingData.lines.put("1", item1);
         fromTimingData.lines.put("2", item2);
 
@@ -45,7 +55,7 @@ public class MergerTest {
         // second line already exists
         TimingDataLinesItem item22 = new TimingDataLinesItem();
         item22.gapToLeader = "+0.198";
-
+        toTimingData.lines = new LinkedHashMap<>();
         toTimingData.lines.put("2", item22);
 
         Merger.mergeAllNotNull(toTimingData, fromTimingData);
@@ -56,6 +66,7 @@ public class MergerTest {
         assertEquals(2, toTimingData.lines.get("1").speeds.size());
         assertEquals("230", toTimingData.lines.get("1").speeds.get("S2").value);
         assertTrue(toTimingData.lines.get("1").speeds.get("S1").overallFastest);
+        assertEquals("241", toTimingData.lines.get("2").speeds.get("S1").value);
     }
 
 }

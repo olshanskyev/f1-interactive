@@ -1,10 +1,10 @@
 package f1interactive.common.state.models.merge;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import f1interactive.common.state.models.Root;
 import f1interactive.common.state.models.UpdateEvent;
 import f1interactive.common.state.models.deserializer.EventsParser;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,24 +33,24 @@ public class MergingEventsTest {
             assertTrue(dataByDriver.line >=1 && dataByDriver.line <= 20);
             assertTrue(Integer.parseInt(dataByDriver.gridPos) >=1 && Integer.parseInt(dataByDriver.gridPos) <= 20);
             if (!driverId.equals("4")) {
-                assertEquals(1, dataByDriver.stints.size());
+                assertEquals(1, dataByDriver.stints.values.size());
                 assertTrue(
-                        dataByDriver.stints.get(0).compound.equals("MEDIUM") ||
-                                dataByDriver.stints.get(0).compound.equals("HARD") ||
-                                dataByDriver.stints.get(0).compound.equals("SOFT")
+                        dataByDriver.stints.values.get(0).compound.equals("MEDIUM") ||
+                                dataByDriver.stints.values.get(0).compound.equals("HARD") ||
+                                dataByDriver.stints.values.get(0).compound.equals("SOFT")
                         );
-                if (Boolean.parseBoolean(dataByDriver.stints.get(0).isNew)) {
-                    assertEquals(0, dataByDriver.stints.get(0).totalLaps);
-                    assertEquals(0, dataByDriver.stints.get(0).startLaps);
+                if (Boolean.parseBoolean(dataByDriver.stints.values.get(0).isNew)) {
+                    assertEquals(0, dataByDriver.stints.values.get(0).totalLaps);
+                    assertEquals(0, dataByDriver.stints.values.get(0).startLaps);
                 } else {
-                    assertTrue(dataByDriver.stints.get(0).totalLaps > 0 &&
-                            dataByDriver.stints.get(0).startLaps > 0);
+                    assertTrue(dataByDriver.stints.values.get(0).totalLaps > 0 &&
+                            dataByDriver.stints.values.get(0).startLaps > 0);
                 }
 
             } else {
-                assertEquals(2, dataByDriver.stints.size());
-                assertEquals("1:29.528", dataByDriver.stints.get(1).lapTime);
-                assertEquals(20, dataByDriver.stints.get(1).lapNumber);
+                assertEquals(2, dataByDriver.stints.values.size());
+                assertEquals("1:29.528", dataByDriver.stints.values.get(1).lapTime);
+                assertEquals(20, dataByDriver.stints.values.get(1).lapNumber);
             }
         });
         assertEquals(5, root.timingAppData.lines.get("31").line);
@@ -95,15 +95,15 @@ public class MergingEventsTest {
                 root = updateEvent.merge(root);
             }
         }
-        assertEquals(3, root.topThree.lines.size());
-        assertEquals(67, root.topThree.lines.get(0).lapState);
-        assertTrue(root.topThree.lines.get(0).overallFastest);
-        assertTrue(root.topThree.lines.get(0).personalFastest);
-        assertEquals("LAP 2", root.topThree.lines.get(0).diffToLeader);
-        assertEquals("1:29.117", root.topThree.lines.get(0).lapTime);
-        assertEquals("+0.120", root.topThree.lines.get(1).diffToLeader);
-        assertEquals("+0.312", root.topThree.lines.get(2).diffToLeader);
-        assertEquals("+0.192", root.topThree.lines.get(2).diffToAhead);
+        assertEquals(3, root.topThree.lines.values.size());
+        assertEquals(67, root.topThree.lines.values.get(0).lapState);
+        assertTrue(root.topThree.lines.values.get(0).overallFastest);
+        assertTrue(root.topThree.lines.values.get(0).personalFastest);
+        assertEquals("LAP 2", root.topThree.lines.values.get(0).diffToLeader);
+        assertEquals("1:29.117", root.topThree.lines.values.get(0).lapTime);
+        assertEquals("+0.120", root.topThree.lines.values.get(1).diffToLeader);
+        assertEquals("+0.312", root.topThree.lines.values.get(2).diffToLeader);
+        assertEquals("+0.192", root.topThree.lines.values.get(2).diffToAhead);
         try (Scanner updateScanner = new Scanner(new File("src\\test\\resources\\mergingTestData\\topThreeUpdateEventSwapPosition.txt"))) {
             while (updateScanner.hasNextLine()) {
                 String updateEventString = updateScanner.nextLine();
@@ -112,12 +112,12 @@ public class MergingEventsTest {
             }
         }
 
-        assertEquals("81", root.topThree.lines.get(0).racingNumber);
-        assertEquals("1", root.topThree.lines.get(1).racingNumber);
-        assertEquals("1:29.515", root.topThree.lines.get(0).lapTime);
-        assertEquals("McLaren", root.topThree.lines.get(0).team);
-        assertEquals("1:31.365", root.topThree.lines.get(1).lapTime);
-        assertEquals("Red Bull Racing", root.topThree.lines.get(1).team);
+        assertEquals("81", root.topThree.lines.values.get(0).racingNumber);
+        assertEquals("1", root.topThree.lines.values.get(1).racingNumber);
+        assertEquals("1:29.515", root.topThree.lines.values.get(0).lapTime);
+        assertEquals("McLaren", root.topThree.lines.values.get(0).team);
+        assertEquals("1:31.365", root.topThree.lines.values.get(1).lapTime);
+        assertEquals("Red Bull Racing", root.topThree.lines.values.get(1).team);
 
     }
 
@@ -146,11 +146,11 @@ public class MergingEventsTest {
         assertEquals(1, root.timingStats.lines.get("63").bestSpeeds.get("FL").position);
         assertEquals("214", root.timingStats.lines.get("63").bestSpeeds.get("FL").value);
 
-        assertEquals(2, root.timingStats.lines.get("1").bestSectors.get(1).position);
-        assertEquals(1, root.timingStats.lines.get("81").bestSectors.get(1).position);
-        assertEquals("38.376", root.timingStats.lines.get("81").bestSectors.get(1).value);
-        assertEquals(1, root.timingStats.lines.get("1").bestSectors.get(2).position);
-        assertEquals("32.363", root.timingStats.lines.get("1").bestSectors.get(2).value);
+        assertEquals(2, root.timingStats.lines.get("1").bestSectors.values.get(1).position);
+        assertEquals(1, root.timingStats.lines.get("81").bestSectors.values.get(1).position);
+        assertEquals("38.376", root.timingStats.lines.get("81").bestSectors.values.get(1).value);
+        assertEquals(1, root.timingStats.lines.get("1").bestSectors.values.get(2).position);
+        assertEquals("32.363", root.timingStats.lines.get("1").bestSectors.values.get(2).value);
 
     }
 
@@ -169,18 +169,18 @@ public class MergingEventsTest {
         }
 
         assertEquals(20, root.timingData.lines.size());
-        assertEquals(3, root.timingData.lines.get("1").sectors.size());
-        assertEquals(0, root.timingData.lines.get("1").sectors.get(1).status);
-        assertEquals(2049, root.timingData.lines.get("1").sectors.get(2).segments.get(2).status);
-        assertEquals(2051, root.timingData.lines.get("1").sectors.get(2).segments.get(3).status);
-        assertEquals(0, root.timingData.lines.get("1").sectors.get(1).segments.get(2).status);
+        assertEquals(3, root.timingData.lines.get("1").sectors.values.size());
+        assertEquals(0, root.timingData.lines.get("1").sectors.values.get(1).status);
+        assertEquals(2049, root.timingData.lines.get("1").sectors.values.get(2).segments.values.get(2).status);
+        assertEquals(2051, root.timingData.lines.get("1").sectors.values.get(2).segments.values.get(3).status);
+        assertEquals(0, root.timingData.lines.get("1").sectors.values.get(1).segments.values.get(2).status);
         assertEquals("+0.534", root.timingData.lines.get("81").gapToLeader);
         assertEquals("+0.534", root.timingData.lines.get("81").intervalToPositionAhead.value);
 
-        assertEquals(0, root.timingData.lines.get("4").sectors.get(1).segments.get(4).status);
-        assertEquals(2048, root.timingData.lines.get("44").sectors.get(1).segments.get(4).status);
-        assertEquals(3, root.timingData.lines.get("44").sectors.size());
-        assertEquals(9, root.timingData.lines.get("44").sectors.get(1).segments.size());
+        assertEquals(0, root.timingData.lines.get("4").sectors.values.get(1).segments.values.get(4).status);
+        assertEquals(2048, root.timingData.lines.get("44").sectors.values.get(1).segments.values.get(4).status);
+        assertEquals(3, root.timingData.lines.get("44").sectors.values.size());
+        assertEquals(9, root.timingData.lines.get("44").sectors.values.get(1).segments.values.size());
     }
 
     @Test
@@ -195,9 +195,9 @@ public class MergingEventsTest {
             }
         }
 
-        assertEquals(2, root.contentStreams.streams.size());
-        assertEquals("new_uri", root.contentStreams.streams.get(0).uri);
-        assertEquals("new_name", root.contentStreams.streams.get(1).name);
+        assertEquals(2, root.contentStreams.streams.values.size());
+        assertEquals("new_uri", root.contentStreams.streams.values.get(0).uri);
+        assertEquals("new_name", root.contentStreams.streams.values.get(1).name);
     }
 
     @Test

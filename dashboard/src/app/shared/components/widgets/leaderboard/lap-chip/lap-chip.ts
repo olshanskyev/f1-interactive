@@ -13,6 +13,7 @@ export class LapChip {
 
     // find last BestLapTime which is not empty
     getLastNotEmptyLapTime() {
+        if (!this.timingData()?.BestLapTimes) return null;
         const lapTimes = Object.values(this.timingData()!.BestLapTimes).reverse().find(l => l.Value && l.Value !== '');
         return lapTimes ?? null;
     }
@@ -22,7 +23,7 @@ export class LapChip {
             return this.getLastNotEmptyLapTime()?.Value ?? '';
         }
         return (this.qualifyingPart())?
-            this.timingData()?.BestLapTimes[this.qualifyingPart()! - 1].Value ?? ''
+            this.timingData()?.BestLapTimes?.[this.qualifyingPart()! - 1].Value ?? ''
         : '';
     }
 }

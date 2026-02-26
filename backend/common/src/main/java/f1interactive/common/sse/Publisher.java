@@ -1,12 +1,15 @@
 package f1interactive.common.sse;
 
+
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEventBuilder;
+import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -37,6 +40,8 @@ public class Publisher {
 
     private boolean publisherActive = true;
 
+    @Autowired
+    ObjectMapper mapper;
 
     private void startHeartbeatThread() {
         heartbeatExecutor.execute(() -> {
@@ -69,7 +74,7 @@ public class Publisher {
 
 
 
-    private void sendToAll(String topic, Object message) {
+    private void sendToAll(String topic, String message) {
         consumers.forEach((uid,emitter) -> perConsumerEventExecutor.submit(() -> {
             try {
                 SseEventBuilder event = SseEmitter.event()
@@ -85,7 +90,15 @@ public class Publisher {
     public void publish(String topic, Object message) {
         if (consumers.isEmpty() || !publisherActive)
             return;
-        perEventExecutor.execute(() -> sendToAll(topic, message));
+
+        //serialize once before sending
+        String strMessage;
+        if (message instanceof String)
+            strMessage = (String)message;
+        else
+            strMessage = mapper.writeValueAsString(message);
+        perEventExecutor.execute(() -> sendToAll(topic, strMessage));
+
     }
 
     public SseEmitter subscribe() {

@@ -68,7 +68,7 @@ export interface TimingStatsLinesItem {
 	Line: number;
 	RacingNumber: string;
 	PersonalBestLapTime: PersonalBestLapTime;
-	BestSectors: Record<number, BestSectorsItem>
+	BestSectors: Record<number, BestSectorsItem>;
 	BestSpeeds: Record<string, BestSpeedsItem>;
 }
 
@@ -97,7 +97,7 @@ export interface TimingAppDataLinesItem {
 	RacingNumber: string;
 	Line: number;
 	GridPos: string;
-    Stints: Record<number, Stint>
+    Stints: Record<number, Stint>;
 }
 
 export interface Stint {
@@ -147,7 +147,7 @@ export interface DriverListItem {
 }
 
 export interface RaceControlMessages {
-	Messages: Record<number, Message>
+	Messages: Record<number, Message>;
 }
 
 export interface Message {
@@ -203,8 +203,8 @@ export interface Country {
 }
 
 export interface SessionData {
-    Series: Record<number, Series>
-    StatusSeries: Record<number, StatusSeries>
+    Series: Record<number, Series>;
+    StatusSeries: Record<number, StatusSeries>;
 }
 
 export type SessinStatusType = 'Inactive' | 'Started' | 'Finished' | 'Finalised' | 'Ends';
@@ -314,7 +314,7 @@ export interface IntervalToPositionAhead {
 }
 
 export interface TeamRadio {
-    Captures: Record<number, Capture>
+    Captures: Record<number, Capture>;
 }
 
 export interface Capture {

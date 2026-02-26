@@ -1,10 +1,12 @@
 package f1interactive.common.state.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import f1interactive.common.state.models.deserializer.ArrayIntoMapDeserializer;
 
-import java.util.LinkedHashMap;
+import f1interactive.common.state.models.deserializer.ArrayWrapperDeserializer;
+import f1interactive.common.state.models.deserializer.ArrayWrapperSerializer;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 public class TimingAppDataLinesItem {
     @JsonProperty("RacingNumber")
@@ -14,6 +16,8 @@ public class TimingAppDataLinesItem {
     @JsonProperty("GridPos")
     public String gridPos;
     @JsonProperty("Stints")
-    @JsonDeserialize(using = ArrayIntoMapDeserializer.class)
-    public LinkedHashMap<Integer, Stint> stints = new LinkedHashMap<>();
+    @JsonDeserialize(using = ArrayWrapperDeserializer.class)
+    @JsonSerialize(using = ArrayWrapperSerializer.class)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public ArrayWrapper<Integer, Stint> stints = new ArrayWrapper<>();
 }

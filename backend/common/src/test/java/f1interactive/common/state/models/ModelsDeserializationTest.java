@@ -1,9 +1,9 @@
 package f1interactive.common.state.models;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import f1interactive.common.state.models.deserializer.EventsParser;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,8 +36,8 @@ public class ModelsDeserializationTest {
         ObjectMapper objectMapper = new ObjectMapper();
         Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\topThree.json"), Root.class);
         assertFalse(root.topThree.withheld);
-        assertEquals(3, root.topThree.lines.size());
-        assertEquals("MAXVER01", root.topThree.lines.get(0).reference);
+        assertEquals(3, root.topThree.lines.values.size());
+        assertEquals("MAXVER01", root.topThree.lines.values.get(0).reference);
     }
 
     @Test
@@ -51,14 +51,14 @@ public class ModelsDeserializationTest {
             assertNotNull(item.personalBestLapTime);
             assertNotNull(item.bestSectors);
             assertNotNull(item.bestSpeeds);
-            assertEquals(3, item.bestSectors.size());
+            assertEquals(3, item.bestSectors.values.size());
             assertEquals(4, item.bestSpeeds.size());
         });
-        assertEquals("Position", root.timingStats.lines.get("1").personalBestLapTime._deleted.get(0));
+        assertEquals("Position", root.timingStats.lines.get("1").personalBestLapTime._deleted.values.get(0));
 
         TimingStatsLinesItem timingStatsLinesItem = root.timingStats.lines.get("63");
         assertEquals(57, timingStatsLinesItem.personalBestLapTime.lap);
-        assertEquals(12, timingStatsLinesItem.bestSectors.get(0).position);
+        assertEquals(12, timingStatsLinesItem.bestSectors.values.get(0).position);
         assertEquals(336, Integer.parseInt(timingStatsLinesItem.bestSpeeds.get("ST").value));
 
     }
@@ -73,15 +73,15 @@ public class ModelsDeserializationTest {
         root.timingAppData.lines.forEach((s, item) -> {
             assertTrue(Integer.parseInt(item.racingNumber) > 0);
             assertTrue(Integer.parseInt(item.gridPos) > 0);
-            assertFalse(item.stints.isEmpty());
+            assertFalse(item.stints.values.isEmpty());
 
         });
 
         TimingAppDataLinesItem timingAppDataLinesItem = root.timingAppData.lines.get("4");
         assertEquals(2, Integer.parseInt(timingAppDataLinesItem.gridPos));
-        assertEquals(3, timingAppDataLinesItem.stints.size());
-        assertEquals("MEDIUM", timingAppDataLinesItem.stints.get(0).compound);
-        assertEquals(16, timingAppDataLinesItem.stints.get(0).totalLaps);
+        assertEquals(3, timingAppDataLinesItem.stints.values.size());
+        assertEquals("MEDIUM", timingAppDataLinesItem.stints.values.get(0).compound);
+        assertEquals(16, timingAppDataLinesItem.stints.values.get(0).totalLaps);
     }
 
     @Test
@@ -133,10 +133,10 @@ public class ModelsDeserializationTest {
         ObjectMapper objectMapper = new ObjectMapper();
         Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\raceControlMessages.json"), Root.class);
         assertNotNull(root.raceControlMessages);
-        assertEquals(107, root.raceControlMessages.messages.size());
-        Message firstMessage = root.raceControlMessages.messages.get(0);
-        Message secondMessage = root.raceControlMessages.messages.get(1);
-        Message lastMessage = root.raceControlMessages.messages.get(106);
+        assertEquals(107, root.raceControlMessages.messages.values.size());
+        Message firstMessage = root.raceControlMessages.messages.values.get(0);
+        Message secondMessage = root.raceControlMessages.messages.values.get(1);
+        Message lastMessage = root.raceControlMessages.messages.values.get(106);
         assertEquals("Flag", firstMessage.category);
         assertEquals("Other", lastMessage.category);
         assertTrue(lastMessage.utc.after(firstMessage.utc));
@@ -161,12 +161,12 @@ public class ModelsDeserializationTest {
         ObjectMapper objectMapper = new ObjectMapper();
         Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\sessionData.json"), Root.class);
         assertNotNull(root.sessionData);
-        assertEquals(58, root.sessionData.series.size());
-        assertEquals(9, root.sessionData.statusSeries.size());
-        for (int i = 0; i < root.sessionData.series.size(); i++) {
-            assertEquals(i+1, root.sessionData.series.get(i).lap);
+        assertEquals(58, root.sessionData.series.values.size());
+        assertEquals(9, root.sessionData.statusSeries.values.size());
+        for (int i = 0; i < root.sessionData.series.values.size(); i++) {
+            assertEquals(i+1, root.sessionData.series.values.get(i).lap);
         }
-        assertEquals("Yellow", root.sessionData.statusSeries.get(1).trackStatus);
+        assertEquals("Yellow", root.sessionData.statusSeries.values.get(1).trackStatus);
     }
 
     @Test
@@ -195,22 +195,22 @@ public class ModelsDeserializationTest {
         TimingDataLinesItem timingDataLinesItem = root.timingData.lines.get("30");
         assertEquals(57, timingDataLinesItem.numberOfLaps);
         assertEquals(1, timingDataLinesItem.numberOfPitStops);
-        assertEquals(3, timingDataLinesItem.sectors.size());
-        assertEquals("32.625", timingDataLinesItem.sectors.get(2).value);
-        assertEquals(10, timingDataLinesItem.sectors.get(2).segments.size());
+        assertEquals(3, timingDataLinesItem.sectors.values.size());
+        assertEquals("32.625", timingDataLinesItem.sectors.values.get(2).value);
+        assertEquals(10, timingDataLinesItem.sectors.values.get(2).segments.values.size());
         assertEquals(213, Integer.parseInt(timingDataLinesItem.speeds.get("FL").value));
         assertEquals("1:29.022", timingDataLinesItem.lastLapTime.value);
         assertEquals("timeDiffToFastestValue", timingDataLinesItem.timeDiffToFastest);
         assertEquals("TimeDiffToPositionAheadValue", timingDataLinesItem.timeDiffToPositionAhead);
 
         timingDataLinesItem = root.timingData.lines.get("1");
-        assertEquals(3, timingDataLinesItem.bestLapTimes.size());
-        assertEquals("Value", timingDataLinesItem.bestLapTimes.get(0).value);
-        assertEquals(3, timingDataLinesItem.stats.size());
-        assertEquals("TimeDifftoPositionAhead", timingDataLinesItem.stats.get(1).timeDifftoPositionAhead);
+        assertEquals(3, timingDataLinesItem.bestLapTimes.values.size());
+        assertEquals("Value", timingDataLinesItem.bestLapTimes.values.get(0).value);
+        assertEquals(3, timingDataLinesItem.stats.values.size());
+        assertEquals("TimeDifftoPositionAhead", timingDataLinesItem.stats.values.get(1).timeDifftoPositionAhead);
 
-        assertEquals(3, root.timingData.noEntries.size());
-        assertEquals(10, root.timingData.noEntries.get(2));
+        assertEquals(3, root.timingData.noEntries.values.size());
+        assertEquals(10, root.timingData.noEntries.values.get(2));
         assertEquals("107", root.timingData.cutOffPercentage);
     }
 
@@ -219,8 +219,8 @@ public class ModelsDeserializationTest {
         ObjectMapper objectMapper = new ObjectMapper();
         Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\teamRadio.json"), Root.class);
         assertNotNull(root.teamRadio);
-        assertEquals(22, root.teamRadio.captures.size());
-        assertEquals("TeamRadio/LANNOR01_4_20251207_170931.mp3", root.teamRadio.captures.get(2).path);
+        assertEquals(22, root.teamRadio.captures.values.size());
+        assertEquals("TeamRadio/LANNOR01_4_20251207_170931.mp3", root.teamRadio.captures.values.get(2).path);
     }
 
     @Test
@@ -261,9 +261,9 @@ public class ModelsDeserializationTest {
         ObjectMapper objectMapper = new ObjectMapper();
         Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\contentStreams.json"), Root.class);
         assertNotNull(root.contentStreams);
-        assertEquals(2, root.contentStreams.streams.size());
-        assertEquals("Commentary", root.contentStreams.streams.get(0).type);
-        assertEquals("Live coverage (EN)", root.contentStreams.streams.get(1).name);
+        assertEquals(2, root.contentStreams.streams.values.size());
+        assertEquals("Commentary", root.contentStreams.streams.values.get(0).type);
+        assertEquals("Live coverage (EN)", root.contentStreams.streams.values.get(1).name);
     }
 
     @Test
@@ -271,8 +271,8 @@ public class ModelsDeserializationTest {
         ObjectMapper objectMapper = new ObjectMapper();
         Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\audioStreams.json"), Root.class);
         assertNotNull(root.audioStreams);
-        assertEquals(1, root.audioStreams.streams.size());
-        assertEquals("Live_coverage_(EN)-en/stream.m3u8", root.audioStreams.streams.get(0).path);
+        assertEquals(1, root.audioStreams.streams.values.size());
+        assertEquals("Live_coverage_(EN)-en/stream.m3u8", root.audioStreams.streams.values.get(0).path);
     }
 
     @Test

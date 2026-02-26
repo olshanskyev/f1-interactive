@@ -1,11 +1,11 @@
 package f1interactive.common.state.models.deserializer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import f1interactive.common.state.models.CarDataZ;
 import f1interactive.common.state.models.PositionZ;
 import f1interactive.common.state.models.Root;
 import f1interactive.common.state.models.UpdateEvent;
+import tools.jackson.databind.ObjectMapper;
 
 public class EventsParser {
 
@@ -46,8 +46,6 @@ public class EventsParser {
             return (UpdateEvent) objectMapper.readValue(payload, clazz);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Class not defined: " + e.getMessage());
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Update event deserialization error: " + e.getMessage());
         }
     }
 
@@ -58,11 +56,8 @@ public class EventsParser {
      */
     public static Root parseRoot(String rootJsonString) {
         ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.readValue(rootJsonString, Root.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Init event deserialization error: " + e.getMessage());
-        }
+        return objectMapper.readValue(rootJsonString, Root.class);
+
     }
 
     /**

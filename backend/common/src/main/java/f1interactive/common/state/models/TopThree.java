@@ -1,18 +1,21 @@
 package f1interactive.common.state.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import f1interactive.common.state.models.deserializer.ArrayIntoMapDeserializer;
+import f1interactive.common.state.models.deserializer.ArrayWrapperDeserializer;
+import f1interactive.common.state.models.deserializer.ArrayWrapperSerializer;
 import f1interactive.common.state.models.merge.Merger;
-
-import java.util.LinkedHashMap;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 public class TopThree implements UpdateEvent{
     @JsonProperty("Withheld")
     public Boolean withheld;
     @JsonProperty("Lines")
-    @JsonDeserialize(using = ArrayIntoMapDeserializer.class)
-    public LinkedHashMap<Integer, TopThreeLinesItem> lines = new LinkedHashMap<>();
+    @JsonDeserialize(using = ArrayWrapperDeserializer.class)
+    @JsonSerialize(using = ArrayWrapperSerializer.class)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public ArrayWrapper<Integer, TopThreeLinesItem> lines = new ArrayWrapper<>();
     public Boolean _kf;
 
     @JsonProperty("SessionPart")

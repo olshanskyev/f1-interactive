@@ -1,5 +1,5 @@
 import { signal, WritableSignal } from '@angular/core';
-import { DriverList, RaceControlMessages, Root, SessionData, SessionInfo, TimingAppData, TimingData, TimingStats, TrackStatus, WeatherData } from '@core/types/f1types';
+import { DriverList, RaceControlMessages, Root, SessionData, SessionInfo, TeamRadio, TimingAppData, TimingData, TimingStats, TrackStatus, WeatherData } from '@core/types/f1types';
 import { UpdateEventRecord } from '../live.service';
 
 interface SignalTypeMap {
@@ -14,6 +14,7 @@ interface SignalTypeMap {
     'CarData.z': string;
     'Position.z': string;
     RaceControlMessages: RaceControlMessages;
+    TeamRadio: TeamRadio;
 }
 
 export type AvailableSignalsType = keyof SignalTypeMap;
@@ -36,6 +37,7 @@ export class StateHandler {
             'CarData.z': signal<string | undefined>(undefined),
             'Position.z': signal<string | undefined>(undefined),
             'RaceControlMessages': signal<RaceControlMessages | undefined>(undefined),
+            'TeamRadio': signal<TeamRadio | undefined>(undefined)
     };
 
     get fullStateSignal() {
@@ -90,6 +92,8 @@ export class StateHandler {
     };
 
     private merge(to: any, from: any): any {
+        if (from == null) return to;
+
         if (this.isObject(from)) {
             for (const [key, value] of Object.entries(from)) {
                 to[key] = (to[key] == null)? value: this.merge(to[key], value);
