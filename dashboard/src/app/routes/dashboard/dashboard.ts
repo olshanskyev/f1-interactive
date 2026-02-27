@@ -5,7 +5,7 @@ import { LayoutsService, SettingsService, WidgetFactory } from '@core';
 import { isAdmin } from '@core/lib/roles';
 import { LiveService } from '@core/services/live/live.service';
 import { DisplayWidget, Layout } from '@core/types/widgets';
-import { GridContainerComponent, Leaderboard, SimPlayer, TrackMapWidget, WidgetContainerDirective } from '@shared';
+import { GridContainerComponent, Leaderboard, SessionInfoWidget, SimPlayer, TrackMapWidget, WidgetContainerDirective } from '@shared';
 import { NgxRolesService } from 'ngx-permissions';
 
 
@@ -19,7 +19,8 @@ import { NgxRolesService } from 'ngx-permissions';
     GridContainerComponent,
     CommonModule,
     WidgetContainerDirective,
-    TrackMapWidget
+    TrackMapWidget,
+    SessionInfoWidget
   ],
 })
 export class DashboardComponent {

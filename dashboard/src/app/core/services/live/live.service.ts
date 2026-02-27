@@ -95,4 +95,12 @@ export abstract class LiveService {
   getTeamRadioSignal() {
     return this.stateHandler.updateSignals['TeamRadio'].asReadonly();
   }
+
+  getExtrapolatedClockSignal() {
+    return this.stateHandler.updateSignals['ExtrapolatedClock'].asReadonly();
+  }
+
+  getSessionStatusSignal() {
+    return this.stateHandler.updateSignals['SessionStatus'].asReadonly();
+  }
 }

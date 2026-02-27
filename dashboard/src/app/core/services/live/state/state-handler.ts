@@ -1,5 +1,5 @@
 import { signal, WritableSignal } from '@angular/core';
-import { DriverList, RaceControlMessages, Root, SessionData, SessionInfo, TeamRadio, TimingAppData, TimingData, TimingStats, TrackStatus, WeatherData } from '@core/types/f1types';
+import { DriverList, ExtrapolatedClock, RaceControlMessages, Root, SessionData, SessionInfo, SessionStatus, TeamRadio, TimingAppData, TimingData, TimingStats, TrackStatus, WeatherData } from '@core/types/f1types';
 import { UpdateEventRecord } from '../live.service';
 
 interface SignalTypeMap {
@@ -15,6 +15,8 @@ interface SignalTypeMap {
     'Position.z': string;
     RaceControlMessages: RaceControlMessages;
     TeamRadio: TeamRadio;
+    ExtrapolatedClock: ExtrapolatedClock;
+    SessionStatus: SessionStatus;
 }
 
 export type AvailableSignalsType = keyof SignalTypeMap;
@@ -37,7 +39,9 @@ export class StateHandler {
             'CarData.z': signal<string | undefined>(undefined),
             'Position.z': signal<string | undefined>(undefined),
             'RaceControlMessages': signal<RaceControlMessages | undefined>(undefined),
-            'TeamRadio': signal<TeamRadio | undefined>(undefined)
+            'TeamRadio': signal<TeamRadio | undefined>(undefined),
+            'ExtrapolatedClock': signal<ExtrapolatedClock | undefined>(undefined),
+            'SessionStatus': signal<SessionStatus | undefined>(undefined)
     };
 
     get fullStateSignal() {

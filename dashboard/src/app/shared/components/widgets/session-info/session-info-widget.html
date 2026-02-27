@@ -1,3 +1,41 @@
-<div class="h-full bg-f1-green">
-    Session Info
+<div class="font-formula h-full default-widget-background" >
+    <div
+        class="session-info-container d-flex flex-col"
+        [style.--status-color]="trackStatusColor()"
+        >
+        <div class="d-flex align-items-center p-b-2 gap-8">
+
+            @if (countryCode(); as code) {
+                <img [alt]="sessionInfo()?.Meeting?.Country?.Name"
+                    class="flag"
+                    loading="lazy" decoding="async"
+                    [src]="'/images/country_flags/' + code + '.svg'"
+                >
+            }
+
+            <div class="d-flex flex-col justify-content-center">
+                <div class="f-s-14" [style.color]="trackStatusColor()">
+                    {{'status.' + trackStatus()?.Message | translate}}
+                </div>
+                <div>
+                    {{sessionInfo()?.Meeting?.Name}} : {{sessionInfo()?.Name}}
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex gap-8 p-t-4">
+            <div class="chip">
+                <mat-icon>my_location</mat-icon>
+                {{sessionInfo()?.Meeting?.Circuit?.ShortName}}
+            </div>
+            <div class="chip">
+                <mat-icon [style.color]="sessionStatusColor()">sensors</mat-icon>
+                <span [style.color]="sessionStatusColor()">{{'status.' + sessionStatus()?.Status | translate}}</span>
+            </div>
+            <div class="chip">
+                <mat-icon>av_timer</mat-icon>
+                {{timeRemaining()}}
+            </div>
+        </div>
+    </div>
 </div>
