@@ -7,9 +7,12 @@ import { TranslateModule } from '@ngx-translate/core';
     selector: 'session-info-widget',
     styleUrl:'./session-info-widget.scss',
     templateUrl: './session-info-widget.html',
+    host: {
+        '[class.in-grid]': '!!container',
+    },
     imports: [
         MatIconModule,
-        TranslateModule
+        TranslateModule,
     ]
 })
 export class SessionInfoWidget extends ContaineredWidget {

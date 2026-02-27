@@ -26,8 +26,7 @@ import { SelectWidgetDialog } from '@shared/components/widgets/select-widget-dia
         TranslateModule,
         DebounceTime,
         MatSelectModule,
-        MatAutocompleteModule,
-        MatButtonModule
+        MatAutocompleteModule
     ]
 })
 export class ToolsPanelComponent {
@@ -36,13 +35,12 @@ export class ToolsPanelComponent {
     private readonly layoutService = inject(LayoutsService);
 
     cellSize = input.required<number>();
-    selectedLayout = model.required<Layout>();
+    selectedLayout = model.required<Layout | undefined>();
     widgetAdded = output<{widgetType: WidgetType, position: {x: number, y: number}}>();
     layoutSelected = output<string | undefined>();
 
-    layoutName = computed(() => this.selectedLayout().layoutName);
+    layoutName = computed(() => this.selectedLayout()?.layoutName);
 
-    layouts = signal(this.layoutService.getCustomLayouts());
 
     layoutGridSizes = [
         { label: 'layout.grid_size.landscape', value: LayoutGrids.landscape },
@@ -69,9 +67,7 @@ export class ToolsPanelComponent {
                 if (!current) return current;
                 return {...current, layoutName: name};
             });
-            this.layoutService.saveLayout(this.selectedLayout());
-            // update layouts list to reflect the new name
-            this.layouts.set(this.layoutService.getCustomLayouts());
+            this.layoutService.saveLayout(this.selectedLayout()!);
         }
     }
 
@@ -80,7 +76,10 @@ export class ToolsPanelComponent {
             if (!current) return current;
             return {...current, gridSize: value};
         });
-        this.layoutService.saveLayout(this.selectedLayout());
+        const layout = this.selectedLayout();
+        if (layout) {
+            this.layoutService.saveLayout(layout);
+        }
     }
 
     compareGridSizes(a: any, b: any): boolean {
@@ -88,31 +87,9 @@ export class ToolsPanelComponent {
     }
 
     onSelectLayout(layout: Layout) {
-        if (this.selectedLayout().id !== layout.id) {
+        if (this.selectedLayout()?.id !== layout.id) {
             this.layoutSelected.emit(layout.id);
             this.layoutService.selectLayout(layout.id);
-        }
-    }
-
-    onCreateLayout() {
-        const newLayout = this.layoutService.createDefaultLayout();
-        this.layoutService.saveLayout(newLayout);
-        // update layouts list to reflect the new name
-        this.layouts.set(this.layoutService.getCustomLayouts());
-
-        this.onSelectLayout(newLayout);
-    }
-
-    onDeleteLayout(layoutId: string) {
-        this.layoutService.deleteLayout(layoutId);
-        this.layouts.set(this.layoutService.getCustomLayouts());
-        if (this.selectedLayout().id === layoutId) {
-            if (this.layouts().length > 0) { // select first
-                this.onSelectLayout(this.layouts()[0]);
-            } else {
-                this.layoutService.selectDefaultLayout();
-                this.layoutSelected.emit(undefined); // emit empty to signal default layout selected
-            }
         }
     }
 

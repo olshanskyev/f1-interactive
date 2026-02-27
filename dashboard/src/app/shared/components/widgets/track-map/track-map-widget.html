@@ -1,4 +1,4 @@
-<div>
+<div class="default-widget-container">
     @if (points() && points()!.length > 0 && bounds()) {
 
         <svg
@@ -66,47 +66,6 @@
 
                     }
                 }
-
-                <!--
-
-                {centerX && centerY && positions && drivers && (
-                    <>
-                        {positions["241"] && positions["241"].Z !== 0 && (
-                            // Aston Martin
-                            <SafetyCar
-                                                                rotation={rotation}
-                                centerX={centerX}
-                                centerY={centerY}
-                                pos={positions["241"]}
-                                color="229971"
-                            />
-                        )}
-
-                        {positions["242"] && positions["242"].Z !== 0 && (
-                            // Aston Martin
-                            <SafetyCar
-
-                                rotation={rotation}
-                                centerX={centerX}
-                                centerY={centerY}
-                                pos={positions["242"]}
-                                color="229971"
-                            />
-                        )}
-
-                        {positions["243"] && positions["243"].Z !== 0 && (
-                            // Mercedes
-                            <SafetyCar
-
-                                rotation={rotation}
-                                centerX={centerX}
-                                centerY={centerY}
-                                pos={positions["243"]}
-                                color="B90F09"
-                            />
-                        )}
-                    </>
-            )}-->
             </svg>
     }
 </div>

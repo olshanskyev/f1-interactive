@@ -7,7 +7,6 @@ import { Login } from './routes/sessions/login/login';
 import { Error403 } from './routes/sessions/error-403';
 import { Error404 } from './routes/sessions/error-404';
 import { Error500 } from './routes/sessions/error-500';
-import { BuildLayoutComponent } from './routes/layouts/build-layout';
 
 export const routes: Routes = [
   {
@@ -18,7 +17,6 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
-      { path: 'layouts', component:  BuildLayoutComponent},
       { path: 'admin',
         canActivate: [adminGuard],
         canActivateChild: [adminGuard],

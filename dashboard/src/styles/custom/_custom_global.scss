@@ -1,11 +1,5 @@
 @use "../grid/breakpoints";
 
-:root {
-  --small-icons-size: 18px;
-  --shadow-color: rgba(21, 57, 56, 0.4);
-  --shadow-border-color: #153938;
-}
-
 .line-height-1 {
   line-height: 1;
 }
@@ -46,6 +40,7 @@
   border-radius: 0.5rem !important;
 }
 
+
 .carousel-track {
   gap: 0.5rem;
   align-items: center;
@@ -66,10 +61,14 @@
   border-radius: 6px
 }
 
-.default-widget-background {
-    background-color: color-mix(in srgb, var(--mat-sys-surface-container), transparent 20%);
+.default-widget-container {
+  width: calc(100% - var(--container-margin) * 2) !important;
+  height: calc(100% - var(--container-margin) * 2) !important;
+  margin: var(--container-margin) !important;
+  background-color: color-mix(in srgb, var(--mat-sys-surface-container), transparent 20%);
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 0.5rem !important;
 }
-
 
 
 

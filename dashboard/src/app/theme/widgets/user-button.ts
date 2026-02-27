@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,7 +6,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { Router, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { AuthService, SettingsService } from '@core';
+import { AuthService } from '@core';
+import { SimulatorButton } from './simulator-button';
+import { NgxRolesService } from 'ngx-permissions';
+import { isAdmin } from '@core/lib/roles';
 
 @Component({
   selector: 'app-user',
@@ -24,6 +27,9 @@ import { AuthService, SettingsService } from '@core';
         <mat-icon>exit_to_app</mat-icon>
         <span>{{ 'logout' | translate }}</span>
       </button>
+      @if (isAdmin()) {
+        <simulator-button class="p-l-4"/>
+      }
     </mat-menu>
   `,
   styles: `
@@ -33,12 +39,19 @@ import { AuthService, SettingsService } from '@core';
       border-radius: 50rem;
     }
   `,
-  imports: [RouterLink, MatButtonModule, MatIconModule, MatMenuModule, TranslateModule],
+  imports: [RouterLink, MatButtonModule, MatIconModule,
+    MatMenuModule, TranslateModule, SimulatorButton],
 })
 export class UserButton {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
-  private readonly settings = inject(SettingsService);
+
+  private readonly roleService = inject(NgxRolesService);
+  roles = toSignal(this.roleService.roles$);
+
+  isAdmin = computed(() =>
+    isAdmin(this.roles())
+  );
 
   user = toSignal(this.auth.user());
 

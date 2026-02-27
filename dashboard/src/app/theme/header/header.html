@@ -10,11 +10,7 @@
   }
 
   @if (router.url.includes('dashboard')) {
-    <app-layouts-button/>
-  }
-
-  @if (isAdmin()) {
-    <simulator-button/>
+    <app-layout-buttons class="p-l-4"/>
   }
 
   <span class="flex-fill"></span>

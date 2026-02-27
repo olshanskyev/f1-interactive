@@ -1,6 +1,15 @@
 @use '@angular/material' as mat;
+@use '../grid/breakpoints';
 
 /** Custom Material styles */
+// material variables
+:root {
+  --mat-divider-color: var(--mat-sys-outline-variant);
+  --mat-sys-title-large-font: 'Roboto', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
+    'Lucida Grande', sans-serif;
+  --mat-checkbox-touch-target-size: 40px;
+}
+
 mat-card {
   margin-bottom: var(--gutter);
 }
@@ -13,13 +22,6 @@ mat-card-header + mat-card-content {
   .mat-mdc-form-field {
     width: 100%;
   }
-}
-// material variables
-:root {
-  --mat-divider-color: var(--mat-sys-outline-variant);
-  --mat-sys-title-large-font: 'Roboto', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
-    'Lucida Grande', sans-serif;
-  --mat-checkbox-touch-target-size: 40px;
 }
 
 .icon-button-5 {
@@ -38,21 +40,12 @@ mat-card-header + mat-card-content {
     opacity: 1 !important;
 }
 
-.custom-autocomplete-panel .mat-pseudo-checkbox {
-  display: none !important;
-}
-
-.custom-autocomplete-panel .mdc-list-item__primary-text {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%
-}
-
 .mat-mdc-tab-group .mat-mdc-tab-body-wrapper {
   margin-top: 0.5rem;
 }
 
-.static-container-option.mat-mdc-option[aria-disabled="true"] {
-    pointer-events: auto !important;
+.mat-toolbar-single-row {
+  @include breakpoints.bp-lt(small) {
+      padding: 0 0.2rem !important;
+  }
 }

@@ -1,0 +1,35 @@
+<mat-card>
+    <mat-card-content class="d-grid gap-16">
+
+        <mat-form-field class="form-field-5" appearance="outline" subscriptSizing="dynamic">
+            <mat-label>{{'layout.layout_name' | translate}}</mat-label>
+            <input matInput
+                placeholder="{{'layout.layout_name' | translate}}"
+                type="text"
+                debounceTime="1000"
+                [debouncedValue]="layoutName()"
+                (debouncedValueChange)="updateLayoutName($event)"
+                />
+        </mat-form-field>
+
+        <mat-form-field class="form-field-5" appearance="outline" subscriptSizing="dynamic">
+            <mat-label>{{ 'layout.grid' | translate }}</mat-label>
+            <mat-select [disabled]="(selectedLayout()?.widgets?.length ?? 0) > 0"
+                [value]="selectedLayout()?.gridSize"
+                (selectionChange)="updateLayoutGrid($event.value)"
+                [compareWith]="compareGridSizes"
+                >
+              @for (layoutGrid of layoutGridSizes; track layoutGrid) {
+                <mat-option [value]="layoutGrid.value">{{ layoutGrid.label | translate }}</mat-option>
+              }
+            </mat-select>
+        </mat-form-field>
+
+        <button matButton (click)="openSelectWidgetDialog()">
+            <mat-icon>add</mat-icon>
+            {{'layout.add_widget' | translate}}
+        </button>
+
+
+    </mat-card-content>
+</mat-card>
