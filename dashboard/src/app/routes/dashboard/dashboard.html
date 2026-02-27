@@ -2,24 +2,73 @@
     <sim-player class="font-formula" />
 }
 
-@if (selectedLayout(); as layout) {
+@if (userLayout(); as layout) {
     <div>
-        <grid-container
+        <grid-container #gridContainer
             [gridRows]="layout.gridSize.gridRows"
             [gridColumns]="layout.gridSize.gridColumns"
-            class="w-full">
+            [displayGrid]="isEditing()" class="w-full">
             @for (item of displayWidgets(); track $index) {
-                <div class="widget" [widgetContainer]= "{
+                <div class="widget"
+                    [class]="(isEditing() && !item.pinned)?'draggable':''"
+                    [class.pinned]="isEditing() && item.pinned"
+                    [widgetContainer]= "{
                         position: item.position,
                         size: item.size
                     }"
                     [widgetIndex]="$index"
+                    cdkDrag
+                    [cdkDragDisabled]="!isEditing() || item.pinned"
+                    (widgetViewChanged)="onWidgetViewChanged($event)"
                 >
-                    <ng-container [ngComponentOutlet]="item.widgetView" [ngComponentOutletInputs]="{settings: item.settings}"/>
+                    @if (isEditing() && !item.pinned) {
+                        <div widgetResizeHandle class="resize-handle hideable_panel icon-container">
+                            <mat-icon>south_east</mat-icon>
+                        </div>
+                    }
+                    @if (isEditing()) {
+                        <div class="widget-control-panel hideable_panel">
+                            <div class="icon-container"
+                                role="button"
+                                tabindex="0"
+                                (click)="onPinWidget($index)"
+                                (keyup.enter)="onPinWidget($index)"
+                                (keyup.space)="onPinWidget($index)">
+                                <mat-icon>{{(!item.pinned) ? 'keep' : 'keep_off'}}</mat-icon>
+                            </div>
+                            <div class="icon-container"
+                                role="button"
+                                tabindex="0"
+                                (click)="onWidgetSettings($index)"
+                                (keyup.enter)="onWidgetSettings($index)"
+                                (keyup.space)="onWidgetSettings($index)">
+                                <mat-icon>settings</mat-icon>
+                            </div>
+                            <div class="icon-container"
+                                role="button"
+                                tabindex="0"
+                                (click)="onDeleteWidget($index)"
+                                (keyup.enter)="onDeleteWidget($index)"
+                                (keyup.space)="onDeleteWidget($index)">
+                                <mat-icon>delete</mat-icon>
+                            </div>
+                        </div>
+                    }
+                    <div [class.widget-preview-container]="isEditing()" class="h-full">
+                        <ng-container [ngComponentOutlet]="item.widgetView" [ngComponentOutletInputs]="{settings: item.settings}"/>
+                    </div>
                 </div>
             }
         </grid-container>
+        @if (isEditing()) {
+            <tools-panel [(selectedLayout)]="userLayout"
+                [cellSize]="gridContainer.cellSize()()"
+                cdkDrag class="tools-panel"
+                (widgetAdded)="onWidgetAdded($event)"
+            />
+        }
     </div>
+
 } @else {
 
     <div class="default-grid">
@@ -31,7 +80,6 @@
             <track-map-widget/>
         </div>
     </div>
-
 
 }
 

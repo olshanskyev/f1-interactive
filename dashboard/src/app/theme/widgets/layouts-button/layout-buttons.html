@@ -1,0 +1,43 @@
+<div class="d-flex gap-4">
+  <mat-form-field class="form-field-5 select-widget" appearance="outline" subscriptSizing="dynamic">
+      <mat-label class="f-s-14">{{ 'layout.layout' | translate }}</mat-label>
+      <mat-select #layoutSelect class="f-s-14"
+          [value]="selectedLayout()?.id ?? 'Default'"
+          (selectionChange)="activateLayout($event.value)"
+      >
+        <mat-option [value]="'Default'">
+          {{ 'layout.default_layout' | translate }}
+        </mat-option>
+        <button mat-menu-item (click)="onCreateNewLayout(); layoutSelect.close()" class="f-s-14">
+          <mat-icon class="text-color-primary">dashboard_customize</mat-icon>
+          <span class="text-color-primary">{{ 'layout.create_layout' | translate }}</span>
+        </button>
+        <mat-divider />
+        <mat-option disabled>
+          {{ 'layout.my_layouts' | translate }}
+        </mat-option>
+        @if (customLayouts().length === 0) {
+          <div class="m-8 text-color-second">
+            {{'nothing_found' | translate}}
+          </div>
+        } @else {
+          @for (item of customLayouts(); track item.id) {
+            <mat-option [value]="item.id">{{ item.layoutName | translate }}</mat-option>
+          }
+        }
+      </mat-select>
+  </mat-form-field>
+  @if (selectedLayout()) {
+    <div class="control-buttons">
+      <button matMiniFab (click)="onEditConfirmLayout()">
+        <mat-icon >{{isEditing() ? 'check' : 'edit'}}</mat-icon>
+      </button>
+      <button matMiniFab (click)="onDeleteCustomLayout()"
+        style= "background-color: var(--mat-sys-error-container)"
+      >
+        <mat-icon >delete</mat-icon>
+      </button>
+    </div>
+
+  }
+</div>

@@ -1,5 +1,4 @@
 import { Type } from '@angular/core';
-import { Leaderboard } from '@shared';
 import { ContaineredWidget } from '@shared/components/widgets/containered-widget';
 
 export interface WidgetPosition {colStart: number, rowStart: number}
@@ -14,7 +13,6 @@ export interface WidgetComponent {
     type: WidgetType,
     meta: WidgetMetadata,
     widgetView: Type<ContaineredWidget>,
-    widgetPreview: Type<any>,
     widgetThumb: string
 }
 

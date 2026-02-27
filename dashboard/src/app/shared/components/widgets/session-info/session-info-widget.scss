@@ -1,37 +1,64 @@
 .chip {
     --icon-size: 1rem;
-    font-size: 0.6rem;
-    border: 1px solid var(--mat-sys-outline-variant);
-    padding: 0.5rem;
+
     display: flex;
     align-items: center;
+    padding: 0.5rem;
+    font-size: 0.6rem;
+    border: 1px solid var(--mat-sys-outline-variant);
     border-radius: 0.5rem;
+
     mat-icon {
         width: var(--icon-size) !important;
         height: var(--icon-size) !important;
-        font-size: var(--icon-size);
         margin-right: 0.25rem;
+        font-size: var(--icon-size);
+    }
+}
+
+:host(.in-grid) {
+    display: block;
+    height: 100%;
+
+    .session-info-container {
+        container-type: size;
     }
 }
 
 .session-info-container {
     position: relative;
-    padding: 0.5rem 0rem 0.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0.5rem 0 0.5rem 1rem;
 }
 
 .session-info-container::before {
-    //draw vertical line on the left of the container
-    content: '';
     position: absolute;
-    left: 0;
     top: 0;
     bottom: 0;
+    left: 0;
     width: 0.5rem;
+    //draw vertical line on the left of the container
+    content: '';
     background-color: var(--status-color);
 }
 
 .flag {
-    color: transparent;
     width: 48px;
     height: 36px;
+    color: transparent;
+}
+
+.bottom-chip-container {
+    display: flex;
+    gap: 0.5rem;
+    padding-top: 0.25rem;
+
+}
+
+@container (height < 85px) {
+    .bottom-chip-container  {
+        display: none;
+    }
 }

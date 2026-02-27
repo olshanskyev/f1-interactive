@@ -8,8 +8,7 @@ import { TranslateButton } from '../widgets/translate-button';
 import { UserButton } from '../widgets/user-button';
 import { AuthService, FullScreenService } from '@core';
 import { Router, RouterLink } from '@angular/router';
-import { LayoutsButton } from '@theme/widgets/layouts-button/layouts-button';
-import { SimulatorButton } from '@theme/widgets/simulator-button';
+import { LayoutButtons } from '@theme/widgets/layouts-button/layout-buttons';
 import { isAdmin } from '@core/lib/roles';
 import { NgxRolesService } from 'ngx-permissions';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -31,8 +30,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
     TranslateButton,
     UserButton,
     RouterLink,
-    LayoutsButton,
-    SimulatorButton
+    LayoutButtons
   ],
 })
 export class Header {

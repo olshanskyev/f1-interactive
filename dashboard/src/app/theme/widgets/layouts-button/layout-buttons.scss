@@ -1,0 +1,34 @@
+@use '@angular/material' as mat;
+@use '../../../../styles/grid/breakpoints';
+
+.custom-layouts-container {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 1fr;
+  gap: 4px;
+}
+
+.select-widget {
+  @include breakpoints.bp-lt(small) {
+      width: 150px;
+  }
+}
+
+.control-buttons {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+  @include breakpoints.bp-lt(small) {
+    button {
+      width: 2rem;
+      height: 2rem;
+
+      mat-icon {
+        width: var(--small-icons-size);
+        height: var(--small-icons-size) !important;
+        font-size: var(--small-icons-size);
+      }
+    }
+  }
+
+}

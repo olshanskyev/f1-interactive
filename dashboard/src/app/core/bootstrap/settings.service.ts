@@ -105,5 +105,9 @@ export class SettingsService {
     return this.options.useSimulator;
   }
 
+  getSelectedLayoutId() {
+    return this.options.selectedLayoutId;
+  }
+
 
 }

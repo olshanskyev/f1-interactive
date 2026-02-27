@@ -34,8 +34,7 @@
 }
 
 // Layout control
-.matero-sidenav-collapsed,
-.matero-sidenav-collapsed-fix {
+.matero-sidenav-collapsed {
   .matero-sidenav {
     width: var(--sidenav-collapsed-width);
 
@@ -75,10 +74,7 @@
       }
     }
   }
-}
 
-// Layout control
-.matero-sidenav-collapsed {
   .matero-content {
     margin-left: var(--sidenav-collapsed-width) !important;
 
@@ -86,6 +82,11 @@
       margin-right: var(--sidenav-collapsed-width) !important;
       margin-left: auto !important;
     }
+  }
+
+  &[dir='rtl'] .matero-content {
+    margin-right: var(--sidenav-collapsed-width) !important;
+    margin-left: auto !important;
   }
 }
 
@@ -117,18 +118,6 @@
 
     @include breakpoints.bp-lt(small) {
       top: var(--mat-toolbar-mobile-height);
-    }
-  }
-}
-
-// Fix the init content width
-.matero-content-width-fix {
-  .matero-content {
-    margin-left: var(--sidenav-width) !important;
-
-    [dir='rtl'] & {
-      margin-right: var(--sidenav-width) !important;
-      margin-left: auto !important;
     }
   }
 }

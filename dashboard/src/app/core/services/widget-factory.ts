@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { WidgetComponent, WidgetType } from '@core/types/widgets';
-import { Leaderboard, LeaderboardWidgetPreview, SessionInfoWidget, VideoPlayerWidget, WeatherWidget, WeatherWidgetPreview } from '@shared';
-import { SessionInfoWidgetPreview } from '@shared/components/widgets/session-info/preview/session-info-widget-preview';
-import { VideoPlayerWidgetPreview } from '@shared/components/widgets/video/preview/video-player-widget-preview';
+import { Leaderboard, SessionInfoWidget, VideoPlayerWidget, WeatherWidget } from '@shared';
 
 @Injectable({
     providedIn: 'root'
@@ -20,7 +18,6 @@ export class WidgetFactory {
                 defaultSizes: [{colSpan: 16, rowSpan: 9}],
             },
             widgetView: VideoPlayerWidget,
-            widgetPreview: VideoPlayerWidgetPreview,
             widgetThumb: 'images/thumbs/video-player-widget-thumb.png',
         }],
         [WidgetType.LeaderboardWidget, {
@@ -33,7 +30,6 @@ export class WidgetFactory {
                 defaultSizes: [{colSpan: 16, rowSpan: 9}],
             },
             widgetView: Leaderboard,
-            widgetPreview: LeaderboardWidgetPreview,
             widgetThumb: 'images/thumbs/leaderboard-widget-thumb.png',
         }],
         [WidgetType.SessionInfoWidget, {
@@ -43,7 +39,6 @@ export class WidgetFactory {
                 defaultSizes: [{colSpan: 14, rowSpan: 4}],
             },
             widgetView: SessionInfoWidget,
-            widgetPreview: SessionInfoWidgetPreview,
             widgetThumb: 'images/thumbs/session-info-widget-thumb.png',
         }],
         [WidgetType.WeatherWidget, {
@@ -60,7 +55,6 @@ export class WidgetFactory {
                 defaultSizes: [{colSpan: 14, rowSpan: 2}],
             },
             widgetView: WeatherWidget,
-            widgetPreview: WeatherWidgetPreview,
             widgetThumb: 'images/thumbs/weather-widget-thumb.png',
         }],
     ]);

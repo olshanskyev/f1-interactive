@@ -1,18 +1,18 @@
 import { BidiModule } from '@angular/cdk/bidi';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, OnDestroy, ViewEncapsulation, inject, viewChild } from '@angular/core';
+import { Component, OnDestroy, ViewEncapsulation, computed, inject, signal, viewChild } from '@angular/core';
 import { MatSidenav, MatSidenavContent, MatSidenavModule } from '@angular/material/sidenav';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { NgProgressbar } from 'ngx-progressbar';
 import { NgProgressRouter } from 'ngx-progressbar/router';
-import { signal, computed, effect } from '@angular/core';
 import { Subscription, filter } from 'rxjs';
 
-import { AppSettings, SettingsService } from '@core';
+import { FullScreenService, SettingsService } from '@core';
 import { Header } from '../header/header';
 import { Sidebar } from '../sidebar/sidebar';
-import { MOBILE_MEDIAQUERY, MONITOR_MEDIAQUERY, TABLET_MEDIAQUERY } from '@theme/media_queries';
-import { FullScreenService } from '@core';
+
+const MOBILE_MEDIAQUERY = 'screen and (max-width: 599px)';
+const MONITOR_MEDIAQUERY = 'screen and (min-width: 600px)';
 
 @Component({
   selector: 'app-admin-layout',
@@ -26,100 +26,67 @@ import { FullScreenService } from '@core';
     NgProgressbar,
     NgProgressRouter,
     Header,
-    Sidebar
+    Sidebar,
   ],
-  host: {
-    '[class.matero-content-width-fix]': 'contentWidthFix()',
-    '[class.matero-sidenav-collapsed-fix]': 'collapsedWidthFix()',
-  },
 })
 export class AdminLayout implements OnDestroy {
-  readonly sidenav = viewChild<MatSidenav>('sidenav');
-  readonly content = viewChild<MatSidenavContent>('content');
+  readonly sidenav = viewChild.required<MatSidenav>('sidenav');
+  readonly content = viewChild.required<MatSidenavContent>('content');
 
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly router = inject(Router);
   private readonly settings = inject(SettingsService);
   private readonly fullScreenService = inject(FullScreenService);
 
-  // Signals for state
+    // Signals for state
   readonly options = signal(this.settings.options);
   readonly isMobileScreen = signal(false);
-  readonly isContentWidthFixed = signal(true);
-  readonly isCollapsedWidthFixed = signal(false);
   readonly isFullScreen = this.fullScreenService.isFullScreen();
-
   get themeColor() {
     return this.settings.getThemeColor();
   }
 
   readonly isOver = computed(() => this.isMobileScreen());
 
-  readonly contentWidthFix = computed(() =>
-    this.isContentWidthFixed() &&
-    this.options().navPos === 'side' &&
-    this.options().sidenavOpened &&
-    !this.isOver()
-  );
-
-  readonly collapsedWidthFix = computed(() =>
-    this.isCollapsedWidthFixed() &&
-    (this.options().navPos === 'top' || (this.options().sidenavOpened && this.isOver()))
-  );
-
-  private layoutChangesSubscription = Subscription.EMPTY;
+  private layoutChangesSub = Subscription.EMPTY;
 
   constructor() {
-    this.layoutChangesSubscription = this.breakpointObserver
-      .observe([MOBILE_MEDIAQUERY, TABLET_MEDIAQUERY, MONITOR_MEDIAQUERY])
+    this.layoutChangesSub = this.breakpointObserver
+      .observe([MOBILE_MEDIAQUERY, MONITOR_MEDIAQUERY])
       .subscribe(state => {
-        // SidenavOpened must be reset true when layout changes
-        this.options.update(opt => ({ ...opt, sidenavOpened: true }));
-
-        this.isMobileScreen.set(state.breakpoints[MOBILE_MEDIAQUERY]);
-        this.options.update(opt => ({
-          ...opt,
-          sidenavCollapsed: state.breakpoints[TABLET_MEDIAQUERY],
-        }));
-        this.isContentWidthFixed.set(state.breakpoints[MONITOR_MEDIAQUERY]);
+        if (state.breakpoints[MOBILE_MEDIAQUERY]) {
+          this.isMobileScreen.set(true);
+          this.options.update(opt => ({ ...opt, sidenavOpened: true }));
+        } else {
+          this.isMobileScreen.set(false);
+        }
       });
 
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(e => {
       if (this.isOver()) {
-        this.sidenav()?.close();
+        this.sidenav().close();
       }
-      this.content()?.scrollTo({ top: 0 });
-    });
-
-    effect(() => {
-      this.settings.setOptions(this.options());
+      this.content().scrollTo({ top: 0 });
     });
   }
 
   ngOnDestroy() {
-    this.layoutChangesSubscription.unsubscribe();
+    this.layoutChangesSub.unsubscribe();
   }
 
   toggleCollapsed() {
-    this.isContentWidthFixed.set(false);
     this.options.update(opt => ({ ...opt, sidenavCollapsed: !opt.sidenavCollapsed }));
+    this.resetCollapsedState();
   }
 
-  onSidenavClosedStart() {
-    this.isContentWidthFixed.set(false);
+  // TODO: Trigger when transition end
+  resetCollapsedState(delay = 400) {
+    setTimeout(() => this.settings.setOptions(this.options()), delay);
   }
 
   onSidenavOpenedChange(isOpened: boolean) {
-    this.isCollapsedWidthFixed.set(!this.isOver());
     this.options.update(opt => ({ ...opt, sidenavOpened: isOpened }));
     this.settings.setOptions(this.options());
-  }
-
-  updateOptions(options: AppSettings) {
-    this.options.set(options);
-    this.settings.setOptions(options);
-    this.settings.setDirection();
-    this.settings.setTheme();
   }
 
 }

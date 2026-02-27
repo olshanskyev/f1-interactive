@@ -1,0 +1,17 @@
+<h2 mat-dialog-title
+    cdkDrag
+    cdkDragRootElement=".cdk-overlay-pane"
+    class="d-flex align-items-center gap-8 p-y-8"
+>
+    <mat-icon cdkDragHandle class="drag-handle">drag_indicator</mat-icon>
+    {{ 'confirm_delete' | translate }}
+</h2>
+
+<div mat-dialog-content class="confirm-content">
+    <p>{{ data.message | translate }}</p>
+</div>
+
+<div mat-dialog-actions class="p-x-16 p-b-8">
+    <button mat-button (click)="onCancel()">{{ 'cancel' | translate }}</button>
+    <button mat-flat-button color="warn" (click)="onConfirm()">{{ 'ok' | translate }}</button>
+</div>

@@ -1,6 +1,9 @@
 // Components
 export * from './components';
 
+// Dialogs
+export * from './dialogs';
+
 // Directives
 export * from './directives';
 

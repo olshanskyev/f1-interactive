@@ -1,6 +1,5 @@
-<div class="font-formula h-full default-widget-background d-flex flex-col" >
+<div class="font-formula h-full d-flex flex-col default-widget-container" >
     @if (settingsMode() === 'all') {
-      <mat-divider/>
       <div class="table-buttons">
         <mat-chip-listbox [(ngModel)]="mode" required >
           <mat-chip-option (selectionChange)="onModeSelectionChange($event)" value="laps">{{'laps' | translate}}</mat-chip-option>
@@ -13,7 +12,7 @@
     }
 
     <div class="scroll-container" [style.view-transition-name]="'scroll-container-' + uniqueId">
-      <div class="h-full d-inline-block min-w-full w-fit" >
+      <div class="h-full d-inline-block min-w-full w-fit p-x-8" >
 
         @if (showHeader()) {
           @if (mode()==='laps') {

@@ -11,6 +11,7 @@ export interface AppSettings {
   sidenavCollapsed: boolean;
   language: string;
   useSimulator: boolean;
+  selectedLayoutId?: string;
 }
 
 export const defaults: AppSettings = {

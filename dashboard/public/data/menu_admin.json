@@ -2,15 +2,9 @@
   "menu": [
     {
       "route": "dashboard",
-      "name": "live",
+      "name": "dashboard",
       "type": "link",
       "icon": "sensors"
-    },
-    {
-      "route": "layouts",
-      "name": "layouts",
-      "type": "link",
-      "icon": "dashboard"
     },
     {
       "route": "admin",

@@ -66,7 +66,6 @@ export const appConfig: ApplicationConfig = {
           inject(SimulatorService) : inject(F1InteractiveService);
       }
     },
-    //{ provide: LiveService, useClass: LiveService },
 
     {
       provide: MAT_DATE_LOCALE,
