@@ -40,11 +40,11 @@ export class WidgetFactory {
             type: WidgetType.SessionInfoWidget,
             meta : {
                 settingsList: {},
-                defaultSizes: [{colSpan: 6, rowSpan: 2}],
+                defaultSizes: [{colSpan: 14, rowSpan: 4}],
             },
             widgetView: SessionInfoWidget,
             widgetPreview: SessionInfoWidgetPreview,
-            widgetThumb: 'images/thumbs/weather-widget-thumb.png',
+            widgetThumb: 'images/thumbs/session-info-widget-thumb.png',
         }],
         [WidgetType.WeatherWidget, {
             type: WidgetType.WeatherWidget,

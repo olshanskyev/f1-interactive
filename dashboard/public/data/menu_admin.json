@@ -4,7 +4,7 @@
       "route": "dashboard",
       "name": "live",
       "type": "link",
-      "icon": "podcasts"
+      "icon": "sensors"
     },
     {
       "route": "layouts",

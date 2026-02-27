@@ -16,6 +16,7 @@ class MockLiveService {
             this.timingData.set(res.TimingData);
             this.timingAppData.set(res.TimingAppData);
             this.timingStats.set(res.TimingStats);
+            this.sessionData.set(res.SessionData);
          })).subscribe();
     };
 
@@ -23,6 +24,7 @@ class MockLiveService {
     timingData = signal<TimingData | undefined>(undefined);
     timingAppData = signal<TimingAppData | undefined>(undefined);
     timingStats = signal<TimingStats | undefined>(undefined);
+    sessionData = signal<any | undefined>(undefined);
 
     getDriverListSignal() {
         return this.driverList.asReadonly();
@@ -38,6 +40,10 @@ class MockLiveService {
 
     getTimingStatsSignal() {
         return this.timingStats.asReadonly();
+    }
+
+    getSessionDataSignal() {
+        return this.sessionData.asReadonly();
     }
 }
 

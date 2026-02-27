@@ -207,7 +207,7 @@ export interface SessionData {
     StatusSeries: Record<number, StatusSeries>;
 }
 
-export type SessinStatusType = 'Inactive' | 'Started' | 'Finished' | 'Finalised' | 'Ends';
+export type SessinStatusType = 'Inactive' | 'Started' | 'Finished' | 'Finalised' | 'Ends' | 'Aborted';
 
 export interface StatusSeries {
 	Utc: string;

@@ -120,5 +120,18 @@
       "landscape": "Landscape (16:9)",
       "mobile_portrait": "Mobile Portrait"
     }
-  }
+  },
+  "status": {
+      "AllClear": "Track Clear",
+      "Yellow": "Yellow Flag",
+      "Red": "Red Flag",
+      "VSCDeployed": "Virtual Safety Car",
+      "SCDeployed": "Safety Car",
+      "Started": "Started",
+      "Aborted": "Aborted",
+      "Finished": "Finished",
+      "Finalised": "Finalised",
+      "Ends": "Ends",
+      "Inactive": "Inactive"
+    }
 }
