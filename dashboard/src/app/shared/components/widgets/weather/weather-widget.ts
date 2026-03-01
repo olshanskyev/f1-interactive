@@ -24,7 +24,7 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class WeatherWidget extends ContaineredWidget {
 
-  readonly defaultHeight = 54;
+  readonly defaultHeight = 45;
   weatherData = this.liveService.getWeatherDataSignal();
 
   conditionIcon() {

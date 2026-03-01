@@ -2,14 +2,12 @@ import { Component, computed, DestroyRef, effect, inject, signal } from '@angula
 import { ContaineredWidget } from '../containered-widget';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
+import { qualifyingPart } from '@core/lib/sub-signals';
 
 @Component({
     selector: 'session-info-widget',
     styleUrl:'./session-info-widget.scss',
     templateUrl: './session-info-widget.html',
-    host: {
-        '[class.in-grid]': '!!container',
-    },
     imports: [
         MatIconModule,
         TranslateModule,
@@ -21,6 +19,7 @@ export class SessionInfoWidget extends ContaineredWidget {
     sessionInfo = this.liveService.getSessionInfoSignal();
     trackStatus = this.liveService.getTrackStatusSignal();
     sessionStatus = this.liveService.getSessionStatusSignal();
+    sessionData = this.liveService.getSessionDataSignal();
 
     private destroyRef = inject(DestroyRef);
     private tick = signal(0);
@@ -38,6 +37,8 @@ export class SessionInfoWidget extends ContaineredWidget {
 
         return new Date(adjustedMs).toISOString().substring(11, 19);
     });
+
+    qualifyingPart = qualifyingPart(this.sessionData);
 
     constructor() {
         super();

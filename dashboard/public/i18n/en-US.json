@@ -94,6 +94,7 @@
     "SessionInfoWidget": "Session Info",
     "LeaderboardWidget": "Leaderboard",
     "video": "Video",
+    "TrackMapWidget": "Track Map",
     "settings": {
       "source": "Source",
       "embedCode": "Embed code",

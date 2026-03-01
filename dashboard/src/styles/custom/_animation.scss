@@ -14,3 +14,12 @@
 ::view-transition-group(.leaderboard-scroll) {
   overflow: clip;
 }
+
+@keyframes slow-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.slow-blink {
+  animation: slow-blink 2s ease-in-out infinite;
+}

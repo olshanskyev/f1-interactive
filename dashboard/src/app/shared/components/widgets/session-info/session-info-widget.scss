@@ -1,3 +1,6 @@
+@use "../../../../../styles/custom/mixins" as mixins;
+@use '../../../../../styles/grid/breakpoints' as breakpoints;
+
 .chip {
     --icon-size: 1rem;
 
@@ -16,21 +19,15 @@
     }
 }
 
-:host(.in-grid) {
-    display: block;
-    height: 100%;
-
-    .session-info-container {
-        container-type: size;
-    }
-}
-
 .session-info-container {
     position: relative;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     height: 100%;
     padding: 0.5rem 0 0.5rem 1rem;
+    container-type: scroll-state;
+    overflow: auto hidden;
 }
 
 .session-info-container::before {
@@ -44,6 +41,14 @@
     background-color: var(--status-color);
 }
 
+.track-status {
+    font-size: 0.875em;
+}
+
+.meeting-name {
+    font-size: 1em;
+}
+
 .flag {
     width: 48px;
     height: 36px;
@@ -53,12 +58,50 @@
 .bottom-chip-container {
     display: flex;
     gap: 0.5rem;
-    padding-top: 0.25rem;
-
+    padding-top: 0.5rem;
 }
 
-@container (height < 85px) {
-    .bottom-chip-container  {
-        display: none;
+.q-items-container {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+    width: stretch;
+    padding-top: 0.5rem;
+}
+
+.q-item {
+    width: 33.33%;
+    height: 0.5rem;
+    background-color: var(--inactive-color);
+    border-radius: 0.25rem;
+}
+
+.q-active {
+    background-color: var(--mat-sys-primary);
+}
+
+.q-past {
+    @include mixins.chequered-background(0.5rem, #fff, #545454);
+}
+
+
+@include breakpoints.container-lt(small) {
+    .track-status {
+        font-size: 0.75em;
+    }
+
+    .meeting-name {
+        font-size: 0.875em;
+    }
+}
+
+@include breakpoints.bp-lt(small) {
+    .track-status {
+        font-size: 0.75em;
+    }
+
+    .meeting-name {
+        font-size: 0.875em;
     }
 }
