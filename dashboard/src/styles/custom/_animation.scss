@@ -14,3 +14,17 @@
 ::view-transition-group(.leaderboard-scroll) {
   overflow: clip;
 }
+
+::view-transition-group(app-header) {
+  // Ensure header stays above all other content during transitions
+  z-index: 999;
+}
+
+@keyframes slow-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.slow-blink {
+  animation: slow-blink 2s ease-in-out infinite;
+}

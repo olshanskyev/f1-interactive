@@ -1,4 +1,5 @@
 import { Type } from '@angular/core';
+import { TrackMapWidget } from '@shared';
 import { ContaineredWidget } from '@shared/components/widgets/containered-widget';
 
 export interface WidgetPosition {colStart: number, rowStart: number}
@@ -23,12 +24,12 @@ export interface LayoutGridSize {
 
 export const LayoutGrids = {
     landscape: {
-        gridColumns: 48,
-        gridRows: 27
+        gridColumns: 64,
+        gridRows: 36
     },
     mobile_portrait: {
-        gridColumns: 16,
-        gridRows: 38
+        gridColumns: 24,
+        gridRows: 57
     }
 };
 
@@ -37,7 +38,9 @@ export enum WidgetType
     SessionInfoWidget = 'SessionInfoWidget',
     VideoPlayerWidget = 'VideoPlayerWidget',
     WeatherWidget = 'WeatherWidget',
-    LeaderboardWidget = 'LeaderboardWidget'
+    LeaderboardWidget = 'LeaderboardWidget',
+    TrackMapWidget = 'TrackMapWidget',
+    RaceControlMessagesWidget = 'RaceControlMessagesWidget',
 }
 
 export type SettingType = 'string' | 'number' | 'boolean' | string[];

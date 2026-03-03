@@ -54,7 +54,7 @@
                             </div>
                         </div>
                     }
-                    <div [class.widget-preview-container]="isEditing()" class="h-full">
+                    <div [class.widget-preview-border]="isEditing()" class="h-full">
                         <ng-container [ngComponentOutlet]="item.widgetView" [ngComponentOutletInputs]="{settings: item.settings}"/>
                     </div>
                 </div>
@@ -70,14 +70,19 @@
     </div>
 
 } @else {
-
-    <div class="default-grid">
-        <div>
-            <leaderboard/>
-        </div>
-        <div>
-            <session-info-widget/>
-            <track-map-widget/>
+    <div class="grid-container">
+        <div class="main-grid">
+            <div id="leaderboard" class="overflow-x-auto">
+                <leaderboard/>
+            </div>
+            <div id="right-panel" class="right-panel">
+                <weather-widget id="weather"/>
+                <session-info-widget id="session-info"/>
+                <track-map-widget id="track-map"/>
+            </div>
+            <div id="bottom-panel" class="bottom-panel overflow-x-auto">
+                <race-control-messages-widget id="race-control-messages"/>
+            </div>
         </div>
     </div>
 

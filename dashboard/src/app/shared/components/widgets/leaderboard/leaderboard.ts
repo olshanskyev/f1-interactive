@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, linkedSignal, signal } from '@angular/core';
+import { Component, computed, effect, inject, linkedSignal, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TimingDataLinesItem } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';
@@ -15,6 +15,7 @@ import { LeaderboardSector } from './leaderboard-sector/leaderboard-sector';
 import { LeaderboardSpeed } from './leaderboard-speed/leaderboard-speed';
 import { LeaderboardTyres } from './leaderboard-tyres/leaderboard-tyres';
 import { sortTimingDataByPosition } from '@core/lib/sorting';
+import { qualifyingPart, sessionYear } from '@core/lib/sub-signals';
 
 @Component({
   selector: 'leaderboard',
@@ -43,13 +44,11 @@ export class Leaderboard extends ContaineredWidget {
   timingAppData = this.liveService.getTimingAppDataSignal();
   timingStats = this.liveService.getTimingStatsSignal();
   sessionData = this.liveService.getSessionDataSignal();
+  sessionInfo = this.liveService.getSessionInfoSignal();
 
-  qualifyingPart = computed(() => {
-      //get last sessionData.series
-      if (!this.sessionData()?.Series) return undefined;
-      const lastSeries = Object.values(this.sessionData()!.Series).reverse()[0];
-      return lastSeries?.QualifyingPart;
-  });
+  sessionYear = sessionYear(this.sessionInfo);
+  qualifyingPart = qualifyingPart(this.sessionData);
+
   readonly uniqueId = Math.random().toString(36).substring(2, 9);
 
   settingsMode = computed(() => this.settings()?.['mode'] ?? 'all');
@@ -101,8 +100,8 @@ export class Leaderboard extends ContaineredWidget {
   isInEliminationZone(position: number): boolean {
     const qualifyingPart = this.qualifyingPart();
     if (!qualifyingPart) return false;
-
-    return ((qualifyingPart === 1 && position > 15) ||
+    const firstEliminationThreshold = (this.sessionYear() < 2026) ? 15 : 16;
+    return ((qualifyingPart === 1 && position > firstEliminationThreshold) ||
       (qualifyingPart >= 2 && position > 10));
   }
 }

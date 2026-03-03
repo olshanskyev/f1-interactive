@@ -25,11 +25,10 @@
           (toggleSidenav)="sidenav.toggle()"
           />
       }
-      <div class="outer-padding">
-        <main class="matero-page-content">
-          <router-outlet />
-        </main>
-      </div>
+
+      <main class="matero-page-content" [class.outer-padding]="!isMobileScreen()">
+        <router-outlet />
+      </main>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

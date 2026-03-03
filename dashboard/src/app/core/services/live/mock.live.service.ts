@@ -55,7 +55,8 @@ export class MockLiveService extends LiveService {
                 "ShortName": "Yas Marina Circuit"
             }
         },
-        "Name": "Qualifying"
+        "Name": "Qualifying",
+        "StartDate": "2025-12-06T14:30:00"
     }`));
 
     trackStatus = signal<any | undefined>(JSON.parse(`{

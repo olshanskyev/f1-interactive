@@ -1,0 +1,9 @@
+@mixin chequered-background($size: 40px, $color1: #fff, $color2: #545454) {
+  background-image: conic-gradient(
+    $color2 90deg,
+    $color1 90deg 180deg,
+    $color2 180deg 270deg,
+    $color1 270deg
+  );
+  background-size: $size $size;
+}

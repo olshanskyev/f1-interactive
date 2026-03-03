@@ -2,6 +2,7 @@
     height: 100% !important;
     overflow-y: auto;
     view-transition-class: leaderboard-scroll;
+    overflow-anchor: none;
     // view-transition-name: leaderboard-scroll; <-- moved to style.view-transition-name in html template to avoid duplicate errors
 }
 
@@ -16,7 +17,7 @@
 .column-names {
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: 10;
     display: grid !important;
     align-items: start;
     font-size: small;

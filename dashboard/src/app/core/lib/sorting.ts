@@ -1,5 +1,3 @@
-//import { utc } from "moment";
-
 import { TimingDataLinesItem } from '@core/types/f1types';
 
 interface UtcObject { Utc: string }

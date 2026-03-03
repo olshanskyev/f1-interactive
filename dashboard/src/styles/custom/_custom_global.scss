@@ -1,5 +1,3 @@
-@use "../grid/breakpoints";
-
 .line-height-1 {
   line-height: 1;
 }
@@ -34,8 +32,7 @@
   font-size: var(--small-icons-size) !important;
 }
 
-.widget-preview-container {
-  height: 100%;
+.widget-preview-border {
   border: 3px solid var(--mat-sys-inverse-primary) !important;
   border-radius: 0.5rem !important;
 }

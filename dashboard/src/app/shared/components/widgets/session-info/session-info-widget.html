@@ -1,43 +1,58 @@
 <div class="font-formula default-widget-container p-8" >
     <div
-        class="session-info-container d-flex flex-col overflow-y-hidden overflow-x-auto text-nowrap"
+        class="session-info-container"
         [style.--status-color]="trackStatusColor()"
         >
-        <div class="d-flex align-items-center p-b-2 gap-8">
+        <div>
+            <div class="d-flex align-items-center gap-8">
 
-            @if (countryCode(); as code) {
-                <img [alt]="sessionInfo()?.Meeting?.Country?.Name"
-                    class="flag"
-                    loading="lazy" decoding="async"
-                    [src]="'/images/country_flags/' + code + '.svg'"
-                >
-            }
+                @if (countryCode(); as code) {
+                    <img [alt]="sessionInfo()?.Meeting?.Country?.Name"
+                        class="flag"
+                        loading="lazy" decoding="async"
+                        [src]="'/images/country_flags/' + code + '.svg'"
+                    >
+                }
 
-            <div class="d-flex flex-col justify-content-center">
-                <div class="d-flex flex-row align-items-center gap-8">
-                    <div class="f-s-14" [style.color]="trackStatusColor()">
-                        {{'status.' + trackStatus()?.Message | translate}}
+                <div class="d-flex flex-col justify-content-center">
+                    <div class="d-flex flex-row align-items-center gap-8">
+                        <div class="track-status" [style.color]="trackStatusColor()">
+                            {{'status.' + trackStatus()?.Message | translate}}
+                        </div>
+                        <div class="chip">
+                            <mat-icon>av_timer</mat-icon>
+                            {{timeRemaining()}}
+                        </div>
                     </div>
-                    <div class="chip">
-                        <mat-icon>av_timer</mat-icon>
-                        {{timeRemaining()}}
+                    <div class="meeting-name">
+                        {{sessionInfo()?.Meeting?.Name}} : {{sessionInfo()?.Name}}
                     </div>
                 </div>
-                <div>
-                    {{sessionInfo()?.Meeting?.Name}} : {{sessionInfo()?.Name}}
+            </div>
+            <div class="bottom-chip-container">
+                <div class="chip">
+                    <mat-icon>my_location</mat-icon>
+                    <span>{{sessionInfo()?.Meeting?.Circuit?.ShortName}}</span>
+                </div>
+                <div class="chip">
+                    <mat-icon [style.color]="sessionStatusColor()">sensors</mat-icon>
+                    <span [style.color]="sessionStatusColor()">{{'status.' + sessionStatus()?.Status | translate}}</span>
                 </div>
             </div>
         </div>
 
-        <div class="bottom-chip-container">
-            <div class="chip">
-                <mat-icon>my_location</mat-icon>
-                {{sessionInfo()?.Meeting?.Circuit?.ShortName}}
+        @if (qualifyingPart()) {
+            <div class="q-items-container">
+                @for (i of [1, 2, 3]; track $index) {
+                        <span class="f-s-10">{{'Q' + i}}</span>
+                        <div class="q-item"
+                            [class.q-active]="qualifyingPart() === i"
+                            [class.slow-blink]="qualifyingPart() === i"
+                            [class.q-past]="qualifyingPart() !== undefined && qualifyingPart()! > i"
+                            >
+                        </div>
+                }
             </div>
-            <div class="chip">
-                <mat-icon [style.color]="sessionStatusColor()">sensors</mat-icon>
-                <span [style.color]="sessionStatusColor()">{{'status.' + sessionStatus()?.Status | translate}}</span>
-            </div>
-        </div>
+        }
     </div>
 </div>
