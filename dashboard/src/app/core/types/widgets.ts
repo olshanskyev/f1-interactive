@@ -40,6 +40,7 @@ export enum WidgetType
     WeatherWidget = 'WeatherWidget',
     LeaderboardWidget = 'LeaderboardWidget',
     TrackMapWidget = 'TrackMapWidget',
+    RaceControlMessagesWidget = 'RaceControlMessagesWidget',
 }
 
 export type SettingType = 'string' | 'number' | 'boolean' | string[];

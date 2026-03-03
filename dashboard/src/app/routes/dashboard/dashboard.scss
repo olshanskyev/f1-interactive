@@ -1,14 +1,78 @@
-.default-grid {
+.grid-container {
+    container-type: inline-size;
+}
+
+.main-grid {
     display: grid;
+    grid-template-areas: "leaderboard right-panel"
+                         "bottom-panel bottom-panel";
     grid-template-columns: max-content 1fr;
     align-items: start;
     overflow-x: auto;
 }
 
-@media (width <= 1400px) {
-    .default-grid {
+.right-panel {
+    display: grid;
+    grid-template-areas: "weather"
+                         "session-info"
+                         "track-map"
+                         ;
+    grid-template-columns: 1fr;
+}
+
+.bottom-panel {
+    display: grid;
+    grid-template-areas: "race-control-messages";
+    grid-template-columns: 33%;
+}
+
+@container (width <= 1200px) {
+    .main-grid {
+        grid-template-areas:
+        "weather"
+        "session-info"
+        "track-map"
+        "leaderboard"
+        "race-control-messages"
+        ;
         grid-template-columns: 1fr;
     }
+
+    #right-panel {
+        display: contents;
+    }
+
+    #bottom-panel {
+        display: contents;
+    }
+}
+
+#right-panel {
+    grid-area: right-panel;
+}
+
+#bottom-panel {
+    grid-area: bottom-panel;
+}
+
+#leaderboard {
+    grid-area: leaderboard;
+}
+
+#weather {
+    grid-area: weather;
+}
+
+#session-info {
+    grid-area: session-info;
+}
+
+#track-map {
+    grid-area: track-map;
+}
+
+#race-control-messages {
+    grid-area: race-control-messages;
 }
 
 .widget {

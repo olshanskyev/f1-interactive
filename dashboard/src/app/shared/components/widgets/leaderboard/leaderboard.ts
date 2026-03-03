@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, linkedSignal, signal } from '@angular/core';
+import { Component, computed, effect, inject, linkedSignal, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TimingDataLinesItem } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';

@@ -1,0 +1,58 @@
+.container {
+    height: 100%;
+    max-height: var(--default-list-height);
+    overflow-y: auto;
+}
+
+:host([data-containered]) .container {
+    max-height: 100%;
+}
+
+.icon-container {
+    position: relative;
+    height: 100%;
+    padding-top: 0.5rem;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    align-content: center;
+    align-items: start;
+    height: 30px;
+    padding-left: 1rem;
+    font-size: small;
+    background-color:  color-mix(in srgb, var(--mat-sys-surface-container), transparent 50%);
+    backdrop-filter: blur(2px);
+}
+
+.message-item {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: start;
+    background-color: transparent;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 1s, transform 1s, background-color 5s;
+
+    @starting-style {
+        background-color: var(--mat-sys-secondary-container);
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+.icon-container::before {
+    --image-size: 24px;
+    --offset: calc(var(--image-size) + 0.5rem); // inclusive padding of icon container
+
+    position: absolute;
+    top: var(--offset);
+    left: calc(var(--image-size) / 2);
+    width: 1px;
+    height: calc(100% - var(--offset));
+    content: '';
+    background-color: var(--inactive-color);
+}
