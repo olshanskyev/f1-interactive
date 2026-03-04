@@ -1,8 +1,6 @@
-import { fromByteArray, toByteArray } from 'base64-js';
-
 export class Base64 {
   static encode(plainText: string): string {
-    return fromByteArray(pack(plainText)).replace(/[+/=]/g, m => {
+    return btoa(plainText).replace(/[+/=]/g, m => {
       return { '+': '-', '/': '_', '=': '' }[m] as string;
     });
   }
@@ -15,21 +13,8 @@ export class Base64 {
       b64 += '=';
     }
 
-    return unpack(toByteArray(b64));
+    return atob(b64);
   }
-}
-
-export function pack(str: string) {
-  const bytes: any = [];
-  for (let i = 0; i < str.length; i++) {
-    bytes.push(...[str.charCodeAt(i)]);
-  }
-
-  return bytes;
-}
-
-export function unpack(byteArray: any) {
-  return String.fromCharCode(...byteArray);
 }
 
 export const base64 = { encode: Base64.encode, decode: Base64.decode };
