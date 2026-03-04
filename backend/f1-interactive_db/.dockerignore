@@ -1,0 +1,9 @@
+*.log
+pgdata
+node_modules
+.git
+.github
+Dockerfile
+.dockerignore
+/.env
+/.env.*

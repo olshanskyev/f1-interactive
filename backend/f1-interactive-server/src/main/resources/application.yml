@@ -8,7 +8,29 @@ server:
 spring:
   config:
     activate:
-      on-profile: local,default
+      on-profile: default
+  jackson:
+    default-property-inclusion: non_null
+datasource:
+  url: jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
+  username: ${DATABASE_USER}
+  password: ${DATABASE_PASSWORD}
+  driverClassName: org.postgresql.Driver
+  defaultSchema: ${DATABASE_SCHEMA}
+  maxPoolSize: 20
+  hibernate:
+    hbm2ddl.method: none
+    show_sql: false
+    format_sql: false
+    dialect: org.hibernate.dialect.PostgreSQLDialect
+rest:
+  cors:
+    allowedOriginPatterns: ${ALLOWED_ORIGIN_PATTERNS}
+---
+spring:
+  config:
+    activate:
+      on-profile: local
   jackson:
     default-property-inclusion: non_null
 datasource:
@@ -16,7 +38,7 @@ datasource:
   username: f1interactive
   password: f1interactive
   driverClassName: org.postgresql.Driver
-  defaultSchema:
+  defaultSchema: F1INTERACTIVE
   maxPoolSize: 20
   hibernate:
     #hbm2ddl.method: update
