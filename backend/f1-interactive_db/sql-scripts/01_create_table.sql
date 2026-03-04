@@ -1,6 +1,5 @@
-\connect __DATABASE_NAME__
-
 -- Create schema owned by the runtime Postgres user (substituted from POSTGRES_USER)
+-- The official Postgres image runs init scripts connected to the DB from `POSTGRES_DB`.
 CREATE SCHEMA IF NOT EXISTS __DATABASE_SCHEMA__ AUTHORIZATION __POSTGRES_USER__;
 drop table if exists __DATABASE_SCHEMA__.users cascade;
 
