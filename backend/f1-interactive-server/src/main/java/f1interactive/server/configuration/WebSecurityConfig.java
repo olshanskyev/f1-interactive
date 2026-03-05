@@ -61,7 +61,7 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authz -> authz
                         // don't authenticate this particular request
-                        .requestMatchers("/auth/login", "/auth/refresh-token", "/live").permitAll()
+                        .requestMatchers("/auth/login", "/auth/refresh", "/live").permitAll()
                         // all other requests need to be authenticated
                         .anyRequest()
                         .authenticated()
