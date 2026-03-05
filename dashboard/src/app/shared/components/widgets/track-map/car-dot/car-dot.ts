@@ -11,12 +11,14 @@ import { PositionCar } from '@core/types/f1types';
     host: {
         '[class.dot]': 'true',
         '[class.hidden]': 'hidden()',
+        '[class.no-transition]': 'disableTransition()',
         '[class.opacity-30]': 'pit()',
         '[style.transform]': 'transform()',
         '[style.fill]': 'color()',
     },
 })
 export class CarDot {
+    disableTransition = input<boolean>(false);
     favouriteDriver = input<boolean>(false);
     name = input<string>('');
     color = input<string>('');

@@ -62,9 +62,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         // don't authenticate this particular request
                         .requestMatchers("/auth/login", "/auth/refresh", "/live").permitAll()
+                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         // all other requests need to be authenticated
-                        .anyRequest()
-                        .authenticated()
+                        .anyRequest().authenticated()
                 )
                 .httpBasic(basic -> basic.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .exceptionHandling(Customizer.withDefaults())

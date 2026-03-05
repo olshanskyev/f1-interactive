@@ -3,6 +3,7 @@
     "dashboard": "Dashboard",
     "admin": "Admin",
     "admin.users": "Users",
+    "admin.server_configuration": "Server Configuration",
     "layouts": "Layouts"
   },
   "validation": {
@@ -14,6 +15,9 @@
     "exist": "The {{value}} has exists",
     "inconsistent": "Inconsistent with {{value}}",
     "invalid_email": "Invalid email"
+  },
+  "notifications": {
+    "live_token_updated": "Live token updated successfully"
   },
   "simulator": {
     "player": "Simulation Player",
@@ -42,10 +46,11 @@
   "close": "Close",
   "save": "Save",
   "cancel": "Cancel",
+  "submit": "Submit",
   "settings": "Settings",
   "profile": "Profile",
   "edit_profile": "Edit profile",
-  "logout": "logout",
+  "logout": "Logout",
   "login": "Login",
   "login_title": "Welcome Back",
   "have_no_account": "Don't have an account",
@@ -136,5 +141,9 @@
       "Finalised": "Finalised",
       "Ends": "Ends",
       "Inactive": "Inactive"
+    },
+    "admin": {
+      "server_configuration": "Server Configuration",
+      "live_token": "Live Token"
     }
 }

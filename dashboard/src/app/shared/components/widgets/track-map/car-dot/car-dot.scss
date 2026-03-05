@@ -2,6 +2,10 @@
 	fill: var(--inactive-color);
 	transition: all 1s linear;
 
+	&.no-transition {
+		transition: none !important;
+	}
+
 	&.hidden {
 		opacity: 0 !important;
 	}

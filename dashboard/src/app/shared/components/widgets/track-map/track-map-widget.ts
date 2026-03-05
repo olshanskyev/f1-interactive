@@ -118,10 +118,15 @@ export class TrackMapWidget extends ContaineredWidget implements OnDestroy {
         document.removeEventListener('visibilitychange', this.handleVisibilityChange);
     }
 
-    // Handler to force immediate update of car-dot positions
+    disableTransition = signal(false);
+
+    // Handler to force immediate update of car-dot positions without jumping
     private handleVisibilityChange = () => {
         if (document.visibilityState === 'visible') {
-            this.driverDots.set([]);
+            this.disableTransition.set(true);
+            setTimeout(() => {
+                this.disableTransition.set(false);
+            }, 200); // disable transitions shortly after gaining visibility to prevent jumping
         }
     };
 

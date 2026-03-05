@@ -90,6 +90,7 @@ public class F1SignalRCoreProxy implements F1LiveTimingProxy{
 
     @Override
     public void connect() {
+        isManualStop = false;
         hubConnection = HubConnectionBuilder.create("wss://livetiming.formula1.com/signalrcore")
                 .withAccessTokenProvider(Single.defer(() -> Single.just((System.getProperty("formula1AccessToken") != null)?System.getProperty("formula1AccessToken"):"")))
                 .build();
@@ -123,8 +124,10 @@ public class F1SignalRCoreProxy implements F1LiveTimingProxy{
     @Override
     public void disconnect() {
         isManualStop = true;
-        disposables.dispose();
-        hubConnection.close();
+        disposables.clear();
+        if (hubConnection != null) {
+            hubConnection.close();
+        }
     }
 }
 

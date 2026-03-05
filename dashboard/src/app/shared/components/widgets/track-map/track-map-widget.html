@@ -52,6 +52,7 @@
                         @if (onTrack(dot.driver.RacingNumber)) {
                             <g car-dot
                                 [attr.key]="'map.driver.' + dot.driver.RacingNumber"
+                                [disableTransition]="disableTransition()"
                                 [favouriteDriver]="false"
                                 [name]="dot.driver.Tla"
                                 [color]="'#' + dot.driver.TeamColour"

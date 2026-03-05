@@ -17,6 +17,12 @@
           "name": "users",
           "type": "link",
           "icon": "group"
+        },
+        {
+          "route": "server-configuration",
+          "name": "server_configuration",
+          "type": "link",
+          "icon": "settings"
         }
       ]
     }

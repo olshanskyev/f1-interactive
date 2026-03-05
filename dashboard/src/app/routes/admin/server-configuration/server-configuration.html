@@ -1,0 +1,10 @@
+<h3>{{ 'admin.server_configuration' | translate }}</h3>
+
+<form (ngSubmit)="onSubmit()" class="d-flex align-items-center gap-8">
+  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+    <mat-label>{{ 'admin.live_token' | translate }}</mat-label>
+    <input matInput type="password" [(ngModel)]="token" name="token" required autocomplete="off">
+  </mat-form-field>
+  <button mat-raised-button color="primary" type="submit" [disabled]="!token">{{ 'submit' | translate }}</button>
+</form>
+
