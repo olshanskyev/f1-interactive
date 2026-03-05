@@ -21,5 +21,8 @@ COPY --from=build /app/dist/f1-interactive-dashboard/browser /usr/share/nginx/ht
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
+# Copy custom nginx configuration to enable SPA fallback (index.html)
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 80
 ENTRYPOINT ["/docker-entrypoint.sh"]
