@@ -50,6 +50,6 @@ mat-card-header + mat-card-content {
 
 .mat-toolbar-single-row {
   @include breakpoints.bp-lt(small) {
-      padding: 0 0.2rem !important;
+      padding: 0 0.3rem !important;
   }
 }

@@ -1,29 +1,48 @@
-<div class="matero-container-wrap matero-navbar-side matero-header-fixed"
-     [class.matero-sidenav-collapsed]="options().sidenavCollapsed"
-     [class.matero-fullscreen]="isFullScreen()"
-     dir="ltr">
+<div
+  class="matero-container-wrap"
+  [class.matero-sidenav-collapsed]="options().sidenavCollapsed && options().navPos !== 'top'"
+  [class.matero-navbar-side]="options().navPos === 'side'"
+  [class.matero-navbar-top]="options().navPos === 'top'"
+  [class.matero-header-above]="options().headerPos === 'above'"
+  [class.matero-header-fixed]="options().headerPos === 'fixed'"
+  [dir]="options().dir"
+  [class.matero-fullscreen]="isFullScreen()"
+>
   <ng-progress ngProgressRouter />
 
-  <mat-sidenav-container class="matero-container" autosize autoFocus>
-    <mat-sidenav #sidenav class="matero-sidenav"
+  <!-- Header Above -->
+  @if (!isFullScreen() &&options().showHeader && options().headerPos === 'above') {
+    <app-header
+      (toggleSidenav)="sidenav.toggle()"
+      [showBranding]="true"
+    />
+  }
 
+  <mat-sidenav-container class="matero-container" autosize autoFocus>
+    <mat-sidenav
+      #sidenav
+      class="matero-sidenav"
       [mode]="isOver() ? 'over' : 'side'"
-      [opened]="options().sidenavOpened && !isOver()"
+      [opened]="options().navPos === 'side' && options().sidenavOpened && !isOver()"
       (openedChange)="onSidenavOpenedChange($event)"
-      >
+    >
       <app-sidebar
         [showToggle]="!isOver()"
+        [showUser]="options().showUserPanel"
+        [showHeader]="options().headerPos !== 'above'"
+        [toggleChecked]="options().sidenavCollapsed"
         (toggleCollapsed)="toggleCollapsed()"
-        [toggleChecked]="!!options().sidenavCollapsed"
-        (closeSidenav)="sidenav.close()" />
+        (closeSidenav)="sidenav.close()"
+      />
     </mat-sidenav>
 
     <mat-sidenav-content #content class="matero-content">
-      @if (!isFullScreen()) {
+      @if (!isFullScreen() && options().showHeader && options().headerPos !== 'above') {
         <app-header
-          [showToggle]="!options().sidenavCollapsed"
+          [showToggle]="!options().sidenavCollapsed && options().navPos !== 'top'"
+          [showBranding]="options().navPos === 'top'"
           (toggleSidenav)="sidenav.toggle()"
-          />
+        />
       }
 
       <main class="matero-page-content" [class.outer-padding]="!isMobileScreen()">

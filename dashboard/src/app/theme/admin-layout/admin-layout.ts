@@ -56,7 +56,7 @@ export class AdminLayout implements OnDestroy {
       .subscribe(state => {
         if (state.breakpoints[MOBILE_MEDIAQUERY]) {
           this.isMobileScreen.set(true);
-          this.options.update(opt => ({ ...opt, sidenavOpened: true }));
+          this.options.update(opt => ({ ...opt, sidenavCollapsed: false }));
         } else {
           this.isMobileScreen.set(false);
         }

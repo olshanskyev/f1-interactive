@@ -2,23 +2,22 @@
   font-family: 'Material Symbols Rounded';
   font-style: normal;
   font-weight: 400;
-  src: url(/fonts/Material_Icons_Rounded.woff2) format('woff2');
+  src: url("/fonts/Material_Icons_Rounded.woff2") format('woff2');
 }
 
 .material-icons {
-  font-family: 'Material Symbols Rounded';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
   display: inline-block;
-  white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
+  font-family: 'Material Symbols Rounded', sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: normal;
   font-feature-settings: 'liga';
-  -webkit-font-feature-settings: 'liga';
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  overflow-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -26,14 +25,14 @@
   font-family: 'Formula 1';
   font-style: normal;
   font-weight: normal;
-  src: url(/fonts/Formula1-Regular.ttf) format('truetype');
+  src: url("/fonts/Formula1-Regular.ttf") format('truetype');
 }
 
 @font-face {
   font-family: 'Formula 1';
   font-style: normal;
   font-weight: bold;
-  src: url(/fonts/Formula1-Bold.ttf) format('truetype');
+  src: url("/fonts/Formula1-Bold.ttf") format('truetype');
 }
 
 
@@ -41,7 +40,7 @@
   font-family: 'Formula 1 Wide';
   font-style: normal;
   font-weight: bold;
-  src: url(/fonts/Formula1-Wide.ttf) format('truetype');
+  src: url("/fonts/Formula1-Wide.ttf") format('truetype');
 }
 
 .font-formula {
