@@ -124,16 +124,17 @@
 
 .outer-padding {
   padding: var(--gutter);
-
-  .matero-header+&,
-  .matero-header-above &,
-  .matero-navbar-top & {
-    padding-top: 0;
-  }
 }
 
 .matero-page-content {
   position: relative;
+
+  .matero-header+&,
+
+  .matero-header-above &,
+  .matero-navbar-top & {
+    padding-top: 0;
+  }
 }
 
 // Fullscreen mode: hide chrome, remove padding, fill viewport

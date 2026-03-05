@@ -16,8 +16,8 @@ import javax.crypto.SecretKey;
 @Service
 public class JwtTokenService {
     private static final Logger logger = LoggerFactory.getLogger(JwtTokenService.class);
-    private final long ACCESS_TOKEN_VALIDITY = 5 * 60; // 1 hour
-    private final long REFRESH_TOKEN_VALIDITY = 7 * 24 * 60 * 60; // 7 days
+    private final long ACCESS_TOKEN_VALIDITY_SEC = 60 * 60; // 1 hour
+    private final long REFRESH_TOKEN_VALIDITY_SEC = 7 * 24 * 60 * 60; // 7 days
     private final String issuer = "f1interactive";
 
     private final SecretKey secretKey = Jwts.SIG.HS256.key().build();;
@@ -62,11 +62,11 @@ public class JwtTokenService {
     }
     //generate token for user
     public String generateAccessToken(String username) {
-        return doGenerateToken(username, ACCESS_TOKEN_VALIDITY * 1000);
+        return doGenerateToken(username, ACCESS_TOKEN_VALIDITY_SEC * 1000);
     }
 
     public String generateRefreshToken(String username) {
-        return doGenerateToken(username, REFRESH_TOKEN_VALIDITY * 1000);
+        return doGenerateToken(username, REFRESH_TOKEN_VALIDITY_SEC * 1000);
     }
 
     /**

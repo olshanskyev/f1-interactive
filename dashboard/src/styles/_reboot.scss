@@ -41,6 +41,7 @@ body {
   position: relative; // 1
   height: 100%;
   overflow: auto; // 2
+  overscroll-behavior-x: none;
   background-color: var(--body-background-color);
 }
 

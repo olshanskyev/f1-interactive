@@ -17,7 +17,7 @@ datasource:
   password: ${DATABASE_PASSWORD}
   driverClassName: org.postgresql.Driver
   defaultSchema: ${DATABASE_SCHEMA}
-  maxPoolSize: 20
+  maxPoolSize: ${MAX_POOL_SIZE:3}
   hibernate:
     hbm2ddl.method: none
     show_sql: false
@@ -39,7 +39,7 @@ datasource:
   password: f1interactive
   driverClassName: org.postgresql.Driver
   defaultSchema: F1INTERACTIVE
-  maxPoolSize: 20
+  maxPoolSize: 3
   hibernate:
     #hbm2ddl.method: update
     hbm2ddl.method: none
