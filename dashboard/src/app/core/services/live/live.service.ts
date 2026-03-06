@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, fromEvent, merge, of, retry, switchMap, tap, timeout, filter } from 'rxjs';
 import { SseClient } from 'ngx-sse-client';
 import { StateHandler } from './state/state-handler';
 import { inflate } from '@core/lib/inflate';
@@ -13,12 +13,38 @@ export interface UpdateEventRecord {
   utc: string;
 }
 
+const HEARTBEAT_TIMEOUT_MS = 15000;
+const LAST_MESSAGE_TIMEOUT_MS = HEARTBEAT_TIMEOUT_MS + 5000;
+const CONNECTION_TIMEOUT_MS = 2 * HEARTBEAT_TIMEOUT_MS + 5000;
+
 @Injectable()
 export abstract class LiveService {
 
   protected readonly sseClient = inject(SseClient);
   protected readonly http = inject(HttpClient);
   protected readonly stateHandler = new StateHandler();
+
+  protected createKeepAliveStream(url: string): Observable<Event> {
+    let lastMessageTime = Date.now();
+    const wake$ = merge(
+      fromEvent(document, 'visibilitychange').pipe(
+        filter(() => document.visibilityState === 'visible' && (Date.now() - lastMessageTime > LAST_MESSAGE_TIMEOUT_MS))
+      ),
+      fromEvent(window, 'online')
+    );
+
+    return merge(of(null), wake$).pipe(
+      switchMap(() => this.sseClient.stream(url).pipe(
+        timeout(CONNECTION_TIMEOUT_MS),
+        retry({ delay: 3000 }),
+        tap((event) => {
+          if (event instanceof MessageEvent) {
+             lastMessageTime = Date.now();
+          }
+        })
+      ))
+    );
+  }
 
   abstract live (
         onInit: ((event: any) => void) | undefined,
