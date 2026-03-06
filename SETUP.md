@@ -1,8 +1,38 @@
-# Setup
+# Setup Components
 
 A short tutorial on how to run f1interactive via docker.
 
-## Components
+## Run with docker compose
+
+create .env file with variables
+```
+cp .env.example .env
+```
+
+run docker compose
+```
+docker compose up -d
+```
+
+restart all containers:
+```
+docker compose restart
+```
+
+recreate all containers with new env. Does not remove volumes
+```
+docker compose up -d --force-recreate
+```
+
+check running containers and logs
+```
+docker compose ps
+docker compose logs -f
+docker compose logs -f server
+```
+
+
+## Run every component with docker
 
 ### dashboard
 

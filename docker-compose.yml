@@ -1,0 +1,57 @@
+services:
+  dashboard:
+    image: ghcr.io/olshanskyev/f1-interactive-dashboard:latest
+    container_name: f1-dashboard
+    environment:
+      - SUBSTITUTE_VARS=BASE_URL BASE_URL_SIMULATOR
+      - BASE_URL=${BASE_URL:-http://localhost:8080}
+      - BASE_URL_SIMULATOR=${BASE_URL_SIMULATOR:-}
+    ports:
+      - "80:80"
+    networks:
+      - f1interactive-net
+    restart: unless-stopped
+
+  db:
+    image: ghcr.io/olshanskyev/f1-interactive-db:latest
+    container_name: f1-interactive-db
+    environment:
+      - SUBSTITUTE_VARS=POSTGRES_USER DATABASE_NAME DATABASE_SCHEMA ADMIN_PWD
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - DATABASE_NAME=${DATABASE_NAME:-f1interactive}
+      - DATABASE_SCHEMA=${DATABASE_SCHEMA:-public}
+      - ADMIN_PWD=${ADMIN_PWD}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - f1interactive-net
+    restart: unless-stopped
+
+  server:
+    image: ghcr.io/olshanskyev/f1-interactive-server:latest
+    container_name: f1-interactive-server
+    environment:
+      - DATABASE_HOST=f1-interactive-db
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=${DATABASE_NAME:-f1interactive}
+      - DATABASE_SCHEMA=${DATABASE_SCHEMA:-public}
+      - DATABASE_USER=${POSTGRES_USER:-postgres}
+      - DATABASE_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - MAX_POOL_SIZE=${MAX_POOL_SIZE:-3}
+      - ALLOWED_ORIGIN_PATTERNS=${ALLOWED_ORIGIN_PATTERNS:-http://localhost:4200}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - f1interactive-net
+    restart: unless-stopped
+
+networks:
+  f1interactive-net:
+    driver: bridge
+
+volumes:
+  db_data:
+    driver: local
