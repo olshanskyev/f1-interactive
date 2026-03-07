@@ -17,6 +17,15 @@ public class Merger {
         return to;
     }
 
+    private static boolean isPrimitive(Class<?> type) {
+        return Arrays.asList( // used primitive types
+                        String.class,
+                        Boolean.class,
+                        Integer.class,
+                        Date.class)
+                .contains(type);
+    }
+
     public static void mergeAllNotNull(@NonNull Object to, @NonNull Object from) {
         if(!to.getClass().equals(from.getClass())){
             throw new RuntimeException("Objects have different classes");
@@ -25,12 +34,7 @@ public class Merger {
         for(Field field: fields){
             try {
                 Class<?> type = field.getType();
-                if (Arrays.asList( // used primitive types
-                                String.class,
-                                Boolean.class,
-                                Integer.class,
-                                Date.class)
-                        .contains(type)) {
+                if (isPrimitive(type)) {
                     Object fromValue = field.get(from);
                     if (fromValue != null) {
                         field.set(to, fromValue);
@@ -55,10 +59,12 @@ public class Merger {
                             else { // copy elements
                                 for (Map.Entry<Object, Object> entry: fromMap.entrySet()) {
                                     Object mapItemTo = toMap.get(entry.getKey());
-                                    if (mapItemTo != null) {
-                                        mergeAllNotNull(mapItemTo, entry.getValue());
+                                    Object entryValue = entry.getValue();
+                                    Class<?> entryType = entryValue.getClass();
+                                    if (mapItemTo != null && !isPrimitive(entryType)) {
+                                        mergeAllNotNull(mapItemTo, entryValue);
                                     } else {
-                                        toMap.put(entry.getKey(), entry.getValue());
+                                        toMap.put(entry.getKey(), entryValue);
                                     }
                                 }
                             }
@@ -66,8 +72,9 @@ public class Merger {
 
                     } else { // custom class
                         Object fromValue = field.get(from);
-                        if (fromValue != null)
-                           mergeAllNotNull(field.get(to), fromValue);
+                        if (fromValue != null) {
+                            mergeAllNotNull(field.get(to), fromValue);
+                        }
                     }
                 }
             } catch (IllegalAccessException e) {

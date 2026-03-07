@@ -1,9 +1,6 @@
 package f1interactive.common.state.models.merge;
 
-import f1interactive.common.state.models.SpeedsItem;
-import f1interactive.common.state.models.Stint;
-import f1interactive.common.state.models.TimingData;
-import f1interactive.common.state.models.TimingDataLinesItem;
+import f1interactive.common.state.models.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
@@ -49,6 +46,8 @@ public class MergerTest {
         fromTimingData.lines = new LinkedHashMap<>();
         fromTimingData.lines.put("1", item1);
         fromTimingData.lines.put("2", item2);
+        fromTimingData.noEntries = new ArrayWrapper<>();
+        fromTimingData.noEntries.values = new LinkedHashMap<>(){{put(0, 22); put(1, 16); put(2, 10);}};
 
         TimingData toTimingData = new TimingData();
         toTimingData.withheld = true;
@@ -57,7 +56,8 @@ public class MergerTest {
         item22.gapToLeader = "+0.198";
         toTimingData.lines = new LinkedHashMap<>();
         toTimingData.lines.put("2", item22);
-
+        toTimingData.noEntries = new ArrayWrapper<>();
+        toTimingData.noEntries.values = new LinkedHashMap<>(){{put(0, 0); put(1, 0); put(2, 0);}};
         Merger.mergeAllNotNull(toTimingData, fromTimingData);
 
         assertFalse(toTimingData.withheld);
@@ -67,6 +67,8 @@ public class MergerTest {
         assertEquals("230", toTimingData.lines.get("1").speeds.get("S2").value);
         assertTrue(toTimingData.lines.get("1").speeds.get("S1").overallFastest);
         assertEquals("241", toTimingData.lines.get("2").speeds.get("S1").value);
+        assertEquals(3, toTimingData.noEntries.values.size());
+        assertEquals(16, toTimingData.noEntries.values.get(1));
     }
 
 }
