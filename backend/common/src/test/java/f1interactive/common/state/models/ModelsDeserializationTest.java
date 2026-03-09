@@ -286,6 +286,16 @@ public class ModelsDeserializationTest {
     }
 
     @Test
+    public void champPredictionTest() throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\champPrediction.json"), Root.class);
+        assertNotNull(root.championshipPrediction);
+        assertEquals(19, root.championshipPrediction.drivers.size());
+        assertEquals(11, root.championshipPrediction.teams.size());
+        assertEquals("19", root.championshipPrediction.drivers.get("77").predictedPosition);
+    }
+
+    @Test
     @Disabled // high load
     public void readingUpdateEventsTest() throws IOException {
         try (Scanner scanner = new Scanner(new File("src\\test\\resources\\modelsTestData\\2025_abu_dhabi_race_only_update_events.txt"))) {

@@ -43,4 +43,6 @@ public class Root{
     public CarDataZ carDataZ;
     @JsonProperty("Position.z")
     public PositionZ positionZ;
+    @JsonProperty("ChampionshipPrediction")
+    public ChampionshipPrediction championshipPrediction;
 }

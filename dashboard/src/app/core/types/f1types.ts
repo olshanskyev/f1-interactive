@@ -20,6 +20,7 @@ export interface Root {
 	'Position.z'?: string;
 	ContentStreams?: ContentStreams;
     AudioStreams?: AudioStreams;
+	ChampionshipPrediction?: ChampionshipPrediction;
 }
 
 export interface Heartbeat {
@@ -373,4 +374,25 @@ export interface PositionCar {
 	X: number;
 	Y: number;
 	Z: number;
+}
+
+export interface DriverPredictionItem {
+	RacingNumber: string;
+	CurrentPosition: string;
+	PredictedPosition: string;
+	CurrentPoints: string;
+	PredictedPoints: string;
+}
+
+export interface TeamPredictionItem {
+	TeamName: string;
+	CurrentPosition: string;
+	PredictedPosition: string;
+	CurrentPoints: string;
+	PredictedPoints: string;
+}
+
+export interface ChampionshipPrediction {
+	Drivers: Record<string, DriverPredictionItem>;
+	Teams: Record<string, TeamPredictionItem>;
 }
