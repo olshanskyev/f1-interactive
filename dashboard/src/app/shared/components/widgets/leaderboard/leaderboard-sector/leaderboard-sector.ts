@@ -1,8 +1,7 @@
 import { Component, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { DriverListItem, TimingAppDataLinesItem, TimingDataLinesItem, TimingStatsLinesItem } from '@core/types/f1types';
+import { TimingAppDataLinesItem, TimingDataLinesItem, TimingStatsLinesItem } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';
-import { DriverChip } from '../driver-chip/driver-chip';
 import { IntervalChip } from '../interval-chip/interval-chip';
 import { LapChip } from '../lap-chip/lap-chip';
 import { KeyValuePipe } from '@angular/common';
@@ -13,7 +12,6 @@ import { LapCountChip } from '../lap-count-chip/lap-count-chip';
   templateUrl: './leaderboard-sector.html',
   styleUrl: './leaderboard-sector.scss',
   imports: [MatIconModule, TranslateModule,
-    DriverChip,
     IntervalChip,
     LapChip,
     KeyValuePipe,
@@ -21,7 +19,6 @@ import { LapCountChip } from '../lap-count-chip/lap-count-chip';
   ],
 })
 export class LeaderboardSector{
-  driver = input<DriverListItem>();
   timingData = input<TimingDataLinesItem>();
   timingAppData = input<TimingAppDataLinesItem>();
   timingStat = input<TimingStatsLinesItem>();

@@ -16,6 +16,7 @@ import { LeaderboardSpeed } from './leaderboard-speed/leaderboard-speed';
 import { LeaderboardTyres } from './leaderboard-tyres/leaderboard-tyres';
 import { sortTimingDataByPosition } from '@core/lib/sorting';
 import { qualifyingPart, sessionYear } from '@core/lib/sub-signals';
+import { DriverChip } from './driver-chip/driver-chip';
 
 @Component({
   selector: 'leaderboard',
@@ -33,7 +34,8 @@ import { qualifyingPart, sessionYear } from '@core/lib/sub-signals';
     MatButtonModule,
     MatChipsModule,
     FormsModule,
-    MatDividerModule
+    MatDividerModule,
+    DriverChip
   ],
 })
 export class Leaderboard extends ContaineredWidget {

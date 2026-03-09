@@ -1,4 +1,3 @@
-<driver-chip [driver]="driver()" [timingData]="timingData()" [timingAppData]="timingAppData()"/>
 <current-tyres-chip [timingAppData]="timingAppData()"/>
 <div class="d-flex gap-4">
   @for(stint of timingAppData()?.Stints | keyvalue: keepOrder; track stint.key; let i = $index, total = $count) {

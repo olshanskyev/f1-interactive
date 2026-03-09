@@ -1,8 +1,7 @@
 import { Component, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { DriverListItem, Stint, TimingAppDataLinesItem, TimingDataLinesItem } from '@core/types/f1types';
+import { Stint, TimingAppDataLinesItem, TimingDataLinesItem } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';
-import { DriverChip } from '../driver-chip/driver-chip';
 
 import { CurrentTyresChip } from '../current-tyres-chip/current-tyres-chip';
 import { KeyValuePipe } from '@angular/common';
@@ -14,13 +13,11 @@ import { keepOrder } from '@core/lib/arrays_maps';
   templateUrl: './leaderboard-tyres.html',
   styleUrl: './leaderboard-tyres.scss',
   imports: [MatIconModule, TranslateModule,
-    DriverChip,
     CurrentTyresChip,
     KeyValuePipe
   ],
 })
 export class LeaderboardTyres{
-  driver = input<DriverListItem>();
   timingData = input<TimingDataLinesItem>();
   timingAppData = input<TimingAppDataLinesItem>();
   keepOrder = keepOrder;

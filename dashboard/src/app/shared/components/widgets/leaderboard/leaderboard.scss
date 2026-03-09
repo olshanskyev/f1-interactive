@@ -1,9 +1,13 @@
+:host {
+    --table-gap: 0.5rem;
+    --sticky-column-bg: color-mix(in srgb, var(--mat-sys-surface-container), transparent 5%);
+}
+
 .scroll-container {
     height: 100% !important;
     overflow-y: auto;
     view-transition-class: leaderboard-scroll;
     overflow-anchor: none;
-    // view-transition-name: leaderboard-scroll; <-- moved to style.view-transition-name in html template to avoid duplicate errors
 }
 
 .transition-container {
@@ -14,18 +18,6 @@
     view-transition-group: nearest;
 }
 
-.column-names {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    display: grid !important;
-    align-items: start;
-    font-size: small;
-    white-space: nowrap;
-    background-color:  color-mix(in srgb, var(--mat-sys-surface-container), transparent 10%);
-    backdrop-filter: blur(2px);
-}
-
 .table-buttons {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
@@ -34,22 +26,81 @@
 
 
 .leaderboard-laps-template-columns {
-    grid-template-columns: 1.5rem 7.5rem 4rem 5.5rem 5rem 5.5rem 3rem auto;
+    grid-template-columns: 1.5rem 7rem 4rem 5.5rem 5rem 5.5rem 3rem auto;
 }
 
 .leaderboard-sectors-template-columns {
-    grid-template-columns: 1.5rem 7.5rem 5rem 5.5rem 3rem 5rem 5rem 5rem;
+    grid-template-columns: 1.5rem 7rem 5rem 5.5rem 3rem 5rem 5rem 5rem;
 }
 
 .leaderboard-speeds-template-columns {
-    grid-template-columns: 1.5rem 7.5rem 5rem 5.5rem 3rem 3.6rem 3.6rem 3.6rem 3.6rem;
+    grid-template-columns: 1.5rem 7rem 5rem 5.5rem 3rem 3.6rem 3.6rem 3.6rem 3.6rem;
 }
 
 .leaderboard-tyres-template-columns {
-    grid-template-columns: 1.5rem 7.5rem 5.5rem minmax(25rem, 1fr);
+    grid-template-columns: 1.5rem 7rem 5.5rem minmax(25rem, 1fr);
 }
 
 .elimination-zone {
-    background-color: rgba(255, 0, 0, 0.2);
+    background-color: rgba(80, 0, 0, 0.95) !important;
 }
+
+.position-number {
+    display: flex;
+    flex-wrap: wrap;
+    place-content: center center;
+}
+
+.sticky-header-row {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: inherit;
+    grid-column: 1 / -1;
+    gap: inherit;
+    align-items: stretch;
+    height: 2rem;
+    font-size: small;
+    color: var(--second-color) !important;
+    white-space: nowrap;
+    background-color: color-mix(in srgb, var(--mat-sys-surface-container), transparent 20%);
+    border-bottom: 1px solid var(--mat-divider-color);
+    backdrop-filter: blur(2px);
+
+    span {
+        display: inline-flex;
+        align-items: center;
+    }
+}
+
+.main-grid {
+    display: grid;
+    gap: var(--table-gap);
+    align-items: center;
+}
+
+.grid-item {
+    background-color: var(--mat-sys-surface-container);
+}
+//1st column
+.sticky-header-row > *:nth-child(1),
+.grid-item > *:nth-child(1) {
+  position: sticky;
+  left: var(--table-gap);
+  z-index: 3;
+  background: var(--sticky-column-bg);
+  box-shadow: calc(-1*var(--table-gap)) 0 0 0 var(--sticky-column-bg);
+}
+
+//2nd column
+.sticky-header-row > *:nth-child(2),
+.grid-item > *:nth-child(2) {
+  position: sticky;
+  left: calc(1.5rem + 2*var(--table-gap));
+  z-index: 3;
+  background: var(--sticky-column-bg);
+  box-shadow: calc(-1*var(--table-gap)) 0 0 0 var(--sticky-column-bg);
+}
+
 
