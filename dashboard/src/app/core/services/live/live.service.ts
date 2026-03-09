@@ -27,10 +27,13 @@ export abstract class LiveService {
   protected createKeepAliveStream(url: string): Observable<Event> {
     let lastMessageTime = Date.now();
     const wake$ = merge(
+      fromEvent(window, 'pageshow'), // for mobile browsers that suspend background tabs and don't trigger 'online' event when connection is back
+      fromEvent(window, 'online'),
       fromEvent(document, 'visibilitychange').pipe(
-        filter(() => document.visibilityState === 'visible' && (Date.now() - lastMessageTime > LAST_MESSAGE_TIMEOUT_MS))
-      ),
-      fromEvent(window, 'online')
+        filter(() => Date.now() - lastMessageTime > LAST_MESSAGE_TIMEOUT_MS)
+      )
+    ).pipe(
+      filter(() => document.visibilityState === 'visible')
     );
 
     return merge(of(null), wake$).pipe(

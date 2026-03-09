@@ -111,11 +111,13 @@ export class TrackMapWidget extends ContaineredWidget implements OnDestroy {
 
         // Listen for page visibility changes to force immediate car-dot update
         document.addEventListener('visibilitychange', this.handleVisibilityChange);
+        window.addEventListener('pageshow', this.handleVisibilityChange); // for mobile browsers that discard the page when in background
     }
 
     // Clean up event listener
     ngOnDestroy(): void {
         document.removeEventListener('visibilitychange', this.handleVisibilityChange);
+        window.removeEventListener('pageshow', this.handleVisibilityChange);
     }
 
     disableTransition = signal(false);
