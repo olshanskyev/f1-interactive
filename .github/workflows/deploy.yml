@@ -1,0 +1,178 @@
+name: Deploy Project [PROD]
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'dashboard/**'
+      - 'backend/f1-interactive-server/**'
+      - 'backend/common/**'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required for commit history and tag parsing
+
+      - name: Paths Filter
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            dashboard:
+              - 'dashboard/**'
+            server:
+              - 'backend/f1-interactive-server/**'
+              - 'backend/common/**'
+
+      - name: Configure Git
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+
+      # ==========================================
+      # DASHBOARD RELEASE (If changed)
+      # ==========================================
+      - name: Set up Node.js
+        if: steps.filter.outputs.dashboard == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Dashboard Version Bump
+        if: steps.filter.outputs.dashboard == 'true'
+        id: dash_bump
+        run: |
+          cd dashboard
+          npm ci
+          # Bump version, create local commit & tag with prefix, but don't push yet
+          npx commit-and-tag-version --commit-all --tag-prefix "dashboard-v"
+          DASH_VERSION=$(node -p "require('./package.json').version")
+          echo "version=${DASH_VERSION}" >> $GITHUB_OUTPUT
+          npm run lint
+          npm test
+
+      # ==========================================
+      # SERVER RELEASE (If changed)
+      # ==========================================
+      - name: Set up JDK 17
+        if: steps.filter.outputs.server == 'true'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Determine Server Version
+        if: steps.filter.outputs.server == 'true'
+        id: server_version
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: patch
+          release_branches: main
+          tag_prefix: server-v
+          dry_run: true # We will manually create the tag after the commit
+
+      - name: Server Version Bump
+        if: steps.filter.outputs.server == 'true'
+        run: |
+          NEW_VERSION=${{ steps.server_version.outputs.new_version }}
+          mvn -B -f backend/f1-interactive-server/pom.xml versions:set -DnewVersion=$NEW_VERSION -DgenerateBackupPoms=false
+          git commit -am "chore(server release): bump version to $NEW_VERSION [skip ci]"
+          git tag -a server-v$NEW_VERSION -m "chore(release): server version v$NEW_VERSION"
+
+      # ==========================================
+      # BUILD & PUSH DOCKER IMAGES
+      # ==========================================
+      - name: Set up Docker
+        uses: docker/setup-qemu-action@v2
+        
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push Dashboard Image
+        if: steps.filter.outputs.dashboard == 'true'
+        uses: docker/build-push-action@v4
+        with:
+          context: ./dashboard
+          file: ./dashboard/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/f1-interactive-dashboard:v${{ steps.dash_bump.outputs.version }}
+            ghcr.io/${{ github.repository_owner }}/f1-interactive-dashboard:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build Server (Maven)
+        if: steps.filter.outputs.server == 'true'
+        run: |
+          mvn -B -f backend/common/pom.xml install
+          mvn -B -f backend/f1-interactive-server/pom.xml package
+
+      - name: Build and Push Server Image
+        if: steps.filter.outputs.server == 'true'
+        uses: docker/build-push-action@v4
+        with:
+          context: backend/f1-interactive-server
+          file: backend/f1-interactive-server/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/f1-interactive-server:v${{ steps.server_version.outputs.new_version }}
+            ghcr.io/${{ github.repository_owner }}/f1-interactive-server:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # ==========================================
+      # PUSH RELEASE COMMITS TO MAIN
+      # ==========================================
+      - name: Push All Commits and Tags to Main
+        run: git push --follow-tags origin main
+
+      # ==========================================
+      # POST-ACTION: SYNC DEV BRANCH
+      # ==========================================
+      - name: Update dev branch versions
+        run: |
+          git fetch origin dev
+          git checkout dev
+          git merge origin/main --no-edit
+          
+          if [ "${{ steps.filter.outputs.dashboard }}" == "true" ]; then
+            cd dashboard
+            npm version patch --no-git-tag-version
+            git add package.json package-lock.json
+            git commit -m "chore(dev): bump dashboard version for next dev cycle" || echo "No dashboard changes"
+            cd ..
+          fi
+          
+          if [ "${{ steps.filter.outputs.server }}" == "true" ]; then
+            CURRENT_VERSION=${{ steps.server_version.outputs.new_version }}
+            IFS='.' read -ra ADDR <<< "$CURRENT_VERSION"
+            MAJOR=${ADDR[0]}
+            MINOR=${ADDR[1]}
+            PATCH=${ADDR[2]}
+            NEXT_PATCH=$((PATCH + 1))
+            NEXT_VERSION="$MAJOR.$MINOR.$NEXT_PATCH-SNAPSHOT"
+            
+            mvn -B -f backend/f1-interactive-server/pom.xml versions:set -DnewVersion=$NEXT_VERSION -DgenerateBackupPoms=false
+            git add backend/f1-interactive-server/pom.xml
+            git commit -m "chore(dev): bump server version to $NEXT_VERSION for next dev cycle" || echo "No server changes"
+          fi
+          
+          git push origin dev
