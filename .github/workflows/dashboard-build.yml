@@ -1,8 +1,8 @@
-name: Build and Publish Dashboard Docker Image
+name: Build Dashboard Docker Image [DEV]
 
 on:
   push:
-    branches: [ main ]
+    branches: [ dev ]
     paths:
       - 'dashboard/**'
   workflow_dispatch: {}
@@ -17,7 +17,27 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
 
+      - name: Install dashboard dependencies
+        run: |
+          cd dashboard
+          npm ci
+          
+      - name: Run lint
+        run: |
+          cd dashboard
+          npm run lint
+          
+      - name: Run tests
+        run: |
+          cd dashboard
+          npm test
+          
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -38,7 +58,7 @@ jobs:
           file: ./dashboard/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/f1-interactive-dashboard:latest
+            ghcr.io/${{ github.repository_owner }}/f1-interactive-dashboard:dev-latest
             ghcr.io/${{ github.repository_owner }}/f1-interactive-dashboard:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
