@@ -31,19 +31,38 @@ export class RaceControlMessagesWidget extends ContaineredWidget {
   getIconColor(message: Message) {
     switch (message.Flag) {
       case 'YELLOW':
+      case 'DOUBLE YELLOW':
         return 'var(--f1-yellow)';
       case 'RED':
         return 'var(--f1-red)';
+      case 'BLUE':
+        return 'var(--f1-blue)';
       case 'GREEN':
       case 'CLEAR':
         return 'var(--f1-green)';
-      default: return 'var(--second-color)';
+    }
+
+    switch (message.Category) {
+      case 'SafetyCar':
+        return 'var(--f1-yellow)';
+      default:
+        return 'var(--second-color)';
     }
   }
 
   getIconByMessage(message: Message) {
-    if (message.Flag) return 'flag';
-    return 'fmd_bad';
+    console.log(message);
+    switch (message.Category) {
+      case 'Flag':
+        if (message.Flag === 'CHEQUERED') {
+          return 'sports_score';
+        }
+        return 'flag';
+      case 'SafetyCar':
+        return 'minor_crash';
+      default:
+        return 'fmd_bad';
+    }
   }
 
 }

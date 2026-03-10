@@ -1,5 +1,5 @@
 import { signal, WritableSignal } from '@angular/core';
-import { DriverList, ExtrapolatedClock, RaceControlMessages, Root, SessionData, SessionInfo, SessionStatus, TeamRadio, TimingAppData, TimingData, TimingStats, TrackStatus, WeatherData } from '@core/types/f1types';
+import { DriverList, ExtrapolatedClock, LapCount, RaceControlMessages, Root, SessionData, SessionInfo, SessionStatus, TeamRadio, TimingAppData, TimingData, TimingStats, TrackStatus, WeatherData } from '@core/types/f1types';
 import { UpdateEventRecord } from '../live.service';
 
 interface SignalTypeMap {
@@ -17,6 +17,7 @@ interface SignalTypeMap {
     TeamRadio: TeamRadio;
     ExtrapolatedClock: ExtrapolatedClock;
     SessionStatus: SessionStatus;
+    LapCount: LapCount;
 }
 
 export type AvailableSignalsType = keyof SignalTypeMap;
@@ -41,7 +42,8 @@ export class StateHandler {
             'RaceControlMessages': signal<RaceControlMessages | undefined>(undefined),
             'TeamRadio': signal<TeamRadio | undefined>(undefined),
             'ExtrapolatedClock': signal<ExtrapolatedClock | undefined>(undefined),
-            'SessionStatus': signal<SessionStatus | undefined>(undefined)
+            'SessionStatus': signal<SessionStatus | undefined>(undefined),
+            'LapCount': signal<LapCount | undefined>(undefined),
     };
 
     get fullStateSignal() {

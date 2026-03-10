@@ -55,7 +55,8 @@
           }
 
           @for (entry of timingDataMap(); track entry[0]) {
-            <div class="transition-container grid-item" [style.view-transition-name]="'driver-' + uniqueId + '-' + entry[1].RacingNumber">
+            <div class="transition-container grid-item" [style.view-transition-name]="'driver-' + uniqueId + '-' + entry[1].RacingNumber"
+              [class.out-driver]="isDriverOut(entry[1])">
               <div class="position-number"
                 [class.elimination-zone]="isInEliminationZone(entry[1].Line)"
                 [class.bg-f1-red]="qualifyingPart() && entry[1].Line === 1"
@@ -81,7 +82,6 @@
                     [timingAppData]="timingAppData()?.Lines?.[entry[0]]"
                     [timingStat]="timingStats()?.Lines?.[entry[0]]"
                     [qualifyingPart]="qualifyingPart()"
-
                   />
               }
               @if (mode() === 'sectors') {

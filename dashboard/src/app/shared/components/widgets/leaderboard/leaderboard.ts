@@ -106,4 +106,8 @@ export class Leaderboard extends ContaineredWidget {
     return ((qualifyingPart === 1 && position > firstEliminationThreshold) ||
       (qualifyingPart >= 2 && position > 10));
   }
+
+  isDriverOut(item: TimingDataLinesItem) {
+    return item.Retired || item.Stopped || item.KnockedOut;
+  }
 }

@@ -135,6 +135,8 @@
       "Red": "Red Flag",
       "VSCDeployed": "Virtual Safety Car",
       "SCDeployed": "Safety Car",
+      "VSCEnding": "Virtual Safety Car Ending",
+      "SCEnding": "Safety Car Ending",
       "Started": "Started",
       "Aborted": "Aborted",
       "Finished": "Finished",

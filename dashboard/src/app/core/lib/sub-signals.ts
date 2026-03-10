@@ -1,5 +1,5 @@
 import { computed, Signal } from '@angular/core';
-import { SessionData, SessionInfo } from '@core/types/f1types';
+import { SessionData, SessionInfo, SessionStatus } from '@core/types/f1types';
 
 export function qualifyingPart(sessionData: Signal<SessionData | undefined>)
   : Signal<number | undefined> {
@@ -17,4 +17,12 @@ export function sessionYear(sessionInfo: Signal<SessionInfo | undefined>): Signa
         ? new Date(sessionInfo()!.StartDate).getFullYear()
         : new Date().getFullYear()
         );
+}
+
+export function sessionFinished(sessionStatus: Signal<SessionStatus | undefined>): Signal<boolean> {
+  return computed(() =>
+    sessionStatus()?.Status === 'Finished' ||
+    sessionStatus()?.Status === 'Finalised' ||
+    sessionStatus()?.Status === 'Ends'
+  );
 }

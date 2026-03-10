@@ -1,5 +1,4 @@
-    <div class="d-flex align-items-center r-8 justify-content-center"
-      [class]="(timingData()?.InPit || timingData()?.PitOut)?'text-color-pit':'text-color-inactive'"
+    <div class="d-flex align-items-center r-8 justify-content-center text-color-second"
     >
       @if (timingData()?.Stopped) {
         <p class="m-0 text-center f-s-12">STOPPED</p>
@@ -10,7 +9,7 @@
           @if (timingData()?.KnockedOut ) {
             <p class="m-0 text-center f-s-10">KNOCKED OUT</p>
           } @else {
-            <div>
+            <div [class]="(timingData()?.InPit || timingData()?.PitOut)?'text-color-pit':'text-color-inactive'">
               <p class="m-0 text-center f-s-14">PIT</p>
               @if (timingData()?.PitOut) {
                 <p class="m-0 line-height-1 f-s-12 text-color-second text-center">out</p>

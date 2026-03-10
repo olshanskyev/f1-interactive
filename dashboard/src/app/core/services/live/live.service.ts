@@ -132,4 +132,8 @@ export abstract class LiveService {
   getSessionStatusSignal() {
     return this.stateHandler.updateSignals['SessionStatus'].asReadonly();
   }
+
+  getLapCountSignal() {
+    return this.stateHandler.updateSignals['LapCount'].asReadonly();
+  }
 }

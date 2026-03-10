@@ -79,7 +79,6 @@
     position: relative;
     z-index: 2;
     container-type: size;
-    opacity: 0.8;
 }
 
 .widget.draggable {
@@ -88,7 +87,7 @@
 
 .widget.draggable:hover,
 .widget:has(.resize-handle:active) {
-    opacity: 0.6;
+    opacity: 0.8;
 }
 
 .widget.draggable:active {

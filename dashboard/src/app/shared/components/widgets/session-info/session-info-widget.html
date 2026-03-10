@@ -19,10 +19,21 @@
                         <div class="track-status" [style.color]="trackStatusColor()">
                             {{'status.' + trackStatus()?.Message | translate}}
                         </div>
-                        <div class="chip">
-                            <mat-icon>av_timer</mat-icon>
-                            {{timeRemaining()}}
-                        </div>
+                        @if (sessionInfo()?.Type === 'Race') {
+                            @if (sessionFinished()) {
+                                <div class="chip chequered-flag">
+                                </div>
+                            } @else  {
+                                <div class="chip">
+                                    {{lapCount()?.CurrentLap}} / {{lapCount()?.TotalLaps}}
+                                </div>
+                            }
+                        } @else {
+                            <div class="chip">
+                                <mat-icon>av_timer</mat-icon>
+                                {{timeRemaining()}}
+                            </div>
+                        }
                     </div>
                     <div class="meeting-name">
                         {{sessionInfo()?.Meeting?.Name}} : {{sessionInfo()?.Name}}
@@ -47,8 +58,12 @@
                         <span class="f-s-10">{{'Q' + i}}</span>
                         <div class="q-item"
                             [class.q-active]="qualifyingPart() === i"
-                            [class.slow-blink]="qualifyingPart() === i"
-                            [class.q-past]="qualifyingPart() !== undefined && qualifyingPart()! > i"
+                            [class.slow-blink]="qualifyingPart() === i && !sessionFinished()"
+                            [class.q-past]="
+                                qualifyingPart() !== undefined
+                                && (qualifyingPart()! > i
+                                || (qualifyingPart() === i && sessionFinished()))
+                                "
                             >
                         </div>
                 }

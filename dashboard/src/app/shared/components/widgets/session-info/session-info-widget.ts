@@ -2,7 +2,7 @@ import { Component, computed, DestroyRef, effect, inject, signal } from '@angula
 import { ContaineredWidget } from '../containered-widget';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
-import { qualifyingPart } from '@core/lib/sub-signals';
+import { qualifyingPart, sessionFinished } from '@core/lib/sub-signals';
 
 @Component({
     selector: 'session-info-widget',
@@ -20,7 +20,8 @@ export class SessionInfoWidget extends ContaineredWidget {
     trackStatus = this.liveService.getTrackStatusSignal();
     sessionStatus = this.liveService.getSessionStatusSignal();
     sessionData = this.liveService.getSessionDataSignal();
-
+    sessionFinished = sessionFinished(this.sessionStatus);
+    lapCount = this.liveService.getLapCountSignal();
     private destroyRef = inject(DestroyRef);
     private tick = signal(0);
 
@@ -51,12 +52,13 @@ export class SessionInfoWidget extends ContaineredWidget {
             case 'AllClear':
                 return 'var(--f1-green)';
             case 'Yellow':
+            case 'VSCDeployed':
+            case 'SCDeployed':
+            case 'VSCEnding':
+            case 'SCEnding':
                 return 'var(--f1-yellow)';
             case 'Red':
                 return 'var(--f1-red)';
-            case 'VSCDeployed':
-            case 'SCDeployed':
-                return 'var(--f1-blue)';
             default:
                 return 'var(--inactive-color)';
         }
