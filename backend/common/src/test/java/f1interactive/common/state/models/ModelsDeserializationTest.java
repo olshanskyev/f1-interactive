@@ -16,7 +16,7 @@ public class ModelsDeserializationTest {
     @Test
     public void heartbeatTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\heartbeat.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/modelsTestData/heartbeat.json"), Root.class);
         assertTrue(root.heartbeat._kf);
         assertNotNull(root.heartbeat.utc);
         assertNull(root.extrapolatedClock);
@@ -25,7 +25,7 @@ public class ModelsDeserializationTest {
     @Test
     public void extrapolatedClockTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\extrapolatedClock.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/modelsTestData/extrapolatedClock.json"), Root.class);
         assertTrue(root.extrapolatedClock.extrapolating);
         assertNotNull(root.extrapolatedClock.utc);
         assertEquals("00:25:45", root.extrapolatedClock.remaining);
@@ -34,7 +34,7 @@ public class ModelsDeserializationTest {
     @Test
     public void topThreeTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\topThree.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/modelsTestData/topThree.json"), Root.class);
         assertFalse(root.topThree.withheld);
         assertEquals(3, root.topThree.lines.values.size());
         assertEquals("MAXVER01", root.topThree.lines.values.get(0).reference);
@@ -43,7 +43,7 @@ public class ModelsDeserializationTest {
     @Test
     public void timingStatsTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\timingStats.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/modelsTestData/timingStats.json"), Root.class);
         assertNotNull(root.timingStats.lines);
         assertEquals(20, root.timingStats.lines.size());
         root.timingStats.lines.forEach((s, item) -> {
@@ -66,7 +66,7 @@ public class ModelsDeserializationTest {
     @Test
     public void timingAppDataTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\timingAppData.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/modelsTestData/timingAppData.json"), Root.class);
         assertNotNull(root.timingAppData.lines);
         assertEquals(20, root.timingAppData.lines.size());
 
@@ -87,7 +87,7 @@ public class ModelsDeserializationTest {
     @Test
     public void weatherDataTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\weatherData.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/modelsTestData/weatherData.json"), Root.class);
         assertNotNull(root.weatherData);
         assertEquals("25.9", root.weatherData.airTemp);
         assertEquals("101", root.weatherData.windDirection);
@@ -96,7 +96,7 @@ public class ModelsDeserializationTest {
     @Test
     public void trackStatusTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\trackStatus.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/modelsTestData/trackStatus.json"), Root.class);
         assertNotNull(root.trackStatus);
         assertEquals("1", root.trackStatus.status);
         assertEquals("AllClear", root.trackStatus.message);
@@ -106,8 +106,8 @@ public class ModelsDeserializationTest {
     @Test
     public void driverListTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\driverList.json"), Root.class);
-        Root rootWithKf = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\driverList_with_kf.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/modelsTestData/driverList.json"), Root.class);
+        Root rootWithKf = objectMapper.readValue(new File("src/test/resources/modelsTestData/driverList_with_kf.json"), Root.class);
         assertNotNull(root.driverList);
         assertEquals(20, root.driverList.lines.size());
         assertFalse(root.driverList.lines.containsKey("_kf"));
@@ -131,7 +131,7 @@ public class ModelsDeserializationTest {
     @Test
     public void raceControlMessagesTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\raceControlMessages.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/modelsTestData/raceControlMessages.json"), Root.class);
         assertNotNull(root.raceControlMessages);
         assertEquals(107, root.raceControlMessages.messages.values.size());
         Message firstMessage = root.raceControlMessages.messages.values.get(0);
@@ -148,7 +148,7 @@ public class ModelsDeserializationTest {
     @Test
     public void sessionInfoTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\sessionInfo.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/modelsTestData/sessionInfo.json"), Root.class);
         assertNotNull(root.sessionInfo);
         assertEquals("UAE", root.sessionInfo.meeting.country.code);
         assertEquals("Yas Marina Circuit", root.sessionInfo.meeting.circuit.shortName);
@@ -159,7 +159,7 @@ public class ModelsDeserializationTest {
     @Test
     public void sessionDataTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\sessionData.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/modelsTestData/sessionData.json"), Root.class);
         assertNotNull(root.sessionData);
         assertEquals(58, root.sessionData.series.values.size());
         assertEquals(9, root.sessionData.statusSeries.values.size());
@@ -172,7 +172,7 @@ public class ModelsDeserializationTest {
     @Test
     public void sessionStatusTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\sessionStatus.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/modelsTestData/sessionStatus.json"), Root.class);
         assertNotNull(root.sessionStatus);
         assertEquals("Finished", root.sessionStatus.started);
     }
@@ -180,7 +180,7 @@ public class ModelsDeserializationTest {
     @Test
     public void lapCountTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\lapCount.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/modelsTestData/lapCount.json"), Root.class);
         assertNotNull(root.lapCount);
         assertEquals(58, root.lapCount.currentLap);
         assertEquals(58, root.lapCount.totalLaps);
@@ -189,7 +189,7 @@ public class ModelsDeserializationTest {
     @Test
     public void timingDataTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\timingData.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/modelsTestData/timingData.json"), Root.class);
         assertNotNull(root.timingData);
         assertEquals(20, root.timingData.lines.size());
         TimingDataLinesItem timingDataLinesItem = root.timingData.lines.get("30");
@@ -217,7 +217,7 @@ public class ModelsDeserializationTest {
     @Test
     public void teamRadioTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\teamRadio.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/modelsTestData/teamRadio.json"), Root.class);
         assertNotNull(root.teamRadio);
         assertEquals(22, root.teamRadio.captures.values.size());
         assertEquals("TeamRadio/LANNOR01_4_20251207_170931.mp3", root.teamRadio.captures.values.get(2).path);
@@ -226,26 +226,26 @@ public class ModelsDeserializationTest {
     @Test
     public void pitLaneTimeCollectionTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\pitLaneTimeCollection.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/modelsTestData/pitLaneTimeCollection.json"), Root.class);
         assertNotNull(root.pitLaneTimeCollection.pitTimes);
     }
 
     @Test
     public void pitTimesTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        PitLaneTimeCollection pitLaneCollectionDeleted = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\PitTimes_deleted.json"), PitLaneTimeCollection.class);
+        PitLaneTimeCollection pitLaneCollectionDeleted = objectMapper.readValue(new File("src/test/resources/modelsTestData/PitTimes_deleted.json"), PitLaneTimeCollection.class);
         assertNotNull(pitLaneCollectionDeleted);
         assertEquals(1, pitLaneCollectionDeleted.pitTimes._deleted.size());
         assertEquals(27, Integer.parseInt(pitLaneCollectionDeleted.pitTimes._deleted.get(0)));
 
-        PitLaneTimeCollection pitLaneCollection = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\PitTimes.json"), PitLaneTimeCollection.class);
+        PitLaneTimeCollection pitLaneCollection = objectMapper.readValue(new File("src/test/resources/modelsTestData/PitTimes.json"), PitLaneTimeCollection.class);
         assertEquals("21.6", pitLaneCollection.pitTimes.lines.get("27").duration);
         assertNull(pitLaneCollection.pitTimes.lines.get("_kf"));
     }
 
     @Test
     public void readingInitialStatesTest() throws IOException {
-        try (Scanner scanner = new Scanner(new File("src\\test\\resources\\modelsTestData\\initStatesCollection.txt"))) {
+        try (Scanner scanner = new Scanner(new File("src/test/resources/modelsTestData/initStatesCollection.txt"))) {
             while (scanner.hasNextLine()) {
                 String state = scanner.nextLine();
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -259,7 +259,7 @@ public class ModelsDeserializationTest {
     @Test
     public void contentStreamsTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\contentStreams.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/modelsTestData/contentStreams.json"), Root.class);
         assertNotNull(root.contentStreams);
         assertEquals(2, root.contentStreams.streams.values.size());
         assertEquals("Commentary", root.contentStreams.streams.values.get(0).type);
@@ -269,7 +269,7 @@ public class ModelsDeserializationTest {
     @Test
     public void audioStreamsTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\audioStreams.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/modelsTestData/audioStreams.json"), Root.class);
         assertNotNull(root.audioStreams);
         assertEquals(1, root.audioStreams.streams.values.size());
         assertEquals("Live_coverage_(EN)-en/stream.m3u8", root.audioStreams.streams.values.get(0).path);
@@ -278,7 +278,7 @@ public class ModelsDeserializationTest {
     @Test
     public void dataZTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\dataZ.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/modelsTestData/dataZ.json"), Root.class);
         assertNotNull(root.carDataZ);
         assertNotNull(root.positionZ);
         assertEquals(276, root.carDataZ.getValue().length());
@@ -288,7 +288,7 @@ public class ModelsDeserializationTest {
     @Test
     public void champPredictionTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\modelsTestData\\champPrediction.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/modelsTestData/champPrediction.json"), Root.class);
         assertNotNull(root.championshipPrediction);
         assertEquals(19, root.championshipPrediction.drivers.size());
         assertEquals(11, root.championshipPrediction.teams.size());
@@ -298,7 +298,7 @@ public class ModelsDeserializationTest {
     @Test
     @Disabled // high load
     public void readingUpdateEventsTest() throws IOException {
-        try (Scanner scanner = new Scanner(new File("src\\test\\resources\\modelsTestData\\2025_abu_dhabi_race_only_update_events.txt"))) {
+        try (Scanner scanner = new Scanner(new File("src/test/resources/modelsTestData/2025_abu_dhabi_race_only_update_events.txt"))) {
             while (scanner.hasNextLine()) {
                 String event = scanner.nextLine();
                 UpdateEvent updateEvent = EventsParser.parseUpdateEvent(event).updateEvent();

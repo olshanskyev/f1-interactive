@@ -18,8 +18,8 @@ public class MergingEventsTest {
     public void mergeTimingAppDataTest() throws IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\mergingTestData\\timingAppDataInitState.json"), Root.class);
-        try (Scanner updateScanner = new Scanner(new File("src\\test\\resources\\mergingTestData\\timingAppDataUpdateEvents.txt"))) {
+        Root root = objectMapper.readValue(new File("src/test/resources/mergingTestData/timingAppDataInitState.json"), Root.class);
+        try (Scanner updateScanner = new Scanner(new File("src/test/resources/mergingTestData/timingAppDataUpdateEvents.txt"))) {
             while (updateScanner.hasNextLine()) {
                 String updateEventString = updateScanner.nextLine();
                 UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString).updateEvent();
@@ -61,8 +61,8 @@ public class MergingEventsTest {
     public void mergeDriverListTest() throws IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\mergingTestData\\driverListInitState.json"), Root.class);
-        try (Scanner updateScanner = new Scanner(new File("src\\test\\resources\\mergingTestData\\driverListUpdateEvents.txt"))) {
+        Root root = objectMapper.readValue(new File("src/test/resources/mergingTestData/driverListInitState.json"), Root.class);
+        try (Scanner updateScanner = new Scanner(new File("src/test/resources/mergingTestData/driverListUpdateEvents.txt"))) {
             while (updateScanner.hasNextLine()) {
                 String updateEventString = updateScanner.nextLine();
                 UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString).updateEvent();
@@ -86,9 +86,9 @@ public class MergingEventsTest {
     public void mergeTopThreeTest() throws IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\mergingTestData\\topThreeInitState.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/mergingTestData/topThreeInitState.json"), Root.class);
         assertFalse(root.topThree.withheld);
-        try (Scanner updateScanner = new Scanner(new File("src\\test\\resources\\mergingTestData\\topThreeUpdateEvents.txt"))) {
+        try (Scanner updateScanner = new Scanner(new File("src/test/resources/mergingTestData/topThreeUpdateEvents.txt"))) {
             while (updateScanner.hasNextLine()) {
                 String updateEventString = updateScanner.nextLine();
                 UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString).updateEvent();
@@ -104,7 +104,7 @@ public class MergingEventsTest {
         assertEquals("+0.120", root.topThree.lines.values.get(1).diffToLeader);
         assertEquals("+0.312", root.topThree.lines.values.get(2).diffToLeader);
         assertEquals("+0.192", root.topThree.lines.values.get(2).diffToAhead);
-        try (Scanner updateScanner = new Scanner(new File("src\\test\\resources\\mergingTestData\\topThreeUpdateEventSwapPosition.txt"))) {
+        try (Scanner updateScanner = new Scanner(new File("src/test/resources/mergingTestData/topThreeUpdateEventSwapPosition.txt"))) {
             while (updateScanner.hasNextLine()) {
                 String updateEventString = updateScanner.nextLine();
                 UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString).updateEvent();
@@ -126,10 +126,10 @@ public class MergingEventsTest {
     public void mergeTimingStatsTest() throws IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\mergingTestData\\timingStatsInitState.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/mergingTestData/timingStatsInitState.json"), Root.class);
         assertFalse(root.timingStats.withheld);
         assertEquals("Race", root.timingStats.sessionType);
-        try (Scanner updateScanner = new Scanner(new File("src\\test\\resources\\mergingTestData\\timingStatsUpdateEvents.txt"))) {
+        try (Scanner updateScanner = new Scanner(new File("src/test/resources/mergingTestData/timingStatsUpdateEvents.txt"))) {
             while (updateScanner.hasNextLine()) {
                 String updateEventString = updateScanner.nextLine();
                 UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString).updateEvent();
@@ -158,9 +158,9 @@ public class MergingEventsTest {
     public void mergeTimingDataTest() throws IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\mergingTestData\\timingDataInitState.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/mergingTestData/timingDataInitState.json"), Root.class);
         assertFalse(root.timingData.withheld);
-        try (Scanner updateScanner = new Scanner(new File("src\\test\\resources\\mergingTestData\\timingDataUpdateEvents.txt"))) {
+        try (Scanner updateScanner = new Scanner(new File("src/test/resources/mergingTestData/timingDataUpdateEvents.txt"))) {
             while (updateScanner.hasNextLine()) {
                 String updateEventString = updateScanner.nextLine();
                 UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString).updateEvent();
@@ -186,8 +186,8 @@ public class MergingEventsTest {
     @Test
     public void mergeContentStreamsTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\mergingTestData\\contentStreamsInitState.json"), Root.class);
-        try (Scanner updateScanner = new Scanner(new File("src\\test\\resources\\mergingTestData\\contentStreamsUpdateEvents.txt"))) {
+        Root root = objectMapper.readValue(new File("src/test/resources/mergingTestData/contentStreamsInitState.json"), Root.class);
+        try (Scanner updateScanner = new Scanner(new File("src/test/resources/mergingTestData/contentStreamsUpdateEvents.txt"))) {
             while (updateScanner.hasNextLine()) {
                 String updateEventString = updateScanner.nextLine();
                 UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString).updateEvent();
@@ -203,10 +203,10 @@ public class MergingEventsTest {
     @Test
     public void mergeDataZTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Root root = objectMapper.readValue(new File("src\\test\\resources\\mergingTestData\\dataZInitState.json"), Root.class);
+        Root root = objectMapper.readValue(new File("src/test/resources/mergingTestData/dataZInitState.json"), Root.class);
         assertEquals("CarValue1", root.carDataZ.getValue());
         assertEquals("PositionValue1", root.positionZ.getValue());
-        try (Scanner updateScanner = new Scanner(new File("src\\test\\resources\\mergingTestData\\dataZUpdateEvents.txt"))) {
+        try (Scanner updateScanner = new Scanner(new File("src/test/resources/mergingTestData/dataZUpdateEvents.txt"))) {
             while (updateScanner.hasNextLine()) {
                 String updateEventString = updateScanner.nextLine();
                 UpdateEvent updateEvent = EventsParser.parseUpdateEvent(updateEventString).updateEvent();

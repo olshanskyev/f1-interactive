@@ -84,9 +84,9 @@ public class StateHandlerTest {
     public void stateHandlerTest() throws IOException {
         StateHandler stateHandler = new StateHandler();
         ObjectMapper mapper = new ObjectMapper();
-        Root initMessage = mapper.readValue(new File("src\\test\\resources\\mergingTestData\\savedSessions\\initialStateBeforeRace.json"), Root.class);
+        Root initMessage = mapper.readValue(new File("src/test/resources/mergingTestData/savedSessions/initialStateBeforeRace.json"), Root.class);
         stateHandler.init(initMessage);
-        try (Scanner scanner = new Scanner(new File("src\\test\\resources\\mergingTestData\\savedSessions\\1stLapUpdates.txt"))) {
+        try (Scanner scanner = new Scanner(new File("src/test/resources/mergingTestData/savedSessions/1stLapUpdates.txt"))) {
             while (scanner.hasNextLine()) {
                 String event = scanner.nextLine();
                 UpdateEvent updateEvent = EventsParser.parseUpdateEvent(event).updateEvent();
@@ -94,7 +94,7 @@ public class StateHandlerTest {
                 stateHandler.updateState(updateEvent);
             }
         }
-        Root expectedState = mapper.readValue(new File("src\\test\\resources\\mergingTestData\\savedSessions\\initialStateLap2.json"), Root.class);
+        Root expectedState = mapper.readValue(new File("src/test/resources/mergingTestData/savedSessions/initialStateLap2.json"), Root.class);
         Root actualState = stateHandler.getState();
 
         HashMap<Class<?>, List<String>> exceptions = new HashMap<>();
