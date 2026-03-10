@@ -87,6 +87,7 @@
 
 .chequered-flag {
     @include mixins.chequered-background(1rem, #fff, #545454);
+
     width: 3rem;
     height: 2rem;
 }

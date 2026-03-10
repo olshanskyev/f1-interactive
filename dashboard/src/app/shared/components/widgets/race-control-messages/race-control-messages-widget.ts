@@ -51,7 +51,6 @@ export class RaceControlMessagesWidget extends ContaineredWidget {
   }
 
   getIconByMessage(message: Message) {
-    console.log(message);
     switch (message.Category) {
       case 'Flag':
         if (message.Flag === 'CHEQUERED') {

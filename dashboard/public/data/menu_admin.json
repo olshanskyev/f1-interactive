@@ -19,8 +19,8 @@
           "icon": "group"
         },
         {
-          "route": "server-configuration",
-          "name": "server_configuration",
+          "route": "app-configuration",
+          "name": "app_configuration",
           "type": "link",
           "icon": "settings"
         }

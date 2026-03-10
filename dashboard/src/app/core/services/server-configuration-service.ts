@@ -9,4 +9,8 @@ export class ServerConfigurationService {
     public setLiveToken(liveToken: string) {
         return this.http.post<any>('/admin/setLiveToken', { liveToken });
     }
+
+    public getVersion() {
+        return this.http.get<{version: string}>('/admin/version');
+    }
 }

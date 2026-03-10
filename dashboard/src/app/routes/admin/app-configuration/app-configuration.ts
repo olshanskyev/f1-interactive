@@ -6,11 +6,13 @@ import { FormsModule } from '@angular/forms';
 import { ServerConfigurationService } from '@core';
 import { HotToastService } from '@ngxpert/hot-toast';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import packageInfo from '../../../../../package.json';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
-  selector: 'server-configuration',
-  templateUrl: './server-configuration.html',
-  styleUrl: './server-configuration.scss',
+  selector: 'app-configuration',
+  templateUrl: './app-configuration.html',
+  styleUrl: './app-configuration.scss',
   imports: [
     MatInputModule,
     MatFormFieldModule,
@@ -19,11 +21,13 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     TranslateModule
   ],
 })
-export class ServerConfigurationComponent {
+export class AppConfigurationComponent {
   serverConfigurationService = inject(ServerConfigurationService);
   hotToast = inject(HotToastService);
   translate = inject(TranslateService);
   token = '';
+  version = packageInfo.version;
+  backendVersion = toSignal(this.serverConfigurationService.getVersion());
 
   onSubmit() {
     if (this.token) {

@@ -3,7 +3,7 @@
     "dashboard": "Dashboard",
     "admin": "Admin",
     "admin.users": "Users",
-    "admin.server_configuration": "Server Configuration",
+    "admin.app_configuration": "App Configuration",
     "layouts": "Layouts"
   },
   "validation": {
@@ -145,7 +145,7 @@
       "Inactive": "Inactive"
     },
     "admin": {
-      "server_configuration": "Server Configuration",
+      "app_configuration": "App Configuration",
       "live_token": "Live Token"
     }
 }
