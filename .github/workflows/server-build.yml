@@ -1,10 +1,11 @@
-name: Build and Publish Server Docker image
+name: Build Server Docker image [DEV]
 
 on:
   push:
-    branches: [ main ]
+    branches: [ dev ]
     paths:
       - 'backend/f1-interactive-server/**'
+      - 'backend/common/**'
   workflow_dispatch: {}
   
 permissions:
@@ -28,10 +29,10 @@ jobs:
           cache: maven
 
       - name: Build backend/common and install to local repo
-        run: mvn -B -f backend/common/pom.xml install -DskipTests
+        run: mvn -B -f backend/common/pom.xml install
 
       - name: Build f1-interactive-server
-        run: mvn -B -f backend/f1-interactive-server/pom.xml package -DskipTests
+        run: mvn -B -f backend/f1-interactive-server/pom.xml package
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
@@ -47,5 +48,5 @@ jobs:
           file: backend/f1-interactive-server/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/f1-interactive-server:latest
+            ghcr.io/${{ github.repository_owner }}/f1-interactive-server:dev-latest
             ghcr.io/${{ github.repository_owner }}/f1-interactive-server:${{ github.sha }}
