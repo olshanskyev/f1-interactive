@@ -4,7 +4,8 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'dashboard/**'  
+      - 'dashboard/**'
+  workflow_dispatch: {}
 
 permissions:
   contents: write
