@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:8080/f1interactive',
-  baseUrlSimulator: 'http://localhost:8081/f1interactive',
+  baseUrl: 'http://localhost:8080/api',
+  baseUrlSimulator: 'http://localhost:8081/api',
   useHash: false,
 };

@@ -25,4 +25,5 @@ RUN chmod +x /docker-entrypoint.sh
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
+EXPOSE 443
 ENTRYPOINT ["/docker-entrypoint.sh"]

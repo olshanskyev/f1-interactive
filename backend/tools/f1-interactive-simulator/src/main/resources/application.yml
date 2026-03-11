@@ -1,7 +1,7 @@
 server:
   port: 8081
   servlet:
-    contextPath: /f1interactive
+    contextPath: /api
   ssl:
     enabled: false
 ---
