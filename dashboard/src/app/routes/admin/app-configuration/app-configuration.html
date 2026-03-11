@@ -3,7 +3,14 @@
 <div class="p-b-16">Dashboard Version: {{ version }}</div>
 <div class="p-b-16">Backend Version: {{ backendVersion()?.version }}</div>
 
-<form (ngSubmit)="onSubmit()" class="d-flex align-items-center gap-8">
+<mat-checkbox class="p-b-16"
+    [checked]="settings.options.useSimulator"
+    (change)="applyUseSimulator($event.checked)"
+    >
+  {{ 'admin.use_simulator' | translate }}
+</mat-checkbox>
+
+<form (ngSubmit)="onSubmitToken()" class="d-flex align-items-center gap-8">
   <mat-form-field appearance="outline" subscriptSizing="dynamic">
     <mat-label>{{ 'admin.live_token' | translate }}</mat-label>
     <input matInput type="password" [(ngModel)]="token" name="token" required autocomplete="off">

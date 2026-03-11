@@ -12,8 +12,6 @@ export const routes: Routes = [
   {
     path: '',
     component: AdminLayout,
-    //canActivate: [adminGuard],
-    //canActivateChild: [adminGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
