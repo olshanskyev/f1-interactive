@@ -1,6 +1,6 @@
 {
   "name": "f1-interactive-dashboard",
-  "version": "0.0.3",
+  "version": "0.0.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
