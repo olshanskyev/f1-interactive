@@ -53,8 +53,8 @@ jobs:
         run: |
           cd dashboard
           npm ci
-          # Bump version, create local changelog but DON'T commit/tag yet
-          npx commit-and-tag-version --skip.commit --skip.tag
+          # Bump version, but DON'T generate changelog, commit, or tag yet
+          npx commit-and-tag-version --skip.changelog --skip.commit --skip.tag
           DASH_VERSION=$(node -p "require('./package.json').version")
           echo "version=${DASH_VERSION}" >> $GITHUB_OUTPUT
           npm run lint
