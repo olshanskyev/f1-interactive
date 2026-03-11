@@ -167,16 +167,9 @@ jobs:
         run: |
           git fetch origin dev
           git checkout dev
-          git merge origin/main --no-edit
+          git merge origin/main -X theirs --no-edit
 
           HAS_CHANGES=false
-          if [ "${{ steps.filter.outputs.dashboard }}" == "true" ]; then
-            cd dashboard
-            npm version patch --no-git-tag-version
-            cd ..
-            HAS_CHANGES=true
-          fi
-
           if [ "${{ steps.filter.outputs.server }}" == "true" ]; then
             CURRENT_VERSION=${{ steps.server_version.outputs.new_version }}
             IFS='.' read -ra ADDR <<< "$CURRENT_VERSION"
