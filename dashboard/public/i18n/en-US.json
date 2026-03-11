@@ -67,7 +67,6 @@
   "read_and_agree": "I have read and agree to the terms of service",
   "have_an_account": "Already have an account",
   "restore_defaults": "Restore defaults",
-  "use_simulator": "Simulator",
   "nothing_found": "Nothing found",
   "widgets": "Widgets",
   "tyres": "Tyres",
@@ -146,6 +145,7 @@
     },
     "admin": {
       "app_configuration": "App Configuration",
-      "live_token": "Live Token"
+      "live_token": "Live Token",
+      "use_simulator": "Use Simulator"
     }
 }

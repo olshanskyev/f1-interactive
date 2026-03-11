@@ -58,6 +58,7 @@ export class Leaderboard extends ContaineredWidget {
   mode = linkedSignal(() =>(this.settingsMode() === 'all') ? 'laps' : this.settingsMode());
 
   movements = signal<Record<string, 'up' | 'down' | null>>({});
+  isScrolled = signal(false);
 
   private viewTransitionService = inject(ViewTransitionService);
   private transitionVersion = 0;
@@ -90,6 +91,11 @@ export class Leaderboard extends ContaineredWidget {
 
   isMovingDown(id: string) {
     return this.movements()[id]  === 'down';
+  }
+
+  onScroll(event: Event) {
+    const target = event.target as HTMLElement;
+    this.isScrolled.set(target.scrollLeft > 0);
   }
 
   onModeSelectionChange(event: MatChipSelectionChange) {

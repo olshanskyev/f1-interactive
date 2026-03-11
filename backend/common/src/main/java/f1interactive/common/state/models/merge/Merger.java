@@ -72,8 +72,12 @@ public class Merger {
 
                     } else { // custom class
                         Object fromValue = field.get(from);
+                        Object toValue = field.get(to);
                         if (fromValue != null) {
-                            mergeAllNotNull(field.get(to), fromValue);
+                            if (toValue == null)
+                                field.set(to, fromValue);
+                            else
+                                mergeAllNotNull(field.get(to), fromValue);
                         }
                     }
                 }
