@@ -6,7 +6,7 @@
 
     <groupId>f1interactive</groupId>
     <artifactId>f1-interactive-server</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.1-SNAPSHOT</version>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
