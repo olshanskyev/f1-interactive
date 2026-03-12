@@ -25,10 +25,15 @@ export class RaceControlMessagesWidget extends ContaineredWidget {
     if (!data?.Messages) return [];
 
     return Object.values(data.Messages)
-      .sort(sortUtc);
+      .sort(sortUtc)
+      .map(msg => ({
+        ...msg,
+        computedIconColor: this.getIconColor(msg),
+        computedIcon: this.getIconByMessage(msg)
+      }));
   });
 
-  getIconColor(message: Message) {
+  private getIconColor(message: Message) {
     switch (message.Flag) {
       case 'YELLOW':
       case 'DOUBLE YELLOW':
@@ -50,7 +55,7 @@ export class RaceControlMessagesWidget extends ContaineredWidget {
     }
   }
 
-  getIconByMessage(message: Message) {
+  private getIconByMessage(message: Message) {
     switch (message.Category) {
       case 'Flag':
         if (message.Flag === 'CHEQUERED') {

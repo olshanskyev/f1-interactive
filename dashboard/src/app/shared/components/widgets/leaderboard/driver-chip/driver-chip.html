@@ -3,20 +3,18 @@
     <div class="m-0 f-s-14 d-flex justify-content-between">
         <div>
         <span>{{ driver()?.Tla}}</span>
-        <span class="font-formula f-s-12 p-l-4"
-            [style]="'color: #' + driver()?.TeamColour"
-        >
+        <span class="font-formula f-s-12 p-l-4" [style.color]="teamColor()">
             {{driver()?.RacingNumber}}
         </span>
         </div>
         <div>
-        @if (calculateGridPosDiff(); as positionChange) {
+        @if (positionChange(); as positionChange) {
         <span class="f-s-12 p-r-4" [class]="(positionChange > 0? 'text-f1-green': 'text-f1-red')">
             {{(positionChange > 0)?'▲': '▼'}} {{Math.abs(positionChange)}}
         </span>
         }
         </div>
     </div>
-    <p class="m-0 f-s-12 line-height-1" [style]="'color: #' + driver()?.TeamColour">{{ driver()?.TeamName }} </p>
+    <p class="m-0 f-s-12 line-height-1" [style.color]="teamColor()">{{ driver()?.TeamName }} </p>
     </div>
 </div>

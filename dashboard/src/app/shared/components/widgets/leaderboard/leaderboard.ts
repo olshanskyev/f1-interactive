@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, linkedSignal, signal } from '@angu
 import { MatIconModule } from '@angular/material/icon';
 import { TimingDataLinesItem } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';
-import { LeaderboardDriver } from './leaderboard-lap/leaderboard-lap';
+import { LeaderboardLap } from './leaderboard-lap/leaderboard-lap';
 import { areMapKeySequencesEqual, calculateSequenceChanges } from '@core/lib/arrays_maps';
 import { ContaineredWidget } from '../containered-widget';
 import { ViewTransitionService } from '../../../../core/services/view-transition.service';
@@ -18,6 +18,7 @@ import { sortTimingDataByPosition } from '@core/lib/sorting';
 import { qualifyingPart, sessionYear } from '@core/lib/sub-signals';
 import { DriverChip } from './driver-chip/driver-chip';
 
+
 @Component({
   selector: 'leaderboard',
   templateUrl: './leaderboard.html',
@@ -25,7 +26,7 @@ import { DriverChip } from './driver-chip/driver-chip';
   imports: [
     MatIconModule,
     TranslateModule,
-    LeaderboardDriver,
+    LeaderboardLap,
     LeaderboardSector,
     LeaderboardSpeed,
     LeaderboardTyres,
@@ -60,6 +61,36 @@ export class Leaderboard extends ContaineredWidget {
   movements = signal<Record<string, 'up' | 'down' | null>>({});
   isScrolled = signal(false);
 
+  // Snapshot computed so template lookups are cheap and only re-evaluate when `movements` changes
+  movementsSnapshot = computed(() => this.movements());
+
+  // Stable array of [id, timingData] entries for template iteration (avoids Map->Array work in template)
+  entriesArray = computed(() => Array.from(this.timingDataMap().entries()));
+
+  // Set of positions considered in the elimination zone based on session year and qualifying part
+  eliminationPositions = computed(() => {
+    const q = this.qualifyingPart();
+    if (!q) return new Set<number>();
+    const firstEliminationThreshold = (this.sessionYear() < 2026) ? 15 : 16;
+    const set = new Set<number>();
+    if (q === 1) {
+      for (let p = firstEliminationThreshold + 1; p <= 30; p++) set.add(p);
+    } else {
+      for (let p = 11; p <= 30; p++) set.add(p);
+    }
+    return set;
+  });
+
+  // Map of driverId -> out boolean computed from timingDataMap so templates can read cheaply
+  driversOut = computed(() => {
+    const map = this.timingDataMap();
+    const out: Record<string, boolean> = {};
+    map.forEach((v, k) => {
+      out[k] = !!(v.Retired || v.Stopped || v.KnockedOut);
+    });
+    return out;
+  });
+
   private viewTransitionService = inject(ViewTransitionService);
   private transitionVersion = 0;
 
@@ -86,11 +117,11 @@ export class Leaderboard extends ContaineredWidget {
   }
 
   isMovingUp(id: string) {
-    return this.movements()[id] === 'up';
+    return this.movementsSnapshot()[id] === 'up';
   }
 
   isMovingDown(id: string) {
-    return this.movements()[id]  === 'down';
+    return this.movementsSnapshot()[id] === 'down';
   }
 
   onScroll(event: Event) {
@@ -103,17 +134,5 @@ export class Leaderboard extends ContaineredWidget {
     if (!event.selected) {
       event.source.select();
     }
-  }
-
-  isInEliminationZone(position: number): boolean {
-    const qualifyingPart = this.qualifyingPart();
-    if (!qualifyingPart) return false;
-    const firstEliminationThreshold = (this.sessionYear() < 2026) ? 15 : 16;
-    return ((qualifyingPart === 1 && position > firstEliminationThreshold) ||
-      (qualifyingPart >= 2 && position > 10));
-  }
-
-  isDriverOut(item: TimingDataLinesItem) {
-    return item.Retired || item.Stopped || item.KnockedOut;
   }
 }

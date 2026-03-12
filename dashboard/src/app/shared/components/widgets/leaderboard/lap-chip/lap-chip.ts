@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, computed } from '@angular/core';
 import { TimingDataLinesItem, TimingStatsLinesItem } from '@core/types/f1types';
 
 @Component({
@@ -9,21 +9,28 @@ export class LapChip {
     timingData = input<TimingDataLinesItem>();
     timingStat = input<TimingStatsLinesItem>();
     qualifyingPart = input<number>();
+    // Computed helpers
+    lastNotEmptyLapTime = computed(() => {
+        const best = this.timingData()?.BestLapTimes;
+        if (!best) return null;
+        return Object.values(best).reverse().find((l: any) => l && l.Value && l.Value !== '') ?? null;
+    });
 
+    qualificationLapTime = computed(() => {
+        if (this.timingData()?.KnockedOut) return this.lastNotEmptyLapTime()?.Value ?? '';
+        if (this.qualifyingPart()) return this.timingData()?.BestLapTimes?.[this.qualifyingPart()! - 1]?.Value ?? '';
+        return '';
+    });
 
-    // find last BestLapTime which is not empty
-    getLastNotEmptyLapTime() {
-        if (!this.timingData()?.BestLapTimes) return null;
-        const lapTimes = Object.values(this.timingData()!.BestLapTimes).reverse().find(l => l.Value && l.Value !== '');
-        return lapTimes ?? null;
-    }
+    lastLapClass = computed(() => {
+        const lt = this.timingData()?.LastLapTime;
+        if (!lt) return '';
+        return lt.OverallFastest ? 'text-f1-purple' : (lt.PersonalFastest ? 'text-f1-green' : '');
+    });
 
-    getQualificationLapTime() {
-        if (this.timingData()?.KnockedOut) {
-            return this.getLastNotEmptyLapTime()?.Value ?? '';
-        }
-        return (this.qualifyingPart())?
-            this.timingData()?.BestLapTimes?.[this.qualifyingPart()! - 1].Value ?? ''
-        : '';
-    }
+    lastLapValue = computed(() => this.timingData()?.LastLapTime?.Value ?? '-');
+
+    personalBestClass = computed(() => (this.timingStat()?.PersonalBestLapTime?.Position === 1) ? 'text-f1-purple' : 'text-f1-green');
+
+    personalBestValue = computed(() => this.timingStat()?.PersonalBestLapTime?.Value ?? '');
 }

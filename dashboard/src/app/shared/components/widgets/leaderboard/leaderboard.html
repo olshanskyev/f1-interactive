@@ -54,11 +54,11 @@
             </div>
           }
 
-          @for (entry of timingDataMap(); track entry[0]) {
+          @for (entry of entriesArray(); track entry[0]) {
             <div class="transition-container grid-item" [style.view-transition-name]="'driver-' + uniqueId + '-' + entry[1].RacingNumber"
-              [class.out-driver]="isDriverOut(entry[1])">
+              [class.out-driver]="!!driversOut()[entry[0]]">
               <div class="position-number"
-                [class.elimination-zone]="isInEliminationZone(entry[1].Line)"
+                [class.elimination-zone]="eliminationPositions().has(entry[1].Line)"
                 [class.bg-f1-red]="qualifyingPart() && entry[1].Line === 1"
               >
                   @if (isMovingUp(entry[0])) {

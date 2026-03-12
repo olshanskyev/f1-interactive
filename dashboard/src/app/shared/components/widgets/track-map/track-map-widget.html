@@ -8,7 +8,7 @@
             >
                 <path
                     class="background-stroke"
-                    [attr.d]="'M' + points()![0].x + ',' + points()![0].y + ' ' + joinPoints(points())"
+                    [attr.d]="joinedPoints()"
                 />
 
                 @for (sector of renderedSectors(); track $index) {
@@ -49,7 +49,7 @@
 
                 @if (driverDots() && positions() && center()) {
                     @for (dot of driverDots(); track $index) {
-                        @if (onTrack(dot.driver.RacingNumber)) {
+                        @if (dot.onTrack) {
                             <g car-dot
                                 [attr.key]="'map.driver.' + dot.driver.RacingNumber"
                                 [disableTransition]="disableTransition()"

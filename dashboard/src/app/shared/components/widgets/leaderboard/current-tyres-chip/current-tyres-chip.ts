@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, computed } from '@angular/core';
 import { getLastNummericItem } from '@core/lib/arrays_maps';
 import { Stint, TimingAppDataLinesItem } from '@core/types/f1types';
 
@@ -9,17 +9,16 @@ import { Stint, TimingAppDataLinesItem } from '@core/types/f1types';
 export class CurrentTyresChip {
     timingAppData = input<TimingAppDataLinesItem>();
 
-    getLastStint(): Stint | undefined {
-        const timingAppData = this.timingAppData();
-        return (timingAppData?.Stints)
-        ? getLastNummericItem(timingAppData.Stints)
-        : undefined;
-    }
+    // Computed cached values to avoid recalculating on every change-detection
+    lastStint = computed<Stint | undefined>(() => {
+        const tad = this.timingAppData();
+        return tad?.Stints ? getLastNummericItem(tad.Stints) : undefined;
+    });
 
-    getNumberOfPits() { // based on stints count (numberOfPitStops not precise?)
-        const timingAppData = this.timingAppData();
-        return (timingAppData)?(timingAppData.Stints)?
-        Object.keys(timingAppData.Stints).length - 1: 0
-        : 0;
-    }
+    numberOfPits = computed(() => {
+        const tad = this.timingAppData();
+        const stints = tad?.Stints;
+        if (!stints) return 0;
+        return Math.max(0, Object.keys(stints).length - 1);
+    });
 }

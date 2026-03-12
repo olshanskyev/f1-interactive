@@ -1,5 +1,5 @@
 import { KeyValuePipe } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, input, computed } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TimingAppDataLinesItem, TimingDataLinesItem, TimingStatsLinesItem } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';
@@ -8,6 +8,14 @@ import { IntervalChip } from '../interval-chip/interval-chip';
 import { CurrentTyresChip } from '../current-tyres-chip/current-tyres-chip';
 import { keepOrder } from '@core/lib/arrays_maps';
 import { LapCountChip } from '../lap-count-chip/lap-count-chip';
+
+const SEGMENT_CLASS_MAP = new Map<number, string>([
+  [2048, 'bg-f1-yellow'],
+  [2052, 'bg-f1-yellow'],
+  [2049, 'bg-f1-green'],
+  [2051, 'bg-f1-purple'],
+  [2064, 'bg-f1-blue'],
+]);
 
 @Component({
   selector: 'leaderboard-lap',
@@ -20,7 +28,7 @@ import { LapCountChip } from '../lap-count-chip/lap-count-chip';
     LapCountChip
   ],
 })
-export class LeaderboardDriver {
+export class LeaderboardLap {
   timingData = input<TimingDataLinesItem>();
   timingAppData = input<TimingAppDataLinesItem>();
   timingStat = input<TimingStatsLinesItem>();
@@ -28,14 +36,8 @@ export class LeaderboardDriver {
 
   keepOrder = keepOrder;
 
-  getSegmentClass(status: number) {
-    switch(status) {
-      case 2048:
-      case 2052: return 'bg-f1-yellow';
-      case 2049: return 'bg-f1-green';
-      case 2051: return 'bg-f1-purple';
-      case 2064: return 'bg-f1-blue';
-      default: return 'bg-color-inactive';
-    }
+  getSegmentClass(status?: number) {
+    if (status === undefined) return 'bg-color-inactive';
+    return SEGMENT_CLASS_MAP.get(status) ?? 'bg-color-inactive';
   }
 }

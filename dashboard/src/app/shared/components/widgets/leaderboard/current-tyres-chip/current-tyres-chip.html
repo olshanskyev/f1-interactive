@@ -1,12 +1,12 @@
 <div class="d-flex align-items-center gap-8">
-        @if (getLastStint(); as stint) {
+        @if (lastStint(); as stint) {
         <img [alt]="stint.Compound" loading="lazy" width="32" height="32" decoding="async" data-nimg="1" [src]="'images/tires/' + stint.Compound + '.svg'" style="color: transparent;">
         <div>
                 <p class="m-0 f-s-14">
                 L {{stint.TotalLaps}}
                 </p>
                 <p class="m-0 line-height-1 f-s-12 text-color-second">
-                PIT {{getNumberOfPits()}}
+                PIT {{numberOfPits()}}
                 </p>
         </div>
         }

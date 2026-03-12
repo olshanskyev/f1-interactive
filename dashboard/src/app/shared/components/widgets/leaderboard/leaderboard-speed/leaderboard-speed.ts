@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, computed } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TimingAppDataLinesItem, TimingDataLinesItem, TimingStatsLinesItem } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';
@@ -25,6 +25,6 @@ export class LeaderboardSpeed{
   qualifyingPart = input<number>();
 
   hasBestSpeed(speedSectorKey: string): boolean {
-    return this.timingStat()?.BestSpeeds[speedSectorKey].Position === 1;
+    return this.timingStat()?.BestSpeeds?.[speedSectorKey]?.Position === 1;
   }
 }

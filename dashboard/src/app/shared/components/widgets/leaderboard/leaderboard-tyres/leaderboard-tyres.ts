@@ -22,21 +22,16 @@ export class LeaderboardTyres{
   timingAppData = input<TimingAppDataLinesItem>();
   keepOrder = keepOrder;
 
+  private readonly STINT_COLOR: Record<string, string> = {
+    SOFT: '#F12F32',
+    MEDIUM: '#FBCC1C',
+    HARD: '#ffffff',
+    INTERMEDIATE: '#128330',
+    WET: '#1F6DA1',
+  };
+
   getStintColor(stint: Stint) {
-    switch (stint.Compound) {
-      case 'SOFT':
-        return '#F12F32';
-      case 'MEDIUM':
-        return '#FBCC1C';
-      case 'HARD':
-        return '#ffffff';
-      case 'INTERMEDIATE':
-        return '#128330';
-      case 'WET':
-        return '#1F6DA1';
-      default:
-        return '#52525B';
-    }
+    return this.STINT_COLOR[stint.Compound] ?? '#52525B';
   }
 
   getStintLength(stint: Stint): number {
