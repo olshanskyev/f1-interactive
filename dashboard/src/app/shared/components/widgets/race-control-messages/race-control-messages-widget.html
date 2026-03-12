@@ -1,25 +1,31 @@
 <div class="font-formula default-widget-container p-b-4">
   <div class="container">
-    <div class="header">
-      {{'widget.RaceControlMessagesWidget' | translate}}
+    <div class="header d-flex align-items-center justify-content-between checkbox-3">
+      <div>{{'widget.RaceControlMessagesWidget' | translate}}</div>
+      <mat-checkbox
+        class="p-r-8"
+        [checked]="showMessages()"
+        (change)="showMessages.set($event.checked)">Show</mat-checkbox>
     </div>
-    <div class="p-x-8 p-b-8 d-grid gap-8">
-      @for (message of messages(); track $index + message.Utc) {
-          <div class="message-item">
+    @if (showMessages()){
+      <div class="p-x-8 p-b-8 d-grid gap-8">
+        @for (message of messages(); track $index + message.Utc) {
+            <div class="message-item">
 
-            <div class="icon-container">
-              <mat-icon [style.color]="message.computedIconColor">{{ message.computedIcon }}</mat-icon>
-            </div>
-            <div>
-              <span class="f-s-12 line-height-1" matListItemTitle>{{ message.Message }}</span>
-              <div class="text-color-second d-flex align-items-center gap-4">
-                <mat-icon class="small-icon">av_timer</mat-icon>
-                <span class="f-s-10">{{ message.Utc | date:'HH:mm:ss' }}</span>
+              <div class="icon-container">
+                <mat-icon [style.color]="message.computedIconColor">{{ message.computedIcon }}</mat-icon>
               </div>
-            </div>
+              <div>
+                <span class="f-s-12 line-height-1" matListItemTitle>{{ message.Message }}</span>
+                <div class="text-color-second d-flex align-items-center gap-4">
+                  <mat-icon class="small-icon">av_timer</mat-icon>
+                  <span class="f-s-10">{{ message.Utc | date:'HH:mm:ss' }}</span>
+                </div>
+              </div>
 
-          </div>
-      }
-    </div>
+            </div>
+        }
+      </div>
+    }
   </div>
 </div>

@@ -1,7 +1,8 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { ContaineredWidget } from '../containered-widget';
 import { MatIconModule } from '@angular/material/icon';
-import { DatePipe } from '@angular/common';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { CommonModule, DatePipe } from '@angular/common';
 import { sortUtc } from '@core/lib/sorting';
 import { Message } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';
@@ -9,7 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'race-control-messages-widget',
   standalone: true,
-  imports: [MatIconModule, DatePipe, TranslateModule],
+  imports: [MatIconModule, MatCheckboxModule, CommonModule, DatePipe, TranslateModule],
   templateUrl: './race-control-messages-widget.html',
   styleUrl: './race-control-messages-widget.scss',
   host: {
@@ -18,6 +19,7 @@ import { TranslateModule } from '@ngx-translate/core';
   }
 })
 export class RaceControlMessagesWidget extends ContaineredWidget {
+  showMessages = signal(true);
   messagesSignal = this.liveService.getRaceControlMessagesSignal();
 
   messages = computed(() => {
