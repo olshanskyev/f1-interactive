@@ -4,9 +4,9 @@ import { Component, input } from '@angular/core';
   selector: 'app-branding',
   template: `
     <a class="branding" href="/">
-      <img src="images/logo.png" class="branding-logo" alt="logo" />
+      <img src="images/logo.svg" class="branding-logo" alt="logo" />
       @if (showName()) {
-        <span class="branding-name">INTERACTIVE</span>
+        <span class="branding-name font-formula f-s-14">INTERACTIVE</span>
       }
     </a>
   `,
@@ -24,7 +24,6 @@ import { Component, input } from '@angular/core';
     .branding-logo {
       width: 2rem;
       height: 2rem;
-      border-radius: 50rem;
     }
 
     .branding-name {
