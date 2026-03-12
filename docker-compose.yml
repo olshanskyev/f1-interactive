@@ -3,9 +3,11 @@ services:
     image: ghcr.io/olshanskyev/f1-interactive-dashboard:latest
     container_name: f1-dashboard
     environment:
-      - SUBSTITUTE_VARS=BASE_URL BASE_URL_SIMULATOR
-      - BASE_URL=${BASE_URL:-http://localhost:8080}
+      - SUBSTITUTE_VARS=BASE_URL BASE_URL_SIMULATOR HOST CERT_PATH
+      - BASE_URL=${BASE_URL:-https://f1interactive.net}
       - BASE_URL_SIMULATOR=${BASE_URL_SIMULATOR:-}
+      - HOST=${HOST:-f1interactive.net}
+      - CERT_PATH=${CERT_PATH:-}
     ports:
       - "80:80"
       - "443:443"

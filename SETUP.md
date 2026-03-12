@@ -43,9 +43,11 @@ The website/dashboard itself. Gets data from api and live service.
 run docker image
 ```
 docker run -d -p 80:80 \
-  -e SUBSTITUTE_VARS="BASE_URL BASE_URL_SIMULATOR" \
+  -e SUBSTITUTE_VARS="BASE_URL BASE_URL_SIMULATOR HOST CERT_PATH" \
   -e BASE_URL="<BASE_URL>" \
   -e BASE_URL_SIMULATOR="OPTIONAL_BASE_URL_SIMULATOR" \
+  -e HOST="<host>" \
+  -e CERT_PATH="<cert_path/>" \
   --name f1-dashboard \
   ghcr.io/olshanskyev/f1-interactive-dashboard:latest
 ```

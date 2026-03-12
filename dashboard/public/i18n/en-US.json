@@ -99,7 +99,7 @@
     "LeaderboardWidget": "Leaderboard",
     "video": "Video",
     "TrackMapWidget": "Track Map",
-    "raceControlMessages": "Race Control Messages",
+    "RaceControlMessagesWidget": "Race Control Messages",
     "settings": {
       "source": "Source",
       "embedCode": "Embed code",
