@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="F1 logo"><rect width="180" height="180" rx="18" fill="#2B2B68"></rect><g transform="translate(90 90) scale(1.25) translate(-90 -90)" fill="#F14448">
+    <!-- F: top bar (matches original local coords) -->
+    <rect x="53" y="60" width="36" height="12"></rect>
+    <!-- F: vertical stem -->
+    <rect x="53" y="82" width="12" height="38"></rect>
+    <!-- F: horizontal connector -->
+    <rect x="67" y="82" width="18" height="12"></rect>
+
+    <!-- 1: top cap -->
+    <rect x="100" y="60" width="13" height="12"></rect>
+    <!-- 1: main vertical -->
+    <rect x="115" y="60" width="12" height="60"></rect>
+  </g></svg>
