@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { ContaineredWidget } from '../containered-widget';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -6,6 +6,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { sortUtc } from '@core/lib/sorting';
 import { Message } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';
+import { SettingsService } from '@core';
 
 @Component({
   selector: 'race-control-messages-widget',
@@ -13,26 +14,29 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [MatIconModule, MatCheckboxModule, CommonModule, DatePipe, TranslateModule],
   templateUrl: './race-control-messages-widget.html',
   styleUrl: './race-control-messages-widget.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     // set data-containered attribute when the widget is inside a container
     '[attr.data-containered]': 'container ? "true" : null'
   }
 })
 export class RaceControlMessagesWidget extends ContaineredWidget {
-  showMessages = signal(true);
+  settingsService = inject(SettingsService);
   messagesSignal = this.liveService.getRaceControlMessagesSignal();
+  showMessages = signal(this.settingsService.getShowRaceControlMessages());
 
   messages = computed(() => {
     const data = this.messagesSignal();
     if (!data?.Messages) return [];
 
-    return Object.values(data.Messages)
-      .sort(sortUtc)
-      .map(msg => ({
+    return Object.entries(data.Messages)
+      .map(([id, msg]) => ({
         ...msg,
+        id,
         computedIconColor: this.getIconColor(msg),
         computedIcon: this.getIconByMessage(msg)
-      }));
+      }))
+      .sort(sortUtc);
   });
 
   private getIconColor(message: Message) {
@@ -69,6 +73,12 @@ export class RaceControlMessagesWidget extends ContaineredWidget {
       default:
         return 'fmd_bad';
     }
+  }
+
+  showMessagesToggle(value: boolean) {
+    console.log(value);
+    this.showMessages.set(value);
+    this.settingsService.setOptions({ showRaceControlMessages: value });
   }
 
 }

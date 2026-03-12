@@ -5,11 +5,11 @@
       <mat-checkbox
         class="p-r-8"
         [checked]="showMessages()"
-        (change)="showMessages.set($event.checked)">Show</mat-checkbox>
+        (change)="showMessagesToggle($event.checked)">{{'show' | translate }}</mat-checkbox>
     </div>
     @if (showMessages()){
       <div class="p-x-8 p-b-8 d-grid gap-8">
-        @for (message of messages(); track $index + message.Utc) {
+        @for (message of messages(); track message.id) {
             <div class="message-item">
 
               <div class="icon-container">
