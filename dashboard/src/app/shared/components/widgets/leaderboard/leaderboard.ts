@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, linkedSignal, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, effect, inject, linkedSignal, signal, ChangeDetectionStrategy, Pipe, PipeTransform } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TimingDataLinesItem } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';
@@ -18,6 +18,15 @@ import { sortTimingDataByPosition } from '@core/lib/sorting';
 import { qualifyingPart, sessionYear } from '@core/lib/sub-signals';
 import { DriverChip } from './driver-chip/driver-chip';
 
+@Pipe({
+  name: 'isDriverOut',
+  standalone: true
+})
+export class IsDriverOutPipe implements PipeTransform {
+  transform(timingData: TimingDataLinesItem | undefined): boolean {
+    return !!(timingData?.Retired || timingData?.Stopped || timingData?.KnockedOut);
+  }
+}
 
 @Component({
   selector: 'leaderboard',
@@ -37,7 +46,8 @@ import { DriverChip } from './driver-chip/driver-chip';
     MatChipsModule,
     FormsModule,
     MatDividerModule,
-    DriverChip
+    DriverChip,
+    IsDriverOutPipe
   ],
 })
 export class Leaderboard extends ContaineredWidget {
@@ -82,16 +92,6 @@ export class Leaderboard extends ContaineredWidget {
     return set;
   });
 
-  // Map of driverId -> out boolean computed from timingDataMap so templates can read cheaply
-  driversOut = computed(() => {
-    const map = this.timingDataMap();
-    const out: Record<string, boolean> = {};
-    map.forEach((v, k) => {
-      out[k] = !!(v.Retired || v.Stopped || v.KnockedOut);
-    });
-    return out;
-  });
-
   private viewTransitionService = inject(ViewTransitionService);
   private transitionVersion = 0;
 
@@ -115,14 +115,6 @@ export class Leaderboard extends ContaineredWidget {
         }
       }
     });
-  }
-
-  isMovingUp(id: string) {
-    return this.movementsSnapshot()[id] === 'up';
-  }
-
-  isMovingDown(id: string) {
-    return this.movementsSnapshot()[id] === 'down';
   }
 
   onScroll(event: Event) {

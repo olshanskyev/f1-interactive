@@ -56,15 +56,15 @@
 
           @for (entry of entriesArray(); track entry[0]) {
             <div class="transition-container grid-item" [style.view-transition-name]="'driver-' + uniqueId + '-' + entry[1].RacingNumber"
-              [class.out-driver]="!!driversOut()[entry[0]]">
+              [class.out-driver]="timingData()?.Lines?.[entry[0]] | isDriverOut">
               <div class="position-number"
                 [class.elimination-zone]="eliminationPositions().has(entry[1].Line)"
                 [class.bg-f1-red]="qualifyingPart() && entry[1].Line === 1"
               >
-                  @if (isMovingUp(entry[0])) {
+                  @if (movementsSnapshot()[entry[0]] === 'up') {
                     <mat-icon class="text-f1-green">keyboard_double_arrow_up</mat-icon>
                   } @else {
-                    @if (isMovingDown(entry[0])) {
+                    @if (movementsSnapshot()[entry[0]] === 'down') {
                       <mat-icon class="text-f1-red">keyboard_double_arrow_down</mat-icon>
                     } @else {
                       <div>{{entry[1]?.Line}}</div>
