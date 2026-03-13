@@ -2,8 +2,8 @@
     height: 100%;
     max-height: var(--default-list-height);
     overflow-y: auto;
-    //contain: content;
-    //will-change: transform;
+    contain: content;
+    will-change: transform;
 }
 
 :host([data-containered]) .container {
