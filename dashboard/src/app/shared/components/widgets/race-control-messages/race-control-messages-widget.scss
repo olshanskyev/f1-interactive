@@ -1,7 +1,9 @@
 .container {
     height: 100%;
     max-height: var(--default-list-height);
+    contain: content;
     overflow-y: auto;
+    will-change: transform;
 }
 
 :host([data-containered]) .container {
@@ -23,8 +25,29 @@
     height: 30px;
     padding-left: 1rem;
     font-size: small;
-    background-color:  color-mix(in srgb, var(--mat-sys-surface-container), transparent 50%);
-    backdrop-filter: blur(2px);
+    background-color: color-mix(in srgb, var(--mat-sys-surface-container), transparent 10%);
+}
+
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bg-highlight {
+    from {
+        background-color: var(--mat-sys-secondary-container);
+    }
+
+    to {
+        background-color: transparent;
+    }
 }
 
 .message-item {
@@ -32,16 +55,10 @@
     flex-direction: row;
     gap: 0.5rem;
     align-items: start;
+    contain-intrinsic-size: 50px;
+    content-visibility: auto;
     background-color: transparent;
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 1s, transform 1s, background-color 5s;
-
-    @starting-style {
-        background-color: var(--mat-sys-secondary-container);
-        opacity: 0;
-        transform: translateY(-10px);
-    }
+    animation: slide-in 1s ease-out forwards, bg-highlight 5s ease-out forwards;
 }
 
 .icon-container::before {

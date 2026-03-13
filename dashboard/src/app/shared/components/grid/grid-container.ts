@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, input, OnDestroy, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, input, OnDestroy, signal, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FullScreenService } from '@core';
 
 
@@ -6,6 +6,7 @@ import { FullScreenService } from '@core';
     selector: 'grid-container',
     styleUrl:'./grid-container.scss',
     templateUrl: 'grid-container.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
 
     ],

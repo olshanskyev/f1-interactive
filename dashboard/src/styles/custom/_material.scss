@@ -35,6 +35,11 @@ mat-card-header + mat-card-content {
   @include mat.form-field-density(-5);
 }
 
+.checkbox-3 {
+  @include mat.checkbox-density(-3);
+}
+
+
 .bordered-dialog .mat-mdc-dialog-container .mdc-dialog__surface{
   border: 1px solid var(--mat-sys-outline-variant);
   border-radius: var(--mat-sys-corner-medium);

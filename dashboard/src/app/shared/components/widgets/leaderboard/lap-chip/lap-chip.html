@@ -3,18 +3,17 @@
                 <div class="f-s-14"
                 [class.text-color-inactive]="!timingStat()?.PersonalBestLapTime?.Value"
                 >
-                        {{getQualificationLapTime() || 'No Time'}}
+                        {{qualificationLapTime() || 'No Time'}}
                 </div>
         } @else {
                 <p class="m-0 f-s-14"
-                [class]="(timingData()?.LastLapTime?.OverallFastest)?'text-f1-purple':
-                        (timingData()?.LastLapTime?.PersonalFastest)?'text-f1-green':''">
-                        {{timingData()?.LastLapTime?.Value || '-'}}
+                [class]="lastLapClass()">
+                        {{lastLapValue()}}
                 </p>
                 <p class="m-0 f-s-12 line-height-1"
-                [class]="(timingStat()?.PersonalBestLapTime?.Position === 1)?'text-f1-purple':'text-f1-green'"
+                [class]="personalBestClass()"
                 >
-                        {{timingStat()?.PersonalBestLapTime?.Value}}
+                        {{personalBestValue()}}
                 </p>
         }
 </div>

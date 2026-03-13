@@ -101,10 +101,11 @@ export class StateHandler {
         if (from == null) return to;
 
         if (this.isObject(from)) {
+            const newObj = { ...to };
             for (const [key, value] of Object.entries(from)) {
-                to[key] = (to[key] == null)? value: this.merge(to[key], value);
+                newObj[key] = (newObj[key] == null)? value: this.merge(newObj[key], value);
             }
-            return to;
+            return newObj;
         } else {
             return from;
         }

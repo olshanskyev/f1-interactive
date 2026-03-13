@@ -17,7 +17,7 @@
       }
     </p>
     <p class="m-0 f-s-12 line-height-1"
-      [class]="hasBestSector(+sector.key)?'text-f1-purple':'text-f1-green'">
+      [class]="(timingStat() | hasBestSector: +sector.key) ? 'text-f1-purple' : 'text-f1-green'">
         <!-- best personal sector time -->
       {{timingStat()?.BestSectors?.[+sector.key]?.Value || ''}}
     </p>

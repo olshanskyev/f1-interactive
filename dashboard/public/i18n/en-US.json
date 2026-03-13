@@ -82,6 +82,7 @@
   "speed": "Speed",
   "current_tyres": "Current",
   "lap_count": "Laps",
+  "show": "Show",
   "weather": {
     "air": "Air",
     "track": "Track",

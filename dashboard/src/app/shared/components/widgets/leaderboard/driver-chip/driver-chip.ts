@@ -1,9 +1,10 @@
-import { Component, input } from '@angular/core';
+import { Component, input, computed, ChangeDetectionStrategy } from '@angular/core';
 import { DriverListItem, TimingAppDataLinesItem, TimingDataLinesItem } from '@core/types/f1types';
 
 @Component({
     selector: 'driver-chip',
-    templateUrl: './driver-chip.html'
+    templateUrl: './driver-chip.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DriverChip {
     Math = Math;
@@ -11,12 +12,13 @@ export class DriverChip {
     timingData = input<TimingDataLinesItem>();
     timingAppData = input<TimingAppDataLinesItem>();
 
-    calculateGridPosDiff() {
+    // Computed cached values for template hot-path
+    teamColor = computed(() => '#' + (this.driver()?.TeamColour ?? '000000'));
+
+    positionChange = computed(() => {
         const currPosition = this.timingData()?.Line;
         const startPosition = this.timingAppData()?.GridPos ?? undefined;
-        if (currPosition != null && startPosition != null)
-            return +startPosition - currPosition;
-        else
-            return 0;
-    }
+        if (currPosition != null && startPosition != null) return +startPosition - currPosition;
+        return 0;
+    });
 }

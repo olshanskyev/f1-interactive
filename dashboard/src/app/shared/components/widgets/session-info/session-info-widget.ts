@@ -1,13 +1,15 @@
-import { Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ContaineredWidget } from '../containered-widget';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { qualifyingPart, sessionFinished } from '@core/lib/sub-signals';
+import { se } from 'date-fns/locale';
 
 @Component({
     selector: 'session-info-widget',
     styleUrl:'./session-info-widget.scss',
     templateUrl: './session-info-widget.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         MatIconModule,
         TranslateModule,
@@ -26,6 +28,7 @@ export class SessionInfoWidget extends ContaineredWidget {
     private tick = signal(0);
 
     timeRemaining = computed(() => {
+        if (this.sessionFinished()) return '00:00:00';
         this.tick(); // re-evaluate every second
         const clock = this.clock();
         if (!clock?.Remaining) return undefined;
@@ -47,41 +50,37 @@ export class SessionInfoWidget extends ContaineredWidget {
         this.destroyRef.onDestroy(() => clearInterval(intervalId));
     }
 
+    private readonly TRACK_STATUS_COLOR: Record<string, string> = {
+        AllClear: 'var(--f1-green)',
+        Yellow: 'var(--f1-yellow)',
+        VSCDeployed: 'var(--f1-yellow)',
+        SCDeployed: 'var(--f1-yellow)',
+        VSCEnding: 'var(--f1-yellow)',
+        SCEnding: 'var(--f1-yellow)',
+        Red: 'var(--f1-red)',
+    };
+
+    private readonly SESSION_STATUS_COLOR: Record<string, string> = {
+        Started: 'var(--f1-green)',
+        Aborted: 'var(--f1-red)',
+        Finished: 'var(--second-color)',
+        Finalised: 'var(--second-color)',
+        Ends: 'var(--second-color)',
+        Inactive: 'var(--inactive-color)',
+    };
+
     trackStatusColor = computed(() => {
-        switch (this.trackStatus()?.Message) {
-            case 'AllClear':
-                return 'var(--f1-green)';
-            case 'Yellow':
-            case 'VSCDeployed':
-            case 'SCDeployed':
-            case 'VSCEnding':
-            case 'SCEnding':
-                return 'var(--f1-yellow)';
-            case 'Red':
-                return 'var(--f1-red)';
-            default:
-                return 'var(--inactive-color)';
-        }
+        const msg = this.trackStatus()?.Message;
+        return msg ? (this.TRACK_STATUS_COLOR[msg] ?? 'var(--inactive-color)') : 'var(--inactive-color)';
     });
 
     sessionStatusColor = computed(() => {
-        switch (this.sessionStatus()?.Status) {
-            case 'Started':
-                return 'var(--f1-green)';
-            case 'Aborted':
-                return 'var(--f1-red)';
-            case 'Finished':
-            case 'Finalised':
-            case 'Ends':
-                return 'var(--second-color)';
-            case 'Inactive':
-                return 'var(--inactive-color)';
-            default:
-                return 'var(--inactive-color)';
-        }
+        const status = this.sessionStatus()?.Status;
+        return status ? (this.SESSION_STATUS_COLOR[status] ?? 'var(--inactive-color)') : 'var(--inactive-color)';
     });
 
-    countryCode() {
-        return this.sessionInfo()?.Meeting.Country.Code.toLowerCase();
-    }
+    countryCode = computed(() => {
+        const code = this.sessionInfo()?.Meeting?.Country?.Code;
+        return code ? code.toLowerCase() : undefined;
+    });
 }

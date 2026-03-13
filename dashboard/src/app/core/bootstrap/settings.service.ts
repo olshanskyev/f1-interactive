@@ -109,5 +109,9 @@ export class SettingsService {
     return this.options.selectedLayoutId;
   }
 
+  getShowRaceControlMessages() {
+    return this.options.showRaceControlMessages;
+  }
+
 
 }

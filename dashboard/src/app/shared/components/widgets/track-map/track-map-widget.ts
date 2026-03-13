@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, linkedSignal, signal, OnDestroy, Signal } from '@angular/core';
+import { Component, computed, effect, inject, linkedSignal, signal, OnDestroy, Signal, ChangeDetectionStrategy } from '@angular/core';
 import { ContaineredWidget } from '../containered-widget';
 import { CircuitService } from '@core';
 import { createMapPoints, createMiniSectors, createSectors, findYellowSectors, getSectorColor, MapSector, MiniSector, prioritizeColoredSectors, rad, rotate } from '@core/lib/map';
@@ -18,6 +18,7 @@ interface Corner {
     selector: 'track-map-widget',
     styleUrl:'./track-map-widget.scss',
     templateUrl: './track-map-widget.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         CarDot
     ]
@@ -80,17 +81,30 @@ export class TrackMapWidget extends ContaineredWidget implements OnDestroy {
 	});
 
 
+    joinedPoints = computed(() => {
+        const pts = this.points();
+        if (!pts || pts.length === 0) return '';
+        return 'M' + pts[0].x + ',' + pts[0].y + ' ' + pts.map((point) => 'L' + point.x + ',' + point.y).join(' ');
+    });
+
     driverDots = linkedSignal(() => {
+        const activePositions = this.positions();
         return Object.values(this.driverList()?.Lines ?? {})
             .reverse() //ToDo? make sorting based on position (at the momeent based on driver number)
             .map((driver) => {
-                const timingData = this.timingData()?.Lines?.[driver.RacingNumber];
+                const num = driver.RacingNumber;
+                const timingData = this.timingData()?.Lines?.[num];
                 const hidden = timingData
                     ? timingData.KnockedOut || timingData.Stopped || timingData.Retired
                     : false;
+
+                const pos = activePositions?.[num];
+                const onTrack = !((pos?.X ?? 0) === 0 && (pos?.Y ?? 0) === 0);
+
                 return {
                     driver,
                     hidden,
+                    onTrack,
                     pit: timingData ? timingData.InPit : false
                 };
             });
@@ -193,17 +207,6 @@ export class TrackMapWidget extends ContaineredWidget implements OnDestroy {
         this.rotation.set(fixedRotation);
         this.corners.set(cornerPositions);
         this.finishLine.set({ x: rotatedFinishLine.x, y: rotatedFinishLine.y, startAngle });
-    }
-
-
-    joinPoints(points: { x: number; y: number }[] | null) {
-        if (!points) return '';
-        return points.map((point) => 'L' + point.x + ',' + point.y).join(' ');
-    }
-
-    onTrack(racingNumber: string) {
-        return !((this.positions()?.[racingNumber]?.X ?? 0) === 0
-                && (this.positions()?.[racingNumber]?.Y ?? 0) === 0);
     }
 
     private findLastCompletedSegment(allSegments: SegmentsItem[]) {

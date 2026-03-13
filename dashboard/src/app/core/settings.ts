@@ -12,6 +12,7 @@ export interface AppSettings {
   language: string;
   useSimulator: boolean;
   selectedLayoutId?: string;
+  showRaceControlMessages: boolean;
 }
 
 export const defaults: AppSettings = {
@@ -25,4 +26,5 @@ export const defaults: AppSettings = {
   sidenavCollapsed: false,
   language: 'en-US',
   useSimulator: false,
+  showRaceControlMessages: false
 };
