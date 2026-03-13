@@ -34,6 +34,15 @@
     gap: 0.5rem;
     align-items: start;
     background-color: transparent;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 1s, transform 1s, background-color 5s;
+
+    @starting-style {
+        background-color: var(--mat-sys-secondary-container);
+        opacity: 0;
+        transform: translateY(-10px);
+    }
     //content-visibility: auto;
     //contain-intrinsic-size: 50px;
 }
