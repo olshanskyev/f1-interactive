@@ -3,7 +3,7 @@
     max-height: var(--default-list-height);
     overflow-y: auto;
     contain: content;
-    will-change: transform;
+    //will-change: transform;
 }
 
 :host([data-containered]) .container {
@@ -25,7 +25,7 @@
     height: 30px;
     padding-left: 1rem;
     font-size: small;
-    background-color: color-mix(in srgb, var(--mat-sys-surface-container), transparent 50%);
+    background-color: color-mix(in srgb, var(--mat-sys-surface-container), transparent 80%);
 }
 
 .message-item {
@@ -43,8 +43,8 @@
         opacity: 0;
         transform: translateY(-10px);
     }
-    //content-visibility: auto;
-    //contain-intrinsic-size: 50px;
+    content-visibility: auto;
+    contain-intrinsic-size: 50px;
 }
 
 .icon-container::before {
