@@ -1,5 +1,5 @@
 import { KeyValuePipe } from '@angular/common';
-import { Component, input, computed } from '@angular/core';
+import { Component, input, computed, PipeTransform, Pipe } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TimingAppDataLinesItem, TimingDataLinesItem, TimingStatsLinesItem } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';
@@ -17,6 +17,17 @@ const SEGMENT_CLASS_MAP = new Map<number, string>([
   [2064, 'bg-f1-blue'],
 ]);
 
+@Pipe({
+  name: 'segmentClass',
+  standalone: true
+})
+export class SegmentClassPipe implements PipeTransform {
+  transform(status?: number): string {
+    if (status === undefined) return 'bg-color-inactive';
+    return SEGMENT_CLASS_MAP.get(status) ?? 'bg-color-inactive';
+  }
+}
+
 @Component({
   selector: 'leaderboard-lap',
   templateUrl: './leaderboard-lap.html',
@@ -25,7 +36,8 @@ const SEGMENT_CLASS_MAP = new Map<number, string>([
     LapChip,
     IntervalChip,
     CurrentTyresChip,
-    LapCountChip
+    LapCountChip,
+    SegmentClassPipe
   ],
 })
 export class LeaderboardLap {
@@ -35,9 +47,4 @@ export class LeaderboardLap {
   qualifyingPart = input<number>();
 
   keepOrder = keepOrder;
-
-  getSegmentClass(status?: number) {
-    if (status === undefined) return 'bg-color-inactive';
-    return SEGMENT_CLASS_MAP.get(status) ?? 'bg-color-inactive';
-  }
 }

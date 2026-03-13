@@ -7,13 +7,13 @@
     <div
         [style.width]="(!timingData()?.NumberOfLaps || total === 1)? '100%' :
           (i === (total - 1))? '':
-          getStintLength(stint.value) / timingData()?.NumberOfLaps! * 100 + '%'"
+          (stint.value | stintLength) / timingData()?.NumberOfLaps! * 100 + '%'"
         [style.flex]="(i === (total - 1))? '1' : ''">
       <div class="place-self-end f-s-14">
-          {{getStintLength(stint.value)}}
+          {{stint.value | stintLength}}
       </div>
       <div class="stint-item w-full"
-        [style.background-color]="getStintColor(stint.value)"
+        [style.background-color]="stint.value | stintColor"
       >
       </div>
     </div>

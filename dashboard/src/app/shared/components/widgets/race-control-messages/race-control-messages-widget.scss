@@ -3,7 +3,7 @@
     max-height: var(--default-list-height);
     contain: content;
     overflow-y: auto;
-    //will-change: transform;
+    will-change: transform;
 }
 
 :host([data-containered]) .container {
