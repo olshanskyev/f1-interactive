@@ -1,9 +1,10 @@
-import { Component, input, computed } from '@angular/core';
+import { Component, input, computed, ChangeDetectionStrategy } from '@angular/core';
 import { TimingDataLinesItem, TimingStatsLinesItem } from '@core/types/f1types';
 
 @Component({
     selector: 'lap-chip',
-    templateUrl: './lap-chip.html'
+    templateUrl: './lap-chip.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LapChip {
     timingData = input<TimingDataLinesItem>();

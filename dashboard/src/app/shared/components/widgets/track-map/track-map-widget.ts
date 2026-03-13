@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, linkedSignal, signal, OnDestroy, Signal } from '@angular/core';
+import { Component, computed, effect, inject, linkedSignal, signal, OnDestroy, Signal, ChangeDetectionStrategy } from '@angular/core';
 import { ContaineredWidget } from '../containered-widget';
 import { CircuitService } from '@core';
 import { createMapPoints, createMiniSectors, createSectors, findYellowSectors, getSectorColor, MapSector, MiniSector, prioritizeColoredSectors, rad, rotate } from '@core/lib/map';
@@ -18,6 +18,7 @@ interface Corner {
     selector: 'track-map-widget',
     styleUrl:'./track-map-widget.scss',
     templateUrl: './track-map-widget.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         CarDot
     ]

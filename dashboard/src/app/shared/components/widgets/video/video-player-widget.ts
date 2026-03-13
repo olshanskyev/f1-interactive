@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, ChangeDetectionStrategy } from '@angular/core';
 import { ContaineredWidget } from '../containered-widget';
 import { SafeUrlPipe } from '@shared/pipes';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,6 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
     selector: 'video-player-widget',
     styleUrl:'./video-player-widget.scss',
     templateUrl: './video-player-widget.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         SafeUrlPipe,
         MatIconModule,

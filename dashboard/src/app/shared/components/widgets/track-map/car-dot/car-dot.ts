@@ -1,4 +1,4 @@
-import { Component, computed, effect, input, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, computed, input, NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
 import { rotate } from '@core/lib/map';
 import { PositionCar } from '@core/types/f1types';
 
@@ -6,6 +6,7 @@ import { PositionCar } from '@core/types/f1types';
     selector: 'g[car-dot]',
     templateUrl: './car-dot.html',
     styleUrl: './car-dot.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     schemas: [NO_ERRORS_SCHEMA],
     host: {

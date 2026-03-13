@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, linkedSignal, signal } from '@angular/core';
+import { Component, computed, effect, inject, linkedSignal, signal, ChangeDetectionStrategy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TimingDataLinesItem } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';
@@ -23,6 +23,7 @@ import { DriverChip } from './driver-chip/driver-chip';
   selector: 'leaderboard',
   templateUrl: './leaderboard.html',
   styleUrl: './leaderboard.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatIconModule,
     TranslateModule,

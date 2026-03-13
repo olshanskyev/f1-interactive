@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, ChangeDetectionStrategy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import {
   CarouselContainerDirective, CarouselItemDirective, CarouselTrackDirective,
@@ -10,6 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'weather-widget',
   templateUrl: './weather-widget.html',
   styleUrl: './weather-widget.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
         '[style.--dynamic-height.px]': '(dynamicHeight && dynamicHeight() > 0)? dynamicHeight() : defaultHeight',
         '[style.--default-height.px]': 'defaultHeight',

@@ -1,4 +1,4 @@
-import { Component, input, Pipe, PipeTransform } from '@angular/core';
+import { Component, input, Pipe, PipeTransform, ChangeDetectionStrategy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TimingAppDataLinesItem, TimingDataLinesItem, TimingStatsLinesItem } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';
@@ -21,6 +21,7 @@ export class HasBestSectorPipe implements PipeTransform {
   selector: 'leaderboard-sector',
   templateUrl: './leaderboard-sector.html',
   styleUrl: './leaderboard-sector.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule, TranslateModule,
     IntervalChip,
     LapChip,

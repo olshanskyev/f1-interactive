@@ -1,10 +1,11 @@
-import { Component, input, computed } from '@angular/core';
+import { Component, input, computed, ChangeDetectionStrategy } from '@angular/core';
 import { getLastNummericItem } from '@core/lib/arrays_maps';
 import { Stint, TimingAppDataLinesItem } from '@core/types/f1types';
 
 @Component({
     selector: 'current-tyres-chip',
-    templateUrl: './current-tyres-chip.html'
+    templateUrl: './current-tyres-chip.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CurrentTyresChip {
     timingAppData = input<TimingAppDataLinesItem>();

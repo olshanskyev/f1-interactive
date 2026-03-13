@@ -1,9 +1,10 @@
-import { Component, input, computed } from '@angular/core';
+import { Component, input, computed, ChangeDetectionStrategy } from '@angular/core';
 import { TimingDataLinesItem } from '@core/types/f1types';
 
 @Component({
     selector: 'interval-chip',
-    templateUrl: './interval-chip.html'
+    templateUrl: './interval-chip.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IntervalChip {
     timingData = input<TimingDataLinesItem>();

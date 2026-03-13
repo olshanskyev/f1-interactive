@@ -1,4 +1,4 @@
-import { Component, input, Pipe, PipeTransform } from '@angular/core';
+import { Component, input, Pipe, PipeTransform, ChangeDetectionStrategy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Stint, TimingAppDataLinesItem, TimingDataLinesItem } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';
@@ -39,6 +39,7 @@ export class StintLengthPipe implements PipeTransform {
   selector: 'leaderboard-tyres',
   templateUrl: './leaderboard-tyres.html',
   styleUrl: './leaderboard-tyres.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule, TranslateModule,
     CurrentTyresChip,
     KeyValuePipe,

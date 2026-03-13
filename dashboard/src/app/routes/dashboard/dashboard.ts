@@ -1,6 +1,6 @@
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, linkedSignal, signal, viewChild } from '@angular/core';
+import { Component, computed, effect, inject, linkedSignal, signal, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
 import { LayoutsService, SettingsService, WidgetFactory } from '@core';
@@ -19,6 +19,7 @@ import { MatDialog } from '@angular/material/dialog';
   selector: 'app-dashboard',
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     Leaderboard,
     SimPlayer,

@@ -1,4 +1,4 @@
-import { Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ContaineredWidget } from '../containered-widget';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
@@ -9,6 +9,7 @@ import { se } from 'date-fns/locale';
     selector: 'session-info-widget',
     styleUrl:'./session-info-widget.scss',
     templateUrl: './session-info-widget.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         MatIconModule,
         TranslateModule,

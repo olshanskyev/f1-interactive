@@ -1,5 +1,5 @@
 import { KeyValuePipe } from '@angular/common';
-import { Component, input, computed, PipeTransform, Pipe } from '@angular/core';
+import { Component, input, PipeTransform, Pipe, ChangeDetectionStrategy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TimingAppDataLinesItem, TimingDataLinesItem, TimingStatsLinesItem } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';
@@ -32,6 +32,7 @@ export class SegmentClassPipe implements PipeTransform {
   selector: 'leaderboard-lap',
   templateUrl: './leaderboard-lap.html',
   styleUrl: './leaderboard-lap.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule, TranslateModule, KeyValuePipe,
     LapChip,
     IntervalChip,
