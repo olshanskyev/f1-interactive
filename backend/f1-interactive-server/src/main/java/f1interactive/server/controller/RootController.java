@@ -36,10 +36,10 @@ class RootController {
 
     private void onInit(String event) {
         synchronized (initStateMutex) {
-            logger.info("new init state: {}", event);
             Root initMessage = EventsParser.parseRoot(event);
             stateHandler.init(initMessage);
             publisher.publish("init", initMessage);
+            logger.info("new init state: {}", stateHandler.getState());
         }
     }
 
