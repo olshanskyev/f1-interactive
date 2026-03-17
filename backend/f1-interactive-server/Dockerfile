@@ -6,8 +6,7 @@ WORKDIR /app
 # This copies the server jar and any optional tools (simulator, sniffer)
 # built into the target folder by CI.
 COPY target/*.jar /app/
-RUN find /app -maxdepth 1 -name "f1-interactive-server*.jar" -exec mv {} /app/app.jar \;
 
 EXPOSE 8080 8081
 
-ENTRYPOINT ["java","-jar","/app/app.jar"]
+ENTRYPOINT ["sh", "-c", "java -jar /app/f1-interactive-server*.jar"]
