@@ -98,23 +98,25 @@ export abstract class LiveService {
     return this.stateHandler.updateSignals['CarData.z'].asReadonly();
   }
 
-  positions = computed(() => {
+  private positions = computed(() => {
         const posZ = this.stateHandler.updateSignals['Position.z']();
         return (posZ)? inflate<Position>(posZ).Position: [];
   });
 
-  posStackContainer = new StackContainer<PositionCar>(this.positions);
+  private posStackContainer = new StackContainer<PositionCar>(this.positions);
+
+  private normalPositionSignal = computed(() => {
+      const posZ = this.stateHandler.updateSignals['Position.z']();
+      const array = (posZ)? inflate<Position>(posZ).Position: [];
+      // return last value from array
+      return array.length > 0 ? array[array.length - 1].Entries : undefined;
+  });
 
   getPositionsLiveSignal(frequency?: 'max' | 'normal') {
     if (frequency === 'max') {
       return this.posStackContainer.liveValue();
     } else
-    return computed(() => {
-        const posZ = this.stateHandler.updateSignals['Position.z']();
-        const array = (posZ)? inflate<Position>(posZ).Position: [];
-        // return last value from array
-        return array.length > 0 ? array[array.length - 1].Entries : undefined;
-    });
+    return this.normalPositionSignal;
   }
 
   isPositionZAvailable() {
@@ -135,5 +137,49 @@ export abstract class LiveService {
 
   getLapCountSignal() {
     return this.stateHandler.updateSignals['LapCount'].asReadonly();
+  }
+
+  private qualifyingPartSignal = computed(() => {
+    const sessionData = this.getSessionDataSignal();
+    //get last sessionData.series
+      if (!sessionData()?.Series) return undefined;
+      const lastSeries = Object.values(sessionData()!.Series).reverse()[0];
+      return lastSeries?.QualifyingPart;
+  });
+
+  getQualifyingPartSignal() {
+    return this.qualifyingPartSignal;
+  }
+
+
+  private sessionYearSignal = computed(() => {
+    const sessionInfo = this.getSessionInfoSignal();
+    return sessionInfo()?.StartDate
+        ? new Date(sessionInfo()!.StartDate).getFullYear()
+        : new Date().getFullYear();
+  });
+
+  getSessionYearSignal() {
+    return this.sessionYearSignal;
+  }
+
+  private sessionFinishedSignal = computed(() => {
+    const sessionStatus = this.getSessionStatusSignal();
+    return sessionStatus()?.Status === 'Finished' ||
+           sessionStatus()?.Status === 'Finalised' ||
+           sessionStatus()?.Status === 'Ends';
+  });
+
+  getSessionFinishedSignal() {
+    return this.sessionFinishedSignal;
+  }
+
+  private isRaceSignal = computed(() => {
+    const sessionInfo = this.getSessionInfoSignal();
+    return sessionInfo()?.Type === 'Race';
+  });
+
+  getIsRaceSignal() {
+    return this.isRaceSignal;
   }
 }

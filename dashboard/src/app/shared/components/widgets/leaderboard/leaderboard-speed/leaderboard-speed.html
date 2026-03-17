@@ -1,5 +1,5 @@
-<interval-chip [timingData]="timingData()" [qualifyingPart]="qualifyingPart()"/>
-<lap-chip [timingData]="timingData()" [timingStat]="timingStat()" [qualifyingPart]="qualifyingPart()"/>
+<interval-chip [timingData]="timingData()" />
+<lap-chip [timingData]="timingData()" [timingStat]="timingStat()" />
 <lap-count-chip [timingData]="timingData()"/>
 
 @for(speed of timingData()?.Speeds | keyvalue; track speed.key) {

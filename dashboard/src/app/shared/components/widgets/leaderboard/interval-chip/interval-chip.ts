@@ -1,4 +1,5 @@
-import { Component, input, computed, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, computed, ChangeDetectionStrategy, inject } from '@angular/core';
+import { LiveService } from '@core/services/live/live.service';
 import { TimingDataLinesItem } from '@core/types/f1types';
 
 @Component({
@@ -7,8 +8,9 @@ import { TimingDataLinesItem } from '@core/types/f1types';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IntervalChip {
+    liveService = inject(LiveService);
     timingData = input<TimingDataLinesItem>();
-    qualifyingPart = input<number>();
+    qualifyingPart = this.liveService.getQualifyingPartSignal();
 
     positionAheadColorClass = computed(() => {
         return this.timingData()?.IntervalToPositionAhead?.Catching ? 'text-f1-green' : '';

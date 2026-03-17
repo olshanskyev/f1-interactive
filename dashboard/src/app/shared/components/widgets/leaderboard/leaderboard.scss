@@ -5,11 +5,11 @@
 
 .scroll-container {
     height: 100% !important;
+    contain: content;
     overflow-y: auto;
     view-transition-class: leaderboard-scroll;
-    overflow-anchor: none;
     will-change: transform;
-    contain: content;
+    overflow-anchor: none;
 }
 
 .transition-container {
