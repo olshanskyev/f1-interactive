@@ -106,10 +106,12 @@ export class Leaderboard extends ContaineredWidget {
           this.viewTransitionService.requestTransition(() =>
             this.timingDataMap.set(newTimingDataMap)
           ).then(() => {
-            // Only clear movements if no newer transition has been requested
-            if (this.transitionVersion === version) {
-              this.movements.set({});
-            }
+            setTimeout(() => {
+              // Only clear movements if no newer transition has been requested
+              if (this.transitionVersion === version) {
+                this.movements.set({});
+              }
+            }, 2000);
           });
         }
       }

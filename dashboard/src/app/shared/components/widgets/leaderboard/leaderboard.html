@@ -11,7 +11,7 @@
       <mat-divider/>
     }
 
-    <div class="scroll-container p-b-8" [style.view-transition-name]="'scroll-container-' + uniqueId" (scroll)="onScroll($event)">
+    <div class="scroll-container p-b-8" (scroll)="onScroll($event)">
       <div class="h-full min-w-full w-fit p-x-8 " [class.is-scrolled]="isScrolled()">
         <div class="main-grid"
           [class.leaderboard-laps-template-columns]="mode() === 'laps'"
@@ -55,7 +55,7 @@
           }
 
           @for (entry of entriesArray(); track entry[0]) {
-            <div class="transition-container grid-item" [style.view-transition-name]="'driver-' + uniqueId + '-' + entry[1].RacingNumber"
+            <div class="transition-container grid-item"
               [class.out-driver]="timingData()?.Lines?.[entry[0]] | isDriverOut">
               <div class="position-number"
                 [class.elimination-zone]="eliminationPositions().has(entry[1].Line)"

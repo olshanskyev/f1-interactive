@@ -58,7 +58,10 @@
     contain-intrinsic-size: 50px;
     content-visibility: auto;
     background-color: transparent;
-    animation: slide-in 1s ease-out forwards, bg-highlight 5s ease-out forwards;
+}
+
+.message-item:first-child {
+    animation: slide-in 1s ease-out forwards, bg-highlight 3s ease-out forwards;
 }
 
 .icon-container::before {

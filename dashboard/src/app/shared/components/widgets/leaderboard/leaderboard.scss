@@ -7,7 +7,6 @@
     height: 100% !important;
     contain: content;
     overflow-y: auto;
-    view-transition-class: leaderboard-scroll;
     will-change: transform;
     overflow-anchor: none;
 }
@@ -16,8 +15,6 @@
     display: grid;
     grid-template-columns: subgrid;
     grid-column: 1 / -1;
-    view-transition-class: drivers-group;
-    view-transition-group: nearest;
     will-change: transform;
 }
 
