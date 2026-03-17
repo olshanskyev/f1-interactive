@@ -6,8 +6,9 @@ on:
     paths:
       - 'backend/f1-interactive-server/**'
       - 'backend/common/**'
+      - 'backend/tools/**'
   workflow_dispatch: {}
-  
+
 permissions:
   contents: read
   packages: write
@@ -33,6 +34,20 @@ jobs:
 
       - name: Build f1-interactive-server
         run: mvn -B -f backend/f1-interactive-server/pom.xml package
+
+      - name: Build and copy f1-interactive-simulator (if exists)
+        run: |
+          if [ -f "backend/tools/f1-interactive-simulator/pom.xml" ]; then
+            mvn -B -f backend/tools/f1-interactive-simulator/pom.xml package
+            cp backend/tools/f1-interactive-simulator/target/*.jar backend/f1-interactive-server/target/ 2>/dev/null || true
+          fi
+
+      - name: Build and copy f1-interactive-sniffer (if exists)
+        run: |
+          if [ -f "backend/tools/f1-interactive-sniffer/pom.xml" ]; then
+            mvn -B -f backend/tools/f1-interactive-sniffer/pom.xml package
+            cp backend/tools/f1-interactive-sniffer/target/*.jar backend/f1-interactive-server/target/ 2>/dev/null || true
+          fi
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
