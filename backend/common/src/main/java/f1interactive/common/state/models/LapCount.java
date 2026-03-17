@@ -16,7 +16,7 @@ public class LapCount implements UpdateEvent{
         if (currentLap != null)
             state.lapCount.currentLap = currentLap;
         if (totalLaps != null)
-            state.lapCount.totalLaps = currentLap;
+            state.lapCount.totalLaps = totalLaps;
 
         return state;
     }

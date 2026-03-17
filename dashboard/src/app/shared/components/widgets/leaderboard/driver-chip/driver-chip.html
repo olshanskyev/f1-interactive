@@ -8,10 +8,12 @@
         </span>
         </div>
         <div>
-        @if (positionChange(); as positionChange) {
-        <span class="f-s-12 p-r-4" [class]="(positionChange > 0? 'text-f1-green': 'text-f1-red')">
-            {{(positionChange > 0)?'▲': '▼'}} {{Math.abs(positionChange)}}
-        </span>
+        @if (isRace()) {
+            @if (positionChange(); as positionChange) {
+            <span class="f-s-12 p-r-4" [class]="(positionChange > 0? 'text-f1-green': 'text-f1-red')">
+                {{(positionChange > 0)?'▲': '▼'}} {{Math.abs(positionChange)}}
+            </span>
+            }
         }
         </div>
     </div>

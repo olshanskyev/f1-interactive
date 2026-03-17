@@ -1,4 +1,5 @@
-import { Component, input, computed, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, computed, ChangeDetectionStrategy, inject } from '@angular/core';
+import { LiveService } from '@core/services/live/live.service';
 import { DriverListItem, TimingAppDataLinesItem, TimingDataLinesItem } from '@core/types/f1types';
 
 @Component({
@@ -8,9 +9,11 @@ import { DriverListItem, TimingAppDataLinesItem, TimingDataLinesItem } from '@co
 })
 export class DriverChip {
     Math = Math;
+    liveService = inject(LiveService);
     driver = input<DriverListItem>();
     timingData = input<TimingDataLinesItem>();
     timingAppData = input<TimingAppDataLinesItem>();
+    isRace = this.liveService.getIsRaceSignal();
 
     // Computed cached values for template hot-path
     teamColor = computed(() => '#' + (this.driver()?.TeamColour ?? '000000'));

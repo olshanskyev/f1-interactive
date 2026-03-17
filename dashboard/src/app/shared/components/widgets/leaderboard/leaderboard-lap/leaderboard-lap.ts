@@ -45,7 +45,6 @@ export class LeaderboardLap {
   timingData = input<TimingDataLinesItem>();
   timingAppData = input<TimingAppDataLinesItem>();
   timingStat = input<TimingStatsLinesItem>();
-  qualifyingPart = input<number>();
 
   keepOrder = keepOrder;
 }

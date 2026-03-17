@@ -19,7 +19,7 @@
                         <div class="track-status" [style.color]="trackStatusColor()">
                             {{'status.' + trackStatus()?.Message | translate}}
                         </div>
-                        @if (sessionInfo()?.Type === 'Race') {
+                        @if (isRace()) {
                             @if (sessionFinished()) {
                                 <div class="chip chequered-flag">
                                 </div>

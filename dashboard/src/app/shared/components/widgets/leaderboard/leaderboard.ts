@@ -15,7 +15,6 @@ import { LeaderboardSector } from './leaderboard-sector/leaderboard-sector';
 import { LeaderboardSpeed } from './leaderboard-speed/leaderboard-speed';
 import { LeaderboardTyres } from './leaderboard-tyres/leaderboard-tyres';
 import { sortTimingDataByPosition } from '@core/lib/sorting';
-import { qualifyingPart, sessionYear } from '@core/lib/sub-signals';
 import { DriverChip } from './driver-chip/driver-chip';
 
 @Pipe({
@@ -60,8 +59,8 @@ export class Leaderboard extends ContaineredWidget {
   sessionData = this.liveService.getSessionDataSignal();
   sessionInfo = this.liveService.getSessionInfoSignal();
 
-  sessionYear = sessionYear(this.sessionInfo);
-  qualifyingPart = qualifyingPart(this.sessionData);
+  sessionYear = this.liveService.getSessionYearSignal();
+  qualifyingPart = this.liveService.getQualifyingPartSignal();
 
   readonly uniqueId = Math.random().toString(36).substring(2, 9);
 

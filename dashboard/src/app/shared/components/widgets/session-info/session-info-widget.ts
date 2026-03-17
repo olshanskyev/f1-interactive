@@ -2,8 +2,6 @@ import { Component, computed, DestroyRef, effect, inject, signal, ChangeDetectio
 import { ContaineredWidget } from '../containered-widget';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
-import { qualifyingPart, sessionFinished } from '@core/lib/sub-signals';
-import { se } from 'date-fns/locale';
 
 @Component({
     selector: 'session-info-widget',
@@ -22,8 +20,9 @@ export class SessionInfoWidget extends ContaineredWidget {
     trackStatus = this.liveService.getTrackStatusSignal();
     sessionStatus = this.liveService.getSessionStatusSignal();
     sessionData = this.liveService.getSessionDataSignal();
-    sessionFinished = sessionFinished(this.sessionStatus);
+    sessionFinished = this.liveService.getSessionFinishedSignal();
     lapCount = this.liveService.getLapCountSignal();
+    isRace = this.liveService.getIsRaceSignal();
     private destroyRef = inject(DestroyRef);
     private tick = signal(0);
 
@@ -42,7 +41,7 @@ export class SessionInfoWidget extends ContaineredWidget {
         return new Date(adjustedMs).toISOString().substring(11, 19);
     });
 
-    qualifyingPart = qualifyingPart(this.sessionData);
+    qualifyingPart = this.liveService.getQualifyingPartSignal();
 
     constructor() {
         super();

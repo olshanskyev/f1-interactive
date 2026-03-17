@@ -1,4 +1,5 @@
-import { Component, input, computed, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, computed, ChangeDetectionStrategy, inject } from '@angular/core';
+import { LiveService } from '@core/services/live/live.service';
 import { TimingDataLinesItem, TimingStatsLinesItem } from '@core/types/f1types';
 
 @Component({
@@ -7,9 +8,10 @@ import { TimingDataLinesItem, TimingStatsLinesItem } from '@core/types/f1types';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LapChip {
+    liveService = inject(LiveService);
     timingData = input<TimingDataLinesItem>();
     timingStat = input<TimingStatsLinesItem>();
-    qualifyingPart = input<number>();
+    qualifyingPart = this.liveService.getQualifyingPartSignal();
     // Computed helpers
     lastNotEmptyLapTime = computed(() => {
         const best = this.timingData()?.BestLapTimes;
