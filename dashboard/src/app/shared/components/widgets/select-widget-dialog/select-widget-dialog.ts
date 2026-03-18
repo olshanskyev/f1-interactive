@@ -5,8 +5,9 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { WidgetFactory } from '@core';
 import { WidgetComponent, WidgetType } from '@core/types/widgets';
 import { TranslateModule } from '@ngx-translate/core';
-import { CdkDragEnd, CdkDragStart, DragDropModule } from '@angular/cdk/drag-drop';
+import { CdkDragEnd, DragDropModule } from '@angular/cdk/drag-drop';
 import { MatIconModule } from '@angular/material/icon';
+import { isMobile } from '@core/lib/device';
 
 @Component({
     selector: 'select-widget-dialog',
@@ -28,14 +29,14 @@ export class SelectWidgetDialog {
     data = inject<{ cellSize: Signal<number> }>(MAT_DIALOG_DATA);
     widgetHeight = signal<number>(0);
     widgetWidth = signal<number>(0);
-
+    isMobile = signal(isMobile);
     widgetsMap = new Map<WidgetType, WidgetComponent>();
 
     constructor() {
         this.widgetsMap = this.widgetFactory.getWidgets();
     }
 
-    onDragStarted(event: CdkDragStart, widget: WidgetComponent) {
+    onDragStarted(widget: WidgetComponent) {
         this.widgetHeight.set(this.data.cellSize() * widget.meta.defaultSizes[0].rowSpan);
         this.widgetWidth.set(this.data.cellSize() * widget.meta.defaultSizes[0].colSpan);
         this.dialogRef.addPanelClass('invisible-dialog');

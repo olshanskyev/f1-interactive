@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { CurrentTyresChip } from '../current-tyres-chip/current-tyres-chip';
 import { KeyValuePipe } from '@angular/common';
-import { keepOrder } from '@core/lib/arrays_maps';
+import { keepOrder } from '@core/lib/arrays-maps';
 
 const STINT_COLOR: Record<string, string> = {
   SOFT: '#F12F32',

@@ -8,4 +8,5 @@ export abstract class ContaineredWidget{
     container = inject(WidgetContainerDirective, {optional: true});
     dynamicHeight = this.container?.height();
     settings = input<Record<string, any>>();
+    editMode = input<boolean>(false);
 }

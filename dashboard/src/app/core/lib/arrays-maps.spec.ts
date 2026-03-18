@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { convertObjectIntoSortedArray, getLastNummericItem } from './arrays_maps';
+import { convertObjectIntoSortedArray, getLastNummericItem } from './arrays-maps';
 
 describe('Arrays and maps tests', () => {
     const stints: Record<number, any> = {

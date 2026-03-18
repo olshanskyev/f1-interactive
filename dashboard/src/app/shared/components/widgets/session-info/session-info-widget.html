@@ -20,12 +20,11 @@
                             {{'status.' + trackStatus()?.Message | translate}}
                         </div>
                         @if (isRace()) {
+                            <div class="chip">
+                                {{lapCount()?.CurrentLap}} / {{lapCount()?.TotalLaps}}
+                            </div>
                             @if (sessionFinished()) {
                                 <div class="chip chequered-flag">
-                                </div>
-                            } @else  {
-                                <div class="chip">
-                                    {{lapCount()?.CurrentLap}} / {{lapCount()?.TotalLaps}}
                                 </div>
                             }
                         } @else {

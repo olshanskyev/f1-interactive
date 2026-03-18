@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { LapChip } from '../lap-chip/lap-chip';
 import { IntervalChip } from '../interval-chip/interval-chip';
 import { CurrentTyresChip } from '../current-tyres-chip/current-tyres-chip';
-import { keepOrder } from '@core/lib/arrays_maps';
+import { keepOrder } from '@core/lib/arrays-maps';
 import { LapCountChip } from '../lap-count-chip/lap-count-chip';
 
 const SEGMENT_CLASS_MAP = new Map<number, string>([
