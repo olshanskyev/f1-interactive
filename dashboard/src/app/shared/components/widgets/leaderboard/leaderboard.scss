@@ -7,17 +7,39 @@
     height: 100% !important;
     contain: content;
     overflow-y: auto;
-    view-transition-class: leaderboard-scroll;
     will-change: transform;
     overflow-anchor: none;
+}
+
+.scroll-wrapper {
+    position: relative;
+    height: 100%;
+    min-height: 0;
+}
+
+.vertical-scroll-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(1.5rem + 7rem + 2*var(--table-gap));
+    z-index: 10;
+    visibility: hidden;
+    width: 1px;
+    pointer-events: none;
+    background: var(--mat-divider-color);
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.vertical-scroll-line.is-scrolled {
+    visibility: visible;
+    opacity: 1;
 }
 
 .transition-container {
     display: grid;
     grid-template-columns: subgrid;
     grid-column: 1 / -1;
-    view-transition-class: drivers-group;
-    view-transition-group: nearest;
     will-change: transform;
 }
 
@@ -104,26 +126,6 @@
   z-index: 3;
   background: var(--sticky-column-bg);
   box-shadow: calc(-1*var(--table-gap)) 0 0 0 var(--sticky-column-bg);
-
-  &::after {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: calc(-1 * var(--table-gap));
-    visibility: hidden;
-    width: 1px;
-    content: '';
-    background: var(--mat-divider-color);
-    opacity: 0;
-    translate: 100%;
-    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
-  }
-}
-
-.is-scrolled .sticky-header-row > *:nth-child(2)::after,
-.is-scrolled .grid-item > *:nth-child(2)::after {
-  visibility: visible;
-  opacity: 1;
 }
 
 .out-driver {

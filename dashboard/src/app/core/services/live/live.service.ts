@@ -5,7 +5,7 @@ import { SseClient } from 'ngx-sse-client';
 import { StateHandler } from './state/state-handler';
 import { inflate } from '@core/lib/inflate';
 import { Position, PositionCar } from '@core/types/f1types';
-import { StackContainer } from '@core/lib/StackContainer';
+import { StackContainer } from '@core/lib/stack-container';
 
 export interface UpdateEventRecord {
   className: string;

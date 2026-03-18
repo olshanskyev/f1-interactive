@@ -13,6 +13,7 @@ import { ToolsPanelComponent } from './tools-panel/tools-panel';
 import { MatButtonModule } from '@angular/material/button';
 import { calcGridOffset } from '@core/lib/offsets';
 import { MatDialog } from '@angular/material/dialog';
+import { isMobile } from '@core/lib/device';
 
 
 @Component({
@@ -59,6 +60,7 @@ export class DashboardComponent {
   useSimulator = this.settingsService.options.useSimulator;
 
   newEvent = toSignal(this.liveService.live(undefined, undefined));
+  isMobile = signal(isMobile);
 
   private loadWidgets(layout: Layout) {
       const toDisplay: DisplayWidget[] = layout.widgets.map(item => {

@@ -12,7 +12,7 @@ export class WidgetFactory {
             type: WidgetType.VideoPlayerWidget,
             meta : {
                 settingsList: {
-                    source: {type: ['VK','YouYube'], defaultValue: 'VK'},
+                    source: {type: ['VK'/*,'YouYube'*/], defaultValue: 'VK'},
                     embedCode: {type: 'string'},
                 },
                 defaultSizes: [{colSpan: 16, rowSpan: 9}],

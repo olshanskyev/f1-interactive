@@ -1,25 +1,3 @@
-// next two because all control elements are unresponsive during transition
-::view-transition {
-  pointer-events: none !important;
-}
-
-:root {
-  view-transition-name: none;
-}
-
-::view-transition-group(.drivers-group) {
-  animation-duration: 1s !important;
-}
-
-::view-transition-group(.leaderboard-scroll) {
-  overflow: clip;
-}
-
-::view-transition-group(app-header) {
-  // Ensure header stays above all other content during transitions
-  z-index: 999;
-}
-
 @keyframes slow-blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }

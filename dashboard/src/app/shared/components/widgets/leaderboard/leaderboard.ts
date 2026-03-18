@@ -3,7 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { TimingDataLinesItem } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';
 import { LeaderboardLap } from './leaderboard-lap/leaderboard-lap';
-import { areMapKeySequencesEqual, calculateSequenceChanges } from '@core/lib/arrays_maps';
+import { areMapKeySequencesEqual, calculateSequenceChanges } from '@core/lib/arrays-maps';
 import { ContaineredWidget } from '../containered-widget';
 import { ViewTransitionService } from '../../../../core/services/view-transition.service';
 import {MatTabsModule} from '@angular/material/tabs';
@@ -106,10 +106,12 @@ export class Leaderboard extends ContaineredWidget {
           this.viewTransitionService.requestTransition(() =>
             this.timingDataMap.set(newTimingDataMap)
           ).then(() => {
-            // Only clear movements if no newer transition has been requested
-            if (this.transitionVersion === version) {
-              this.movements.set({});
-            }
+            setTimeout(() => {
+              // Only clear movements if no newer transition has been requested
+              if (this.transitionVersion === version) {
+                this.movements.set({});
+              }
+            }, 2000);
           });
         }
       }

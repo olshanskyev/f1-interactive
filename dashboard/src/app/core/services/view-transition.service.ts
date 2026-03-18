@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ApplicationRef, inject } from '@angular/core';
 
 interface PendingTransition {
   callback: () => void;
@@ -6,29 +6,15 @@ interface PendingTransition {
 }
 
 /**
- * Centralized service for coordinating View Transitions across multiple components.
- *
- * The browser's `document.startViewTransition()` API only supports one active
- * transition at a time. This service batches all transition requests from the
- * same microtask into a single `startViewTransition()` call, ensuring that
- * multiple widgets (e.g. several leaderboard tables) animate simultaneously.
- *
- * If a transition is already in progress, new requests are queued and executed
- * as a batch once the current transition completes.
+ * FLIP animation service
  */
 @Injectable({ providedIn: 'root' })
 export class ViewTransitionService {
   private pendingCallbacks: PendingTransition[] = [];
   private flushScheduled = false;
   private isTransitioning = false;
+  private appRef = inject(ApplicationRef);
 
-  /**
-   * Request a DOM-mutating callback to run inside a view transition.
-   * All requests made within the same microtask are batched into one
-   * `document.startViewTransition()` call.
-   *
-   * @returns A promise that resolves when the transition animation finishes.
-   */
   requestTransition(callback: () => void): Promise<void> {
     return new Promise<void>((resolve) => {
       this.pendingCallbacks.push({ callback, resolve });
@@ -56,28 +42,65 @@ export class ViewTransitionService {
     const batch = this.pendingCallbacks;
     this.pendingCallbacks = [];
 
-    const executeAll = () => {
-      for (const item of batch) {
-        item.callback();
-      }
-    };
+    // 1. FIRST: Record initial bounding boxes of elements we want to animate
+    const elements = Array.from(document.querySelectorAll('.transition-container')) as HTMLElement[];
+    const firstRects = new Map<HTMLElement, DOMRect>();
+    elements.forEach(el => firstRects.set(el, el.getBoundingClientRect()));
 
-    const resolveAll = () => {
+    // Execute state updates
+    for (const item of batch) {
+      item.callback();
+    }
+
+    // Force Angular change detection to update the DOM immediately
+    this.appRef.tick();
+
+    // 2. LAST & INVERT: Read new positions and apply inverse transform
+    const animatedElements: HTMLElement[] = [];
+
+    firstRects.forEach((firstRect, el) => {
+      // If the element is still in the DOM
+      if (document.body.contains(el)) {
+        const lastRect = el.getBoundingClientRect();
+        const deltaX = firstRect.left - lastRect.left;
+        const deltaY = firstRect.top - lastRect.top;
+
+        if (deltaX !== 0 || deltaY !== 0) {
+          animatedElements.push(el);
+          el.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+          el.style.transition = 'none'; // Disable transition for instant revert
+          // Ensure elements moving UP (positive delta) stay on top of elements moving DOWN
+          el.style.position = 'relative';
+          el.style.zIndex = deltaY > 0 ? '2' : '1';
+        }
+      }
+    });
+
+    // Force style recalculation (reflow)
+    document.body.offsetHeight;
+
+    // 3. PLAY: Run the animation to the new positions
+    animatedElements.forEach((el) => {
+      el.style.transition = 'transform 1s ease-out';
+      el.style.transform = ''; // Removes inline style to transform back to 0
+    });
+
+    // Resolve after the animation completes
+    setTimeout(() => {
+      animatedElements.forEach((el) => {
+        el.style.transition = ''; // Clean up
+        el.style.position = '';
+        el.style.zIndex = '';
+      });
+
       this.isTransitioning = false;
       for (const item of batch) {
         item.resolve();
       }
-      // Process any requests that arrived while the transition was running
+
       if (this.pendingCallbacks.length > 0) {
         this.scheduleFlush();
       }
-    };
-
-    if (!document.startViewTransition) {
-      executeAll();
-      resolveAll();
-    } else {
-      document.startViewTransition(() => executeAll()).finished.then(() => resolveAll());
-    }
+    }, 1000);
   }
 }

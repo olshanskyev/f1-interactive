@@ -1,5 +1,5 @@
 import { Component, input, computed, ChangeDetectionStrategy } from '@angular/core';
-import { getLastNummericItem } from '@core/lib/arrays_maps';
+import { getLastNummericItem } from '@core/lib/arrays-maps';
 import { Stint, TimingAppDataLinesItem } from '@core/types/f1types';
 
 @Component({
