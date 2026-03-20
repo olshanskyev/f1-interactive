@@ -5,13 +5,17 @@
 .matero-container {
   --mat-sidenav-content-background-color: transparent;
 
-  height: 100%;
+  min-height: 100dvh;
 }
 
 .matero-sidenav {
   --mat-sidenav-container-width: var(--sidenav-width);
 
-  position: absolute;
+  position: fixed !important;
+  top: 0;
+  bottom: 0;
+  height: 100dvh !important;
+  overflow-y: auto;
   overflow-x: hidden;
   border-width: 0 !important;
   transition-property: transform, width !important;
@@ -111,6 +115,14 @@
   .matero-header {
     position: sticky;
     top: 0;
+  }
+
+  /* To make sticky work with native body scrolling, we have to override
+     Angular Material's default hidden/auto overflow behaviors on the containers */
+
+  .mat-sidenav-container,
+  .mat-sidenav-content {
+    overflow: visible !important;
   }
 
   .matero-topmenu {

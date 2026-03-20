@@ -3,9 +3,6 @@
 }
 
 .grid-container {
-    position: absolute;
-    top: 0;
-    left: 0;
     display: grid;
     grid-template-rows: repeat(var(--grid-rows), var(--cell-size));
     grid-template-columns: repeat(var(--grid-columns), var(--cell-size));
@@ -23,10 +20,14 @@
 }
 
 .background-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
     z-index: 1;
 }
 
 .overlay-grid {
+    position: relative;
     z-index: 2;
     overflow: hidden;
 }

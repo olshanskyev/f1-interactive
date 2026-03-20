@@ -38,7 +38,7 @@ export class GridContainerComponent implements AfterViewInit, OnDestroy {
     ngAfterViewInit(): void {
 
         this.resizeObserver = new ResizeObserver(entries => {
-            // 64 - fixed size of header + padding
+            // 80 = --mat-toolbar-standard-height + 1rem padding
             const headerHeight = (this.isFullScreen())? 0: 80;
 
             const availableWidth = entries[0].contentRect.width;

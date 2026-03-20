@@ -24,7 +24,6 @@
   --topmenu-dropdown-item-active-text-color: var(--mat-sys-primary);
   --mat-toolbar-standard-height: 4rem;
   --mat-toolbar-mobile-height: 3.5rem;
-  --header-height: 64px;
   --small-icons-size: 18px;
   --container-margin: 0.2rem;
   --default-list-height: 400px;
@@ -39,8 +38,7 @@
 html,
 body {
   position: relative; // 1
-  height: 100%;
-  overflow: auto; // 2
+  min-height: 100%;
   overscroll-behavior-x: none;
   background-color: var(--body-background-color);
 }
