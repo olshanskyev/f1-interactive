@@ -1,0 +1,22 @@
+.container {
+    height: 100%;
+    max-height: var(--default-list-height);
+    contain: content;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    will-change: transform;
+}
+
+:host([data-containered]) .container {
+    max-height: 100%;
+}
+
+.capture-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: start;
+    contain-intrinsic-size: 50px;
+    content-visibility: auto;
+    background-color: transparent;
+}

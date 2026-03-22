@@ -113,5 +113,8 @@ export class SettingsService {
     return this.options.showRaceControlMessages;
   }
 
+  getShowTeamRadio() {
+    return this.options.showTeamRadio;
+  }
 
 }

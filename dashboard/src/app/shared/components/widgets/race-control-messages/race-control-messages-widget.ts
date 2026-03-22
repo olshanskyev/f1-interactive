@@ -1,17 +1,17 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { ContaineredWidget } from '../containered-widget';
 import { MatIconModule } from '@angular/material/icon';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule, DatePipe } from '@angular/common';
 import { sortUtc } from '@core/lib/sorting';
 import { Message } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';
 import { SettingsService } from '@core';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'race-control-messages-widget',
   standalone: true,
-  imports: [MatIconModule, MatCheckboxModule, CommonModule, DatePipe, TranslateModule],
+  imports: [MatIconModule, CommonModule, DatePipe, TranslateModule, MatSlideToggleModule],
   templateUrl: './race-control-messages-widget.html',
   styleUrl: './race-control-messages-widget.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,7 +23,8 @@ import { SettingsService } from '@core';
 export class RaceControlMessagesWidget extends ContaineredWidget {
   settingsService = inject(SettingsService);
   messagesSignal = this.liveService.getRaceControlMessagesSignal();
-  showMessages = signal(this.settingsService.getShowRaceControlMessages());
+  // If the widget is inside a container (custom layout), we always show messages, otherwise we check the user setting
+  showMessages = signal((this.container)? true: this.settingsService.getShowRaceControlMessages());
 
   messages = computed(() => {
     const data = this.messagesSignal();
@@ -76,7 +77,6 @@ export class RaceControlMessagesWidget extends ContaineredWidget {
   }
 
   showMessagesToggle(value: boolean) {
-    console.log(value);
     this.showMessages.set(value);
     this.settingsService.setOptions({ showRaceControlMessages: value });
   }

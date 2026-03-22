@@ -1,0 +1,36 @@
+<div class="font-formula default-widget-container p-b-4">
+  <div class="container">
+    <div class="sticky-list-header">
+      <div>{{'widget.TeamRadioWidget' | translate}}</div>
+      @if(!container) {
+        <div class="slide-toggle-3">
+          <mat-slide-toggle
+            [checked]="showRadio()"
+            (change)="showRadioToggle($event.checked)" />
+        </div>
+      }
+    </div>
+    @if (showRadio()){
+      <div class="p-x-8 p-b-8 d-grid gap-8 animated-first-element">
+        @for (capture of captures(); track capture.id) {
+            <div class="capture-item">
+              <div class="d-flex w-full justify-content-between">
+                @if (driverList()?.Lines?.[capture.RacingNumber]; as driver) {
+                  <simple-driver-card [driver]="driver"/>
+                }
+                <div class="text-color-second d-flex align-items-center gap-4">
+                  <mat-icon class="small-icon">av_timer</mat-icon>
+                  <span class="f-s-10">{{ capture.Utc | date:'short' }}</span>
+                </div>
+              </div>
+              <div class="w-full">
+                <audio controls [src]="capture.src" class="w-full">
+                  Your browser does not support the audio element.
+                </audio>
+              </div>
+            </div>
+        }
+      </div>
+    }
+  </div>
+</div>

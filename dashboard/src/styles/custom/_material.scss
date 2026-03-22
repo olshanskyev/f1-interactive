@@ -35,8 +35,12 @@ mat-card-header + mat-card-content {
   @include mat.form-field-density(-5);
 }
 
-.checkbox-3 {
-  @include mat.checkbox-density(-3);
+.slide-toggle-3 mat-slide-toggle {
+  @include mat.slide-toggle-density(-3);
+
+  transform: scale(0.7);
+  transform-origin: right center;
+ // overflow: hidden;
 }
 
 

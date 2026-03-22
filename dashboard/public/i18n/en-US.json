@@ -101,6 +101,9 @@
     "video": "Video",
     "TrackMapWidget": "Track Map",
     "RaceControlMessagesWidget": "Race Control Messages",
+    "TeamRadioWidget": "Team Radio",
+    "loading_track_map_error": "Failed to load track map",
+    "loading_track_map": "Loading track map...",
     "settings": {
       "source": "Source",
       "embedCode": "Embed code",

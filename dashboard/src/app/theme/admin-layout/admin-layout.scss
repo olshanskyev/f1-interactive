@@ -15,8 +15,7 @@
   top: 0;
   bottom: 0;
   height: 100dvh !important;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden auto;
   border-width: 0 !important;
   transition-property: transform, width !important;
 }

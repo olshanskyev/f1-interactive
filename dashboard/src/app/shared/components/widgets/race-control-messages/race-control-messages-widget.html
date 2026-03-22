@@ -1,14 +1,17 @@
 <div class="font-formula default-widget-container p-b-4">
   <div class="container">
-    <div class="header d-flex align-items-center justify-content-between checkbox-3">
+    <div class="sticky-list-header ">
       <div>{{'widget.RaceControlMessagesWidget' | translate}}</div>
-      <mat-checkbox
-        class="p-r-8"
-        [checked]="showMessages()"
-        (change)="showMessagesToggle($event.checked)">{{'show' | translate }}</mat-checkbox>
+      @if(!container) {
+        <div class="slide-toggle-3">
+          <mat-slide-toggle
+            [checked]="showMessages()"
+            (change)="showMessagesToggle($event.checked)" />
+        </div>
+      }
     </div>
     @if (showMessages()){
-      <div class="p-x-8 p-b-8 d-grid gap-8">
+      <div class="p-x-8 p-b-8 d-grid gap-8 animated-first-element">
         @for (message of messages(); track message.id) {
             <div class="message-item">
 

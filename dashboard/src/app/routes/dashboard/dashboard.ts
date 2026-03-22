@@ -7,7 +7,7 @@ import { LayoutsService, SettingsService, WidgetFactory } from '@core';
 import { isAdmin } from '@core/lib/roles';
 import { LiveService } from '@core/services/live/live.service';
 import { DisplayWidget, Layout, LayoutWidget, WidgetContainer, WidgetSize, WidgetType } from '@core/types/widgets';
-import { GridContainerComponent, Leaderboard, RaceControlMessagesWidget, SessionInfoWidget, SettingsDialog, SimPlayer, TrackMapWidget, WeatherWidget, WidgetContainerDirective, WidgetResizeHandleDirective } from '@shared';
+import { GridContainerComponent, Leaderboard, RaceControlMessagesWidget, SessionInfoWidget, SettingsDialog, SimPlayer, TeamRadioWidget, TrackMapWidget, WeatherWidget, WidgetContainerDirective, WidgetResizeHandleDirective } from '@shared';
 import { NgxRolesService } from 'ngx-permissions';
 import { ToolsPanelComponent } from './tools-panel/tools-panel';
 import { MatButtonModule } from '@angular/material/button';
@@ -31,6 +31,7 @@ import { isMobile } from '@core/lib/device';
     SessionInfoWidget,
     WeatherWidget,
     RaceControlMessagesWidget,
+    TeamRadioWidget,
     CdkDrag,
     WidgetResizeHandleDirective,
     MatIconModule,
