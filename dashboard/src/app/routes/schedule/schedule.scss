@@ -1,12 +1,10 @@
-@use "../../../styles/grid/breakpoints" as breakpoints;
-
 .container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
     gap: 20px;
 }
 
-.big-x-padding {
-    margin-right: 5rem;
-    margin-left: 5rem;
+.x-padding {
+    padding-right: clamp(1rem, 5vw, 5rem);
+    padding-left: clamp(1rem, 5vw, 5rem);
 }

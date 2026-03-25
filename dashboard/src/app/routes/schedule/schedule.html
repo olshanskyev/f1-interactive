@@ -1,14 +1,16 @@
-<div class="big-x-padding font-formula text-uppercase">
-    <div>
-        <span>{{'schedule.next_session' | translate}}</span>
-        <span class="p-l-16">{{nextSession()?.start | date:'short'}}</span></div>
-    <div class="f-s-14 text-color-second p-t-8">
-        {{nextSession()?.kind}} - {{nextRound()?.name}}
+<div class="x-padding">
+    <div class="font-formula text-uppercase">
+        <div>
+            <span>{{'schedule.next_session' | translate}}</span>
+            <span class="p-l-16">{{nextSession()?.start | date:'short'}}</span></div>
+        <div class="f-s-14 text-color-second p-t-8">
+            {{nextSession()?.kind}} - {{nextRound()?.name}}
+        </div>
     </div>
-</div>
-<div class="container m-t-24 big-x-padding">
-    @for(round of schedule(); track $index) {
-        <gp-card [round]="round" [isNext]="round.name === nextRound()?.name" />
-    }
+    <div class="container m-t-24">
+        @for(round of schedule(); track $index) {
+            <gp-card [round]="round" [isNext]="round.name === nextRound()?.name" />
+        }
+    </div>
 </div>
 
