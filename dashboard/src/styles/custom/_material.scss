@@ -27,6 +27,10 @@ mat-card-header + mat-card-content {
   }
 }
 
+.button-5 {
+    @include mat.button-density(-5);
+}
+
 .icon-button-5 {
     @include mat.icon-button-density(-5);
 }

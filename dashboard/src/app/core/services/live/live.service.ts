@@ -182,4 +182,14 @@ export abstract class LiveService {
   getIsRaceSignal() {
     return this.isRaceSignal;
   }
+
+  private sessionIsOngoingSignal = computed(() => {
+    const sessionInfo = this.getSessionInfoSignal();
+    return sessionInfo()?.SessionStatus === 'Started'
+      || sessionInfo()?.SessionStatus === 'Inactive';
+  });
+
+  getSessionIsOngoingSignal() {
+    return this.sessionIsOngoingSignal;
+  }
 }

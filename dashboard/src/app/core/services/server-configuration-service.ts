@@ -7,7 +7,7 @@ import { inject, Injectable } from '@angular/core';
 export class ServerConfigurationService {
     protected readonly http = inject(HttpClient);
     public setLiveToken(liveToken: string) {
-        return this.http.post<any>('/admin/setLiveToken', { liveToken });
+        return this.http.post<any>('/admin/live_token', { liveToken });
     }
 
     public getVersion() {

@@ -1,0 +1,51 @@
+.countdown {
+    --animation-height: 6px;
+
+    .group {
+        display: flex;
+        align-items: center;
+        padding: var(--animation-height) 0;
+        font-family: var(--code-font-family);
+    }
+
+    .unit {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 2rem;
+    }
+
+    .value {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 900;
+        line-height: 1;
+    }
+
+    .label {
+        margin-top: 2px;
+        font-size: 0.8rem;
+        opacity: 0.5;
+    }
+
+    .sep {
+        padding: 0 4px;
+        font-size: 1.25rem;
+        opacity: 0.5;
+    }
+
+    .value .digit {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transform-origin: center;
+        transition: transform 0.3s ease;
+        will-change: transform;
+    }
+
+    .value .digit.tick {
+        transform: translateY(calc(-1 * var(--animation-height))) scale(1.1);
+    }
+}

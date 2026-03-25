@@ -6,22 +6,35 @@ import f1interactive.common.state.models.Root;
 import f1interactive.common.state.models.UpdateEvent;
 import f1interactive.common.state.models.deserializer.EventsParser;
 import f1interactive.common.websocket.F1LiveTimingProxy;
+import f1interactive.server.models.HttpErrorResponse;
+import f1interactive.server.models.Round;
+import f1interactive.server.services.ScheduleService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/")
@@ -33,6 +46,10 @@ class RootController {
     @Autowired
     private Publisher publisher;
     private final Object initStateMutex = new Object();
+
+    @Autowired
+    private ScheduleService scheduleService;
+
 
     private void onInit(String event) {
         synchronized (initStateMutex) {
@@ -85,6 +102,32 @@ class RootController {
             }
             return subscribe;
         }
+    }
+
+    @GetMapping(value = "/schedule")
+    public ResponseEntity<?> schedule() throws Exception {
+        logger.debug("get schedule request");
+        CacheControl cacheControl = CacheControl.maxAge(1, TimeUnit.DAYS).cachePublic();
+        int year = ZonedDateTime.now(ZoneId.of("UTC")).getYear();
+        try {
+            String json = StreamUtils.copyToString(
+                    new ClassPathResource("schedule/" + year + ".json").getInputStream(),
+                    StandardCharsets.UTF_8
+            );
+            return ResponseEntity.ok().
+                    cacheControl(cacheControl).body(json);
+        } catch (FileNotFoundException ex) {
+            try {
+                List<Round> rounds = scheduleService.getSchedule(year);
+                return ResponseEntity.ok().
+                        cacheControl(cacheControl).body(rounds);
+            } catch (IOException e) {
+                logger.error("Can't fetch schedule info. {}", e.getMessage());
+                return new ResponseEntity<>(new HttpErrorResponse("Error by fetching schedule"), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+
     }
 
     @PreDestroy

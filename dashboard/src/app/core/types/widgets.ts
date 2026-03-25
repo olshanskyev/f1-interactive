@@ -1,5 +1,4 @@
 import { Type } from '@angular/core';
-import { TrackMapWidget } from '@shared';
 import { ContaineredWidget } from '@shared/components/widgets/containered-widget';
 
 export interface WidgetPosition {colStart: number, rowStart: number}

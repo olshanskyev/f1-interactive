@@ -20,7 +20,7 @@ class AdminController {
     @Autowired
     private F1LiveTimingProxy f1Client;
 
-    @PostMapping(value = "/setLiveToken")
+    @PostMapping(value = "/live_token")
     public ResponseEntity<?> setLiveToken(@RequestBody LiveTokenRequest token) throws Exception {
         System.setProperty("formula1AccessToken", token.liveToken);
         f1Client.disconnect();

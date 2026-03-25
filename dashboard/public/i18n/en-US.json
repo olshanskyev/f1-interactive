@@ -4,7 +4,8 @@
     "admin": "Admin",
     "admin.users": "Users",
     "admin.app_configuration": "App Configuration",
-    "layouts": "Layouts"
+    "layouts": "Layouts",
+    "schedule": "Schedule"
   },
   "validation": {
     "required": "This field is required",
@@ -17,7 +18,8 @@
     "invalid_email": "Invalid email"
   },
   "notifications": {
-    "live_token_updated": "Live token updated successfully"
+    "live_token_updated": "Live token updated successfully",
+    "schedule_cache_cleared": "Schedule cache cleared successfully"
   },
   "simulator": {
     "player": "Simulation Player",
@@ -150,6 +152,20 @@
     "admin": {
       "app_configuration": "App Configuration",
       "live_token": "Live Token",
-      "use_simulator": "Use Simulator"
+      "use_simulator": "Use Simulator",
+      "clear_schedule_cache": "Clear Schedule Cache"
+    },
+    "schedule": {
+      "next_race": "Next Race",
+      "upcoming": "Upcoming",
+      "completed": "Completed",
+      "live": "Live",
+      "next_session": "Next Session"
+    },
+    "time": {
+      "d": "d",
+      "h": "h",
+      "m": "m",
+      "s": "s"
     }
 }

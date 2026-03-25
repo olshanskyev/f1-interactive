@@ -1,0 +1,71 @@
+<div class="container font-formula"
+    [class.next-race]="isNext()"
+    [class.live-race]="isLive()"
+    [style.opacity]="isOver() ? 0.5 : 1"
+>
+    <div>
+        <div class="header">
+            @if (isNext() || isLive()) {
+                <div class="race-status text-f1-red">
+                    @if (isLive()) {
+                        <div class="d-flex align-items-center gap-4 button-5">
+                            <button matButton class="text-f1-red"
+                                [routerLink]="'/dashboard'">
+                                <mat-icon>sensors</mat-icon>
+                                {{'schedule.live' | translate}}
+                            </button>
+                        </div>
+                    } @else {
+                        {{'schedule.next_race' | translate}}
+                    }
+                </div>
+            } @else {
+                <div>
+                    @if (!isOver()) {
+                        <div class="race-status  text-f1-green">
+                            {{'schedule.upcoming' | translate}}
+                        </div>
+                    } @else {
+                        <div class="race-status  text-f1-blue">
+                            {{'schedule.completed' | translate}}
+                        </div>
+                    }
+                </div>
+            }
+
+            <div class="f-s-12 d-flex align-items-center gap-4"
+            [class.text-color-second]="isOver()">
+                @if (isOver()) {
+                    <mat-icon class="small-icon">sports_score</mat-icon>
+                }
+                {{round().start | date:'MMM d'}} - {{round().end | date:'MMM d'}}
+            </div>
+
+        </div>
+        <div class="d-flex flex-col gap-8 m-t-16">
+            <div class="d-flex flex-row align-items-center gap-8">
+                <img [alt]="round().countryName"
+                            class="flag"
+                            loading="lazy" decoding="async"
+                            [src]="'/images/country_flags/' + countryCode() + '.svg'"
+                >
+                <div class="f-s-14">
+                    {{round().countryName}}
+                    <div class="f-s-12 text-color-second">
+                        {{round().name}}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="d-flex flex-col gap-8 f-s-12 m-b-12">
+        @for(session of round().sessions; track $index) {
+            <div>
+                <span>{{session.kind}}:</span>
+                <span class="p-l-8 text-color-second">{{session.start | date:'MMM d, h:mm a'}}</span>
+            </div>
+        }
+
+    </div>
+</div>

@@ -10,11 +10,11 @@
   {{ 'admin.use_simulator' | translate }}
 </mat-checkbox>
 
-<form (ngSubmit)="onSubmitToken()" class="d-flex align-items-center gap-8">
+<form (ngSubmit)="onSubmitToken()" class="d-flex align-items-center gap-8 p-b-16">
   <mat-form-field appearance="outline" subscriptSizing="dynamic">
     <mat-label>{{ 'admin.live_token' | translate }}</mat-label>
     <input matInput type="password" [(ngModel)]="token" name="token" required autocomplete="off">
   </mat-form-field>
-  <button mat-raised-button color="primary" type="submit" [disabled]="!token">{{ 'submit' | translate }}</button>
+  <button mat-raised-button type="submit" [disabled]="!token">{{ 'submit' | translate }}</button>
 </form>
 

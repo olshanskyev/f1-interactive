@@ -7,6 +7,7 @@ import { Login } from './routes/sessions/login/login';
 import { Error403 } from './routes/sessions/error-403';
 import { Error404 } from './routes/sessions/error-404';
 import { Error500 } from './routes/sessions/error-500';
+import { ScheduleComponent } from './routes/schedule/schedule';
 
 export const routes: Routes = [
   {
@@ -15,6 +16,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
+      { path: 'schedule', component: ScheduleComponent },
       { path: 'admin',
         canActivate: [adminGuard],
         canActivateChild: [adminGuard],
