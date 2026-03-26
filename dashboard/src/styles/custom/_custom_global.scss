@@ -33,7 +33,7 @@
 }
 
 .widget-preview-border {
-  border: 3px solid var(--mat-sys-inverse-primary) !important;
+  border: 1px solid var(--mat-sys-inverse-primary) !important;
   border-radius: 0.5rem !important;
 }
 
@@ -65,6 +65,25 @@
   background-color: color-mix(in srgb, var(--mat-sys-surface-container), transparent 20%);
   border: 1px solid var(--mat-sys-outline-variant);
   border-radius: 0.5rem !important;
+}
+
+.sticky-list-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 30px;
+    padding-top: 1px;
+    padding-left: 1rem;
+    // fix iphone sticky 1px gap
+    margin-top: -1px;
+    margin-bottom: 1px;
+    font-size: small;
+    background-color: color-mix(in srgb, var(--mat-sys-surface-container), transparent 10%);
+    border-radius: 0.5rem;
+    backdrop-filter: blur(2px);
 }
 
 

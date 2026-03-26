@@ -7,3 +7,4 @@ export * from './view-transition.service';
 export * from './circuit-service';
 export * from './live/mock.live.service';
 export * from './server-configuration-service';
+export * from './schedule-service';

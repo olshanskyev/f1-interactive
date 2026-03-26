@@ -13,6 +13,7 @@ export interface AppSettings {
   useSimulator: boolean;
   selectedLayoutId?: string;
   showRaceControlMessages: boolean;
+  showTeamRadio: boolean;
 }
 
 export const defaults: AppSettings = {
@@ -21,10 +22,11 @@ export const defaults: AppSettings = {
   dir: 'ltr',
   showHeader: true,
   headerPos: 'fixed',
-  showUserPanel: true,
+  showUserPanel: false,
   sidenavOpened: true,
   sidenavCollapsed: false,
   language: 'en-US',
   useSimulator: false,
-  showRaceControlMessages: false
+  showRaceControlMessages: false,
+  showTeamRadio: false
 };

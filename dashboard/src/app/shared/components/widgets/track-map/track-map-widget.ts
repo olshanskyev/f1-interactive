@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, linkedSignal, signal, OnDestroy, Signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, inject, linkedSignal, signal, OnDestroy, Signal, ChangeDetectionStrategy } from '@angular/core';
 import { ContaineredWidget } from '../containered-widget';
 import { CircuitService } from '@core';
 import { createMapPoints, createMiniSectors, createSectors, findYellowSectors, getSectorColor, MapSector, MiniSector, prioritizeColoredSectors, rad, rotate } from '@core/lib/map';
@@ -7,6 +7,9 @@ import { TrackPosition } from '@core/types/map.type';
 
 import { CarDot } from './car-dot/car-dot';
 import { Positions, SegmentsItem } from '@core/types/f1types';
+import { of, tap } from 'rxjs';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface Corner {
 	number: number;
@@ -20,7 +23,8 @@ interface Corner {
     templateUrl: './track-map-widget.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        CarDot
+        CarDot,
+        TranslateModule
     ]
 })
 export class TrackMapWidget extends ContaineredWidget implements OnDestroy {
@@ -110,18 +114,18 @@ export class TrackMapWidget extends ContaineredWidget implements OnDestroy {
             });
     });
 
+    mapResource = rxResource({
+        params: () => this.sessionInfoKey(),
+        stream: ({ params }) => {
+            if (!params) return of([]);
+            return this.circuitService.getMap(params).pipe(
+                tap((res) => this.mapCalculation(res))
+            );
+        }
+    });
+
     constructor() {
         super();
-
-        effect(() => {
-            if (this.sessionInfoKey()) {
-                this.circuitService.getMap(this.sessionInfoKey()!).subscribe(
-                    res => {
-                        this.mapCalcucation(res);
-                    }
-                );
-            }
-        });
 
         // Listen for page visibility changes to force immediate car-dot update
         document.addEventListener('visibilitychange', this.handleVisibilityChange);
@@ -151,7 +155,7 @@ export class TrackMapWidget extends ContaineredWidget implements OnDestroy {
     private readonly CORNER_LABEL_DISTANCE = 500;
     private readonly STROKE_WIDTH = 60;
 
-    mapCalcucation(mapJson: any) {
+    mapCalculation(mapJson: any) {
         const centerX = (Math.max(...mapJson.x) - Math.min(...mapJson.x)) / 2;
         const centerY = (Math.max(...mapJson.y) - Math.min(...mapJson.y)) / 2;
 

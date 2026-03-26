@@ -1,5 +1,4 @@
 import { Type } from '@angular/core';
-import { TrackMapWidget } from '@shared';
 import { ContaineredWidget } from '@shared/components/widgets/containered-widget';
 
 export interface WidgetPosition {colStart: number, rowStart: number}
@@ -41,6 +40,7 @@ export enum WidgetType
     LeaderboardWidget = 'LeaderboardWidget',
     TrackMapWidget = 'TrackMapWidget',
     RaceControlMessagesWidget = 'RaceControlMessagesWidget',
+    TeamRadioWidget = 'TeamRadioWidget',
 }
 
 export type SettingType = 'string' | 'number' | 'boolean' | string[];

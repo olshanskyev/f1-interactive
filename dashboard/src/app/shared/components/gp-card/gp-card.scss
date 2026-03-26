@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 300px;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: 1rem;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 1.5rem;
+}
+
+.race-status {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+
+.flag {
+    width: 48px;
+    height: 36px;
+    color: transparent;
+}
+
+.next-race {
+    border: 2px solid var(--f1-red);
+}

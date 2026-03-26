@@ -7,6 +7,12 @@
       "icon": "sensors"
     },
     {
+      "route": "schedule",
+      "name": "schedule",
+      "type": "link",
+      "icon": "calendar_month"
+    },
+    {
       "route": "admin",
       "name": "admin",
       "type": "sub",

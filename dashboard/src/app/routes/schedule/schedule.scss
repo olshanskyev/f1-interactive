@@ -1,0 +1,10 @@
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr));
+    gap: 20px;
+}
+
+.x-padding {
+    padding-right: clamp(1rem, 5vw, 5rem);
+    padding-left: clamp(1rem, 5vw, 5rem);
+}

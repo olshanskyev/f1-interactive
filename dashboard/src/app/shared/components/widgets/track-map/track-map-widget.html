@@ -1,72 +1,80 @@
-<div class="default-widget-container">
-    @if (points() && points()!.length > 0 && bounds()) {
-
-        <svg
-                [attr.viewBox]="`${bounds()!.minX} ${bounds()!.minY} ${bounds()!.widthX} ${bounds()!.widthY}`"
-                class="h-full w-full"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <path
-                    class="background-stroke"
-                    [attr.d]="joinedPoints()"
-                />
-
-                @for (sector of renderedSectors(); track $index) {
+<div class="default-widget-container font-formula">
+    @if (mapResource.error()) {
+        <div class="widget-loading-skeleton f-s-12 text-color-second">
+            {{'widget.loading_track_map_error' | translate}}
+        </div>
+    } @else if (mapResource.isLoading() || !points()) {
+        <div class="widget-loading-skeleton f-s-12 text-color-second">
+            {{'widget.loading_track_map' | translate}}
+        </div>
+    } @else {
+            <svg
+                    [attr.viewBox]="`${bounds()!.minX} ${bounds()!.minY} ${bounds()!.widthX} ${bounds()!.widthY}`"
+                    class="h-full w-full"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
                     <path
-                        [class]="sector.color"
-                        class="sector-item"
-                        [style.stroke-width]="sector.strokeWidth"
-                        [attr.d]="sector.d"
+                        class="background-stroke"
+                        [attr.d]="joinedPoints()"
                     />
-                }
 
-                @if (finishLine()) {
-                    <rect
-                        [attr.x]="finishLine()!.x - 150"
-                        [attr.y]="finishLine()!.y"
-                        class="stroke-f1-red"
-                        [style.stroke-width]="100"
-                        [style.height]="0.1"
-                        [style.width]="300"
-                        [attr.transform]="'rotate(' + (finishLine()!.startAngle + 90) + ', ' + finishLine()!.x + ', ' + finishLine()!.y + ')'"
-
-                    />
-                }
-
-                @if (showCornerNumbers()) {
-                    @for (corner of corners(); track $index) {
-                        <text
-                            [attr.key]="'corner.number.' + corner.number"
-                            [attr.x]="corner.labelPos.x"
-                            [attr.y]="corner.labelPos.y"
-                            class="corner-label font-formula"
-                        >
-                            {{ corner.number }}
-                        </text>
+                    @for (sector of renderedSectors(); track $index) {
+                        <path
+                            [class]="sector.color"
+                            class="sector-item"
+                            [style.stroke-width]="sector.strokeWidth"
+                            [attr.d]="sector.d"
+                        />
                     }
 
-                }
+                    @if (finishLine()) {
+                        <rect
+                            [attr.x]="finishLine()!.x - 150"
+                            [attr.y]="finishLine()!.y"
+                            class="stroke-f1-red"
+                            [style.stroke-width]="100"
+                            [style.height]="0.1"
+                            [style.width]="300"
+                            [attr.transform]="'rotate(' + (finishLine()!.startAngle + 90) + ', ' + finishLine()!.x + ', ' + finishLine()!.y + ')'"
 
-                @if (driverDots() && positions() && center()) {
-                    @for (dot of driverDots(); track $index) {
-                        @if (dot.onTrack) {
-                            <g car-dot
-                                [attr.key]="'map.driver.' + dot.driver.RacingNumber"
-                                [disableTransition]="disableTransition()"
-                                [favouriteDriver]="false"
-                                [name]="dot.driver.Tla"
-                                [color]="'#' + dot.driver.TeamColour"
-                                [pit]="dot.pit"
-                                [hidden]="dot.hidden"
-                                [pos]="positions()![dot.driver.RacingNumber]"
-                                [rotation]="rotation()"
-                                [centerX]="center()!.x"
-                                [centerY]="center()!.y"
-                            />
+                        />
+                    }
+
+                    @if (showCornerNumbers()) {
+                        @for (corner of corners(); track $index) {
+                            <text
+                                [attr.key]="'corner.number.' + corner.number"
+                                [attr.x]="corner.labelPos.x"
+                                [attr.y]="corner.labelPos.y"
+                                class="corner-label font-formula"
+                            >
+                                {{ corner.number }}
+                            </text>
                         }
 
                     }
-                }
-            </svg>
-    }
+
+                    @if (driverDots() && positions() && center()) {
+                        @for (dot of driverDots(); track $index) {
+                            @if (dot.onTrack) {
+                                <g car-dot
+                                    [attr.key]="'map.driver.' + dot.driver.RacingNumber"
+                                    [disableTransition]="disableTransition()"
+                                    [favouriteDriver]="false"
+                                    [name]="dot.driver.Tla"
+                                    [color]="'#' + dot.driver.TeamColour"
+                                    [pit]="dot.pit"
+                                    [hidden]="dot.hidden"
+                                    [pos]="positions()![dot.driver.RacingNumber]"
+                                    [rotation]="rotation()"
+                                    [centerX]="center()!.x"
+                                    [centerY]="center()!.y"
+                                />
+                            }
+
+                        }
+                    }
+                </svg>
+        }
+
 </div>

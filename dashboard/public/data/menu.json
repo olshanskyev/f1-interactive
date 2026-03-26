@@ -5,6 +5,12 @@
       "name": "dashboard",
       "type": "link",
       "icon": "sensors"
+    },
+    {
+      "route": "schedule",
+      "name": "schedule",
+      "type": "link",
+      "icon": "calendar_month"
     }
   ]
 }

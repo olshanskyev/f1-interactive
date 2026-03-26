@@ -1,0 +1,45 @@
+<div class="countdown" aria-live="polite">
+  <div class="group">
+    @if (hasDays()) {
+      <div class="unit">
+        <div class="value">
+          @for (digit of daysRemaining(); track $index) {
+            <span class="digit" [class.tick]="digit.tick">{{ digit.value }}</span>
+          }
+        </div>
+        <div class="label">{{'time.d' | translate}}</div>
+      </div>
+    }
+
+    <div class="unit">
+      <div class="value">
+        @for (digit of hours(); track $index) {
+          <span class="digit" [class.tick]="digit.tick">{{ digit.value }}</span>
+        }
+      </div>
+      <div class="label">{{'time.h' | translate}}</div>
+    </div>
+
+    <div class="sep">:</div>
+
+    <div class="unit">
+      <div class="value">
+        @for (digit of minutes(); track $index) {
+          <span class="digit" [class.tick]="digit.tick">{{ digit.value }}</span>
+        }
+      </div>
+      <div class="label">{{'time.m' | translate}}</div>
+    </div>
+
+    <div class="sep">:</div>
+
+    <div class="unit">
+      <div class="value">
+        @for (digit of seconds(); track $index) {
+          <span class="digit" [class.tick]="digit.tick">{{ digit.value }}</span>
+        }
+      </div>
+      <div class="label">{{'time.s' | translate}}</div>
+    </div>
+  </div>
+</div>

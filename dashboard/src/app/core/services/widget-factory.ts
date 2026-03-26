@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { WidgetComponent, WidgetType } from '@core/types/widgets';
-import { Leaderboard, RaceControlMessagesWidget, SessionInfoWidget, TrackMapWidget, VideoPlayerWidget, WeatherWidget } from '@shared';
+import { Leaderboard, RaceControlMessagesWidget, SessionInfoWidget, TeamRadioWidget, TrackMapWidget, VideoPlayerWidget, WeatherWidget } from '@shared';
 
 @Injectable({
     providedIn: 'root'
@@ -76,6 +76,15 @@ export class WidgetFactory {
             },
             widgetView: RaceControlMessagesWidget,
             widgetThumb: 'images/thumbs/race-control-messages-widget-thumb.png',
+        }],
+        [WidgetType.TeamRadioWidget, {
+            type: WidgetType.TeamRadioWidget,
+            meta: {
+                settingsList: {},
+                defaultSizes: [{ colSpan: 16, rowSpan: 9 }],
+            },
+            widgetView: TeamRadioWidget,
+            widgetThumb: 'images/thumbs/team-radio-widget-thumb.png',
         }],
     ]);
 
