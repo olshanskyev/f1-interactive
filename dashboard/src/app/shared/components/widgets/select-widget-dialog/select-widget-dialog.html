@@ -12,7 +12,9 @@
           <mat-card class="m-0" cdkDrag [cdkDragStartDelay]="isMobile() ? 200 : 0"
               (cdkDragStarted)="onDragStarted(widget[1])" (cdkDragEnded)="onDragEnded($event, widget[0])">
             <mat-card-content class="thumb-item p-x-4 p-y-0">
-                <img [src]="widget[1].widgetThumb" [alt]="'widget.' + widget[0] | translate"/>
+                <img [src]="widget[1].widgetThumb" [alt]="'widget.' + widget[0] | translate"
+                loading="lazy" decoding="async"
+                />
                 <div class="widget-label">{{'widget.' + widget[0] | translate}}</div>
             </mat-card-content>
             <div *cdkDragPreview class="m-0 widget-preview_shadow"

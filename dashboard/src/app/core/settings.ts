@@ -22,7 +22,7 @@ export const defaults: AppSettings = {
   dir: 'ltr',
   showHeader: true,
   headerPos: 'fixed',
-  showUserPanel: true,
+  showUserPanel: false,
   sidenavOpened: true,
   sidenavCollapsed: false,
   language: 'en-US',

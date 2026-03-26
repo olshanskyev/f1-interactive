@@ -8,6 +8,7 @@ import { Sidemenu } from '../sidemenu/sidemenu';
 import { Branding } from '../widgets/branding';
 import { UserPanel } from './user-panel';
 import { NextSessionPanel } from './next-session-panel';
+import { CoffeePanel } from './coffee-panel';
 
 @Component({
   selector: 'app-sidebar',
@@ -22,7 +23,8 @@ import { NextSessionPanel } from './next-session-panel';
     Branding,
     Sidemenu,
     UserPanel,
-    NextSessionPanel
+    NextSessionPanel,
+    CoffeePanel
   ],
 })
 export class Sidebar {

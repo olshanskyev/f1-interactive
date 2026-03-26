@@ -1,10 +1,10 @@
-<div class="default-widget-container">
+<div class="default-widget-container font-formula">
     @if (mapResource.error()) {
-        <div class="widget-loading-skeleton">
+        <div class="widget-loading-skeleton f-s-12 text-color-second">
             {{'widget.loading_track_map_error' | translate}}
         </div>
     } @else if (mapResource.isLoading() || !points()) {
-        <div class="widget-loading-skeleton">
+        <div class="widget-loading-skeleton f-s-12 text-color-second">
             {{'widget.loading_track_map' | translate}}
         </div>
     } @else {

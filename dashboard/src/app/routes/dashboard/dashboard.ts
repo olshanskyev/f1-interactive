@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, linkedSignal, signal, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
-import { LayoutsService, SettingsService, WidgetFactory } from '@core';
+import { FullScreenService, LayoutsService, SettingsService, WidgetFactory } from '@core';
 import { isAdmin } from '@core/lib/roles';
 import { LiveService } from '@core/services/live/live.service';
 import { DisplayWidget, Layout, LayoutWidget, WidgetContainer, WidgetSize, WidgetType } from '@core/types/widgets';
@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { calcGridOffset } from '@core/lib/offsets';
 import { MatDialog } from '@angular/material/dialog';
 import { isMobile } from '@core/lib/device';
+import { Footer } from '@theme/footer/footer';
 
 
 @Component({
@@ -36,7 +37,8 @@ import { isMobile } from '@core/lib/device';
     WidgetResizeHandleDirective,
     MatIconModule,
     ToolsPanelComponent,
-    MatButtonModule
+    MatButtonModule,
+    Footer
   ],
 })
 export class DashboardComponent {
@@ -47,9 +49,11 @@ export class DashboardComponent {
   private readonly widgetFactory = inject(WidgetFactory);
   private readonly settingsService = inject(SettingsService);
   private readonly dialog = inject(MatDialog);
+  private readonly fullScreenService = inject(FullScreenService);
   selectedLayout = this.layoutsService.getSelectedLayout();
   userLayout = linkedSignal<Layout | undefined>(() => this.selectedLayout());
   isEditing = this.layoutsService.getIsEditing();
+  isFullScreen = this.fullScreenService.isFullScreen();
 
   gridContainer = viewChild('gridContainer', {read: GridContainerComponent});
   displayWidgets = signal<DisplayWidget[] | undefined>(undefined);

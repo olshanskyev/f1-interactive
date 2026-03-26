@@ -1,22 +1,21 @@
 <div class="container font-formula"
     [class.next-race]="isNext()"
-    [class.live-race]="isLive()"
     [style.opacity]="isOver() ? 0.5 : 1"
 >
     <div>
         <div class="header">
-            @if (isNext() || isLive()) {
+            @if (isNext() || isOngoing()) {
                 <div class="race-status text-f1-red">
-                    @if (isLive()) {
+                    @if (isOngoing()) {
                         <div class="d-flex align-items-center gap-4 button-5">
                             <button matButton class="text-f1-red"
                                 [routerLink]="'/dashboard'">
                                 <mat-icon>sensors</mat-icon>
-                                {{'schedule.live' | translate}}
+                                {{'schedule.ongoing' | translate}}
                             </button>
                         </div>
                     } @else {
-                        {{'schedule.next_race' | translate}}
+                        {{'schedule.next' | translate}}
                     }
                 </div>
             } @else {

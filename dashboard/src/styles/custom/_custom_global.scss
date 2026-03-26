@@ -33,7 +33,7 @@
 }
 
 .widget-preview-border {
-  border: 3px solid var(--mat-sys-inverse-primary) !important;
+  border: 1px solid var(--mat-sys-inverse-primary) !important;
   border-radius: 0.5rem !important;
 }
 
@@ -84,14 +84,6 @@
     background-color: color-mix(in srgb, var(--mat-sys-surface-container), transparent 10%);
     border-radius: 0.5rem;
     backdrop-filter: blur(2px);
-}
-
-.widget-loading-skeleton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100px;
-    color: var(--mat-sys-on-surface-variant);
 }
 
 

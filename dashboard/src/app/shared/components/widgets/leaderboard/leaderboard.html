@@ -55,55 +55,61 @@
               </div>
             }
 
-            @for (entry of entriesArray(); track entry[0]) {
-              <div class="transition-container grid-item"
-                [class.out-driver]="timingData()?.Lines?.[entry[0]] | isDriverOut">
-                <div class="position-number"
-                  [class.elimination-zone]="eliminationPositions().has(entry[1].Line)"
-                  [class.bg-f1-red]="qualifyingPart() && entry[1].Line === 1"
-                >
-                    @if (movementsSnapshot()[entry[0]] === 'up') {
-                      <mat-icon class="text-f1-green">keyboard_double_arrow_up</mat-icon>
-                    } @else {
-                      @if (movementsSnapshot()[entry[0]] === 'down') {
-                        <mat-icon class="text-f1-red">keyboard_double_arrow_down</mat-icon>
+            @if (entriesArray().length > 0) {
+              @for (entry of entriesArray(); track entry[0]) {
+                <div class="transition-container grid-item"
+                  [class.out-driver]="timingData()?.Lines?.[entry[0]] | isDriverOut">
+                  <div class="position-number"
+                    [class.elimination-zone]="eliminationPositions().has(entry[1].Line)"
+                    [class.bg-f1-red]="qualifyingPart() && entry[1].Line === 1"
+                  >
+                      @if (movementsSnapshot()[entry[0]] === 'up') {
+                        <mat-icon class="text-f1-green">keyboard_double_arrow_up</mat-icon>
                       } @else {
-                        <div>{{entry[1]?.Line}}</div>
+                        @if (movementsSnapshot()[entry[0]] === 'down') {
+                          <mat-icon class="text-f1-red">keyboard_double_arrow_down</mat-icon>
+                        } @else {
+                          <div>{{entry[1]?.Line}}</div>
+                        }
                       }
-                    }
+                  </div>
+                  <driver-chip
+                    [driver]="driverList()?.Lines?.[entry[0]]"
+                    [timingData]="timingData()?.Lines?.[entry[0]]"
+                    [timingAppData]="timingAppData()?.Lines?.[entry[0]]"
+                    />
+                  @if (mode() === 'laps') {
+                      <leaderboard-lap
+                        [timingData]="timingData()?.Lines?.[entry[0]]"
+                        [timingAppData]="timingAppData()?.Lines?.[entry[0]]"
+                        [timingStat]="timingStats()?.Lines?.[entry[0]]"
+                      />
+                  }
+                  @if (mode() === 'sectors') {
+                      <leaderboard-sector
+                        [timingData]="timingData()?.Lines?.[entry[0]]"
+                        [timingAppData]="timingAppData()?.Lines?.[entry[0]]"
+                        [timingStat]="timingStats()?.Lines?.[entry[0]]"
+                      />
+                  }
+                  @if (mode() === 'speeds') {
+                      <leaderboard-speed
+                        [timingData]="timingData()?.Lines?.[entry[0]]"
+                        [timingAppData]="timingAppData()?.Lines?.[entry[0]]"
+                        [timingStat]="timingStats()?.Lines?.[entry[0]]"
+                      />
+                  }
+                  @if (mode() === 'tyres') {
+                      <leaderboard-tyres
+                        [timingData]="timingData()?.Lines?.[entry[0]]"
+                        [timingAppData]="timingAppData()?.Lines?.[entry[0]]"
+                      />
+                  }
                 </div>
-                <driver-chip
-                  [driver]="driverList()?.Lines?.[entry[0]]"
-                  [timingData]="timingData()?.Lines?.[entry[0]]"
-                  [timingAppData]="timingAppData()?.Lines?.[entry[0]]"
-                  />
-                @if (mode() === 'laps') {
-                    <leaderboard-lap
-                      [timingData]="timingData()?.Lines?.[entry[0]]"
-                      [timingAppData]="timingAppData()?.Lines?.[entry[0]]"
-                      [timingStat]="timingStats()?.Lines?.[entry[0]]"
-                    />
-                }
-                @if (mode() === 'sectors') {
-                    <leaderboard-sector
-                      [timingData]="timingData()?.Lines?.[entry[0]]"
-                      [timingAppData]="timingAppData()?.Lines?.[entry[0]]"
-                      [timingStat]="timingStats()?.Lines?.[entry[0]]"
-                    />
-                }
-                @if (mode() === 'speeds') {
-                    <leaderboard-speed
-                      [timingData]="timingData()?.Lines?.[entry[0]]"
-                      [timingAppData]="timingAppData()?.Lines?.[entry[0]]"
-                      [timingStat]="timingStats()?.Lines?.[entry[0]]"
-                    />
-                }
-                @if (mode() === 'tyres') {
-                    <leaderboard-tyres
-                      [timingData]="timingData()?.Lines?.[entry[0]]"
-                      [timingAppData]="timingAppData()?.Lines?.[entry[0]]"
-                    />
-                }
+              }
+            } @else {
+              <div class="f-s-12 text-color-second" style="grid-column: 1 / -1;">
+                {{'widget.no_data' | translate}}
               </div>
             }
           </div>

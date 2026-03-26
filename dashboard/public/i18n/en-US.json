@@ -106,6 +106,9 @@
     "TeamRadioWidget": "Team Radio",
     "loading_track_map_error": "Failed to load track map",
     "loading_track_map": "Loading track map...",
+    "no_data": "No data",
+    "no_messages": "No messages yet",
+    "no_team_radio": "No team radio yet",
     "settings": {
       "source": "Source",
       "embedCode": "Embed code",
@@ -156,11 +159,12 @@
       "clear_schedule_cache": "Clear Schedule Cache"
     },
     "schedule": {
-      "next_race": "Next Race",
+      "next": "Next",
       "upcoming": "Upcoming",
       "completed": "Completed",
       "live": "Live",
-      "next_session": "Next Session"
+      "next_session": "Next Session",
+      "ongoing": "Ongoing"
     },
     "time": {
       "d": "d",

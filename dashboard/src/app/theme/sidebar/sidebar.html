@@ -16,11 +16,13 @@
   </div>
 }
 
-<div class="matero-sidebar-main">
+<div class="matero-sidebar-main d-flex flex-col">
   @if (showUser()) {
     <app-user-panel />
   }
   <next-session-panel />
 
   <app-sidemenu />
+
+  <coffee-panel class="d-block" style="margin-top: auto"/>
 </div>

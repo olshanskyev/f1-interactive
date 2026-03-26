@@ -1,10 +1,7 @@
 .countdown {
-    --animation-height: 6px;
-
     .group {
         display: flex;
         align-items: center;
-        padding: var(--animation-height) 0;
         font-family: var(--code-font-family);
     }
 
@@ -31,8 +28,8 @@
     }
 
     .sep {
+        place-self: start;
         padding: 0 4px;
-        font-size: 1.25rem;
         opacity: 0.5;
     }
 
@@ -46,6 +43,6 @@
     }
 
     .value .digit.tick {
-        transform: translateY(calc(-1 * var(--animation-height))) scale(1.1);
+        transform: translateY(-6px) scale(1.1);
     }
 }

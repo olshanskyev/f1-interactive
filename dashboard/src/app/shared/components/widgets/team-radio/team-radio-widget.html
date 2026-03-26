@@ -12,6 +12,7 @@
     </div>
     @if (showRadio()){
       <div class="p-x-8 p-b-8 d-grid gap-8 animated-first-element">
+      @if (captures().length > 0) {
         @for (capture of captures(); track capture.id) {
             <div class="capture-item">
               <div class="d-flex w-full justify-content-between">
@@ -30,6 +31,11 @@
               </div>
             </div>
         }
+      } @else {
+        <div class="f-s-12 p-l-8 text-color-second">
+          {{'widget.no_team_radio' | translate}}
+        </div>
+      }
       </div>
     }
   </div>

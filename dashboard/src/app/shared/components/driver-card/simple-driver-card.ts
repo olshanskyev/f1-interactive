@@ -6,6 +6,7 @@ import { DriverListItem } from '@core/types/f1types';
   template: `
     <div class="d-flex flex-row gap-8">
         <img class="photo"
+          loading="lazy" decoding="async"
           [alt]="driver().BroadcastName"
           [src]="driver().HeadshotUrl"
           [style.background-color]="'#' + driver().TeamColour + '20'"

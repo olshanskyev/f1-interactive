@@ -8,6 +8,7 @@
   --mat-sys-title-large-font: 'Roboto', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
     'Lucida Grande', sans-serif;
   --mat-checkbox-touch-target-size: 40px;
+  //--mat-sidenav-scrim-color: rgba(0, 0, 0, 0.5);
   @include breakpoints.bp-lt(small) {
     --mat-dialog-content-padding: 1rem 0.5rem !important;
   }

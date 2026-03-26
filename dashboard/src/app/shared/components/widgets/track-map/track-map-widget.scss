@@ -18,3 +18,11 @@
     text-anchor: middle;
     fill: white;
 }
+
+.widget-loading-skeleton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    color: var(--mat-sys-on-surface-variant);
+}

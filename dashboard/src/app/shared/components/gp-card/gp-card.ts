@@ -31,7 +31,7 @@ export class GpCard {
     countryCode(this.round().countryName)
   );
 
-  isLive = computed(() => {
+  isOngoing = computed(() => {
     // current time is between round start and end
     const now = new Date();
     const start = new Date(this.round().start);
