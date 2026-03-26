@@ -185,8 +185,7 @@ export abstract class LiveService {
 
   private sessionIsOngoingSignal = computed(() => {
     const sessionInfo = this.getSessionInfoSignal();
-    return sessionInfo()?.SessionStatus === 'Started'
-      || sessionInfo()?.SessionStatus === 'Inactive';
+    return sessionInfo()?.SessionStatus === 'Started';
   });
 
   getSessionIsOngoingSignal() {
