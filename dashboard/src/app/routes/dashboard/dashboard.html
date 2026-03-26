@@ -3,7 +3,7 @@
 }
 
 @if (userLayout(); as layout) {
-    <div>
+    <div data-nosnippet>
         <grid-container #gridContainer
             [gridRows]="layout.gridSize.gridRows"
             [gridColumns]="layout.gridSize.gridColumns"
@@ -71,7 +71,7 @@
     </div>
 
 } @else {
-    <div class="grid-container">
+    <div data-nosnippet class="grid-container">
         <div class="main-grid">
             <div id="leaderboard" class="overflow-x-auto">
                 <leaderboard/>
