@@ -1,4 +1,4 @@
-import { Component, computed, DestroyRef, effect, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, DestroyRef, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ContaineredWidget } from '../containered-widget';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';

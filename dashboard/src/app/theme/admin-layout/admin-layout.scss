@@ -45,9 +45,19 @@
     .menu-label,
     .menu-badge,
     .menu-caret,
-    .matero-user-panel-info {
+    .matero-user-panel-info,
+    .link-text {
       opacity: 0;
     }
+    .next-session-container {
+      .counter {
+        opacity: 0;
+      }
+      .next-session-placeholder {
+        display: block !important;
+      }
+    }
+
 
     .menu-icon.submenu-icon {
       opacity: 1;
@@ -64,8 +74,18 @@
       .menu-label,
       .menu-badge,
       .menu-caret,
-      .matero-user-panel-info {
+      .matero-user-panel-info,
+      .link-text {
         opacity: 1;
+      }
+
+      .next-session-container {
+        .counter {
+          opacity: 1;
+        }
+        .next-session-placeholder {
+          display: none !important;
+        }
       }
 
       .menu-icon.submenu-icon {

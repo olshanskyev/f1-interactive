@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, input, signal, WritableSignal } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, input, signal, WritableSignal, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { interval, Subscription } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
@@ -19,6 +19,7 @@ export interface Digit {
 export class SessionCountdown implements OnInit, OnDestroy {
 
   target = input.required<string | Date>();
+  onTimerEnd = output<void>();
 
   daysRemaining = signal<Digit[]>([]);
   hours = signal<Digit[]>([]);
@@ -88,6 +89,7 @@ export class SessionCountdown implements OnInit, OnDestroy {
 
     if (diff === 0) {
       this.sub?.unsubscribe();
+      this.onTimerEnd.emit();
     }
   }
 }
