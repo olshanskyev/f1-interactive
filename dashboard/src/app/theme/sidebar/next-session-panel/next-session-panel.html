@@ -1,30 +1,30 @@
 <div class="next-session-container font-formula d-flex align-items-center">
     <div class="next-session-placeholder d-none">
-    <mat-icon>hourglass_bottom</mat-icon>
+        <mat-icon>hourglass_bottom</mat-icon>
     </div>
     <div class="counter">
-    <div class="d-flex align-items-center justify-content-between">
-        <span class="f-s-12 text-color-second text-nowrap">
-        {{ (isOnGoing())? sessionInfo()?.Meeting?.Circuit?.ShortName: nextRound()?.location }},
-        {{ (isOnGoing())? sessionInfo()?.Meeting?.Country?.Name: nextRound()?.countryName }}
-        </span>
-        @if(isOnGoing()) {
-        <div class="d-flex align-items-center gap-4 button-5">
-            <button matButton class="text-f1-red"
-                [routerLink]="'/dashboard'">
-                <mat-icon>sensors</mat-icon>
-                {{'schedule.live' | translate}}
-            </button>
+        <div class="d-flex align-items-center justify-content-between">
+            <span class="f-s-12 text-color-second text-nowrap">
+                {{ (isOnGoing())? sessionInfo()?.Meeting?.Circuit?.ShortName: nextRound()?.location }},
+                {{ (isOnGoing())? sessionInfo()?.Meeting?.Country?.Name: nextRound()?.countryName }}
+            </span>
+            @if(isOnGoing()) {
+            <div class="d-flex align-items-center gap-4 button-5">
+                <button matButton class="text-f1-red"
+                    [routerLink]="'/dashboard'">
+                    <mat-icon>sensors</mat-icon>
+                    {{'schedule.live' | translate}}
+                </button>
+            </div>
+            }
         </div>
+        <div class="f-s-14 text-nowrap">
+            {{ isOnGoing()? sessionInfo()?.Name : nextSession()?.kind }}
+        </div>
+        @if (!isOnGoing()) {
+            @if (nextSession()?.start; as start) {
+                <session-countdown [target]="start" (timerEnd)="refreshNextSession()" class="p-t-4" />
+            }
         }
-    </div>
-    <span class="f-s-14 text-nowrap">
-        {{ isOnGoing()? sessionInfo()?.Name : nextSession()?.kind }}
-    </span>
-    @if (!isOnGoing()) {
-        @if (nextSession()?.start; as start) {
-            <session-countdown [target]="start" (timerEnd)="refreshNextSession()" />
-        }
-    }
     </div>
 </div>
