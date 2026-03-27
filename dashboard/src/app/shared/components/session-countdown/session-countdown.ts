@@ -19,7 +19,7 @@ export interface Digit {
 export class SessionCountdown implements OnInit, OnDestroy {
 
   target = input.required<string | Date>();
-  onTimerEnd = output<void>();
+  timerEnd = output<void>();
 
   daysRemaining = signal<Digit[]>([]);
   hours = signal<Digit[]>([]);
@@ -89,7 +89,7 @@ export class SessionCountdown implements OnInit, OnDestroy {
 
     if (diff === 0) {
       this.sub?.unsubscribe();
-      this.onTimerEnd.emit();
+      this.timerEnd.emit();
     }
   }
 }

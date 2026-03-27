@@ -23,7 +23,7 @@
     </span>
     @if (!isOnGoing()) {
         @if (nextSession()?.start; as start) {
-            <session-countdown [target]="start" (onTimerEnd)="refreshNextSession()" />
+            <session-countdown [target]="start" (timerEnd)="refreshNextSession()" />
         }
     }
     </div>
