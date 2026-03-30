@@ -10,6 +10,8 @@ import { UserPanel } from './user-panel';
 import { NextSessionPanel } from './next-session-panel/next-session-panel';
 import { LinksPanel } from './links-panel';
 import { MatDividerModule } from '@angular/material/divider';
+import { DelayPanel } from './delay-panel';
+import { LiveService } from '@core/services/live/live.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -26,7 +28,8 @@ import { MatDividerModule } from '@angular/material/divider';
     UserPanel,
     NextSessionPanel,
     LinksPanel,
-    MatDividerModule
+    MatDividerModule,
+    DelayPanel
   ],
 })
 export class Sidebar {
@@ -37,4 +40,7 @@ export class Sidebar {
 
   readonly toggleCollapsed = output<void>();
   readonly closeSidenav = output<void>();
+  private readonly liveService = inject(LiveService);
+  sessionEnded = this.liveService.getSessionEndedSignal();
+
 }

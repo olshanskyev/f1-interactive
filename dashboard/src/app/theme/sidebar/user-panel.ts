@@ -11,7 +11,7 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'app-user-panel',
   template: `
     @if (auth.check()) {
-      <div class="matero-user-panel" routerLink="/profile/overview">
+      <div class="matero-user-panel sidebar-container" routerLink="/profile/overview">
         @if (user()?.avatar) {
           <img class="matero-user-panel-avatar" [src]="user()?.avatar" alt="avatar" width="64" />
         }

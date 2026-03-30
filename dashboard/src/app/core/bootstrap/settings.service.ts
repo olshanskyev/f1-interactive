@@ -117,4 +117,8 @@ export class SettingsService {
     return this.options.showTeamRadio;
   }
 
+  getDelayMs() {
+    return this.options.delayMs;
+  }
+
 }

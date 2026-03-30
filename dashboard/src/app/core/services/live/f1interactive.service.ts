@@ -13,6 +13,7 @@ export class F1InteractiveService extends LiveService {
         onInit: ((event: any) => void) | undefined,
         onUpdate: ((event: UpdateEventRecord) => void) | undefined,
   ) {
+    this.clearQueue();
     return this.createKeepAliveStream('/live').pipe(
         tap((event) => {
           const messageEvent = (event as MessageEvent<any>);
@@ -25,7 +26,7 @@ export class F1InteractiveService extends LiveService {
             }
 
             if (event.type === 'update') {
-                this.stateHandler.updateState(data);
+                this.updateStateWithDelay(data);
                 if (onUpdate)
                   onUpdate(data);
             }

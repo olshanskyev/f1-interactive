@@ -3,12 +3,7 @@
 .matero-user-panel {
   display: flex;
   align-items: center;
-  padding: 0.75rem;
-  margin-bottom: 0.75rem;
   cursor: pointer;
-  outline: none;
-  background-color: var(--user-panel-background-color);
-  border-radius: 0.75rem;
 
   &:hover,
   &:focus {

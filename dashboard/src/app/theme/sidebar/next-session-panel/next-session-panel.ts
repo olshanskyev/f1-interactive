@@ -10,7 +10,6 @@ import { SessionCountdown } from '@shared';
 @Component({
   selector: 'next-session-panel',
   templateUrl: './next-session-panel.html',
-  styleUrl: './next-session-panel.scss',
   imports: [MatIconModule, TranslateModule, SessionCountdown, MatButtonModule, RouterLink],
 })
 export class NextSessionPanel {

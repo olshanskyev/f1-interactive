@@ -5,7 +5,8 @@ import { SseClient } from 'ngx-sse-client';
 import { StateHandler } from './state/state-handler';
 import { inflate } from '@core/lib/inflate';
 import { Position, PositionCar } from '@core/types/f1types';
-import { StackContainer } from '@core/lib/stack-container';
+import { BundleContainer } from '@core/lib/bundle-container';
+import { DelayedQueue } from '@core/lib/delayed_queue';
 
 export interface UpdateEventRecord {
   className: string;
@@ -23,6 +24,7 @@ export abstract class LiveService {
   protected readonly sseClient = inject(SseClient);
   protected readonly http = inject(HttpClient);
   protected readonly stateHandler = new StateHandler();
+  protected delayedQueue = new DelayedQueue<any>((data) => this.stateHandler.updateState(data));
 
   protected createKeepAliveStream(url: string): Observable<Event> {
     let lastMessageTime = Date.now();
@@ -53,6 +55,23 @@ export abstract class LiveService {
         onInit: ((event: any) => void) | undefined,
         onUpdate: ((event: UpdateEventRecord) => void) | undefined
   ): Observable<any>;
+
+  /**
+   * Updates the delay in the queue.
+   * @internal Should only be called by `SyncService`.
+   */
+  setDelay(delayMs: number) {
+    this.delayedQueue.setDelay(delayMs);
+  }
+
+  protected updateStateWithDelay(data: any) {
+    this.delayedQueue.add(data);
+  }
+
+  protected clearQueue() {
+    this.delayedQueue.clear();
+  }
+
 
   get fullStateSignal() {
     return this.stateHandler.fullStateSignal;
@@ -103,7 +122,7 @@ export abstract class LiveService {
         return (posZ)? inflate<Position>(posZ).Position: [];
   });
 
-  private posStackContainer = new StackContainer<PositionCar>(this.positions);
+  private posBundleContainer = new BundleContainer<PositionCar>(this.positions);
 
   private normalPositionSignal = computed(() => {
       const posZ = this.stateHandler.updateSignals['Position.z']();
@@ -114,7 +133,7 @@ export abstract class LiveService {
 
   getPositionsLiveSignal(frequency?: 'max' | 'normal') {
     if (frequency === 'max') {
-      return this.posStackContainer.liveValue();
+      return this.posBundleContainer.liveValue();
     } else
     return this.normalPositionSignal;
   }
@@ -170,8 +189,18 @@ export abstract class LiveService {
            sessionStatus()?.Status === 'Ends';
   });
 
+
   getSessionFinishedSignal() {
     return this.sessionFinishedSignal;
+  }
+
+  private sessionEndedSignal = computed(() => {
+    const sessionStatus = this.getSessionStatusSignal();
+    return (sessionStatus())? (sessionStatus()!.Status === 'Ends') : undefined;
+  });
+
+  public getSessionEndedSignal() {
+    return this.sessionEndedSignal;
   }
 
   private isRaceSignal = computed(() => {
