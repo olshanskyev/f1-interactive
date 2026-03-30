@@ -60,6 +60,15 @@
       }
     }
 
+    .delay-panel-container {
+      .delay-panel {
+        opacity: 0;
+      }
+      .delay-placeholder {
+        display: block !important;
+      }
+    }
+
 
     .menu-icon.submenu-icon {
       opacity: 1;
@@ -87,6 +96,15 @@
         }
 
         .next-session-placeholder {
+          display: none !important;
+        }
+      }
+
+      .delay-panel-container {
+        .delay-panel {
+          opacity: 1;
+        }
+        .delay-placeholder {
           display: none !important;
         }
       }

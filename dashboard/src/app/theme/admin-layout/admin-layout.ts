@@ -76,17 +76,13 @@ export class AdminLayout implements OnDestroy {
 
   toggleCollapsed() {
     this.options.update(opt => ({ ...opt, sidenavCollapsed: !opt.sidenavCollapsed }));
-    this.resetCollapsedState();
-  }
+    this.settings.setOptions({sidenavCollapsed: this.options().sidenavCollapsed});
 
-  // TODO: Trigger when transition end
-  resetCollapsedState(delay = 400) {
-    setTimeout(() => this.settings.setOptions(this.options()), delay);
   }
 
   onSidenavOpenedChange(isOpened: boolean) {
     this.options.update(opt => ({ ...opt, sidenavOpened: isOpened }));
-    this.settings.setOptions(this.options());
+    this.settings.setOptions({sidenavOpened: isOpened});
   }
 
 }
