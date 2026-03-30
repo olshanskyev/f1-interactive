@@ -14,12 +14,15 @@ import { DebounceTime } from '@shared/directives/debounce-time';
     <div class="sidebar-container font-formula d-flex align-items-center">
         <mat-form-field class="form-field-5" appearance="outline" subscriptSizing="dynamic">
             <mat-label>{{'delay_sec' | translate}}</mat-label>
-            <input matInput placeholder="" type="number"
+            <input matInput placeholder=""
+                type="number"
+                inputmode="numeric"
                 [disabled]="isPaused()"
                 min="0"
                 [max]="maxDelaySec"
                 step="1"
                 onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                pattern="[0-9]*"
                 debounceTime="1000"
                 [debouncedValue]="delay()"
                 (debouncedValueChange)="updateDelay($event)"
@@ -28,6 +31,11 @@ import { DebounceTime } from '@shared/directives/debounce-time';
         <div>
             <button matIconButton (click)="(isPaused())? resume() : pause()">
                 <mat-icon>{{(isPaused())? 'play_arrow': 'pause'}}</mat-icon>
+            </button>
+        </div>
+        <div>
+            <button matIconButton (click)="clearDelay()" [disabled]="isPaused()">
+                <mat-icon>clear</mat-icon>
             </button>
         </div>
     </div>
@@ -74,6 +82,12 @@ export class DelayPanel {
         this.isPaused.set(false);
         this.syncService.resume();
         this.delay.set(this.syncService.getDelayMs() / 1000);
+        this.updateSettings();
+    }
+
+    clearDelay() {
+        this.delay.set(0);
+        this.syncService.setDelay(0);
         this.updateSettings();
     }
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { computed, inject, Injectable } from '@angular/core';
-import { Observable, fromEvent, merge, of, retry, switchMap, tap, timeout, filter } from 'rxjs';
+import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { Observable, fromEvent, merge, of, retry, switchMap, tap, timeout, filter, finalize } from 'rxjs';
 import { SseClient } from 'ngx-sse-client';
 import { StateHandler } from './state/state-handler';
 import { inflate } from '@core/lib/inflate';
@@ -26,7 +26,13 @@ export abstract class LiveService {
   protected readonly stateHandler = new StateHandler();
   protected delayedQueue = new DelayedQueue<any>((data) => this.stateHandler.updateState(data));
 
-  protected createKeepAliveStream(url: string): Observable<Event> {
+  /**
+   *
+   * @param url
+   * @param liveConnection A signal containing the current connection timestamp or undefined.
+   * @returns
+   */
+  protected createKeepAliveStream(url: string, liveConnection: WritableSignal<{time: number} | undefined> | undefined = undefined): Observable<Event> {
     let lastMessageTime = Date.now();
     const wake$ = merge(
       fromEvent(window, 'pageshow'), // for mobile browsers that suspend background tabs and don't trigger 'online' event when connection is back
@@ -39,15 +45,23 @@ export abstract class LiveService {
     );
 
     return merge(of(null), wake$).pipe(
-      switchMap(() => this.sseClient.stream(url).pipe(
-        timeout(CONNECTION_TIMEOUT_MS),
-        retry({ delay: 3000 }),
-        tap((event) => {
-          if (event instanceof MessageEvent) {
-             lastMessageTime = Date.now();
-          }
-        })
-      ))
+      switchMap(() => {
+        if (liveConnection)
+          liveConnection.set({ time: Date.now() });
+        return this.sseClient.stream(url).pipe(
+          timeout(CONNECTION_TIMEOUT_MS),
+          retry({ delay: 3000 }),
+          tap((event) => {
+            if (event instanceof MessageEvent) {
+              lastMessageTime = Date.now();
+            }
+          }),
+          finalize(() => {
+            if (liveConnection)
+              liveConnection.set(undefined);
+          })
+        );
+      })
     );
   }
 
@@ -55,6 +69,8 @@ export abstract class LiveService {
         onInit: ((event: any) => void) | undefined,
         onUpdate: ((event: UpdateEventRecord) => void) | undefined
   ): Observable<any>;
+
+  public abstract getLiveConnectionSignal(): Signal<{time: number} | undefined>;
 
   /**
    * Updates the delay in the queue.

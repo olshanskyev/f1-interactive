@@ -66,7 +66,7 @@ export class DashboardComponent {
     isAdmin(this.roles())
   );
   sessionEnded = this.liveService.getSessionEndedSignal();
-  delaySet = false;
+  liveConnection = this.liveService.getLiveConnectionSignal();
   useSimulator = this.settingsService.options.useSimulator;
   newEvent = toSignal(this.liveService.live(undefined, undefined));
   isMobile = signal(isMobile);
@@ -194,13 +194,17 @@ export class DashboardComponent {
     });
 
     effect(() => {
+        const newLiveConn = this.liveConnection();
         const ended = this.sessionEnded();
+
         if (ended === undefined) return; // session status not loaded yet
-        const delay = this.settingsService.getDelayMs();
-        if (!ended && !this.delaySet && delay > 0) { // setting initial delay from config
-            this.syncService.setDelay(0); // resetting delay
-            this.syncService.setDelay(delay);
-            this.delaySet = true;
+        if (!ended && newLiveConn) {
+            untracked(() => {
+                // resetting delay even if already set, because new connection will get last data without delay
+                // and we need to wait full delay for next data to keep consistency
+                this.syncService.setDelay(0);
+                this.syncService.setDelay(this.settingsService.getDelayMs());
+            });
         }
     });
   }

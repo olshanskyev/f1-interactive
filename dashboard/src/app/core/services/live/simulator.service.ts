@@ -1,4 +1,4 @@
-import { Injectable, WritableSignal } from '@angular/core';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 import { tap } from 'rxjs';
 
 import { LiveService, UpdateEventRecord } from './live.service';
@@ -25,6 +25,8 @@ export interface SetRatioResponse {
   providedIn: 'root',
 })
 export class SimulatorService extends LiveService {
+
+  private liveConnection = signal<{time: number} | undefined>(undefined);
 
   init(file: File) {
     const formData: FormData = new FormData();
@@ -61,7 +63,7 @@ export class SimulatorService extends LiveService {
         onUpdate: ((event: UpdateEventRecord) => void) | undefined,
   ) {
     this.clearQueue();
-    return this.createKeepAliveStream('/simulator/live').pipe(
+    return this.createKeepAliveStream('/simulator/live', this.liveConnection).pipe(
         tap((event) => {
           const messageEvent = (event as MessageEvent<any>);
           if (messageEvent.data) {
@@ -99,6 +101,10 @@ export class SimulatorService extends LiveService {
           }
         })
     );
+  }
+
+  getLiveConnectionSignal() {
+    return this.liveConnection.asReadonly();
   }
 
 }
