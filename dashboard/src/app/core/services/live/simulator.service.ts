@@ -62,7 +62,6 @@ export class SimulatorService extends LiveService {
         onInit: ((event: any) => void) | undefined,
         onUpdate: ((event: UpdateEventRecord) => void) | undefined,
   ) {
-    this.clearQueue();
     return this.createKeepAliveStream('/simulator/live', this.liveConnection).pipe(
         tap((event) => {
           const messageEvent = (event as MessageEvent<any>);

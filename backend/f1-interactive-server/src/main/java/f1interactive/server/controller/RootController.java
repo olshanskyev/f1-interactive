@@ -62,7 +62,7 @@ class RootController {
 
     private void onUpdate(String type, String message, String time) {
         UpdateEvent updateEvent = EventsParser.parseUpdateEvent(type, message);
-        EventsParser.UpdateEventRecord updateEventRecord = new EventsParser.UpdateEventRecord(type, updateEvent, time);
+        EventsParser.UpdateEventRecord updateEventRecord = new EventsParser.UpdateEventRecord(type, updateEvent, System.currentTimeMillis());
         synchronized (initStateMutex) {
             stateHandler.updateState(updateEvent);
             publisher.publish("update", updateEventRecord);

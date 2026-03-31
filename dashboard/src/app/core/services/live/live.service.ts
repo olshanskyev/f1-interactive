@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { computed, inject, Injectable, Signal, WritableSignal } from '@angular/core';
 import { Observable, fromEvent, merge, of, retry, switchMap, tap, timeout, filter, finalize } from 'rxjs';
 import { SseClient } from 'ngx-sse-client';
 import { StateHandler } from './state/state-handler';
@@ -11,7 +11,7 @@ import { DelayedQueue } from '@core/lib/delayed_queue';
 export interface UpdateEventRecord {
   className: string;
   updateEvent: any;
-  utc: string;
+  utc: number;
 }
 
 const HEARTBEAT_TIMEOUT_MS = 15000;
@@ -24,7 +24,7 @@ export abstract class LiveService {
   protected readonly sseClient = inject(SseClient);
   protected readonly http = inject(HttpClient);
   protected readonly stateHandler = new StateHandler();
-  protected delayedQueue = new DelayedQueue<any>((data) => this.stateHandler.updateState(data));
+  protected delayedQueue = new DelayedQueue((data) => this.stateHandler.updateState(data));
 
   /**
    *
@@ -48,6 +48,7 @@ export abstract class LiveService {
       switchMap(() => {
         if (liveConnection)
           liveConnection.set({ time: Date.now() });
+        this.clearQueue();
         return this.sseClient.stream(url).pipe(
           timeout(CONNECTION_TIMEOUT_MS),
           retry({ delay: 3000 }),
@@ -80,7 +81,7 @@ export abstract class LiveService {
     this.delayedQueue.setDelay(delayMs);
   }
 
-  protected updateStateWithDelay(data: any) {
+  protected updateStateWithDelay(data: UpdateEventRecord) {
     this.delayedQueue.add(data);
   }
 

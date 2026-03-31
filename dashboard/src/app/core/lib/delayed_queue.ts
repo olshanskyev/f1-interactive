@@ -1,10 +1,12 @@
-export class DelayedQueue<T> {
-    private queue = new Map<number, T[]>();
-    private callback: (value: T) => void;
+import { UpdateEventRecord } from "@core/services/live/live.service";
+
+export class DelayedQueue {
+    private queue = new Map<number, UpdateEventRecord[]>();
+    private callback: (value: UpdateEventRecord) => void;
     private delayMs = 0;
     private timer: ReturnType<typeof setTimeout> | null = null;
 
-    constructor(callback: (value: T) => void, delayMs = 0) {
+    constructor(callback: (value: UpdateEventRecord) => void, delayMs = 0) {
         this.callback = callback;
         this.delayMs = delayMs;
     }
@@ -49,12 +51,12 @@ export class DelayedQueue<T> {
         }
     }
 
-    public add(value: T) {
+    public add(value: UpdateEventRecord) {
         if (this.delayMs <= 0) {
             this.callback(value);
             return;
         }
-        const timestamp = Date.now() + this.delayMs;
+        const timestamp = value.utc + this.delayMs;
         const wasEmpty = this.queue.size === 0;
         const bucket = this.queue.get(timestamp);
         if (bucket) {
@@ -74,7 +76,7 @@ export class DelayedQueue<T> {
             clearTimeout(this.timer);
             this.timer = null;
         }
-        const newQueue = new Map<number, T[]>();
+        const newQueue = new Map<number, UpdateEventRecord[]>();
         // Recalculate timestamps based on new delay
         for (const [timestamp, values] of this.queue) {
             const newTs = timestamp + delayDiff;
