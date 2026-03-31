@@ -1,4 +1,4 @@
-import { UpdateEventRecord } from "@core/services/live/live.service";
+import { UpdateEventRecord } from '@core/services/live/live.service';
 
 export class DelayedQueue {
     private queue = new Map<number, UpdateEventRecord[]>();

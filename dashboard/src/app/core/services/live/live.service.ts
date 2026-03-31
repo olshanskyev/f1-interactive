@@ -32,7 +32,10 @@ export abstract class LiveService {
    * @param liveConnection A signal containing the current connection timestamp or undefined.
    * @returns
    */
-  protected createKeepAliveStream(url: string, liveConnection: WritableSignal<{time: number} | undefined> | undefined = undefined): Observable<Event> {
+  protected createKeepAliveStream(
+      url: string,
+      liveConnection: WritableSignal<{time: number} | undefined> | undefined = undefined)
+    : Observable<Event> {
     let lastMessageTime = Date.now();
     const wake$ = merge(
       fromEvent(window, 'pageshow'), // for mobile browsers that suspend background tabs and don't trigger 'online' event when connection is back

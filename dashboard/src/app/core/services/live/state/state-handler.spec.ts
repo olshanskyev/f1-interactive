@@ -55,7 +55,7 @@ describe('StateHandler', () => {
             updateEvent: {
                 AirTemp: '27.3'
             },
-            utc: '2025-12-07T12:35:07.32Z'
+            utc: 1774945514800
         };
         stateHandler.updateState(updateWeatherData);
         expect(stateHandler.fullStateSignal()?.WeatherData).toBe(updateWeatherData.updateEvent);
@@ -70,7 +70,7 @@ describe('StateHandler', () => {
                 Remaining: '01:59:59',
                 Extrapolating: 'true'
             },
-            utc: '2025-12-07T12:35:07.32Z'
+            utc: 1774945514800
         };
         stateHandler.updateState(updateExtrapolatinClock);
         expect(stateHandler.fullStateSignal()?.ExtrapolatedClock)
@@ -91,7 +91,7 @@ describe('StateHandler', () => {
 
                 }
             },
-            utc: '2025-12-07T12:35:07.32Z'
+            utc: 1774945514800
         };
         stateHandler.updateState(updateRaceControlMessage);
         const expectedMessage = initState.RaceControlMessages?.Messages?.['0'];
@@ -116,7 +116,7 @@ describe('StateHandler', () => {
 				    }
                 }
             },
-            utc: '2025-12-07T12:35:07.32Z'
+            utc: 1774945514800
         };
         stateHandler.updateState(updateRaceControlMessage);
         expect(stateHandler.fullStateSignal()?.RaceControlMessages?.Messages?.['0'])
@@ -129,7 +129,7 @@ describe('StateHandler', () => {
             updateEvent: {
                 AirTemp: '27.3'
             },
-            utc: '2025-12-07T12:35:07.32Z'
+            utc: 1774945514800
         };
 
         // create new sub element
