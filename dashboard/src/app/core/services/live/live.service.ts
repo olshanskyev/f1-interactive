@@ -53,9 +53,8 @@ export abstract class LiveService {
 
     return merge(of(null), wake$).pipe(
       switchMap(() => {
-        if (liveConnection)
-          liveConnection.set({ time: Date.now() });
         this.clearQueue();
+        let isFirstMessage = true;
         return this.sseClient.stream(url).pipe(
           timeout(CONNECTION_TIMEOUT_MS),
           retry({ delay: 3000 }),
@@ -66,6 +65,10 @@ export abstract class LiveService {
                 eventType === 'heartbeat' ||
                 eventType === 'init') {
               lastMessageTime = Date.now();
+              if (isFirstMessage) {
+                isFirstMessage = false;
+                if (liveConnection) liveConnection.set({ time: lastMessageTime });
+              }
             }
           }),
           finalize(() => {
