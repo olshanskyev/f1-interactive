@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 public class ScheduleService {
 
     private static final Logger logger = LoggerFactory.getLogger(ScheduleService.class);
-    private static final String CAL_URL = "https://ics.ecal.com/ecal-sub/660897ca63f9ca0008bcbea6/Formula%201.ics";
+    private static final String CAL_URL = "https://ics.ecal.com/ecal-sub/69a02424a584fa0002277c33/Formula%201.ics";
     private static final Pattern NAME_PATTERN = Pattern.compile("FORMULA 1 (?<name>.+) - (?<kind>.+)");
 
     private ZonedDateTime parseIcalUtc(String dateString) {
