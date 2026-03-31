@@ -7,7 +7,6 @@ import { inflate } from '@core/lib/inflate';
 import { Position, PositionCar } from '@core/types/f1types';
 import { BundleContainer } from '@core/lib/bundle-container';
 import { DelayedQueue } from '@core/lib/delayed_queue';
-import { isMobile } from '@core/lib/device';
 
 export interface UpdateEventRecord {
   className: string;
@@ -46,7 +45,7 @@ export abstract class LiveService {
       filter(() => document.visibilityState === 'visible'),
       filter(() => {
         const isTimeoutExceeded = Date.now() - lastMessageTime > LAST_MESSAGE_TIMEOUT_MS;
-        return isMobile || isTimeoutExceeded;
+        return isTimeoutExceeded;
       }),
       debounceTime(100),
     );
