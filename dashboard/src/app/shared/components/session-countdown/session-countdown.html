@@ -1,7 +1,7 @@
 <div class="countdown" aria-live="polite">
   <div class="group">
     @if (hasDays()) {
-      <div class="unit">
+      <div class="unit p-r-4">
         <div class="value">
           @for (digit of daysRemaining(); track $index) {
             <span class="digit" [class.tick]="digit.tick">{{ digit.value }}</span>
