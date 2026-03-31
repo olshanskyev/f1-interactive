@@ -113,5 +113,9 @@ export class MockLiveService extends LiveService {
         return this.sessionData.asReadonly();
     }
 
+    getLiveConnectionSignal() {
+        return signal<{time: number} | undefined>(undefined).asReadonly();
+    }
+
 
 }

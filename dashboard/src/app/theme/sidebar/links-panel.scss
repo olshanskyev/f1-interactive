@@ -1,0 +1,36 @@
+ul {
+  display: flex;
+  flex-direction: column;
+  //gap: 0.1rem;
+  padding-left: 0.75rem;
+  margin-bottom: 0.5rem;
+  list-style-type: none;
+}
+
+.image-link {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  line-height: 2rem;
+  color: var(--second-color);
+  text-decoration:double ;
+}
+
+.fixed-image-size {
+  width: 1.5rem;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  min-height: 1.5rem;
+}
+
+.buy-coffee-image {
+  padding: 2px;
+  background-color: white;
+  border-radius: 50%;
+}
+
+.github-image {
+  color: white;
+}
+
+

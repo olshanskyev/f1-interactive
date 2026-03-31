@@ -20,9 +20,16 @@
   @if (showUser()) {
     <app-user-panel />
   }
+  @if (sessionEnded() !== undefined && !sessionEnded()) {
+    <delay-panel />
+  }
   <next-session-panel />
 
   <app-sidemenu />
 
-  <coffee-panel class="d-block" style="margin-top: auto"/>
+  <div style="margin-top: auto">
+    <mat-divider />
+    <links-panel />
+  </div>
+
 </div>

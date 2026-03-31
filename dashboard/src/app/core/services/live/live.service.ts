@@ -1,16 +1,18 @@
 import { HttpClient } from '@angular/common/http';
-import { computed, inject, Injectable } from '@angular/core';
-import { Observable, fromEvent, merge, of, retry, switchMap, tap, timeout, filter } from 'rxjs';
+import { computed, inject, Injectable, Signal, WritableSignal } from '@angular/core';
+import { Observable, fromEvent, merge, of, retry, switchMap, tap, timeout, filter, finalize, debounceTime } from 'rxjs';
 import { SseClient } from 'ngx-sse-client';
 import { StateHandler } from './state/state-handler';
 import { inflate } from '@core/lib/inflate';
 import { Position, PositionCar } from '@core/types/f1types';
-import { StackContainer } from '@core/lib/stack-container';
+import { BundleContainer } from '@core/lib/bundle-container';
+import { DelayedQueue } from '@core/lib/delayed_queue';
+import { isMobile } from '@core/lib/device';
 
 export interface UpdateEventRecord {
   className: string;
   updateEvent: any;
-  utc: string;
+  utc: number;
 }
 
 const HEARTBEAT_TIMEOUT_MS = 15000;
@@ -23,29 +25,58 @@ export abstract class LiveService {
   protected readonly sseClient = inject(SseClient);
   protected readonly http = inject(HttpClient);
   protected readonly stateHandler = new StateHandler();
+  protected delayedQueue = new DelayedQueue((data) => this.stateHandler.updateState(data));
 
-  protected createKeepAliveStream(url: string): Observable<Event> {
+  /**
+   *
+   * @param url
+   * @param liveConnection A signal containing the current connection timestamp or undefined.
+   * @returns
+   */
+  protected createKeepAliveStream(
+      url: string,
+      liveConnection: WritableSignal<{time: number} | undefined> | undefined = undefined)
+    : Observable<Event> {
     let lastMessageTime = Date.now();
     const wake$ = merge(
       fromEvent(window, 'pageshow'), // for mobile browsers that suspend background tabs and don't trigger 'online' event when connection is back
       fromEvent(window, 'online'),
-      fromEvent(document, 'visibilitychange').pipe(
-        filter(() => Date.now() - lastMessageTime > LAST_MESSAGE_TIMEOUT_MS)
-      )
+      fromEvent(document, 'visibilitychange')
     ).pipe(
-      filter(() => document.visibilityState === 'visible')
+      filter(() => document.visibilityState === 'visible'),
+      filter(() => {
+        const isTimeoutExceeded = Date.now() - lastMessageTime > LAST_MESSAGE_TIMEOUT_MS;
+        return isMobile || isTimeoutExceeded;
+      }),
+      debounceTime(100),
     );
 
     return merge(of(null), wake$).pipe(
-      switchMap(() => this.sseClient.stream(url).pipe(
-        timeout(CONNECTION_TIMEOUT_MS),
-        retry({ delay: 3000 }),
-        tap((event) => {
-          if (event instanceof MessageEvent) {
-             lastMessageTime = Date.now();
-          }
-        })
-      ))
+      switchMap(() => {
+        this.clearQueue();
+        let isFirstMessage = true;
+        return this.sseClient.stream(url).pipe(
+          timeout(CONNECTION_TIMEOUT_MS),
+          retry({ delay: 3000 }),
+          tap((event) => {
+            const eventType = event?.type;
+            // filter possible system messages that are not updates, but still indicate a live connection
+            if (eventType === 'update' ||
+                eventType === 'heartbeat' ||
+                eventType === 'init') {
+              lastMessageTime = Date.now();
+              if (isFirstMessage) {
+                isFirstMessage = false;
+                if (liveConnection) liveConnection.set({ time: lastMessageTime });
+              }
+            }
+          }),
+          finalize(() => {
+            if (liveConnection)
+              liveConnection.set(undefined);
+          })
+        );
+      })
     );
   }
 
@@ -53,6 +84,25 @@ export abstract class LiveService {
         onInit: ((event: any) => void) | undefined,
         onUpdate: ((event: UpdateEventRecord) => void) | undefined
   ): Observable<any>;
+
+  public abstract getLiveConnectionSignal(): Signal<{time: number} | undefined>;
+
+  /**
+   * Updates the delay in the queue.
+   * @internal Should only be called by `SyncService`.
+   */
+  setDelay(delayMs: number) {
+    this.delayedQueue.setDelay(delayMs);
+  }
+
+  protected updateStateWithDelay(data: UpdateEventRecord) {
+    this.delayedQueue.add(data);
+  }
+
+  protected clearQueue() {
+    this.delayedQueue.clear();
+  }
+
 
   get fullStateSignal() {
     return this.stateHandler.fullStateSignal;
@@ -103,7 +153,7 @@ export abstract class LiveService {
         return (posZ)? inflate<Position>(posZ).Position: [];
   });
 
-  private posStackContainer = new StackContainer<PositionCar>(this.positions);
+  private posBundleContainer = new BundleContainer<PositionCar>(this.positions);
 
   private normalPositionSignal = computed(() => {
       const posZ = this.stateHandler.updateSignals['Position.z']();
@@ -114,7 +164,7 @@ export abstract class LiveService {
 
   getPositionsLiveSignal(frequency?: 'max' | 'normal') {
     if (frequency === 'max') {
-      return this.posStackContainer.liveValue();
+      return this.posBundleContainer.liveValue();
     } else
     return this.normalPositionSignal;
   }
@@ -170,8 +220,18 @@ export abstract class LiveService {
            sessionStatus()?.Status === 'Ends';
   });
 
+
   getSessionFinishedSignal() {
     return this.sessionFinishedSignal;
+  }
+
+  private sessionEndedSignal = computed(() => {
+    const sessionStatus = this.getSessionStatusSignal();
+    return (sessionStatus())? (sessionStatus()!.Status === 'Ends') : undefined;
+  });
+
+  public getSessionEndedSignal() {
+    return this.sessionEndedSignal;
   }
 
   private isRaceSignal = computed(() => {

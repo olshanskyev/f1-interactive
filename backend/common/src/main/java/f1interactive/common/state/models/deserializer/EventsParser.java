@@ -9,7 +9,7 @@ import tools.jackson.databind.ObjectMapper;
 
 public class EventsParser {
 
-    public record UpdateEventRecord(String className, UpdateEvent updateEvent, String utc) {
+    public record UpdateEventRecord(String className, UpdateEvent updateEvent, long utc) {
     }
 
     record EventFromString(String className, String event, String utc) {}
@@ -28,11 +28,11 @@ public class EventsParser {
     /**
      *
      * @param updateEvent comma separated eventName,{event as json},utcTimestamp
-     * @return UpdateEventRecord
+     * @return UpdateEventRecord with currentTimeMillis (not from event)
      */
     public static UpdateEventRecord parseUpdateEvent(String updateEvent) {
         EventFromString eventRecord = parseEventString(updateEvent);
-        return new UpdateEventRecord(eventRecord.className, parseUpdateEvent(eventRecord.className, eventRecord.event), eventRecord.utc);
+        return new UpdateEventRecord(eventRecord.className, parseUpdateEvent(eventRecord.className, eventRecord.event), System.currentTimeMillis());
     }
 
     public static UpdateEvent parseUpdateEvent(String eventClassName, String payload) {

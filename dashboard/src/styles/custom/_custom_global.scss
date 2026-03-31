@@ -86,5 +86,34 @@
     backdrop-filter: blur(2px);
 }
 
+.sidebar-container {
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  outline: none;
+  background-color: var(--user-panel-background-color);
+  border-radius: 0.75rem;
+}
+
+
+/* Sync overlay */
+.syncing-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: color-mix(in srgb, var(--mat-sys-secondary-container), transparent 10%);
+
+  > .sync-indicator-content {
+    position: sticky;
+    top: 50vh;
+    transform: translateY(-50%);
+  }
+}
+
 
 

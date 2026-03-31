@@ -1,9 +1,9 @@
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, linkedSignal, signal, viewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, effect, inject, linkedSignal, signal, viewChild, ChangeDetectionStrategy, untracked, OnDestroy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
-import { FullScreenService, LayoutsService, SettingsService, WidgetFactory } from '@core';
+import { SyncService, FullScreenService, LayoutsService, SettingsService, WidgetFactory, WakeLockService } from '@core';
 import { isAdmin } from '@core/lib/roles';
 import { LiveService } from '@core/services/live/live.service';
 import { DisplayWidget, Layout, LayoutWidget, WidgetContainer, WidgetSize, WidgetType } from '@core/types/widgets';
@@ -15,6 +15,7 @@ import { calcGridOffset } from '@core/lib/offsets';
 import { MatDialog } from '@angular/material/dialog';
 import { isMobile } from '@core/lib/device';
 import { Footer } from '@theme/footer/footer';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @Component({
@@ -38,10 +39,11 @@ import { Footer } from '@theme/footer/footer';
     MatIconModule,
     ToolsPanelComponent,
     MatButtonModule,
-    Footer
+    Footer,
+    TranslateModule
   ],
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnDestroy{
 
   private readonly liveService = inject(LiveService);
   private readonly roleService = inject(NgxRolesService);
@@ -50,6 +52,9 @@ export class DashboardComponent {
   private readonly settingsService = inject(SettingsService);
   private readonly dialog = inject(MatDialog);
   private readonly fullScreenService = inject(FullScreenService);
+  private readonly syncService = inject(SyncService);
+  private readonly wakeLockService = inject(WakeLockService);
+
   selectedLayout = this.layoutsService.getSelectedLayout();
   userLayout = linkedSignal<Layout | undefined>(() => this.selectedLayout());
   isEditing = this.layoutsService.getIsEditing();
@@ -61,11 +66,13 @@ export class DashboardComponent {
   isAdmin = computed(() =>
     isAdmin(this.roles())
   );
-
+  sessionEnded = this.liveService.getSessionEndedSignal();
+  liveConnection = this.liveService.getLiveConnectionSignal();
   useSimulator = this.settingsService.options.useSimulator;
-
   newEvent = toSignal(this.liveService.live(undefined, undefined));
   isMobile = signal(isMobile);
+  syncPassedTime = this.syncService.getPassedTime();
+  syncLeftTime = this.syncService.getLeftTime();
 
   private loadWidgets(layout: Layout) {
       const toDisplay: DisplayWidget[] = layout.widgets.map(item => {
@@ -186,6 +193,26 @@ export class DashboardComponent {
         this.loadWidgets(this.selectedLayout()!);
       }
     });
+
+    effect(() => {
+        const newLiveConn = this.liveConnection();
+        const ended = this.sessionEnded();
+
+        if (ended === undefined) return; // session status not loaded yet
+        if (!ended && newLiveConn) {
+            untracked(() => {
+                // resetting delay even if already set, because new connection will get last data without delay
+                // and we need to wait full delay for next data to keep consistency
+                this.syncService.setDelay(0);
+                this.syncService.setDelay(this.settingsService.getDelayMs());
+            });
+        }
+    });
+    this.wakeLockService.requestWakeLock();
   }
+
+    ngOnDestroy() {
+        this.wakeLockService.releaseWakeLock();
+    }
 
 }

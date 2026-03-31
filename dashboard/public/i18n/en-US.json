@@ -85,6 +85,9 @@
   "current_tyres": "Current",
   "lap_count": "Laps",
   "show": "Show",
+  "delay_sec": "Delay, s",
+  "syncing": "Syncing...",
+  "sync_smaller": "or you can set a smaller interval",
   "weather": {
     "air": "Air",
     "track": "Track",
