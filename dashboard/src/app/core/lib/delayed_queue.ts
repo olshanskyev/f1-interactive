@@ -56,7 +56,7 @@ export class DelayedQueue {
             this.callback(value);
             return;
         }
-        const timestamp = value.utc + this.delayMs;
+        const timestamp = Date.now() + this.delayMs;
         const wasEmpty = this.queue.size === 0;
         const bucket = this.queue.get(timestamp);
         if (bucket) {

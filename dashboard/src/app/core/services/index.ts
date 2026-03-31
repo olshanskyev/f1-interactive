@@ -9,3 +9,4 @@ export * from './live/mock.live.service';
 export * from './server-configuration-service';
 export * from './schedule-service';
 export * from './live/sync.service';
+export * from './wake-lock.service';

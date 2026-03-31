@@ -121,4 +121,8 @@ export class SettingsService {
     return this.options.delayMs;
   }
 
+  getUseLock() {
+    return this.options.useLock;
+  }
+
 }

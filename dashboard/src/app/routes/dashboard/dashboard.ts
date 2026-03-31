@@ -1,9 +1,9 @@
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, linkedSignal, signal, viewChild, ChangeDetectionStrategy, untracked } from '@angular/core';
+import { Component, computed, effect, inject, linkedSignal, signal, viewChild, ChangeDetectionStrategy, untracked, OnDestroy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
-import { SyncService, FullScreenService, LayoutsService, SettingsService, WidgetFactory } from '@core';
+import { SyncService, FullScreenService, LayoutsService, SettingsService, WidgetFactory, WakeLockService } from '@core';
 import { isAdmin } from '@core/lib/roles';
 import { LiveService } from '@core/services/live/live.service';
 import { DisplayWidget, Layout, LayoutWidget, WidgetContainer, WidgetSize, WidgetType } from '@core/types/widgets';
@@ -43,7 +43,7 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule
   ],
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnDestroy{
 
   private readonly liveService = inject(LiveService);
   private readonly roleService = inject(NgxRolesService);
@@ -53,6 +53,7 @@ export class DashboardComponent {
   private readonly dialog = inject(MatDialog);
   private readonly fullScreenService = inject(FullScreenService);
   private readonly syncService = inject(SyncService);
+  private readonly wakeLockService = inject(WakeLockService);
 
   selectedLayout = this.layoutsService.getSelectedLayout();
   userLayout = linkedSignal<Layout | undefined>(() => this.selectedLayout());
@@ -207,6 +208,11 @@ export class DashboardComponent {
             });
         }
     });
+    this.wakeLockService.requestWakeLock();
   }
+
+    ngOnDestroy() {
+        this.wakeLockService.releaseWakeLock();
+    }
 
 }

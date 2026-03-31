@@ -15,6 +15,7 @@ export interface AppSettings {
   showRaceControlMessages: boolean;
   showTeamRadio: boolean;
   delayMs: number;
+  useLock: boolean;
 }
 
 export const defaults: AppSettings = {
@@ -30,5 +31,6 @@ export const defaults: AppSettings = {
   useSimulator: false,
   showRaceControlMessages: false,
   showTeamRadio: false,
-  delayMs: 0
+  delayMs: 0,
+  useLock: true,
 };

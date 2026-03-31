@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, Signal, WritableSignal } from '@angular/core';
-import { Observable, fromEvent, merge, of, retry, switchMap, tap, timeout, filter, finalize } from 'rxjs';
+import { Observable, fromEvent, merge, of, retry, switchMap, tap, timeout, filter, finalize, debounceTime } from 'rxjs';
 import { SseClient } from 'ngx-sse-client';
 import { StateHandler } from './state/state-handler';
 import { inflate } from '@core/lib/inflate';
 import { Position, PositionCar } from '@core/types/f1types';
 import { BundleContainer } from '@core/lib/bundle-container';
 import { DelayedQueue } from '@core/lib/delayed_queue';
+import { isMobile } from '@core/lib/device';
 
 export interface UpdateEventRecord {
   className: string;
@@ -40,11 +41,14 @@ export abstract class LiveService {
     const wake$ = merge(
       fromEvent(window, 'pageshow'), // for mobile browsers that suspend background tabs and don't trigger 'online' event when connection is back
       fromEvent(window, 'online'),
-      fromEvent(document, 'visibilitychange').pipe(
-        filter(() => Date.now() - lastMessageTime > LAST_MESSAGE_TIMEOUT_MS)
-      )
+      fromEvent(document, 'visibilitychange')
     ).pipe(
-      filter(() => document.visibilityState === 'visible')
+      filter(() => document.visibilityState === 'visible'),
+      filter(() => {
+        const isTimeoutExceeded = Date.now() - lastMessageTime > LAST_MESSAGE_TIMEOUT_MS;
+        return isMobile || isTimeoutExceeded;
+      }),
+      debounceTime(100),
     );
 
     return merge(of(null), wake$).pipe(
@@ -56,7 +60,11 @@ export abstract class LiveService {
           timeout(CONNECTION_TIMEOUT_MS),
           retry({ delay: 3000 }),
           tap((event) => {
-            if (event instanceof MessageEvent) {
+            const eventType = event?.type;
+            // filter possible system messages that are not updates, but still indicate a live connection
+            if (eventType === 'update' ||
+                eventType === 'heartbeat' ||
+                eventType === 'init') {
               lastMessageTime = Date.now();
             }
           }),
