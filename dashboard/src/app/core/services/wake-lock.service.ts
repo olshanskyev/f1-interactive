@@ -1,10 +1,12 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { SettingsService } from '@core';
+import { HotToastService } from '@ngxpert/hot-toast';
 
 @Injectable({ providedIn: 'root' })
 export class WakeLockService {
 
     private readonly settingsService = inject(SettingsService);
+    private readonly toaster = inject(HotToastService);
     private wakeLock: any = null;
     private _isActive = signal<boolean>(false);
     public isActive = this._isActive.asReadonly();
@@ -20,11 +22,11 @@ export class WakeLockService {
         });
     }
 
-    private isRequesting = false;
+    private wakeLockRequestPromise: Promise<any> | null = null;
     private retryListenersAttached = false;
 
     private retryListener = () => {
-        if (!this.wakeLock && !this.isRequesting) {
+        if (!this.wakeLock && !this.wakeLockRequestPromise) {
             this.requestWakeLock();
         }
     };
@@ -32,8 +34,7 @@ export class WakeLockService {
     private startRetryListeners() {
         if (this.retryListenersAttached) return;
         this.retryListenersAttached = true;
-        // Listen to broad range of events, as some don't grant activation but we want to catch the first one that does
-        ['click', 'touchend', 'pointerup', 'scroll', 'keydown', 'touchstart'].forEach(evt => {
+        ['click', 'pointerup', 'touchend', 'keydown'].forEach(evt => {
             document.addEventListener(evt, this.retryListener, { passive: true });
         });
     }
@@ -41,32 +42,35 @@ export class WakeLockService {
     private stopRetryListeners() {
         if (!this.retryListenersAttached) return;
         this.retryListenersAttached = false;
-        ['click', 'touchend', 'pointerup', 'scroll', 'keydown', 'touchstart'].forEach(evt => {
+        ['click', 'pointerup', 'touchend', 'keydown'].forEach(evt => {
             document.removeEventListener(evt, this.retryListener);
         });
     }
 
     requestWakeLock() {
+        this.toaster.info('Requesting wake lock...');
         if (!this.useLock) return;
         if (document.visibilityState !== 'visible') return;
         if (!('wakeLock' in navigator)) return;
-        if (this.isRequesting) return;
+        if (this.wakeLockRequestPromise) return; // Prevent concurrent API calls that could race and fail
 
-        this.isRequesting = true;
-        (navigator as any).wakeLock.request('screen')
+        this.wakeLockRequestPromise = (navigator as any).wakeLock.request('screen');
+        this.wakeLockRequestPromise!
         .then((lock: any) => {
-            this.isRequesting = false;
+            this.wakeLockRequestPromise = null;
             this.stopRetryListeners();
             this.wakeLock = lock;
             this._isActive.set(true);
             this.shouldRecover = true;
+            this.toaster.success('Wake lock acquired.');
             this.wakeLock.onrelease = () => {
                 this._isActive.set(false);
                 this.wakeLock = null;
             };
         })
         .catch((err: any) => {
-            this.isRequesting = false;
+            this.toaster.error('Wake lock request failed.', err.name);
+            this.wakeLockRequestPromise = null;
             this._isActive.set(false);
             if (err.name === 'NotAllowedError') {
                 this.shouldRecover = true;
