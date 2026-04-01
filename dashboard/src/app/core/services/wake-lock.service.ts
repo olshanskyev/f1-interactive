@@ -22,65 +22,51 @@ export class WakeLockService {
         });
     }
 
-    private wakeLockRequestPromise: Promise<any> | null = null;
-    private retryListenersAttached = false;
+    private isRequesting = false;
+    private readonly EVENTS = ['click', 'pointerup', 'touchend', 'keydown'];
+
+    private toggleListeners(add: boolean) {
+        this.EVENTS.forEach(evt =>
+            document[add ? 'addEventListener' : 'removeEventListener'](evt, this.retryListener, { passive: true } as any)
+        );
+    }
 
     private retryListener = () => {
-        if (!this.wakeLock && !this.wakeLockRequestPromise) {
-            this.requestWakeLock();
-        }
+        const nav = navigator as any;
+        if (nav.userActivation && !nav.userActivation.isActive) return;
+        if (!this.wakeLock && !this.isRequesting) this.requestWakeLock();
     };
 
-    private startRetryListeners() {
-        if (this.retryListenersAttached) return;
-        this.retryListenersAttached = true;
-        ['click', 'pointerup', 'touchend', 'keydown'].forEach(evt => {
-            document.addEventListener(evt, this.retryListener, { passive: true });
-        });
-    }
-
-    private stopRetryListeners() {
-        if (!this.retryListenersAttached) return;
-        this.retryListenersAttached = false;
-        ['click', 'pointerup', 'touchend', 'keydown'].forEach(evt => {
-            document.removeEventListener(evt, this.retryListener);
-        });
-    }
-
-    requestWakeLock() {
+    async requestWakeLock() {
         this.toaster.info('Requesting wake lock...');
-        if (!this.useLock) return;
-        if (document.visibilityState !== 'visible') return;
-        if (!('wakeLock' in navigator)) return;
-        if (this.wakeLockRequestPromise) return; // Prevent concurrent API calls that could race and fail
+        if (!this.useLock || document.visibilityState !== 'visible' || !('wakeLock' in navigator) || this.isRequesting) return;
 
-        this.wakeLockRequestPromise = (navigator as any).wakeLock.request('screen');
-        this.wakeLockRequestPromise!
-        .then((lock: any) => {
-            this.wakeLockRequestPromise = null;
-            this.stopRetryListeners();
-            this.wakeLock = lock;
+        this.isRequesting = true;
+        try {
+            this.wakeLock = await (navigator as any).wakeLock.request('screen');
+            this.toggleListeners(false); // Clean up listeners on success
             this._isActive.set(true);
             this.shouldRecover = true;
             this.toaster.success('Wake lock acquired.');
+
             this.wakeLock.onrelease = () => {
                 this._isActive.set(false);
                 this.wakeLock = null;
             };
-        })
-        .catch((err: any) => {
-            this.toaster.error('Wake lock request failed.' + err.name);
-            this.wakeLockRequestPromise = null;
+        } catch (err: any) {
             this._isActive.set(false);
+            this.toaster.error('Wake lock request failed. ' + err.name);
+
             if (err.name === 'NotAllowedError') {
                 this.shouldRecover = true;
-                // Silently start retry listeners to catch the first valid user gesture
-                this.startRetryListeners();
+                this.toggleListeners(true); // Start silently waiting for a valid user gesture
             } else {
                 this.shouldRecover = false;
                 console.error('Wake Lock request failed', err);
             }
-        });
+        } finally {
+            this.isRequesting = false;
+        }
     }
 
     releaseWakeLock() {
