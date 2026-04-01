@@ -7,5 +7,5 @@ export const environment = {
   baseUrl: 'http://localhost:8080/api',
   baseUrlSimulator: 'http://localhost:8081/api',
   useHash: false,
-  standalone: false
+  standalone: true
 };
