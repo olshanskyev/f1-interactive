@@ -20,13 +20,18 @@ export class WakeLockService {
         });
     }
 
+    private isRequesting = false;
+
     requestWakeLock() {
         if (!this.useLock) return;
         if (document.visibilityState !== 'visible') return;
         if (!('wakeLock' in navigator)) return;
+        if (this.isRequesting) return;
 
+        this.isRequesting = true;
         (navigator as any).wakeLock.request('screen')
         .then((lock: any) => {
+            this.isRequesting = false;
             this.wakeLock = lock;
             this._isActive.set(true);
             this.shouldRecover = true;
@@ -36,17 +41,20 @@ export class WakeLockService {
             };
         })
         .catch((err: any) => {
+            this.isRequesting = false;
             this._isActive.set(false);
             if (err.name === 'NotAllowedError') {
                 this.shouldRecover = true;
                 console.warn('Wake Lock: Page not visible or focused yet. Will retry on interaction');
                 const retryLock = () => {
-                    this.requestWakeLock();
                     document.removeEventListener('click', retryLock);
-                    document.removeEventListener('touchstart', retryLock);
+                    document.removeEventListener('pointerup', retryLock);
+                    document.removeEventListener('touchend', retryLock);
+                    this.requestWakeLock();
                 };
                 document.addEventListener('click', retryLock, { once: true });
-                document.addEventListener('touchstart', retryLock, { once: true });
+                document.addEventListener('pointerup', retryLock, { once: true });
+                document.addEventListener('touchend', retryLock, { once: true });
             } else {
                 this.shouldRecover = false;
                 console.error('Wake Lock request failed', err);
