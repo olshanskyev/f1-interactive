@@ -21,6 +21,30 @@ export class WakeLockService {
     }
 
     private isRequesting = false;
+    private retryListenersAttached = false;
+
+    private retryListener = () => {
+        if (!this.wakeLock && !this.isRequesting) {
+            this.requestWakeLock();
+        }
+    };
+
+    private startRetryListeners() {
+        if (this.retryListenersAttached) return;
+        this.retryListenersAttached = true;
+        // Listen to broad range of events, as some don't grant activation but we want to catch the first one that does
+        ['click', 'touchend', 'pointerup', 'scroll', 'keydown', 'touchstart'].forEach(evt => {
+            document.addEventListener(evt, this.retryListener, { passive: true });
+        });
+    }
+
+    private stopRetryListeners() {
+        if (!this.retryListenersAttached) return;
+        this.retryListenersAttached = false;
+        ['click', 'touchend', 'pointerup', 'scroll', 'keydown', 'touchstart'].forEach(evt => {
+            document.removeEventListener(evt, this.retryListener);
+        });
+    }
 
     requestWakeLock() {
         if (!this.useLock) return;
@@ -32,6 +56,7 @@ export class WakeLockService {
         (navigator as any).wakeLock.request('screen')
         .then((lock: any) => {
             this.isRequesting = false;
+            this.stopRetryListeners();
             this.wakeLock = lock;
             this._isActive.set(true);
             this.shouldRecover = true;
@@ -45,16 +70,8 @@ export class WakeLockService {
             this._isActive.set(false);
             if (err.name === 'NotAllowedError') {
                 this.shouldRecover = true;
-                console.warn('Wake Lock: Page not visible or focused yet. Will retry on interaction.');
-                const retryLock = () => {
-                    document.removeEventListener('click', retryLock);
-                    document.removeEventListener('pointerup', retryLock);
-                    document.removeEventListener('touchend', retryLock);
-                    this.requestWakeLock();
-                };
-                document.addEventListener('click', retryLock, { once: true });
-                document.addEventListener('pointerup', retryLock, { once: true });
-                document.addEventListener('touchend', retryLock, { once: true });
+                // Silently start retry listeners to catch the first valid user gesture
+                this.startRetryListeners();
             } else {
                 this.shouldRecover = false;
                 console.error('Wake Lock request failed', err);
