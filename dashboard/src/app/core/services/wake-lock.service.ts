@@ -69,7 +69,7 @@ export class WakeLockService {
             };
         })
         .catch((err: any) => {
-            this.toaster.error('Wake lock request failed.', err.name);
+            this.toaster.error('Wake lock request failed.' + err.name);
             this.wakeLockRequestPromise = null;
             this._isActive.set(false);
             if (err.name === 'NotAllowedError') {
