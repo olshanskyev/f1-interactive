@@ -37,11 +37,19 @@ export class WakeLockService {
         })
         .catch((err: any) => {
             this._isActive.set(false);
-            if (err.name !== 'NotAllowedError') {
+            if (err.name === 'NotAllowedError') {
+                this.shouldRecover = true;
+                console.warn('Wake Lock: Page not visible or focused yet. Will retry on interaction.');
+                const retryLock = () => {
+                    this.requestWakeLock();
+                    document.removeEventListener('click', retryLock);
+                    document.removeEventListener('touchstart', retryLock);
+                };
+                document.addEventListener('click', retryLock, { once: true });
+                document.addEventListener('touchstart', retryLock, { once: true });
+            } else {
                 this.shouldRecover = false;
                 console.error('Wake Lock request failed', err);
-            } else {
-                console.warn('Wake Lock: Page not visible or focused yet.');
             }
         });
     }
