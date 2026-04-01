@@ -4,7 +4,11 @@
     <img alt="f1interactive" src="./dashboard/public/favicon.svg" width="200">
   </picture>
 </p>
-<a href="https://f1interactive.net"><h1 align="center">F1 Interactive dashboard</h1></a>
+<h1 align="center">
+
+[f1interactive.net](https://f1interactive.net)
+</h1>
+
 
 ## F1 Interactive
 [f1-interactive](https://f1interactive.net) is a real-time dashboard designed for Formula 1 fans who want to combine live streams with deep data analysis. Built on a dynamic, widget-based architecture, the app allows users to choose from predefined layouts or build a fully custom workspace to suit their viewing style.
