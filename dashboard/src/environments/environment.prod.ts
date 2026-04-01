@@ -4,4 +4,5 @@ export const environment = {
   baseUrl: '__BASE_URL__',
   baseUrlSimulator: '__BASE_URL_SIMULATOR__',
   useHash: false,
+  standalone: false
 };

@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "start:standalone": "ng serve --configuration=standalone",
+    "build:standalone": "ng build --configuration=standalone",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:include": "ng test --include",

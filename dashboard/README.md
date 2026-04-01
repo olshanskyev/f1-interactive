@@ -1,6 +1,6 @@
 # F1Interactive Dashboard
 
-Project where users can watch favourite f1 streams with parallel data analysis above or beside video
+Dashboard (frontend) for f1 interactive project
 
 ## Project Setup
 This project is build using angular and ng-matero template. To get it running on your local machine, follow these steps:
@@ -23,7 +23,12 @@ npm start
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## Building
+To start dashboard without server (with cached data), run:
+```bash
+npm run start:standalone
+```
+
+## 3. Building
 
 To build the project run:
 
@@ -33,7 +38,7 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
-## Running unit tests
+## 4. Running unit tests
 
 To execute unit tests, use the following command:
 
@@ -45,4 +50,12 @@ or for testing specified spec file:
 
 ```bash
 npm run test:include <path_to_spec_file>
+```
+
+## 5. Linting
+
+To start source code linting:
+
+```bash
+npm run lint
 ```

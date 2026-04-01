@@ -3,8 +3,10 @@
 ## Setup
 
 The easiest way to start all the components is to use docker-compose: [SETUP](SETUP.md).<br>
-To start dashboard in developer mode: [INSTRUCTIONS](.github/instructions/dashboard.instructions.md).<br>
-Backend should be installed and started together with dashboard. DB instance is not strictly necessary.
+To start dashboard in developer mode: [README](./dashboard/README.md).<br>
+For full use the Backend Server should be installed and started together with dashboard.
+However Dashboard can be started in standalone mode with static data. It can be useful for small dashboard fixes where no live data necessary.
+DB instance is not strictly necessary.
 
 ## Branching Convention
 

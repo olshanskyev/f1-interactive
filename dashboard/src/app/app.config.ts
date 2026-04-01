@@ -27,6 +27,7 @@ import {
   SimulatorService,
   StartupService,
   TranslateLangService,
+  MockLiveService,
 } from '@core';
 import { environment } from '@env/environment';
 import { routes } from './app.routes';
@@ -61,6 +62,9 @@ export const appConfig: ApplicationConfig = {
     {
       provide: LiveService,
       useFactory: () => {
+        if (environment.standalone) {
+          return inject(MockLiveService);
+        }
         const settings: SettingsService = inject(SettingsService);
         return (settings.getUseSimulator())?
           inject(SimulatorService) : inject(F1InteractiveService);
