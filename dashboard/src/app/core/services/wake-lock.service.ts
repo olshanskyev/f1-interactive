@@ -1,12 +1,10 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { SettingsService } from '@core';
-import { HotToastService } from '@ngxpert/hot-toast';
 
 @Injectable({ providedIn: 'root' })
 export class WakeLockService {
 
     private readonly settingsService = inject(SettingsService);
-    private readonly toaster = inject(HotToastService);
     private wakeLock: any = null;
     private _isActive = signal<boolean>(false);
     public isActive = this._isActive.asReadonly();
@@ -38,7 +36,6 @@ export class WakeLockService {
     };
 
     async requestWakeLock() {
-        this.toaster.info('Requesting wake lock...');
         if (!this.useLock || document.visibilityState !== 'visible' || !('wakeLock' in navigator) || this.isRequesting) return;
 
         this.isRequesting = true;
@@ -47,7 +44,6 @@ export class WakeLockService {
             this.toggleListeners(false); // Clean up listeners on success
             this._isActive.set(true);
             this.shouldRecover = true;
-            this.toaster.success('Wake lock acquired.');
 
             this.wakeLock.onrelease = () => {
                 this._isActive.set(false);
@@ -55,7 +51,6 @@ export class WakeLockService {
             };
         } catch (err: any) {
             this._isActive.set(false);
-            this.toaster.error('Wake lock request failed. ' + err.name);
 
             if (err.name === 'NotAllowedError') {
                 this.shouldRecover = true;
