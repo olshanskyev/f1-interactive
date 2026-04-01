@@ -45,7 +45,7 @@ export class WakeLockService {
             this._isActive.set(false);
             if (err.name === 'NotAllowedError') {
                 this.shouldRecover = true;
-                console.warn('Wake Lock: Page not visible or focused yet. Will retry on interaction');
+                console.warn('Wake Lock: Page not visible or focused yet. Will retry on interaction.');
                 const retryLock = () => {
                     document.removeEventListener('click', retryLock);
                     document.removeEventListener('pointerup', retryLock);
