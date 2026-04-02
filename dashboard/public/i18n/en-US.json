@@ -137,8 +137,10 @@
     "add_widget": "Add Widget",
     "grid_size": {
       "landscape": "Landscape (16:9)",
-      "mobile_portrait": "Mobile Portrait"
-    }
+      "portrait": "Portrait (flexible)"
+    },
+    "rows": "Rows",
+    "cell_size": "Cell Size"
   },
   "status": {
       "AllClear": "Track Clear",

@@ -26,7 +26,7 @@ export class LayoutsService {
         return {
             id: this.generateId(),
             layoutName: 'My Layout',
-            gridSize: LayoutGrids.landscape,
+            grid: LayoutGrids.portrait,
             widgets: []
         };
     }

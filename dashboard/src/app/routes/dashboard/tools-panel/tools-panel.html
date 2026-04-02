@@ -1,7 +1,7 @@
 <mat-card>
-    <mat-card-content class="d-grid gap-16">
+    <mat-card-content class="d-grid gap-8 p-16 p-b-8">
 
-        <mat-form-field class="form-field-5" appearance="outline" subscriptSizing="dynamic">
+        <mat-form-field class="form-field-5 p-b-2" appearance="outline" subscriptSizing="dynamic">
             <mat-label>{{'layout.layout_name' | translate}}</mat-label>
             <input matInput
                 placeholder="{{'layout.layout_name' | translate}}"
@@ -15,15 +15,37 @@
         <mat-form-field class="form-field-5" appearance="outline" subscriptSizing="dynamic">
             <mat-label>{{ 'layout.grid' | translate }}</mat-label>
             <mat-select [disabled]="(selectedLayout()?.widgets?.length ?? 0) > 0"
-                [value]="selectedLayout()?.gridSize"
+                [value]="selectedLayout()?.grid"
                 (selectionChange)="updateLayoutGrid($event.value)"
-                [compareWith]="compareGridSizes"
+                [compareWith]="compareGrids"
                 >
               @for (layoutGrid of layoutGridSizes; track layoutGrid) {
                 <mat-option [value]="layoutGrid.value">{{ layoutGrid.label | translate }}</mat-option>
               }
             </mat-select>
         </mat-form-field>
+
+        @if (!selectedLayout()?.grid?.fixedRatio) {
+            <div class="buttons-container">
+                <button matMiniFab (click)="adjustRows(-1)">
+                    <mat-icon>remove</mat-icon>
+                </button>
+                <span>{{'layout.rows' | translate}}</span>
+                <button matMiniFab (click)="adjustRows(1)">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+        }
+
+        <div class="buttons-container">
+            <button matMiniFab (click)="adjustCellSize(1)" [disabled]="maxColumnsReached()">
+                <mat-icon>remove</mat-icon>
+            </button>
+            <span>{{'layout.cell_size' | translate}}</span>
+            <button matMiniFab (click)="adjustCellSize(-1)" [disabled]="minColumnsReached()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
 
         <button matButton (click)="openSelectWidgetDialog()">
             <mat-icon>add</mat-icon>

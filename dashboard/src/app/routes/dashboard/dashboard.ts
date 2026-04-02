@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { SyncService, FullScreenService, LayoutsService, SettingsService, WidgetFactory, WakeLockService } from '@core';
 import { isAdmin } from '@core/lib/roles';
 import { LiveService } from '@core/services/live/live.service';
-import { DisplayWidget, Layout, LayoutWidget, WidgetContainer, WidgetSize, WidgetType } from '@core/types/widgets';
+import { DisplayWidget, Layout, LayoutWidget, WidgetContainer, WidgetType } from '@core/types/widgets';
 import { GridContainerComponent, Leaderboard, RaceControlMessagesWidget, SessionInfoWidget, SettingsDialog, SimPlayer, TeamRadioWidget, TrackMapWidget, WeatherWidget, WidgetContainerDirective, WidgetResizeHandleDirective } from '@shared';
 import { NgxRolesService } from 'ngx-permissions';
 import { ToolsPanelComponent } from './tools-panel/tools-panel';
@@ -120,23 +120,31 @@ export class DashboardComponent implements OnDestroy{
           const widgetComponent = this.widgetFactory.getWidgetByType(event.widgetType);
           if (!widgetComponent) return;
 
-          const sizeToAdd: WidgetSize = widgetComponent.meta.defaultSizes[0];
+          const sizeToAdd = widgetComponent.meta.defaultSizes[0];
+          console.log('sizeToAdd', sizeToAdd);
 
-          const maxCol = selectedLayout.gridSize.gridColumns - sizeToAdd.colSpan + 1;
-          const maxRow = selectedLayout.gridSize.gridRows - sizeToAdd.rowSpan + 1;
+          let colSpan = Math.ceil(sizeToAdd.width / cellSize);
+          let rowSpan = Math.ceil(sizeToAdd.height / cellSize);
 
-          colStart = Math.max(1, Math.min(colStart, maxCol));
-          rowStart = Math.max(1, Math.min(rowStart, maxRow));
+          colSpan = Math.min(colSpan, grid.gridColumns());
+          rowSpan = Math.min(rowSpan, grid.gridRows());
+
+          colStart = Math.max(1, Math.min(colStart, grid.gridColumns() - colSpan + 1));
+          rowStart = Math.max(1, Math.min(rowStart, grid.gridRows() - rowSpan + 1));
 
           const layoutWidget: LayoutWidget = {
               type: event.widgetType,
               position: { colStart, rowStart },
-              size: sizeToAdd,
+              size: {colSpan, rowSpan},
               pinned: false
           };
           const newLayout = {
               ...selectedLayout, widgets: [...selectedLayout.widgets, layoutWidget]
           };
+          // fix layout rows and columns
+          newLayout.grid.rows = grid.gridRows();
+          newLayout.grid.columns = grid.gridColumns();
+
           this.loadWidgets(newLayout);
           this.userLayout.set(newLayout);
           this.layoutsService.saveLayout(newLayout);
