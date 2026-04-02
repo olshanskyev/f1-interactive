@@ -15,7 +15,7 @@ export class WidgetFactory {
                     source: {type: ['VK'/*,'YouYube'*/], defaultValue: 'VK'},
                     embedCode: {type: 'string'},
                 },
-                defaultSizes: [{colSpan: 16, rowSpan: 9}],
+                defaultSizes: [{width: 380, height: 200}],
             },
             widgetView: VideoPlayerWidget,
             widgetThumb: 'images/thumbs/video-player-widget-thumb.png',
@@ -26,7 +26,7 @@ export class WidgetFactory {
                 settingsList: {
 
                 },
-                defaultSizes: [{colSpan: 16, rowSpan: 9}],
+                defaultSizes: [{width: 380, height: 300}],
             },
             widgetView: TrackMapWidget,
             widgetThumb: 'images/thumbs/track-map-widget-thumb.png',
@@ -38,7 +38,7 @@ export class WidgetFactory {
                     showHeader: {type: 'boolean', defaultValue: true},
                     mode: {type: ['all', 'laps', 'sectors', 'speeds', 'tyres'], defaultValue: 'all'},
                 },
-                defaultSizes: [{colSpan: 16, rowSpan: 9}],
+                defaultSizes: [{width: 380, height: 600}],
             },
             widgetView: Leaderboard,
             widgetThumb: 'images/thumbs/leaderboard-widget-thumb.png',
@@ -47,7 +47,7 @@ export class WidgetFactory {
             type: WidgetType.SessionInfoWidget,
             meta : {
                 settingsList: {},
-                defaultSizes: [{colSpan: 20, rowSpan: 8}],
+                defaultSizes: [{width: 380, height: 160}],
             },
             widgetView: SessionInfoWidget,
             widgetThumb: 'images/thumbs/session-info-widget-thumb.png',
@@ -63,7 +63,7 @@ export class WidgetFactory {
                     pressure: {type: 'boolean', defaultValue: true},
                     wind: {type: 'boolean', defaultValue: true}
                 },
-                defaultSizes: [{colSpan: 14, rowSpan: 2}],
+                defaultSizes: [{width: 300, height: 100}],
             },
             widgetView: WeatherWidget,
             widgetThumb: 'images/thumbs/weather-widget-thumb.png',
@@ -72,7 +72,7 @@ export class WidgetFactory {
             type: WidgetType.RaceControlMessagesWidget,
             meta: {
                 settingsList: {},
-                defaultSizes: [{ colSpan: 16, rowSpan: 9 }],
+                defaultSizes: [{width: 380, height: 400}],
             },
             widgetView: RaceControlMessagesWidget,
             widgetThumb: 'images/thumbs/race-control-messages-widget-thumb.png',
@@ -81,7 +81,7 @@ export class WidgetFactory {
             type: WidgetType.TeamRadioWidget,
             meta: {
                 settingsList: {},
-                defaultSizes: [{ colSpan: 16, rowSpan: 9 }],
+                defaultSizes: [{width: 380, height: 400}],
             },
             widgetView: TeamRadioWidget,
             widgetThumb: 'images/thumbs/team-radio-widget-thumb.png',

@@ -129,7 +129,6 @@
     "layout": "Layout",
     "layout_name": "Layout Name",
     "my_layouts": "My Layouts",
-    "layout_settings": "Layout Settings",
     "default_layout": "Default Layout",
     "create_layout": "Create Layout",
     "layout_presets": "Layout Presets",
@@ -137,8 +136,11 @@
     "add_widget": "Add Widget",
     "grid_size": {
       "landscape": "Landscape (16:9)",
-      "mobile_portrait": "Mobile Portrait"
-    }
+      "portrait": "Portrait (flexible)"
+    },
+    "rows": "Rows",
+    "cell_size": "Cell Size",
+    "tools": "Tools"
   },
   "status": {
       "AllClear": "Track Clear",

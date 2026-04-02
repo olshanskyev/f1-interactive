@@ -7,7 +7,7 @@
     {{'widgets' | translate}}
 </h2>
 
-<div mat-dialog-content class="container" cdkDropList>
+<div mat-dialog-content class="select-widget-container" cdkDropList>
     @for (widget of widgetsMap; track widget[0]) {
           <mat-card class="m-0" cdkDrag [cdkDragStartDelay]="isMobile() ? 200 : 0"
               (cdkDragStarted)="onDragStarted(widget[1])" (cdkDragEnded)="onDragEnded($event, widget[0])">

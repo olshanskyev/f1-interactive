@@ -19,8 +19,7 @@
 @if (userLayout(); as layout) {
     <div data-nosnippet>
         <grid-container #gridContainer
-            [gridRows]="layout.gridSize.gridRows"
-            [gridColumns]="layout.gridSize.gridColumns"
+            [savedLayoutGrid]="layout.grid"
             [displayGrid]="isEditing()" class="w-full">
             @for (item of displayWidgets(); track $index) {
                 <div class="widget"
@@ -77,9 +76,10 @@
         </grid-container>
         @if (isEditing()) {
             <tools-panel [(selectedLayout)]="userLayout"
-                [cellSize]="gridContainer.cellSize()()"
                 cdkDrag class="tools-panel"
                 (widgetAdded)="onWidgetAdded($event)"
+                [calculatedRows]="gridContainer.rows()()"
+                [calculatedColumns]="gridContainer.columns()()"
             />
         }
     </div>
