@@ -1,57 +1,59 @@
-<mat-card>
-    <mat-card-content class="d-grid gap-8 p-16 p-b-8">
+<mat-expansion-panel class="tools-panel" expanded="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>{{'layout.tools' | translate}}</mat-panel-title>
+  </mat-expansion-panel-header>
+        <div class="d-grid gap-16 test">
 
-        <mat-form-field class="form-field-5 p-b-2" appearance="outline" subscriptSizing="dynamic">
-            <mat-label>{{'layout.layout_name' | translate}}</mat-label>
-            <input matInput
-                placeholder="{{'layout.layout_name' | translate}}"
-                type="text"
-                debounceTime="1000"
-                [debouncedValue]="layoutName()"
-                (debouncedValueChange)="updateLayoutName($event)"
-                />
-        </mat-form-field>
+            <mat-form-field class="form-field-5 f-s-14" appearance="outline" subscriptSizing="dynamic">
+                <mat-label>{{'layout.layout_name' | translate}}</mat-label>
+                <input matInput
+                    placeholder="{{'layout.layout_name' | translate}}"
+                    type="text"
+                    debounceTime="1000"
+                    [debouncedValue]="layoutName()"
+                    (debouncedValueChange)="updateLayoutName($event)"
+                    />
+            </mat-form-field>
 
-        <mat-form-field class="form-field-5" appearance="outline" subscriptSizing="dynamic">
-            <mat-label>{{ 'layout.grid' | translate }}</mat-label>
-            <mat-select [disabled]="(selectedLayout()?.widgets?.length ?? 0) > 0"
-                [value]="selectedLayout()?.grid"
-                (selectionChange)="updateLayoutGrid($event.value)"
-                [compareWith]="compareGrids"
-                >
-              @for (layoutGrid of layoutGridSizes; track layoutGrid) {
-                <mat-option [value]="layoutGrid.value">{{ layoutGrid.label | translate }}</mat-option>
-              }
-            </mat-select>
-        </mat-form-field>
+            <mat-form-field class="form-field-5 f-s-14" appearance="outline" subscriptSizing="dynamic">
+                <mat-label>{{ 'layout.grid' | translate }}</mat-label>
+                <mat-select [disabled]="(selectedLayout()?.widgets?.length ?? 0) > 0"
+                    [value]="selectedLayout()?.grid"
+                    (selectionChange)="updateLayoutGrid($event.value)"
+                    [compareWith]="compareGrids"
+                    >
+                    @for (layoutGrid of layoutGridSizes; track layoutGrid) {
+                    <mat-option [value]="layoutGrid.value">{{ layoutGrid.label | translate }}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
 
-        @if (!selectedLayout()?.grid?.fixedRatio) {
+
+            @if (!selectedLayout()?.grid?.fixedRatio) {
+                <div class="buttons-container">
+                    <button matMiniFab (click)="adjustRows(-1)">
+                        <mat-icon>remove</mat-icon>
+                    </button>
+                    <span class="f-s-14">{{'layout.rows' | translate}}</span>
+                    <button matMiniFab (click)="adjustRows(1)">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
+            }
+
             <div class="buttons-container">
-                <button matMiniFab (click)="adjustRows(-1)">
+                <button matMiniFab (click)="adjustCellSize(1)" [disabled]="maxColumnsReached()">
                     <mat-icon>remove</mat-icon>
                 </button>
-                <span>{{'layout.rows' | translate}}</span>
-                <button matMiniFab (click)="adjustRows(1)">
+                <span class="f-s-14">{{'layout.cell_size' | translate}}</span>
+                <button matMiniFab (click)="adjustCellSize(-1)" [disabled]="minColumnsReached()">
                     <mat-icon>add</mat-icon>
                 </button>
             </div>
-        }
 
-        <div class="buttons-container">
-            <button matMiniFab (click)="adjustCellSize(1)" [disabled]="maxColumnsReached()">
-                <mat-icon>remove</mat-icon>
-            </button>
-            <span>{{'layout.cell_size' | translate}}</span>
-            <button matMiniFab (click)="adjustCellSize(-1)" [disabled]="minColumnsReached()">
+            <button matButton (click)="openSelectWidgetDialog()">
                 <mat-icon>add</mat-icon>
+                {{'layout.add_widget' | translate}}
             </button>
         </div>
-
-        <button matButton (click)="openSelectWidgetDialog()">
-            <mat-icon>add</mat-icon>
-            {{'layout.add_widget' | translate}}
-        </button>
-
-
-    </mat-card-content>
-</mat-card>
+</mat-expansion-panel>

@@ -12,6 +12,7 @@ import { Layout, LayoutGrid, LayoutGrids, WidgetType } from '@core/types/widgets
 import { TranslateModule } from '@ngx-translate/core';
 import { DebounceTime } from '@shared';
 import { SelectWidgetDialog } from '@shared/components/widgets/select-widget-dialog/select-widget-dialog';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @Component({
     selector: 'tools-panel',
@@ -27,7 +28,8 @@ import { SelectWidgetDialog } from '@shared/components/widgets/select-widget-dia
         TranslateModule,
         DebounceTime,
         MatSelectModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        MatExpansionModule,
     ]
 })
 export class ToolsPanelComponent {
