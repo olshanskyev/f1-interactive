@@ -6,7 +6,7 @@ import { getTrackStatusMessage } from '@core/lib/track-status-message';
 import { TrackPosition } from '@core/types/map.type';
 
 import { CarDot } from './car-dot/car-dot';
-import { Positions, SegmentsItem } from '@core/types/f1types';
+import { CarPosition, SegmentsItem } from '@core/types/f1types';
 import { of, tap } from 'rxjs';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
@@ -232,12 +232,12 @@ export class TrackMapWidget extends ContaineredWidget implements OnDestroy {
      * 2. based on ratio of completed segments to total segments and applying that ratio to track points (fallback if mini sectors data is not available or doesn't match segments count)
      * @returns
      */
-    private getPositionsBySegmentsSignal(): Signal<Positions | undefined> {
+    private getPositionsBySegmentsSignal(): Signal<Record<string, CarPosition> | undefined> {
         return computed(() => {
             const timingData = this.timingData();
 
             if (!timingData || this.trackPoints().length === 0) return undefined;
-            const res: Positions = {};
+            const res: Record<string, CarPosition> = {};
             Object.entries(timingData.Lines).forEach(([driverId, itemTimingData]) => {
                 if (itemTimingData.Sectors) {
                     const allSegments = Object.values(itemTimingData.Sectors).flatMap(

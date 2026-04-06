@@ -7,3 +7,4 @@ export * from './leaderboard/leaderboard';
 export * from './track-map/track-map-widget';
 export * from './race-control-messages/race-control-messages-widget';
 export * from './team-radio/team-radio-widget';
+export * from './telemetry/telemetry-widget';

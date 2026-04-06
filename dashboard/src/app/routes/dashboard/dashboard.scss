@@ -16,6 +16,7 @@
     grid-template-areas: "weather"
                          "session-info"
                          "track-map"
+                         "telemetry"
                          ;
     grid-template-columns: 1fr;
 }
@@ -32,6 +33,7 @@
         "weather"
         "session-info"
         "track-map"
+        "telemetry"
         "leaderboard"
         "race-control-messages"
         "team-radio"
@@ -70,6 +72,10 @@
 
 #track-map {
     grid-area: track-map;
+}
+
+#telemetry {
+    grid-area: telemetry;
 }
 
 #race-control-messages {

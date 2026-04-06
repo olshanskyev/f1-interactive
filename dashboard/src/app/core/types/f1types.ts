@@ -358,22 +358,45 @@ export interface Stream {
 
 
 //Position.z
-export interface Position {
+export interface PositionZ {
 	Position: PositionItem[];
 }
 
-export interface PositionItem {
+type PositionItem = {
 	Timestamp: string;
-	Entries: Positions;
+	Entries: Record<string, CarPosition>;
 }
 
-export type Positions = Record<string, PositionCar>;
-
-export interface PositionCar {
+export interface CarPosition {
 	Status: string;
 	X: number;
 	Y: number;
 	Z: number;
+}
+
+//CarData.z
+export interface CarDataZ {
+	Entries: CarItem[];
+}
+
+type CarItem = {
+	Utc: string;
+	Cars: Record<string, CarData>;
+}
+
+export interface CarData {
+	Channels: {
+		/** 0 - RPM */
+		0: number;
+		/** 2 - Speed number km/h */
+		2: number;
+		/** 3 - gear number */
+		3: number;
+		/** 4 - Throttle int 0-100 (104 - Calibration or Inactive state?)*/
+		4: number;
+		/** 5 - Brake number boolean (104 - Calibration or Inactive state?)*/
+		5: number;
+	};
 }
 
 export interface DriverPredictionItem {

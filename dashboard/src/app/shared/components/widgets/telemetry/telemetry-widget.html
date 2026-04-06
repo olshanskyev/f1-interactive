@@ -1,0 +1,23 @@
+<div class="font-formula default-widget-container">
+    <div class="d-flex">
+        @if (driver1()) {
+            <speedo
+                [speed]="speed1()"
+                [rpm]="rpm1()"
+                [gear]="gear1()"
+                [throttle]="throttle1()"
+                [brake]="brake1()"
+            />
+        }
+        @if (driver2()) {
+            <speedo
+                [speed]="speed2()"
+                [rpm]="rpm2()"
+                [gear]="gear2()"
+                [throttle]="throttle2()"
+                [brake]="brake2()"
+             />
+        }
+    </div>
+
+</div>

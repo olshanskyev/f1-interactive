@@ -1,6 +1,6 @@
 import { Component, computed, input, NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
 import { rotate } from '@core/lib/map';
-import { PositionCar } from '@core/types/f1types';
+import { CarPosition } from '@core/types/f1types';
 
 @Component({
     selector: 'g[car-dot]',
@@ -25,7 +25,7 @@ export class CarDot {
     color = input<string>('');
     pit = input<boolean>(false);
     hidden = input<boolean>(false);
-    pos = input<PositionCar>({ X: 0, Y: 0, Z: 0, Status: 'OnTrack' });
+    pos = input<CarPosition>({ X: 0, Y: 0, Z: 0, Status: 'OnTrack' });
     rotation = input<number>(0);
     centerX = input<number>(0);
     centerY = input<number>(0);

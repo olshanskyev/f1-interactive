@@ -1,0 +1,103 @@
+.speedo-container {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+
+  .svg-container {
+    width: 100%;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+
+      .track {
+        fill: none;
+        stroke: rgba(200, 200, 200, 0.2);
+        stroke-width: 12;
+        stroke-linecap: round;
+      }
+
+      .fill {
+        fill: none;
+        stroke: #1583FF; /* Blue for speed */
+        stroke-width: 12;
+        stroke-linecap: round;
+        transition: stroke-dashoffset 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .throttle-track, .throttle-fill, .brake-track, .brake-fill {
+        stroke-width: 6;
+      }
+
+      .throttle-fill {
+        stroke: #4caf50; /* Green for throttle */
+      }
+
+      .brake-fill {
+        stroke: #f44336; /* Red for brake */
+        transition: stroke-dashoffset 0.1s linear; /* Faster response for brake */
+      }
+    }
+  }
+
+  .values {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+
+    .speed-value {
+      container-type: inline-size;
+      width: 100%;
+      .number {
+        font-size: clamp(1rem, 15cqw, 2.5rem);
+        font-weight: bold;
+        line-height: 1;
+      }
+      .unit {
+        font-size: 0.6rem;
+        color: var(--second-color);
+      }
+    }
+
+    .rpm-value {
+      container-type: inline-size;
+      width: 100%;
+      .number {
+        font-size: clamp(0.8rem, 8cqw, 2rem);
+        font-weight: 500;
+      }
+      .unit {
+        font-size: 0.6rem;
+        color: var(--second-color);
+      }
+    }
+  }
+
+  .gear-value {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 4px;
+    background-color: var(--mat-sys-primary-container);
+    text-align: center;
+    width: 20%;
+    container-type: inline-size;
+    .number {
+      font-size: clamp(0.8rem, 25cqw, 2rem);
+      font-weight: bold;
+      color: var(--mat-sys-on-primary-container);
+    }
+  }
+}
