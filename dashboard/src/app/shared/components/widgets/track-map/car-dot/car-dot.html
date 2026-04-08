@@ -1,7 +1,7 @@
 <svg:circle [attr.r]="(favouriteDriver())?250:180" />
 
-<foreignObject [attr.x]="(favouriteDriver()) ? 200 : 100" [attr.y]="(favouriteDriver()) ? -750 : -550">
+<svg:foreignObject [attr.x]="(favouriteDriver()) ? 200 : 100" [attr.y]="(favouriteDriver()) ? -750 : -550">
     <div [class.favourite-driver-tla]="favouriteDriver()" class="driver-tla">
         <span>{{ name() }}</span>
     </div>
-</foreignObject>
+</svg:foreignObject>
