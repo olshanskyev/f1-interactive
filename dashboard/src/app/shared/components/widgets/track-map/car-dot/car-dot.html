@@ -1,16 +1,7 @@
-<svg:circle [attr.r]="180" />
-<svg:text
-    class="font-formula"
-    [style.font-weight]="'bold'"
-    [style.font-size.px]="280"
-    [style.transform]="'translateX(150px) translateY(-120px)'"
->
-    {{ name() }}
-</svg:text>
+<svg:circle [attr.r]="(favouriteDriver())?250:180" />
 
-@if (favouriteDriver()) {
-    <svg:circle
-        [attr.r]="180"
-        class="dot-favourite"
-    />
-}
+<foreignObject [attr.x]="(favouriteDriver()) ? 200 : 100" [attr.y]="(favouriteDriver()) ? -750 : -550">
+    <div [class.favourite-driver-tla]="favouriteDriver()" class="driver-tla">
+        <span>{{ name() }}</span>
+    </div>
+</foreignObject>

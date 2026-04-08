@@ -1,0 +1,69 @@
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { ContaineredWidget } from '../containered-widget';
+import { SpeedoComponent } from '@shared/components/speedo/speedo';
+import { CarData } from '@core/types/f1types';
+import { SimpleDriverCard } from '@shared/components/driver-card/simple-driver-card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { SelectDriverWidget } from '../select-driver/select-driver-widget';
+import { TranslateModule } from '@ngx-translate/core';
+import { DriverSelectionService } from '@core/services/driver-selection.service';
+
+@Component({
+  selector: 'battle-widget',
+  imports: [
+    SpeedoComponent,
+    SimpleDriverCard,
+    MatButtonModule,
+    MatIconModule,
+    SelectDriverWidget,
+    TranslateModule
+  ],
+  templateUrl: './battle-widget.html',
+  styleUrl: './battle-widget.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    // set data-containered attribute when the widget is inside a container
+    '[attr.data-containered]': 'container ? "true" : null'
+  }
+})
+export class BattleWidget extends ContaineredWidget {
+
+    private readonly carData = this.liveService.getCarDataLiveSignal('max');
+    private readonly driverList = this.liveService.getDriverListSignal();
+    private readonly timingData = this.liveService.getTimingDataSignal();
+    private readonly driverSelectionService = inject(DriverSelectionService);
+
+    public driver1 = input<string>();
+    public driver2 = input<string>();
+
+    driverItem1 = computed(() => (this.driver1() ?
+      this.driverList()?.Lines?.[this.driver1()!] :
+      undefined));
+    driverItem2 = computed(() => (this.driver2() ?
+      this.driverList()?.Lines?.[this.driver2()!] :
+      undefined));
+
+    pos1 = computed(() => this.timingData()?.Lines?.[this.driver1() ?? '']?.Line ?? 0);
+    pos2 = computed(() => this.timingData()?.Lines?.[this.driver2() ?? '']?.Line ?? 0);
+
+    getChannelValue(driver: string | undefined, channel: keyof CarData['Channels']): number | undefined {
+        if (!this.carData() || !driver) return undefined;
+        return this.carData()![driver]?.Channels[channel];
+    }
+    speed1 = computed(() => this.getChannelValue(this.driver1(), 2) ?? 0);
+    speed2 = computed(() => this.getChannelValue(this.driver2(), 2) ?? 0);
+    rpm1 = computed(() => this.getChannelValue(this.driver1(), 0) ?? 0);
+    rpm2 = computed(() => this.getChannelValue(this.driver2(), 0) ?? 0);
+    gear1 = computed(() => this.getChannelValue(this.driver1(), 3) ?? 0);
+    gear2 = computed(() => this.getChannelValue(this.driver2(), 3) ?? 0);
+    throttle1 = computed(() => this.getChannelValue(this.driver1(), 4) ?? 0);
+    throttle2 = computed(() => this.getChannelValue(this.driver2(), 4) ?? 0);
+    brake1 = computed(() => this.getChannelValue(this.driver1(), 5) ?? 0);
+    brake2 = computed(() => this.getChannelValue(this.driver2(), 5) ?? 0);
+
+    deselect(driverId: string) {
+      this.driverSelectionService.deselect(driverId);
+    }
+
+}

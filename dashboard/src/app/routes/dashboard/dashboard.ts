@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, linkedSignal, signal, viewChild, ChangeDetectionStrategy, untracked, OnDestroy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
-import { SyncService, FullScreenService, LayoutsService, SettingsService, WidgetFactory, WakeLockService } from '@core';
+import { SyncService, FullScreenService, LayoutsService, SettingsService, WidgetFactory, WakeLockService, DriverSelectionService } from '@core';
 import { isAdmin } from '@core/lib/roles';
 import { LiveService } from '@core/services/live/live.service';
 import { DisplayWidget, Layout, LayoutWidget, WidgetContainer, WidgetType } from '@core/types/widgets';
-import { GridContainerComponent, Leaderboard, RaceControlMessagesWidget, SessionInfoWidget, SettingsDialog, SimPlayer, TeamRadioWidget, TelementryWidget, TrackMapWidget, WeatherWidget, WidgetContainerDirective, WidgetResizeHandleDirective } from '@shared';
+import { BattleWidget, GridContainerComponent, Leaderboard, RaceControlMessagesWidget, SessionInfoWidget, SettingsDialog, SimPlayer, TeamRadioWidget, TrackMapWidget, WeatherWidget, WidgetContainerDirective, WidgetResizeHandleDirective } from '@shared';
 import { NgxRolesService } from 'ngx-permissions';
 import { ToolsPanelComponent } from './tools-panel/tools-panel';
 import { MatButtonModule } from '@angular/material/button';
@@ -34,7 +34,7 @@ import { TranslateModule } from '@ngx-translate/core';
     WeatherWidget,
     RaceControlMessagesWidget,
     TeamRadioWidget,
-    TelementryWidget,
+    BattleWidget,
     CdkDrag,
     WidgetResizeHandleDirective,
     MatIconModule,
@@ -55,6 +55,7 @@ export class DashboardComponent implements OnDestroy{
   private readonly fullScreenService = inject(FullScreenService);
   private readonly syncService = inject(SyncService);
   private readonly wakeLockService = inject(WakeLockService);
+  private readonly driverSelectionService = inject(DriverSelectionService);
 
   selectedLayout = this.layoutsService.getSelectedLayout();
   userLayout = linkedSignal<Layout | undefined>(() => this.selectedLayout());
@@ -74,6 +75,8 @@ export class DashboardComponent implements OnDestroy{
   isMobile = signal(isMobile);
   syncPassedTime = this.syncService.getPassedTime();
   syncLeftTime = this.syncService.getLeftTime();
+  selectedDriver1 = this.driverSelectionService.getDriver1();
+  selectedDriver2 = this.driverSelectionService.getDriver2();
 
   private loadWidgets(layout: Layout) {
       const toDisplay: DisplayWidget[] = layout.widgets.map(item => {
@@ -122,7 +125,6 @@ export class DashboardComponent implements OnDestroy{
           if (!widgetComponent) return;
 
           const sizeToAdd = widgetComponent.meta.defaultSizes[0];
-          console.log('sizeToAdd', sizeToAdd);
 
           let colSpan = Math.ceil(sizeToAdd.width / cellSize);
           let rowSpan = Math.ceil(sizeToAdd.height / cellSize);

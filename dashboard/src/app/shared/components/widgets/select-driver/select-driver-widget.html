@@ -1,0 +1,49 @@
+<div class="font-formula h-full d-flex flex-col"
+  [class.default-widget-container]="container"
+>
+
+    <div class="scroll-wrapper">
+      <div class="scroll-container p-b-8" >
+        <div class="h-full min-w-full w-fit p-x-8">
+          <div class="main-grid leaderboard-positions-template-columns"
+          >
+
+            @if (entriesArray().length > 0) {
+              @for (entry of entriesArray(); track entry[0]) {
+                <div class="transition-container grid-item"
+                [class.selected-driver]="selectedDrivers().has(entry[0])"
+                (click)="selectDriver(entry[0])"
+                (keyup.enter)="selectDriver(entry[0])"
+                (keyup.space)="selectDriver(entry[0])"
+                tabindex="0"
+                >
+                    <div class="position-number">
+                      @if (movementsSnapshot()[entry[0]] === 'up') {
+                        <mat-icon class="text-f1-green small-icon">keyboard_double_arrow_up</mat-icon>
+                      } @else {
+                        @if (movementsSnapshot()[entry[0]] === 'down') {
+                          <mat-icon
+                          class="text-f1-red small-icon">keyboard_double_arrow_down</mat-icon>
+                        } @else {
+                          <div class="f-s-12">{{entry[1]?.Line}}</div>
+                        }
+                      }
+                    </div>
+
+                    <position-driver-chip
+                        [driver]="driverList()?.Lines?.[entry[0]]"
+                    />
+                </div>
+              }
+            } @else {
+              <div class="f-s-12 text-color-second" style="grid-column: 1 / -1;">
+                {{'widget.no_data' | translate}}
+              </div>
+            }
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+</div>

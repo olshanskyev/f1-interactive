@@ -60,7 +60,7 @@
                                 <g car-dot
                                     [attr.key]="'map.driver.' + dot.driver.RacingNumber"
                                     [disableTransition]="disableTransition()"
-                                    [favouriteDriver]="false"
+                                    [favouriteDriver]="selectedDrivers().has(dot.driver.RacingNumber)"
                                     [name]="dot.driver.Tla"
                                     [color]="'#' + dot.driver.TeamColour"
                                     [pit]="dot.pit"

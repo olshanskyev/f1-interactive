@@ -13,7 +13,7 @@ export class SpeedoComponent {
   public rpm = input<number>(0);
   public gear = input<number>(0);
   public throttle = input<number>(0); // 0 to 100
-  public brake = input<boolean>(false);
+  public brake = input<number>(0); // 0 to 100
 
   // Display signals for smooth number transitions
   public displaySpeed = signal<number>(0);
@@ -57,7 +57,7 @@ export class SpeedoComponent {
       cancelAnimationFrame(this.activeAnimations.get(sig)!);
     }
 
-    const duration = 200; // time in ms
+    const duration = 300; // time in ms
     const start = performance.now();
     let lastRenderTime = start;
 
@@ -104,8 +104,8 @@ export class SpeedoComponent {
   });
 
   public brakeDashOffset = computed(() => {
-    // If brake is true, full arc is shown (dashOffset = 0)
-    // If false, empty arc is pushed 15px over circumference to hide the SVG round cap
-    return this.brake() ? 0 : this.brakeCircumference + 15;
+    // If brake is positive, full arc is shown (dashOffset = 0)
+    // If zero, empty arc is pushed 15px over circumference to hide the SVG round cap
+    return (this.brake() > 0) ? 0 : this.brakeCircumference + 15;
   });
 }

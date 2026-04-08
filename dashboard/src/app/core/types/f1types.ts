@@ -362,7 +362,7 @@ export interface PositionZ {
 	Position: PositionItem[];
 }
 
-type PositionItem = {
+interface PositionItem {
 	Timestamp: string;
 	Entries: Record<string, CarPosition>;
 }
@@ -379,7 +379,7 @@ export interface CarDataZ {
 	Entries: CarItem[];
 }
 
-type CarItem = {
+interface CarItem {
 	Utc: string;
 	Cars: Record<string, CarData>;
 }

@@ -1,6 +1,6 @@
 import { Component, computed, inject, linkedSignal, signal, OnDestroy, Signal, ChangeDetectionStrategy } from '@angular/core';
 import { ContaineredWidget } from '../containered-widget';
-import { CircuitService } from '@core';
+import { CircuitService, DriverSelectionService } from '@core';
 import { createMapPoints, createMiniSectors, createSectors, findYellowSectors, getSectorColor, MapSector, MiniSector, prioritizeColoredSectors, rad, rotate } from '@core/lib/map';
 import { getTrackStatusMessage } from '@core/lib/track-status-message';
 import { TrackPosition } from '@core/types/map.type';
@@ -30,6 +30,7 @@ interface Corner {
 export class TrackMapWidget extends ContaineredWidget implements OnDestroy {
 
     private readonly circuitService = inject(CircuitService);
+    private readonly driverSelectionService = inject(DriverSelectionService);
     private sessionInfo = this.liveService.getSessionInfoSignal();
     private sessionInfoKey = computed(() => this.sessionInfo()?.Meeting.Circuit.Key);
 
@@ -37,6 +38,8 @@ export class TrackMapWidget extends ContaineredWidget implements OnDestroy {
     private trackStatus = this.liveService.getTrackStatusSignal();
     private driverList = this.liveService.getDriverListSignal();
     private timingData = this.liveService.getTimingDataSignal();
+    selectedDrivers = this.driverSelectionService.getSelectedDrivers();
+
     positions = computed(() => {
         if (this.liveService.isPositionZAvailable()) {
             return this.liveService.getPositionsLiveSignal('max')();

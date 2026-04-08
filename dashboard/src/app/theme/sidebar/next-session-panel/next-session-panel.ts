@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { LiveService } from '@core/services/live/live.service';
-import { ScheduleService } from '@core/services/schedule-service';
+import { ScheduleService } from '@core/services/schedule.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { SessionCountdown } from '@shared';
 

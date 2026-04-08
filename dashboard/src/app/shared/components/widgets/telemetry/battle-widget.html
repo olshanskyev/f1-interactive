@@ -1,0 +1,56 @@
+<div class="font-formula default-widget-container">
+    <div class="p-y-8 battle-widget-container">
+        <div class="select-driver-container">
+            <select-driver-widget />
+        </div>
+        <div class="d-flex speedos-container">
+            @if (driverItem1()) {
+                <div class="d-flex flex-col">
+                    <div class="d-flex p-x-8 icon-button-5 p-b-8">
+                        <simple-driver-card [driver]="driverItem1()!" [position]="pos1()" />
+                        <button matIconButton (click)="deselect(driver1()!)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                    <speedo
+                        [speed]="speed1()"
+                        [rpm]="rpm1()"
+                        [gear]="gear1()"
+                        [throttle]="throttle1()"
+                        [brake]="brake1()"
+                    />
+                </div>
+            }
+            @if (driverItem2()) {
+                <div class="d-flex flex-col">
+                    <div class="d-flex p-x-8 icon-button-5 p-b-8">
+                        <simple-driver-card [driver]="driverItem2()!" [position]="pos2()" />
+                        <button matIconButton (click)="deselect(driver2()!)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                    <speedo
+                        [speed]="speed2()"
+                        [rpm]="rpm2()"
+                        [gear]="gear2()"
+                        [throttle]="throttle2()"
+                        [brake]="brake2()"
+                    />
+                </div>
+            }
+            @if (!driverItem1() && !driverItem2()) {
+                <div class="text-color-second d-flex align-items-center justify-content-center">
+                    <speedo
+                    [speed]="0"
+                    [rpm]="0"
+                    [gear]="0"
+                    [throttle]="0"
+                    [brake]="0"
+                    />
+                    <span class="select-driver-span">{{'widget.select_driver' | translate}}</span>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,51 @@
+.scroll-container {
+    height: 100% !important;
+    contain: content;
+    overflow-y: auto;
+    will-change: transform;
+    overflow-anchor: none;
+}
+
+.scroll-wrapper {
+    position: relative;
+    height: 100%;
+    min-height: 0;
+}
+
+.main-grid {
+    display: grid;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.transition-container {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
+    will-change: transform;
+}
+
+.grid-item {
+    padding-right: 2px;
+    cursor: pointer;
+    background-color: var(--mat-sys-surface-container);
+    opacity: 0.8;
+}
+
+.position-number {
+    display: flex;
+    flex-wrap: wrap;
+    place-content: center center;
+}
+
+.leaderboard-positions-template-columns {
+    grid-template-columns: 1.5rem 1fr;
+}
+
+.selected-driver {
+    background-color: var(--mat-sys-secondary-container);
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    opacity: 1;
+
+}

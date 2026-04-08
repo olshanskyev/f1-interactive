@@ -94,7 +94,7 @@
                 <weather-widget id="weather"/>
                 <session-info-widget id="session-info"/>
                 <track-map-widget id="track-map"/>
-                <telemetry-widget [driver1]="1" [driver2]="41" id="telemetry"/>
+                <battle-widget [driver1]="selectedDriver1()" [driver2]="selectedDriver2()" id="battle"/>
             </div>
             <div id="bottom-panel" class="bottom-panel overflow-x-auto">
                 <race-control-messages-widget id="race-control-messages"/>

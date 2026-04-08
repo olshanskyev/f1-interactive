@@ -15,7 +15,39 @@
 	}
 }
 
-.dot-favourite {
-	stroke: var(--favourite-driver-color);
-	stroke-width: 80 !important;
+.driver-tla {
+	position: relative;
+	display: inline-block;
+	padding: 100px;
+	font-size: 280px;
+	color: var(--mat-sys-on-surface);
+	text-align: center;
+	background: color-mix(in srgb, var(--mat-sys-surface), transparent 20%);
+	border: 1px solid transparent;
+	border-radius: 300px;
+}
+
+.favourite-driver-tla {
+	font-size: 320px;
+	font-weight: bold;
+	color: var(--mat-sys-inverse-on-surface) !important;
+	background: color-mix(in srgb, var(--mat-sys-inverse-surface), transparent 10%) !important;
+
+	span {
+		padding-left: 250px;
+	}
+}
+
+ .favourite-driver-tla::before {
+	position: absolute;
+	top: 120px;
+	bottom: 120px;
+	left: 200px;
+	width: 80px;
+	content: '';
+	background-color: var(--team-color);
+}
+
+foreignObject {
+    overflow: visible;
 }

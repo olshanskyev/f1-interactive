@@ -1,0 +1,19 @@
+.battle-widget-container {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    align-items: stretch;
+}
+
+.select-driver-container {
+    height: 0;
+    min-height: 100%;
+}
+
+.select-driver-span {
+    position: absolute;
+    padding: 0.5rem;
+    color: var(--mat-sys-on-secondary-container);
+    background-color: var(--mat-sys-secondary-container);
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+}

@@ -16,6 +16,7 @@ import { CarPosition } from '@core/types/f1types';
         '[class.opacity-30]': 'pit()',
         '[style.transform]': 'transform()',
         '[style.fill]': 'color()',
+        '[style.--team-color]': 'color()'
     },
 })
 export class CarDot {

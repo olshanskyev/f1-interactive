@@ -1,10 +1,10 @@
 .speedo-container {
   position: relative;
-  width: 100%;
-  max-width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  max-width: 300px;
   margin: 0 auto;
 
   .svg-container {
@@ -49,21 +49,23 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
     width: 100%;
+    text-align: center;
+    transform: translate(-50%, -50%);
 
     .speed-value {
-      container-type: inline-size;
       width: 100%;
+      container-type: inline-size;
+
       .number {
         font-size: clamp(1rem, 15cqw, 2.5rem);
         font-weight: bold;
         line-height: 1;
       }
+
       .unit {
         font-size: 0.6rem;
         color: var(--second-color);
@@ -71,12 +73,14 @@
     }
 
     .rpm-value {
-      container-type: inline-size;
       width: 100%;
+      container-type: inline-size;
+
       .number {
         font-size: clamp(0.8rem, 8cqw, 2rem);
         font-weight: 500;
       }
+
       .unit {
         font-size: 0.6rem;
         color: var(--second-color);
@@ -88,12 +92,13 @@
     position: absolute;
     bottom: 10%;
     left: 50%;
-    transform: translateX(-50%);
-    border-radius: 4px;
-    background-color: var(--mat-sys-primary-container);
-    text-align: center;
     width: 20%;
     container-type: inline-size;
+    text-align: center;
+    background-color: var(--mat-sys-primary-container);
+    border-radius: 4px;
+    transform: translateX(-50%);
+
     .number {
       font-size: clamp(0.8rem, 25cqw, 2rem);
       font-weight: bold;
