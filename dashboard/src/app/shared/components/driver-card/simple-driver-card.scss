@@ -15,6 +15,9 @@
     flex-direction: column;
     justify-content: center;
     width: 100%;
+}
+
+.simple-driver-container {
     container-type: inline-size;
 }
 
@@ -32,7 +35,7 @@
     border-radius: 4px;
 }
 
-@container (width <= 120px) {
+@container (width <= 200px) {
     .team-name {
         display: none;
     }
@@ -43,5 +46,11 @@
 
     .driver-name-tla {
         display: block;
+    }
+}
+
+@container (width <=120px) {
+    .photo {
+        height: 2.5rem !important;
     }
 }

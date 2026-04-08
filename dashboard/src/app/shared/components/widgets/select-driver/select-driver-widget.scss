@@ -26,7 +26,7 @@
 }
 
 .grid-item {
-    padding-right: 2px;
+    padding: 1px 2px 1px 0px;
     cursor: pointer;
     background-color: var(--mat-sys-surface-container);
     opacity: 0.8;
@@ -44,7 +44,7 @@
 
 .selected-driver {
     background-color: var(--mat-sys-secondary-container);
-    border: 1px solid transparent;
+    border: 0px solid transparent;
     border-radius: 0.25rem;
     opacity: 1;
 

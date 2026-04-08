@@ -19,7 +19,7 @@
                 @if (driverList()?.Lines?.[capture.RacingNumber]; as driver) {
                   <simple-driver-card [driver]="driver"/>
                 }
-                <div class="text-color-second d-flex align-items-center gap-4">
+                <div class="text-color-second d-flex align-items-center gap-4 text-nowrap">
                   <mat-icon class="small-icon">av_timer</mat-icon>
                   <span class="f-s-10">{{ capture.Utc | date:'short' }}</span>
                 </div>
