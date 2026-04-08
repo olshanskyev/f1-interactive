@@ -15,36 +15,28 @@
 	}
 }
 
-.driver-tla {
-	position: relative;
-	display: inline-block;
-	padding: 100px;
-	font-size: 280px;
-	-webkit-text-size-adjust: none;
-	color: var(--mat-sys-on-surface);
-	text-align: center;
-	background: color-mix(in srgb, var(--mat-sys-surface), transparent 20%);
-	border: 1px solid transparent;
-	border-radius: 300px;
+.driver-bg {
+	fill: color-mix(in srgb, var(--mat-sys-surface), transparent 20%);
+	stroke: transparent;
+	stroke-width: 1px;
 }
 
-.favourite-driver-tla {
+.favourite-bg {
+	fill: color-mix(in srgb, var(--mat-sys-inverse-surface), transparent 10%) !important;
+}
+
+.driver-text {
+	font-size: 280px;
+	font-family: inherit;
+	fill: var(--mat-sys-on-surface);
+}
+
+.favourite-text {
 	font-size: 320px;
 	font-weight: bold;
-	color: var(--mat-sys-inverse-on-surface) !important;
-	background: color-mix(in srgb, var(--mat-sys-inverse-surface), transparent 10%) !important;
-
-	span {
-		padding-left: 250px;
-	}
+	fill: var(--mat-sys-inverse-on-surface) !important;
 }
 
- .favourite-driver-tla::before {
-	position: absolute;
-	top: 120px;
-	bottom: 120px;
-	left: 200px;
-	width: 80px;
-	content: '';
-	background-color: var(--team-color);
+.favourite-team-color {
+	fill: var(--team-color);
 }

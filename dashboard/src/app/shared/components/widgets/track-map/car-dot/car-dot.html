@@ -1,7 +1,29 @@
 <svg:circle [attr.r]="(favouriteDriver())?250:180" />
 
-<svg:foreignObject [attr.x]="(favouriteDriver()) ? 200 : 100" [attr.y]="(favouriteDriver()) ? -750 : -550" width="1500" height="700">
-    <div xmlns="http://www.w3.org/1999/xhtml" [class.favourite-driver-tla]="favouriteDriver()" class="driver-tla">
-        <span>{{ name() }}</span>
-    </div>
-</svg:foreignObject>
+<svg:g [attr.transform]="'translate(' + ((favouriteDriver()) ? 200 : 100) + ',' + ((favouriteDriver()) ? -750 : -550) + ')'">
+    <svg:rect
+        class="driver-bg"
+        [class.favourite-bg]="favouriteDriver()"
+        x="0" y="0"
+        [attr.width]="favouriteDriver() ? 1300 : 1000"
+        [attr.height]="favouriteDriver() ? 520 : 480"
+        rx="240" ry="240">
+    </svg:rect>
+
+    @if (favouriteDriver()) {
+        <svg:rect
+            class="favourite-team-color"
+            x="200" y="120"
+            width="80" height="280">
+        </svg:rect>
+    }
+
+    <svg:text
+        class="driver-text"
+        [class.favourite-text]="favouriteDriver()"
+        [attr.x]="favouriteDriver() ? 790 : 500"
+        [attr.y]="favouriteDriver() ? 380 : 340"
+        text-anchor="middle">
+        {{ name() }}
+    </svg:text>
+</svg:g>
