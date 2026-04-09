@@ -7,15 +7,13 @@
         x="0" y="0"
         [attr.width]="favouriteDriver() ? 1300 : 1000"
         [attr.height]="favouriteDriver() ? 520 : 480"
-        rx="240" ry="240">
-    </svg:rect>
+        rx="240" ry="240" />
 
     @if (favouriteDriver()) {
         <svg:rect
             class="favourite-team-color"
             x="200" y="120"
-            width="80" height="280">
-        </svg:rect>
+            width="80" height="280" />
     }
 
     <svg:text

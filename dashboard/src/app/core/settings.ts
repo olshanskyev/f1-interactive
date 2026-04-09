@@ -16,6 +16,7 @@ export interface AppSettings {
   showTeamRadio: boolean;
   delayMs: number;
   useLock: boolean;
+  showHeadToHead: boolean;
 }
 
 export const defaults: AppSettings = {
@@ -33,4 +34,5 @@ export const defaults: AppSettings = {
   showTeamRadio: false,
   delayMs: 0,
   useLock: true,
+  showHeadToHead: true
 };

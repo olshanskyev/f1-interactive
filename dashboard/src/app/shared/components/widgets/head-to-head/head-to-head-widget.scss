@@ -1,12 +1,25 @@
-.battle-widget-container {
+.head-to-head-widget-container {
     display: grid;
     grid-template-columns: max-content 1fr;
     align-items: stretch;
+    height: 100%;
+    min-height: 0;
 }
 
 .select-driver-container {
     height: 0;
     min-height: 100%;
+}
+
+.speedos-container {
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+
+    .flex-col {
+        height: 100%;
+        min-height: 0;
+    }
 }
 
 .select-driver-span {

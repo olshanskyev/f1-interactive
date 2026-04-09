@@ -10,7 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DriverSelectionService } from '@core/services/driver-selection.service';
 
 @Component({
-  selector: 'battle-widget',
+  selector: 'head-to-head-widget',
   imports: [
     SpeedoComponent,
     SimpleDriverCard,
@@ -19,23 +19,23 @@ import { DriverSelectionService } from '@core/services/driver-selection.service'
     SelectDriverWidget,
     TranslateModule
   ],
-  templateUrl: './battle-widget.html',
-  styleUrl: './battle-widget.scss',
+  templateUrl: './head-to-head-widget.html',
+  styleUrl: './head-to-head-widget.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     // set data-containered attribute when the widget is inside a container
     '[attr.data-containered]': 'container ? "true" : null'
   }
 })
-export class BattleWidget extends ContaineredWidget {
+export class HeadToHeadWidget extends ContaineredWidget {
 
     private readonly carData = this.liveService.getCarDataLiveSignal('max');
     private readonly driverList = this.liveService.getDriverListSignal();
     private readonly timingData = this.liveService.getTimingDataSignal();
     private readonly driverSelectionService = inject(DriverSelectionService);
 
-    public driver1 = input<string>();
-    public driver2 = input<string>();
+    driver1 = this.driverSelectionService.getDriver1();
+    driver2 = this.driverSelectionService.getDriver2();
 
     driverItem1 = computed(() => (this.driver1() ?
       this.driverList()?.Lines?.[this.driver1()!] :

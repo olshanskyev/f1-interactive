@@ -51,6 +51,7 @@ export enum WidgetType
     TrackMapWidget = 'TrackMapWidget',
     RaceControlMessagesWidget = 'RaceControlMessagesWidget',
     TeamRadioWidget = 'TeamRadioWidget',
+    HeadToHeadWidget = 'HeadToHeadWidget',
 }
 
 export type SettingType = 'string' | 'number' | 'boolean' | string[];

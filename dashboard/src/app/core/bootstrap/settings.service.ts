@@ -125,4 +125,8 @@ export class SettingsService {
     return this.options.useLock;
   }
 
+  getShowHeadToHead() {
+    return this.options.showHeadToHead;
+  }
+
 }

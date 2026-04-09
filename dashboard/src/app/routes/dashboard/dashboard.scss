@@ -16,7 +16,7 @@
     grid-template-areas: "weather"
                          "session-info"
                          "track-map"
-                         "battle"
+                         "head-to-head"
                          ;
     grid-template-columns: 1fr;
 }
@@ -33,7 +33,7 @@
         "weather"
         "session-info"
         "track-map"
-        "battle"
+        "head-to-head"
         "leaderboard"
         "race-control-messages"
         "team-radio"
@@ -74,18 +74,18 @@
     grid-area: track-map;
 }
 
-#battle {
-    grid-area: battle;
+#head-to-head {
+    grid-area: head-to-head;
 }
 
 #race-control-messages {
     grid-area: race-control-messages;
-    height: max-content;
+    height: max-content !important;
 }
 
 #team-radio {
     grid-area: team-radio;
-    height: max-content;
+    height: max-content !important;
 }
 
 .widget {

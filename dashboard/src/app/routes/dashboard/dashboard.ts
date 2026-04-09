@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, linkedSignal, signal, viewChild, ChangeDetectionStrategy, untracked, OnDestroy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
-import { SyncService, FullScreenService, LayoutsService, SettingsService, WidgetFactory, WakeLockService, DriverSelectionService } from '@core';
+import { SyncService, FullScreenService, LayoutsService, SettingsService, WidgetFactory, WakeLockService } from '@core';
 import { isAdmin } from '@core/lib/roles';
 import { LiveService } from '@core/services/live/live.service';
 import { DisplayWidget, Layout, LayoutWidget, WidgetContainer, WidgetType } from '@core/types/widgets';
-import { BattleWidget, GridContainerComponent, Leaderboard, RaceControlMessagesWidget, SessionInfoWidget, SettingsDialog, SimPlayer, TeamRadioWidget, TrackMapWidget, WeatherWidget, WidgetContainerDirective, WidgetResizeHandleDirective } from '@shared';
+import { HeadToHeadWidget, GridContainerComponent, Leaderboard, RaceControlMessagesWidget, SessionInfoWidget, SettingsDialog, SimPlayer, TeamRadioWidget, TrackMapWidget, WeatherWidget, WidgetContainerDirective, WidgetResizeHandleDirective } from '@shared';
 import { NgxRolesService } from 'ngx-permissions';
 import { ToolsPanelComponent } from './tools-panel/tools-panel';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { isMobile } from '@core/lib/device';
 import { Footer } from '@theme/footer/footer';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 
 @Component({
@@ -34,14 +35,15 @@ import { TranslateModule } from '@ngx-translate/core';
     WeatherWidget,
     RaceControlMessagesWidget,
     TeamRadioWidget,
-    BattleWidget,
+    HeadToHeadWidget,
     CdkDrag,
     WidgetResizeHandleDirective,
     MatIconModule,
     ToolsPanelComponent,
     MatButtonModule,
     Footer,
-    TranslateModule
+    TranslateModule,
+    MatExpansionModule
   ],
 })
 export class DashboardComponent implements OnDestroy{
@@ -55,7 +57,6 @@ export class DashboardComponent implements OnDestroy{
   private readonly fullScreenService = inject(FullScreenService);
   private readonly syncService = inject(SyncService);
   private readonly wakeLockService = inject(WakeLockService);
-  private readonly driverSelectionService = inject(DriverSelectionService);
 
   selectedLayout = this.layoutsService.getSelectedLayout();
   userLayout = linkedSignal<Layout | undefined>(() => this.selectedLayout());
@@ -75,8 +76,7 @@ export class DashboardComponent implements OnDestroy{
   isMobile = signal(isMobile);
   syncPassedTime = this.syncService.getPassedTime();
   syncLeftTime = this.syncService.getLeftTime();
-  selectedDriver1 = this.driverSelectionService.getDriver1();
-  selectedDriver2 = this.driverSelectionService.getDriver2();
+  showHeadToHead = signal(this.settingsService.getShowHeadToHead());
 
   private loadWidgets(layout: Layout) {
       const toDisplay: DisplayWidget[] = layout.widgets.map(item => {
@@ -224,6 +224,16 @@ export class DashboardComponent implements OnDestroy{
 
     ngOnDestroy() {
         this.wakeLockService.releaseWakeLock();
+    }
+
+    onHeadToHeadOpened() {
+        this.showHeadToHead.set(true);
+        this.settingsService.setOptions({ showHeadToHead: true });
+    }
+
+    onHeadToHeadClosed() {
+        this.showHeadToHead.set(false);
+        this.settingsService.setOptions({ showHeadToHead: false });
     }
 
 }

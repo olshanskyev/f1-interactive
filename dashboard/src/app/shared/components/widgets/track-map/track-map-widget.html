@@ -1,4 +1,6 @@
-<div class="default-widget-container font-formula">
+<div class="font-formula"
+    [class.default-widget-container]="container"
+>
     @if (mapResource.error()) {
         <div class="widget-loading-skeleton f-s-12 text-color-second">
             {{'widget.loading_track_map_error' | translate}}

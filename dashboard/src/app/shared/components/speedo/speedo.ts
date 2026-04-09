@@ -106,6 +106,6 @@ export class SpeedoComponent {
   public brakeDashOffset = computed(() => {
     // If brake is positive, full arc is shown (dashOffset = 0)
     // If zero, empty arc is pushed 15px over circumference to hide the SVG round cap
-    return (this.brake() > 0) ? 0 : this.brakeCircumference + 15;
+    return (this.brake() > 0 && this.brake() !== 104) ? 0 : this.brakeCircumference + 15;
   });
 }
