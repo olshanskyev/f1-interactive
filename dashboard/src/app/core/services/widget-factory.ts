@@ -34,7 +34,9 @@ export class WidgetFactory {
         [WidgetType.HeadToHeadWidget, {
             type: WidgetType.HeadToHeadWidget,
             meta: {
-                settingsList: {},
+                settingsList: {
+                    mode: {type: ['telemetry', 'last', 'best'], defaultValue: 'telemetry'},
+                },
                 defaultSizes: [{width: 380, height: 300}],
             },
             widgetView: HeadToHeadWidget,

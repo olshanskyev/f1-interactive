@@ -101,10 +101,24 @@
                             (closed)="onHeadToHeadClosed()"
                         >
                         <mat-expansion-panel-header>
-                            <mat-panel-title>{{'widget.head_to_head' | translate}}</mat-panel-title>
+                            <mat-panel-title class="text-nowrap">{{'widget.head_to_head' | translate}}</mat-panel-title>
+                            <mat-panel-description>
+                                @if (showHeadToHead()) {
+                                    <mat-form-field (click)="$event.stopPropagation()" class="form-field-5 f-s-14 p-y-4 head-to-head-form-field" appearance="outline" subscriptSizing="dynamic">
+                                        <mat-label>{{ 'widget.display' | translate }}</mat-label>
+                                        <mat-select class="f-s-14"
+                                            [(value)]="headToHeadMode"
+                                            >
+                                            @for (mode of headToHeadModes; track mode) {
+                                                <mat-option [value]="mode">{{ mode | translate }}</mat-option>
+                                            }
+                                        </mat-select>
+                                    </mat-form-field>
+                                }
+                            </mat-panel-description>
                         </mat-expansion-panel-header>
                         @if (showHeadToHead()){
-                            <head-to-head-widget id="head-to-head"/>
+                            <head-to-head-widget id="head-to-head" [settings]="{mode: headToHeadMode()}"/>
                         }
                     </mat-expansion-panel>
                 </div>

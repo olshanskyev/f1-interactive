@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal } from '@angular/core';
 import { ContaineredWidget } from '../containered-widget';
 import { SpeedoComponent } from '@shared/components/speedo/speedo';
 import { CarData } from '@core/types/f1types';
@@ -8,6 +8,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { SelectDriverWidget } from '../select-driver/select-driver-widget';
 import { TranslateModule } from '@ngx-translate/core';
 import { DriverSelectionService } from '@core/services/driver-selection.service';
+import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
+import { MatDividerModule } from '@angular/material/divider';
+import { IntervalPipe } from '@shared/pipes';
+
+export const headToHeadModes = ['telemetry', 'last', 'best'] as const;
+export type HeadToHeadMode = (typeof headToHeadModes)[number];
 
 @Component({
   selector: 'head-to-head-widget',
@@ -17,7 +23,11 @@ import { DriverSelectionService } from '@core/services/driver-selection.service'
     MatButtonModule,
     MatIconModule,
     SelectDriverWidget,
-    TranslateModule
+    TranslateModule,
+    KeyValuePipe,
+    NgTemplateOutlet,
+    MatDividerModule,
+    IntervalPipe
   ],
   templateUrl: './head-to-head-widget.html',
   styleUrl: './head-to-head-widget.scss',
@@ -32,7 +42,11 @@ export class HeadToHeadWidget extends ContaineredWidget {
     private readonly carData = this.liveService.getCarDataLiveSignal('max');
     private readonly driverList = this.liveService.getDriverListSignal();
     private readonly timingData = this.liveService.getTimingDataSignal();
+    private readonly timingStats = this.liveService.getTimingStatsSignal();
     private readonly driverSelectionService = inject(DriverSelectionService);
+
+    private readonly settingsMode = computed(() => this.settings()?.['mode'] ?? 'telemetry');
+    mode = linkedSignal<HeadToHeadMode>(() =>this.settingsMode());
 
     driver1 = this.driverSelectionService.getDriver1();
     driver2 = this.driverSelectionService.getDriver2();
@@ -44,8 +58,14 @@ export class HeadToHeadWidget extends ContaineredWidget {
       this.driverList()?.Lines?.[this.driver2()!] :
       undefined));
 
-    pos1 = computed(() => this.timingData()?.Lines?.[this.driver1() ?? '']?.Line ?? 0);
-    pos2 = computed(() => this.timingData()?.Lines?.[this.driver2() ?? '']?.Line ?? 0);
+    timingDataDriver1 = computed(() => this.timingData()?.Lines?.[this.driver1() ?? '']);
+    timingDataDriver2 = computed(() => this.timingData()?.Lines?.[this.driver2() ?? '']);
+
+    timingStatDriver1 = computed(() => this.timingStats()?.Lines?.[this.driver1() ?? '']);
+    timingStatDriver2 = computed(() => this.timingStats()?.Lines?.[this.driver2() ?? '']);
+
+    pos1 = computed(() => this.timingDataDriver1()?.Line ?? 0);
+    pos2 = computed(() => this.timingDataDriver2()?.Line ?? 0);
 
     getChannelValue(driver: string | undefined, channel: keyof CarData['Channels']): number | undefined {
         if (!this.carData() || !driver) return undefined;

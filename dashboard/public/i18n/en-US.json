@@ -74,6 +74,7 @@
   "tyres": "Tyres",
   "interval": "Interval",
   "lap_time": "Lap Time",
+  "lap": "Lap",
   "mini_sectors": "Mini Sectors",
   "driver": "Driver",
   "all": "All",
@@ -88,6 +89,9 @@
   "delay_sec": "Delay, s",
   "syncing": "Syncing...",
   "sync_smaller": "or you can set a smaller interval",
+  "telemetry": "Telemetry",
+  "best": "Best",
+  "last": "Last",
   "weather": {
     "air": "Air",
     "track": "Track",
@@ -115,6 +119,7 @@
     "no_team_radio": "No team radio yet",
     "select_driver": "Select a Driver",
     "head_to_head": "Head to Head",
+    "display": "Display",
     "settings": {
       "source": "Source",
       "embedCode": "Embed code",
