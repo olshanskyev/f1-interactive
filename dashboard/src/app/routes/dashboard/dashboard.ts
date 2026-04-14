@@ -243,7 +243,6 @@ export class DashboardComponent implements OnDestroy{
     }
 
     headToHeadModeChanged(value: HeadToHeadMode) {
-        console.log(value);
         this.settingsService.setOptions({ headToHeadMode: value });
     }
 
