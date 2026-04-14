@@ -81,7 +81,7 @@ export class DashboardComponent implements OnDestroy{
   syncPassedTime = this.syncService.getPassedTime();
   syncLeftTime = this.syncService.getLeftTime();
   showHeadToHead = signal(this.settingsService.getShowHeadToHead());
-  headToHeadMode = signal<HeadToHeadMode>('telemetry');
+  headToHeadMode = signal<HeadToHeadMode>(this.settingsService.getHeadToHeadMode() ?? 'telemetry');
   headToHeadModes = headToHeadModes;
 
   private loadWidgets(layout: Layout) {
@@ -240,6 +240,11 @@ export class DashboardComponent implements OnDestroy{
     onHeadToHeadClosed() {
         this.showHeadToHead.set(false);
         this.settingsService.setOptions({ showHeadToHead: false });
+    }
+
+    headToHeadModeChanged(value: HeadToHeadMode) {
+        console.log(value);
+        this.settingsService.setOptions({ headToHeadMode: value });
     }
 
 }

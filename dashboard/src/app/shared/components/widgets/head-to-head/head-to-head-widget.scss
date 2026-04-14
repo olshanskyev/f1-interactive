@@ -32,16 +32,20 @@
 }
 
 .head-to-head-skeleton {
-    place-self: center;
-    align-content: center;
-    width: 50%;
-    padding: 0.5rem;
-    font-size: 0.75rem;
-    color: var(--mat-sys-on-secondary-container);
-    text-align: center;
-    background-color: var(--mat-sys-secondary-container);
-    border: 1px solid transparent;
-    border-radius: 0.5rem;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    div {
+        width: 50%;
+        padding: 0.5rem;
+        font-size: 0.75rem;
+        color: var(--mat-sys-on-secondary-container);
+        text-align: center;
+        background-color: var(--mat-sys-secondary-container);
+        border: 1px solid transparent;
+        border-radius: 0.5rem;
+    }
 }
 
 .driver-card {
@@ -86,6 +90,7 @@
 }
 
 .head-to-head-param {
+    align-content: center;
     text-align: center;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 1rem;

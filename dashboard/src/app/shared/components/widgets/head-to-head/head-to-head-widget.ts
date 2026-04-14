@@ -11,6 +11,7 @@ import { DriverSelectionService } from '@core/services/driver-selection.service'
 import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 import { IntervalPipe } from '@shared/pipes';
+import { CurrentTyresChip } from '../leaderboard/current-tyres-chip/current-tyres-chip';
 
 export const headToHeadModes = ['telemetry', 'last', 'best'] as const;
 export type HeadToHeadMode = (typeof headToHeadModes)[number];
@@ -27,7 +28,8 @@ export type HeadToHeadMode = (typeof headToHeadModes)[number];
     KeyValuePipe,
     NgTemplateOutlet,
     MatDividerModule,
-    IntervalPipe
+    IntervalPipe,
+    CurrentTyresChip
   ],
   templateUrl: './head-to-head-widget.html',
   styleUrl: './head-to-head-widget.scss',
@@ -43,6 +45,7 @@ export class HeadToHeadWidget extends ContaineredWidget {
     private readonly driverList = this.liveService.getDriverListSignal();
     private readonly timingData = this.liveService.getTimingDataSignal();
     private readonly timingStats = this.liveService.getTimingStatsSignal();
+    private readonly timingAppData = this.liveService.getTimingAppDataSignal();
     private readonly driverSelectionService = inject(DriverSelectionService);
 
     private readonly settingsMode = computed(() => this.settings()?.['mode'] ?? 'telemetry');
@@ -63,6 +66,9 @@ export class HeadToHeadWidget extends ContaineredWidget {
 
     timingStatDriver1 = computed(() => this.timingStats()?.Lines?.[this.driver1() ?? '']);
     timingStatDriver2 = computed(() => this.timingStats()?.Lines?.[this.driver2() ?? '']);
+
+    timingAppDataDriver1 = computed(() => this.timingAppData()?.Lines?.[this.driver1() ?? '']);
+    timingAppDataDriver2 = computed(() => this.timingAppData()?.Lines?.[this.driver2() ?? '']);
 
     pos1 = computed(() => this.timingDataDriver1()?.Line ?? 0);
     pos2 = computed(() => this.timingDataDriver2()?.Line ?? 0);

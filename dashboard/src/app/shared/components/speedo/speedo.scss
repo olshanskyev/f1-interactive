@@ -27,7 +27,7 @@
         stroke: #1583FF; /* Blue for speed */
         stroke-width: 12;
         stroke-linecap: round;
-        transition: stroke-dashoffset 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: stroke-dashoffset 0.3s linear;
       }
 
       .throttle-track, .throttle-fill, .brake-track, .brake-fill {

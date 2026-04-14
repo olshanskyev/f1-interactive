@@ -108,6 +108,7 @@
                                         <mat-label>{{ 'widget.display' | translate }}</mat-label>
                                         <mat-select class="f-s-14"
                                             [(value)]="headToHeadMode"
+                                            (selectionChange)="headToHeadModeChanged($event.value)"
                                             >
                                             @for (mode of headToHeadModes; track mode) {
                                                 <mat-option [value]="mode">{{ mode | translate }}</mat-option>

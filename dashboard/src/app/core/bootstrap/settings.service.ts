@@ -129,4 +129,8 @@ export class SettingsService {
     return this.options.showHeadToHead;
   }
 
+  getHeadToHeadMode() {
+    return this.options.headToHeadMode;
+  }
+
 }

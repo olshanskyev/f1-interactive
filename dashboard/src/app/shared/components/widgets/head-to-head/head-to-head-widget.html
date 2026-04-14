@@ -85,28 +85,28 @@
 
                 <div class="d-flex flex-col w-full dual-driver-card">
                     <div class="d-flex w-full">
+                        <ng-template #headToHeadSkeleton>
+                            <div class="head-to-head-skeleton">
+                                <div>{{'widget.select_driver' | translate}}</div>
+                            </div>
+                        </ng-template>
                         <div class="w-50 h-full">
                             @if (driverItem1()) {
                                 <ng-container *ngTemplateOutlet="driverCardHeader; context: { driverId: driver1()!, driverItem: driverItem1()!, pos: pos1()}" />
                             } @else {
-                                <div class="head-to-head-skeleton">{{'widget.select_driver' | translate}}</div>
+                                <ng-container *ngTemplateOutlet="headToHeadSkeleton" />
                             }
                             </div>
                         <div class="w-50 h-full">
                             @if (driverItem2()) {
                                 <ng-container *ngTemplateOutlet="driverCardHeader; context: { driverId: driver2()!, driverItem: driverItem2()!, pos: pos2()}" />
                             } @else {
-                                <div class="head-to-head-skeleton">{{'widget.select_driver' | translate}}</div>
+                                <ng-container *ngTemplateOutlet="headToHeadSkeleton" />
                             }
                             </div>
                     </div>
 
                     <div class="times-grid f-s-14">
-                        <!--<div></div>
-                        <div class="head-to-head-param center">
-                            {{'interval' | translate}}
-                        </div>
-                        <div></div>-->
 
                         <!-- lap -->
                         @let firstValueLap = (mode() === 'best')? timingDataDriver1()?.BestLapTime?.Value : timingDataDriver1()?.LastLapTime?.Value;
@@ -131,6 +131,18 @@
                         @let secondValueS3 = (mode() === 'best')? timingStatDriver2()?.BestSectors?.[2]?.Value : timingDataDriver2()?.Sectors?.[2]?.Value;
                         <mat-divider class="all-columns"/>
                         <ng-container *ngTemplateOutlet="headToHeadRow; context: { name: 'S3', firstValue: firstValueS3, secondValue: secondValueS3 }" />
+
+                        <mat-divider class="all-columns"/>
+                        <div class="left">
+                             <current-tyres-chip [timingAppData]="timingAppDataDriver1()"/>
+                        </div>
+                        <div class="head-to-head-param center">
+                            {{'tyres' | translate}}
+                        </div>
+                        <div class="right d-flex justify-content-end">
+                            <current-tyres-chip [timingAppData]="timingAppDataDriver2()"/>
+                        </div>
+
                     </div>
 
                 </div>

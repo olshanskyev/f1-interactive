@@ -1,4 +1,4 @@
-import { Component, input, computed, ChangeDetectionStrategy, effect, signal } from '@angular/core';
+import { Component, input, computed, ChangeDetectionStrategy, effect, signal, untracked } from '@angular/core';
 
 @Component({
   selector: 'speedo',
@@ -49,7 +49,7 @@ export class SpeedoComponent {
   }
 
   private animateValue(sig: any, target: number) {
-    const current = sig();
+    const current = untracked(() => sig());
     if (current === target) return;
 
     // Cancel previous animation frame for this signal
@@ -65,9 +65,8 @@ export class SpeedoComponent {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
 
-      // easeOutQuad roughly matches the CSS cubic-bezier output
-      const easeProgress = 1 - (1 - progress) * (1 - progress);
-      const nextValue = current + (target - current) * easeProgress;
+      // Linear progression
+      const nextValue = current + (target - current) * progress;
 
       // Throttle visual text updates to ~20fps (50ms)
       if (now - lastRenderTime >= 50 || progress === 1) {
