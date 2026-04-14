@@ -11,10 +11,6 @@
     height: calc(var(--cell-size) * var(--grid-rows));
 }
 
-.grid-container.full-screen {
-    height: 100dvh;
-}
-
 .grid-container.portrait {
     align-content: start;
 }
