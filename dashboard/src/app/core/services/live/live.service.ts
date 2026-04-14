@@ -4,7 +4,7 @@ import { Observable, fromEvent, merge, of, retry, switchMap, tap, timeout, filte
 import { SseClient } from 'ngx-sse-client';
 import { StateHandler } from './state/state-handler';
 import { inflate } from '@core/lib/inflate';
-import { Position, PositionCar } from '@core/types/f1types';
+import { PositionZ, CarPosition, CarDataZ, CarData } from '@core/types/f1types';
 import { BundleContainer } from '@core/lib/bundle-container';
 import { DelayedQueue } from '@core/lib/delayed_queue';
 import { isMobile } from '@core/lib/device';
@@ -144,20 +144,17 @@ export abstract class LiveService {
     return this.stateHandler.updateSignals['TrackStatus'].asReadonly();
   }
 
-  getCarDataZSignal() {
-    return this.stateHandler.updateSignals['CarData.z'].asReadonly();
-  }
-
+  // Position.z
   private positions = computed(() => {
         const posZ = this.stateHandler.updateSignals['Position.z']();
-        return (posZ)? inflate<Position>(posZ).Position: [];
+        return (posZ)? inflate<PositionZ>(posZ).Position: [];
   });
 
-  private posBundleContainer = new BundleContainer<PositionCar>(this.positions);
+  private posBundleContainer = new BundleContainer<CarPosition>(this.positions);
 
   private normalPositionSignal = computed(() => {
       const posZ = this.stateHandler.updateSignals['Position.z']();
-      const array = (posZ)? inflate<Position>(posZ).Position: [];
+      const array = (posZ)? inflate<PositionZ>(posZ).Position: [];
       // return last value from array
       return array.length > 0 ? array[array.length - 1].Entries : undefined;
   });
@@ -171,6 +168,30 @@ export abstract class LiveService {
 
   isPositionZAvailable() {
     return this.stateHandler.updateSignals['Position.z']() !== undefined;
+  }
+
+  // CarData.Z
+  private carData = computed(() => {
+    const carZ = this.stateHandler.updateSignals['CarData.z']();
+    const array = (carZ)? inflate<CarDataZ>(carZ).Entries: [];
+    // map to Bundle type {Timestamp, Entries}
+    return array.map(item => ({Timestamp: item.Utc, Entries: item.Cars}));
+  });
+
+  private carDataBundleContainer = new BundleContainer<CarData>(this.carData);
+
+  private normalCarDataSignal = computed(() => {
+      const carZ = this.stateHandler.updateSignals['CarData.z']();
+      const array = (carZ)? inflate<CarDataZ>(carZ).Entries: [];
+      // return last value from array
+      return array.length > 0 ? array[array.length - 1].Cars : undefined;
+  });
+
+  getCarDataLiveSignal(frequency?: 'max' | 'normal') {
+    if (frequency === 'max') {
+      return this.carDataBundleContainer.liveValue();
+    } else
+    return this.normalCarDataSignal;
   }
 
   getTeamRadioSignal() {
@@ -200,7 +221,6 @@ export abstract class LiveService {
   getQualifyingPartSignal() {
     return this.qualifyingPartSignal;
   }
-
 
   private sessionYearSignal = computed(() => {
     const sessionInfo = this.getSessionInfoSignal();

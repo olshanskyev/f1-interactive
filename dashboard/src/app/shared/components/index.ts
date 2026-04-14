@@ -5,3 +5,4 @@ export * from './grid/grid-container';
 export * from './driver-card/simple-driver-card';
 export * from './gp-card/gp-card';
 export * from './session-countdown/session-countdown';
+export * from './speedo/speedo';

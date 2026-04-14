@@ -1,4 +1,6 @@
-<div class="font-formula default-widget-container p-b-4">
+<div class="font-formula p-b-4"
+  [class.default-widget-container]="container"
+>
   <div class="container">
     <div class="sticky-list-header">
       <div>{{'widget.TeamRadioWidget' | translate}}</div>
@@ -19,7 +21,7 @@
                 @if (driverList()?.Lines?.[capture.RacingNumber]; as driver) {
                   <simple-driver-card [driver]="driver"/>
                 }
-                <div class="text-color-second d-flex align-items-center gap-4">
+                <div class="text-color-second d-flex align-items-center gap-4 text-nowrap">
                   <mat-icon class="small-icon">av_timer</mat-icon>
                   <span class="f-s-10">{{ capture.Utc | date:'short' }}</span>
                 </div>

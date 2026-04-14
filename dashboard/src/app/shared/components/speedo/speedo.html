@@ -1,0 +1,60 @@
+<div class="speedo-container">
+  <div class="svg-container">
+    <svg viewBox="0 0 200 200">
+
+      <!-- speed Background track -->
+      <path
+        class="track"
+        d="M 55.0,177.9 A 90,90 0 1,1 145.0,177.9"
+      />
+      <!-- speed Progress fill -->
+      <path
+        class="fill"
+        d="M 55.0,177.9 A 90,90 0 1,1 145.0,177.9"
+        [style.stroke-dasharray]="(circumference + 5) + ' 1000'"
+        [style.stroke-dashoffset]="speedDashOffset()"
+      />
+
+      <!-- Throttle Background track -->
+      <path
+        class="track throttle-track"
+        d="M 62.5,165.0 A 75,75 0 1,1 148.2,42.5"
+      />
+      <!-- Throttle Progress fill -->
+      <path
+        class="fill throttle-fill"
+        d="M 62.5,165.0 A 75,75 0 1,1 148.2,42.5"
+        [style.stroke-dasharray]="(throttleCircumference + 5) + ' 1000'"
+        [style.stroke-dashoffset]="throttleDashOffset()"
+      />
+
+      <!-- Brake Background track -->
+      <path
+        class="track brake-track"
+        d="M 137.5,165.0 A 75,75 0 0,0 157.5,51.8"
+      />
+
+      <!-- Brake Progress fill -->
+      <path
+        class="fill brake-fill"
+        d="M 137.5,165.0 A 75,75 0 0,0 157.5,51.8"
+        [style.stroke-dasharray]="(brakeCircumference + 5) + ' 1000'"
+        [style.stroke-dashoffset]="brakeDashOffset()"
+      />
+    </svg>
+  </div>
+
+  <div class="values">
+    <div class="speed-value">
+      <div class="number">{{ displaySpeed() }}</div>
+      <div class="unit">km/h</div>
+    </div>
+    <div class="rpm-value p-t-4">
+      <div class="number">{{ displayRpm() }}</div>
+      <div class="unit">rpm</div>
+    </div>
+  </div>
+  <div class="gear-value">
+    <div class="number">{{ gear()? gear(): 'N' }}</div>
+  </div>
+</div>

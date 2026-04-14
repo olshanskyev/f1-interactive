@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { WidgetComponent, WidgetType } from '@core/types/widgets';
-import { Leaderboard, RaceControlMessagesWidget, SessionInfoWidget, TeamRadioWidget, TrackMapWidget, VideoPlayerWidget, WeatherWidget } from '@shared';
+import { HeadToHeadWidget, Leaderboard, RaceControlMessagesWidget, SessionInfoWidget, TeamRadioWidget, TrackMapWidget, VideoPlayerWidget, WeatherWidget } from '@shared';
 
 @Injectable({
     providedIn: 'root'
@@ -8,17 +8,17 @@ import { Leaderboard, RaceControlMessagesWidget, SessionInfoWidget, TeamRadioWid
 export class WidgetFactory {
 
     private widgets = new Map<WidgetType, WidgetComponent>([
-        [WidgetType.VideoPlayerWidget, {
-            type: WidgetType.VideoPlayerWidget,
+        [WidgetType.LeaderboardWidget, {
+            type: WidgetType.LeaderboardWidget,
             meta : {
                 settingsList: {
-                    source: {type: ['VK'/*,'YouYube'*/], defaultValue: 'VK'},
-                    embedCode: {type: 'string'},
+                    showHeader: {type: 'boolean', defaultValue: true},
+                    mode: {type: ['all', 'laps', 'sectors', 'speeds', 'tyres'], defaultValue: 'all'},
                 },
-                defaultSizes: [{width: 380, height: 200}],
+                defaultSizes: [{width: 380, height: 600}],
             },
-            widgetView: VideoPlayerWidget,
-            widgetThumb: 'images/thumbs/video-player-widget-thumb.png',
+            widgetView: Leaderboard,
+            widgetThumb: 'images/thumbs/leaderboard-widget-thumb.png',
         }],
         [WidgetType.TrackMapWidget, {
             type: WidgetType.TrackMapWidget,
@@ -31,17 +31,16 @@ export class WidgetFactory {
             widgetView: TrackMapWidget,
             widgetThumb: 'images/thumbs/track-map-widget-thumb.png',
         }],
-        [WidgetType.LeaderboardWidget, {
-            type: WidgetType.LeaderboardWidget,
-            meta : {
+        [WidgetType.HeadToHeadWidget, {
+            type: WidgetType.HeadToHeadWidget,
+            meta: {
                 settingsList: {
-                    showHeader: {type: 'boolean', defaultValue: true},
-                    mode: {type: ['all', 'laps', 'sectors', 'speeds', 'tyres'], defaultValue: 'all'},
+                    mode: {type: ['telemetry', 'last', 'best'], defaultValue: 'telemetry'},
                 },
-                defaultSizes: [{width: 380, height: 600}],
+                defaultSizes: [{width: 380, height: 300}],
             },
-            widgetView: Leaderboard,
-            widgetThumb: 'images/thumbs/leaderboard-widget-thumb.png',
+            widgetView: HeadToHeadWidget,
+            widgetThumb: 'images/thumbs/head-to-head-widget-thumb.png',
         }],
         [WidgetType.SessionInfoWidget, {
             type: WidgetType.SessionInfoWidget,
@@ -67,6 +66,18 @@ export class WidgetFactory {
             },
             widgetView: WeatherWidget,
             widgetThumb: 'images/thumbs/weather-widget-thumb.png',
+        }],
+        [WidgetType.VideoPlayerWidget, {
+            type: WidgetType.VideoPlayerWidget,
+            meta : {
+                settingsList: {
+                    source: {type: ['VK'/*,'YouYube'*/], defaultValue: 'VK'},
+                    embedCode: {type: 'string'},
+                },
+                defaultSizes: [{width: 380, height: 200}],
+            },
+            widgetView: VideoPlayerWidget,
+            widgetThumb: 'images/thumbs/video-player-widget-thumb.png',
         }],
         [WidgetType.RaceControlMessagesWidget, {
             type: WidgetType.RaceControlMessagesWidget,

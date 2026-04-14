@@ -87,17 +87,46 @@
 } @else {
     <div data-nosnippet class="grid-container">
         <div class="main-grid">
-            <div id="leaderboard" class="overflow-x-auto">
+            <div id="leaderboard" class="overflow-x-auto default-widget-container">
                 <leaderboard/>
             </div>
             <div id="right-panel" class="right-panel">
-                <weather-widget id="weather"/>
-                <session-info-widget id="session-info"/>
-                <track-map-widget id="track-map"/>
+                <weather-widget id="weather" class="default-widget-container"/>
+                <session-info-widget id="session-info" class="default-widget-container"/>
+                <div class="default-widget-container">
+                    <track-map-widget id="track-map"/>
+                    <mat-expansion-panel
+                        class="head-to-head-expanstion-panel" [expanded]="showHeadToHead()"
+                            (opened)="onHeadToHeadOpened()"
+                            (closed)="onHeadToHeadClosed()"
+                        >
+                        <mat-expansion-panel-header>
+                            <mat-panel-title class="text-nowrap">{{'widget.head_to_head' | translate}}</mat-panel-title>
+                            <mat-panel-description>
+                                @if (showHeadToHead()) {
+                                    <mat-form-field (click)="$event.stopPropagation()" class="form-field-5 f-s-14 p-y-4 head-to-head-form-field" appearance="outline" subscriptSizing="dynamic">
+                                        <mat-label>{{ 'widget.display' | translate }}</mat-label>
+                                        <mat-select class="f-s-14"
+                                            [(value)]="headToHeadMode"
+                                            (selectionChange)="headToHeadModeChanged($event.value)"
+                                            >
+                                            @for (mode of headToHeadModes; track mode) {
+                                                <mat-option [value]="mode">{{ mode | translate }}</mat-option>
+                                            }
+                                        </mat-select>
+                                    </mat-form-field>
+                                }
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        @if (showHeadToHead()){
+                            <head-to-head-widget id="head-to-head" [settings]="{mode: headToHeadMode()}"/>
+                        }
+                    </mat-expansion-panel>
+                </div>
             </div>
             <div id="bottom-panel" class="bottom-panel overflow-x-auto">
-                <race-control-messages-widget id="race-control-messages"/>
-                <team-radio-widget id="team-radio"/>
+                <race-control-messages-widget id="race-control-messages" class="default-widget-container"/>
+                <team-radio-widget id="team-radio" class="default-widget-container"/>
             </div>
         </div>
     </div>

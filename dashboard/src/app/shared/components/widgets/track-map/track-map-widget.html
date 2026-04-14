@@ -1,4 +1,6 @@
-<div class="default-widget-container font-formula">
+<div class="font-formula"
+    [class.default-widget-container]="container"
+>
     @if (mapResource.error()) {
         <div class="widget-loading-skeleton f-s-12 text-color-second">
             {{'widget.loading_track_map_error' | translate}}
@@ -60,7 +62,7 @@
                                 <g car-dot
                                     [attr.key]="'map.driver.' + dot.driver.RacingNumber"
                                     [disableTransition]="disableTransition()"
-                                    [favouriteDriver]="false"
+                                    [favouriteDriver]="selectedDrivers().has(dot.driver.RacingNumber)"
                                     [name]="dot.driver.Tla"
                                     [color]="'#' + dot.driver.TeamColour"
                                     [pit]="dot.pit"

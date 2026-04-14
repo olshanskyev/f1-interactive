@@ -7,7 +7,7 @@ import { SyncService, FullScreenService, LayoutsService, SettingsService, Widget
 import { isAdmin } from '@core/lib/roles';
 import { LiveService } from '@core/services/live/live.service';
 import { DisplayWidget, Layout, LayoutWidget, WidgetContainer, WidgetType } from '@core/types/widgets';
-import { GridContainerComponent, Leaderboard, RaceControlMessagesWidget, SessionInfoWidget, SettingsDialog, SimPlayer, TeamRadioWidget, TrackMapWidget, WeatherWidget, WidgetContainerDirective, WidgetResizeHandleDirective } from '@shared';
+import { HeadToHeadWidget, GridContainerComponent, Leaderboard, RaceControlMessagesWidget, SessionInfoWidget, SettingsDialog, SimPlayer, TeamRadioWidget, TrackMapWidget, WeatherWidget, WidgetContainerDirective, WidgetResizeHandleDirective, HeadToHeadMode, headToHeadModes } from '@shared';
 import { NgxRolesService } from 'ngx-permissions';
 import { ToolsPanelComponent } from './tools-panel/tools-panel';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,6 +16,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { isMobile } from '@core/lib/device';
 import { Footer } from '@theme/footer/footer';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
@@ -34,13 +37,17 @@ import { TranslateModule } from '@ngx-translate/core';
     WeatherWidget,
     RaceControlMessagesWidget,
     TeamRadioWidget,
+    HeadToHeadWidget,
     CdkDrag,
     WidgetResizeHandleDirective,
     MatIconModule,
     ToolsPanelComponent,
     MatButtonModule,
     Footer,
-    TranslateModule
+    TranslateModule,
+    MatExpansionModule,
+    MatSelectModule,
+    FormsModule
   ],
 })
 export class DashboardComponent implements OnDestroy{
@@ -73,6 +80,9 @@ export class DashboardComponent implements OnDestroy{
   isMobile = signal(isMobile);
   syncPassedTime = this.syncService.getPassedTime();
   syncLeftTime = this.syncService.getLeftTime();
+  showHeadToHead = signal(this.settingsService.getShowHeadToHead());
+  headToHeadMode = signal<HeadToHeadMode>(this.settingsService.getHeadToHeadMode() ?? 'telemetry');
+  headToHeadModes = headToHeadModes;
 
   private loadWidgets(layout: Layout) {
       const toDisplay: DisplayWidget[] = layout.widgets.map(item => {
@@ -121,7 +131,6 @@ export class DashboardComponent implements OnDestroy{
           if (!widgetComponent) return;
 
           const sizeToAdd = widgetComponent.meta.defaultSizes[0];
-          console.log('sizeToAdd', sizeToAdd);
 
           let colSpan = Math.ceil(sizeToAdd.width / cellSize);
           let rowSpan = Math.ceil(sizeToAdd.height / cellSize);
@@ -221,6 +230,20 @@ export class DashboardComponent implements OnDestroy{
 
     ngOnDestroy() {
         this.wakeLockService.releaseWakeLock();
+    }
+
+    onHeadToHeadOpened() {
+        this.showHeadToHead.set(true);
+        this.settingsService.setOptions({ showHeadToHead: true });
+    }
+
+    onHeadToHeadClosed() {
+        this.showHeadToHead.set(false);
+        this.settingsService.setOptions({ showHeadToHead: false });
+    }
+
+    headToHeadModeChanged(value: HeadToHeadMode) {
+        this.settingsService.setOptions({ headToHeadMode: value });
     }
 
 }

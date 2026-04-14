@@ -1,4 +1,6 @@
-<div class="font-formula h-full d-flex flex-col default-widget-container" >
+<div class="font-formula h-full d-flex flex-col"
+  [class.default-widget-container]="container"
+>
     @if (settingsMode() === 'all') {
       <div class="table-buttons">
         <mat-chip-listbox [(ngModel)]="mode" required >

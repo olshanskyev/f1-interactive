@@ -1,0 +1,102 @@
+.head-to-head-widget-container {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    align-items: stretch;
+    height: 100%;
+    min-height: 0;
+}
+
+.select-driver-container {
+    height: 0;
+    min-height: 100%;
+}
+
+.two-drivers-container {
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+
+    .flex-col {
+        height: 100%;
+        min-height: 0;
+    }
+}
+
+.select-driver-span {
+    position: absolute;
+    padding: 0.5rem;
+    color: var(--mat-sys-on-secondary-container);
+    background-color: var(--mat-sys-secondary-container);
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+}
+
+.head-to-head-skeleton {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    div {
+        width: 50%;
+        padding: 0.5rem;
+        font-size: 0.75rem;
+        color: var(--mat-sys-on-secondary-container);
+        text-align: center;
+        background-color: var(--mat-sys-secondary-container);
+        border: 1px solid transparent;
+        border-radius: 0.5rem;
+    }
+}
+
+.driver-card {
+    background: linear-gradient(to right, var(--mat-sys-surface-container-high), var(--mat-sys-surface-container));
+}
+
+.dual-driver-card {
+    background: linear-gradient(to right,
+    var(--mat-sys-surface-container-high) 0%,
+    var(--mat-sys-surface-container) 50%,
+    var(--mat-sys-surface-container-high) 50%,
+    var(--mat-sys-surface-container) 100%
+    );
+}
+
+.sector-indicator-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    align-content: center;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+}
+
+.sector-indicator {
+    height: 0.4rem;
+    border-radius: 0.25rem;
+}
+
+.times-grid {
+    display: grid;
+    grid-template-columns: 1fr 100px 1fr;
+    gap: 0.5rem;
+    width: 100%;
+    min-height: 8rem;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+
+    .left { text-align: left; }
+    .center { text-align: center; }
+    .right { text-align: right; }
+}
+
+.head-to-head-param {
+    align-content: center;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    backdrop-filter: blur(5px);
+}
+
+.all-columns {
+    grid-column: 1 / -1;
+}
