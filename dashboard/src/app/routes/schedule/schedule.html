@@ -10,7 +10,7 @@
     </div>
     <div class="container m-t-24">
         @for(round of schedule(); track $index) {
-            <gp-card [round]="round" [isNext]="round.name === nextRound()?.name" />
+            <gp-card [attr.id]="round.name === nextRound()?.name ? 'next-round' : null" [round]="round" [isNext]="round.name === nextRound()?.name" />
         }
     </div>
 </div>
