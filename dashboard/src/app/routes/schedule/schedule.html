@@ -2,7 +2,8 @@
     <div class="font-formula text-uppercase">
         <div>
             <span>{{'schedule.next_session' | translate}}</span>
-            <span class="p-l-16">{{nextSession()?.start | date:'short'}}</span></div>
+            <span class="p-l-16">{{nextSession()?.start | date:'short':'':currentLocale()}}</span>
+        </div>
         <div class="f-s-14 text-color-second p-t-8">
             {{nextSession()?.kind}} - {{nextRound()?.name}}
         </div>

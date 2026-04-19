@@ -1,8 +1,9 @@
 import { DatePipe } from '@angular/common';
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { SettingsService } from '@core/bootstrap/settings.service';
 import { countryCode } from '@core/lib/country';
 import { Round } from '@core/types/schedule';
 import { TranslateModule } from '@ngx-translate/core';
@@ -20,6 +21,7 @@ import { TranslateModule } from '@ngx-translate/core';
   ]
 })
 export class GpCard {
+  private readonly settingsService = inject(SettingsService);
 
   round = input.required<Round>();
   isNext = input.required<boolean>();
@@ -38,4 +40,6 @@ export class GpCard {
     const end = new Date(this.round().end);
     return now >= start && now <= end;
   });
+
+  currentLocale = this.settingsService.getLocaleSignal();
 }
