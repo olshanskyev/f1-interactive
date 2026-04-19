@@ -37,7 +37,7 @@
                 @if (isOver()) {
                     <mat-icon class="small-icon">sports_score</mat-icon>
                 }
-                {{round().start | date:'MMM d'}} - {{round().end | date:'MMM d'}}
+                {{round().start | date:'d MMM':'':currentLocale()}} - {{round().end | date:'d MMM':'':currentLocale()}}
             </div>
 
         </div>
@@ -62,7 +62,7 @@
         @for(session of round().sessions; track $index) {
             <div>
                 <span>{{session.kind}}:</span>
-                <span class="p-l-8 text-color-second">{{session.start | date:'MMM d, h:mm a'}}</span>
+                <span class="p-l-8 text-color-second">{{session.start | date:'medium':'':currentLocale()}}</span>
             </div>
         }
 

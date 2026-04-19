@@ -23,7 +23,7 @@
                 }
                 <div class="text-color-second d-flex align-items-center gap-4 text-nowrap">
                   <mat-icon class="small-icon">av_timer</mat-icon>
-                  <span class="f-s-10">{{ capture.Utc | date:'short' }}</span>
+                  <span class="f-s-10">{{ capture.Utc | date:'short':'':currentLocale() }}</span>
                 </div>
               </div>
               <div class="w-full">

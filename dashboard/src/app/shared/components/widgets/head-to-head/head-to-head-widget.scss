@@ -1,3 +1,13 @@
+:host {
+    --gradient-first-color: var(--mat-sys-surface-container-high);
+    --gradient-second-color: var(--mat-sys-surface-container);
+
+    @supports (color: rgb(from white r g b / 0.5)) {
+        --gradient-first-color: rgb(from var(--mat-sys-surface-container-high) r g b / 0.5);
+        --gradient-second-color: rgb(from var(--mat-sys-surface-container) r g b / 0.5);
+    }
+}
+
 .head-to-head-widget-container {
     display: grid;
     grid-template-columns: max-content 1fr;
@@ -49,15 +59,15 @@
 }
 
 .driver-card {
-    background: linear-gradient(to right, var(--mat-sys-surface-container-high), var(--mat-sys-surface-container));
+    background: linear-gradient(to right, var(--gradient-first-color), var(--gradient-second-color));
 }
 
 .dual-driver-card {
     background: linear-gradient(to right,
-    var(--mat-sys-surface-container-high) 0%,
-    var(--mat-sys-surface-container) 50%,
-    var(--mat-sys-surface-container-high) 50%,
-    var(--mat-sys-surface-container) 100%
+    var(--gradient-first-color) 0%,
+    var(--gradient-second-color) 50%,
+    var(--gradient-first-color) 50%,
+    var(--gradient-second-color) 100%
     );
 }
 
@@ -92,7 +102,7 @@
 .head-to-head-param {
     align-content: center;
     text-align: center;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgb(255 255 255 / 0.1);
     border-radius: 1rem;
     backdrop-filter: blur(5px);
 }

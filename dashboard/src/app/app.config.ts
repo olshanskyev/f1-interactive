@@ -8,11 +8,7 @@ import {
   provideZonelessChangeDetection,
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
-
-import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
 import { MAT_CARD_CONFIG } from '@angular/material/card';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
-import { provideDateFnsDatetimeAdapter } from '@ng-matero/extensions-date-fns-adapter';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideHotToastConfig } from '@ngxpert/hot-toast';
@@ -70,47 +66,11 @@ export const appConfig: ApplicationConfig = {
           inject(SimulatorService) : inject(F1InteractiveService);
       }
     },
-
-    {
-      provide: MAT_DATE_LOCALE,
-      useFactory: () => inject(SettingsService).getLocale(),
-    },
     {
       provide: MAT_CARD_CONFIG,
       useValue: {
         appearance: 'outlined',
       },
     },
-    provideDateFnsAdapter({
-      parse: {
-        dateInput: 'yyyy-MM-dd',
-      },
-      display: {
-        dateInput: 'yyyy-MM-dd',
-        monthYearLabel: 'yyyy MMM',
-        dateA11yLabel: 'LL',
-        monthYearA11yLabel: 'yyyy MMM',
-      },
-    }),
-    provideDateFnsDatetimeAdapter({
-      parse: {
-        dateInput: 'yyyy-MM-dd',
-        yearInput: 'yyyy',
-        monthInput: 'MMMM',
-        datetimeInput: 'yyyy-MM-dd HH:mm',
-        timeInput: 'HH:mm',
-      },
-      display: {
-        dateInput: 'yyyy-MM-dd',
-        yearInput: 'yyyy',
-        monthInput: 'MMMM',
-        datetimeInput: 'yyyy-MM-dd HH:mm',
-        timeInput: 'HH:mm',
-        monthYearLabel: 'yyyy MMMM',
-        dateA11yLabel: 'LL',
-        monthYearA11yLabel: 'MMMM yyyy',
-        popupHeaderDateLabel: 'MMM dd, E',
-      },
-    }),
   ],
 };

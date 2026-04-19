@@ -34,7 +34,7 @@ export class TeamRadioWidget extends ContaineredWidget {
   // If the widget is inside a container (custom layout), we always show messages, otherwise we check the user setting
   showRadio = signal((this.container)? true: this.settingsService.getShowTeamRadio());
   sessionInfo = this.liveService.getSessionInfoSignal();
-
+  currentLocale = this.settingsService.getLocaleSignal();
   audioBasePath = computed (() => 'https://livetiming.formula1.com/static/' + this.sessionInfo()?.Path);
   captures = computed(() => {
     const data = this.teamRadioSignal();

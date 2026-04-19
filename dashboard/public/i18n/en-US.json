@@ -18,27 +18,17 @@
     "invalid_email": "Invalid email"
   },
   "notifications": {
-    "live_token_updated": "Live token updated successfully",
-    "schedule_cache_cleared": "Schedule cache cleared successfully"
+    "live_token_updated": "Live token updated successfully"
   },
   "simulator": {
     "player": "Simulation Player",
     "file_not_selected": "File Not Selected"
   },
   "en_us": "English",
+  "ru_ru": "Russian",
   "system": "System",
   "position": "Position",
   "name": "Name",
-  "weight": "Weight",
-  "symbol": "Symbol",
-  "gender": "Gender",
-  "mobile": "Mobile",
-  "tele": "Telephone",
-  "birthday": "Birthday",
-  "city": "City",
-  "address": "Address",
-  "website": "Website",
-  "company": "Company",
   "email": "Email",
   "operation": "Operation",
   "edit": "Edit",
@@ -139,7 +129,6 @@
     "my_layouts": "My Layouts",
     "default_layout": "Default Layout",
     "create_layout": "Create Layout",
-    "layout_presets": "Layout Presets",
     "grid": "Grid",
     "add_widget": "Add Widget",
     "grid_size": {
@@ -168,8 +157,7 @@
     "admin": {
       "app_configuration": "App Configuration",
       "live_token": "Live Token",
-      "use_simulator": "Use Simulator",
-      "clear_schedule_cache": "Clear Schedule Cache"
+      "use_simulator": "Use Simulator"
     },
     "schedule": {
       "next": "Next",

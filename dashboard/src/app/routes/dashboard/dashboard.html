@@ -23,8 +23,8 @@
             [displayGrid]="isEditing()" class="w-full">
             @for (item of displayWidgets(); track $index) {
                 <div class="widget"
-                    [class]="(isEditing() && !item.pinned)?'draggable':''"
-                    [class.pinned]="isEditing() && item.pinned"
+                    [class.draggable]="isEditing() && !item.pinned"
+                    [class.lowest-z-index]="item.type === 'VideoPlayerWidget'"
                     [widgetContainer]= "{
                         position: item.position,
                         size: item.size
