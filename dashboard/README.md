@@ -3,7 +3,7 @@
 Dashboard (frontend) for f1 interactive project
 
 ## Project Setup
-This project is build using angular and ng-matero template. To get it running on your local machine, follow these steps:
+This project is build using angular and [ng-matero](https://github.com/ng-matero/ng-matero) template. To get it running on your local machine, follow these steps:
 
 ### 1. Install Dependencies
 
