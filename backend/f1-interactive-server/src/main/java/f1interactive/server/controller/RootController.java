@@ -3,6 +3,7 @@ package f1interactive.server.controller;
 import f1interactive.common.sse.Publisher;
 import f1interactive.common.state.StateHandler;
 import f1interactive.common.state.models.Root;
+import f1interactive.common.state.models.SessionInfo;
 import f1interactive.common.state.models.UpdateEvent;
 import f1interactive.common.state.models.deserializer.EventsParser;
 import f1interactive.common.websocket.F1LiveTimingProxy;
@@ -63,6 +64,18 @@ class RootController {
     private void onUpdate(String type, String message, String time) {
         UpdateEvent updateEvent = EventsParser.parseUpdateEvent(type, message);
         EventsParser.UpdateEventRecord updateEventRecord = new EventsParser.UpdateEventRecord(type, updateEvent, System.currentTimeMillis());
+        if (updateEventRecord.updateEvent() instanceof SessionInfo newSessionInfo) {
+            // try to sync data with f1 if new session starts
+            SessionInfo currentSessionInfo = stateHandler.getState().sessionInfo;
+            if (currentSessionInfo == null ||
+                    (newSessionInfo.key != null && !newSessionInfo.key.equals(currentSessionInfo.key))
+            ) {
+                logger.info("New session started, syncing...");
+                f1Client.disconnect();
+                f1Client.connect();
+                return;
+            }
+        }
         synchronized (initStateMutex) {
             stateHandler.updateState(updateEvent);
             publisher.publish("update", updateEventRecord);

@@ -18,5 +18,9 @@
     </mat-form-field>
     <button mat-raised-button type="submit" [disabled]="!token">{{ 'submit' | translate }}</button>
   </form>
+
+  <button class="m-b-16" matButton="filled" type="button" (click)="manualSync()">
+    {{ 'admin.manual_sync' | translate }}
+  </button>
 </div>
 

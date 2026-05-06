@@ -48,4 +48,10 @@ export class AppConfigurationComponent {
     this.settings.setOptions({ useSimulator: checked });
     window.location.reload();
   }
+
+  manualSync() {
+    this.serverConfigurationService.syncLiveData().subscribe(() => {
+      this.hotToast.success(this.translate.instant('notifications.live_data_sync_success'));
+    });
+  }
 }

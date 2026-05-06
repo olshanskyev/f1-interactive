@@ -13,4 +13,8 @@ export class ServerConfigurationService {
     public getVersion() {
         return this.http.get<{version: string}>('/admin/version');
     }
+
+    public syncLiveData() {
+        return this.http.post<any>('/admin/sync_live_data', null);
+    }
 }

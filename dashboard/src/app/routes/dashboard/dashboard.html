@@ -104,7 +104,7 @@
                             <mat-panel-title class="text-nowrap">{{'widget.head_to_head' | translate}}</mat-panel-title>
                             <mat-panel-description>
                                 @if (showHeadToHead()) {
-                                    <mat-form-field (click)="$event.stopPropagation()" class="form-field-5 f-s-14 p-y-4 head-to-head-form-field" appearance="outline" subscriptSizing="dynamic">
+                                    <mat-form-field (click)="$event.stopPropagation()" class="form-field-5 f-s-14 m-y-8 head-to-head-form-field" appearance="outline" subscriptSizing="dynamic">
                                         <mat-label>{{ 'widget.display' | translate }}</mat-label>
                                         <mat-select class="f-s-14"
                                             [(value)]="headToHeadMode"

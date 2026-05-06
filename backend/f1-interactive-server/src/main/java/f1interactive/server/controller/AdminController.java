@@ -21,7 +21,7 @@ class AdminController {
     private F1LiveTimingProxy f1Client;
 
     @PostMapping(value = "/live_token")
-    public ResponseEntity<?> setLiveToken(@RequestBody LiveTokenRequest token) throws Exception {
+    public ResponseEntity<?> setLiveToken(@RequestBody LiveTokenRequest token) {
         System.setProperty("formula1AccessToken", token.liveToken);
         f1Client.disconnect();
         f1Client.connect();
@@ -32,8 +32,15 @@ class AdminController {
     private String version;
 
     @GetMapping(value = "/version")
-    public ResponseEntity<?> version() throws Exception {
+    public ResponseEntity<?> version() {
         return ResponseEntity.ok(new VersionResponse(version));
+    }
+
+    @PostMapping(value="/sync_live_data")
+    public ResponseEntity<?> sync() {
+        f1Client.disconnect();
+        f1Client.connect();
+        return ResponseEntity.ok(null);
     }
 
 }

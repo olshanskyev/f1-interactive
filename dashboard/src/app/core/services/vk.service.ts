@@ -105,7 +105,6 @@ export class VKService {
             return of({});
         return from(VKID.Auth.userInfo(accessToken)).pipe(map (
             userInfo => {
-                console.log('VK User Info:', userInfo);
                 return {
                     avatar: userInfo.user.avatar,
                     name: userInfo.user.first_name,
