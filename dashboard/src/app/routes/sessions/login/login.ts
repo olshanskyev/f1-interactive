@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -12,6 +12,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { filter } from 'rxjs/operators';
 
 import { AuthService } from '@core/authentication';
+import { VKService } from '@core';
 
 @Component({
   selector: 'app-login',
@@ -29,10 +30,13 @@ import { AuthService } from '@core/authentication';
     TranslateModule,
   ],
 })
-export class Login {
+export class Login implements AfterViewInit {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   private readonly auth = inject(AuthService);
+  private readonly vkService = inject(VKService);
+
+  vkButtonContainer = viewChild<ElementRef>('vkButtonContainer');
 
   isSubmitting = false;
 
@@ -77,5 +81,11 @@ export class Login {
           this.isSubmitting = false;
         },
       });
+  }
+
+  ngAfterViewInit(): void {
+      if (this.vkButtonContainer()) {
+        this.vkService.renderOneTap(this.vkButtonContainer()!);
+      }
   }
 }

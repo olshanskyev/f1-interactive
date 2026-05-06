@@ -50,4 +50,4 @@ datasource:
     dialect: org.hibernate.dialect.PostgreSQLDialect
 rest:
   cors:
-    allowedOriginPatterns: "http://localhost:4200"
+    allowedOriginPatterns: "https://localhost"

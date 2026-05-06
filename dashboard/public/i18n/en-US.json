@@ -110,9 +110,11 @@
     "select_driver": "Select a Driver",
     "head_to_head": "Head to Head",
     "display": "Display",
+    "loading_video_error": "Failed to load video",
     "settings": {
       "source": "Source",
       "embedCode": "Embed code",
+      "link": "Link",
       "airTemp": "Air Temperature",
       "trackTemp": "Track Temperature",
       "condition": "Condition",

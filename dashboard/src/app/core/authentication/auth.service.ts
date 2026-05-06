@@ -1,9 +1,10 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { BehaviorSubject, catchError, iif, map, merge, of, share, switchMap, tap } from 'rxjs';
 import { filterObject, isEmptyObject } from './helpers';
-import { User } from './interface';
+import { Token, User } from './interface';
 import { LoginService } from './login.service';
 import { TokenService } from './token.service';
+import { VKService } from '@core/services';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ import { TokenService } from './token.service';
 export class AuthService {
   private readonly loginService = inject(LoginService);
   private readonly tokenService = inject(TokenService);
+  private readonly vkService = inject(VKService);
 
   private user$ = new BehaviorSubject<User>({});
   private change$ = merge(
@@ -21,8 +23,12 @@ export class AuthService {
     share()
   );
 
-  init() {
-    return new Promise<void>(resolve => this.change$.subscribe(() => resolve()));
+  private readonly _isLoggedIn = signal(this.check());
+  public readonly isLoggedIn = this._isLoggedIn.asReadonly();
+  public readonly isVkLoggedIn = computed(() => this._isLoggedIn() && this.tokenService.getAuthSystem() === 'vk');
+
+  constructor() {
+    this.vkService.onLoginSuccess((token) => this.vkLoggedIn(token));
   }
 
   change() {
@@ -40,18 +46,28 @@ export class AuthService {
     );
   }
 
+  vkLoggedIn(token: Token) {
+    this.tokenService.set(token);
+  }
+
   refresh() {
-    return this.loginService
-      .refresh(filterObject({ refresh_token: this.tokenService.getRefreshToken() }))
-      .pipe(
-        catchError(() => of(undefined)),
-        tap(token => this.tokenService.set(token)),
-        map(() => this.check())
-      );
+    const refreshToken = this.tokenService.getRefreshToken();
+    const source = (this.tokenService.getAuthSystem() === 'vk')?
+      this.vkService.refresh():
+      this.loginService.refresh(filterObject({ refresh_token: refreshToken }));
+
+    return source.pipe(
+      catchError(() => of(undefined)),
+      tap(token => this.tokenService.set(token)),
+      map(() => this.check())
+    );
   }
 
   logout() {
-    return this.loginService.logout().pipe(
+    const source = (this.tokenService.getAuthSystem() === 'vk')?
+      this.vkService.logout():
+      this.loginService.logout();
+    return source.pipe(
       tap(() => this.tokenService.clear()),
       map(() => !this.check())
     );
@@ -66,6 +82,7 @@ export class AuthService {
   }
 
   private assignUser() {
+    this._isLoggedIn.set(this.check());
     if (!this.check()) {
       return of({}).pipe(tap(user => this.user$.next(user)));
     }
@@ -74,6 +91,10 @@ export class AuthService {
       return of(this.user$.getValue());
     }
 
-    return this.loginService.user().pipe(tap(user => this.user$.next(user)));
+    const source = (this.tokenService.getAuthSystem() === 'vk')?
+      this.vkService.userInfo():
+      this.loginService.user();
+    return source.pipe(tap(user => this.user$.next(user)));
+
   }
 }

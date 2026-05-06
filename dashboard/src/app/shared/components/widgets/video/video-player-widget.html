@@ -1,5 +1,5 @@
 <div class="h-full">
-    @if(!editMode() && src()) {
+    @if(src()) {
     <iframe [src]="src()! | safeUrl"
         width="100%"
         height="100%"
@@ -9,11 +9,20 @@
         encrypted-media">
     </iframe>
     } @else {
-         <div class="h-full d-flex justify-content-center dynamic-header-size video-skeleton">
+         <div class="h-full d-flex justify-content-center align-items-center dynamic-header-size video-skeleton flex-col">
                 <h1 class="d-flex align-items-center gap-8">
                     <mat-icon>video_camera_back</mat-icon>
                     {{'widget.video' | translate}}
                 </h1>
+                @if (sourceSetting() === VideoSource.VK && !authService.isVkLoggedIn()) {
+                    <div #vkButtonContainer>
+                    </div>
+                }
+                @if (error() && error() !== '') {
+                    <div class="f-s-12 text-f1-red p-t-4">
+                        {{error()}}
+                    </div>
+                }
         </div>
     }
 </div>

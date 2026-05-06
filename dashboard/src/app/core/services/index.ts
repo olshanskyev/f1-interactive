@@ -11,3 +11,4 @@ export * from './schedule.service';
 export * from './live/sync.service';
 export * from './wake-lock.service';
 export * from './driver-selection.service';
+export * from './vk.service';

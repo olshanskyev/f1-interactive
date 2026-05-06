@@ -4,5 +4,7 @@ export const environment = {
   baseUrl: '__BASE_URL__',
   baseUrlSimulator: '__BASE_URL_SIMULATOR__',
   useHash: false,
+  vkAppId: 54566649,
+  vkRedirectUrl: 'https://f1interactive.net',
   standalone: false
 };

@@ -110,9 +110,11 @@
     "select_driver": "Выберите гонщика",
     "head_to_head": "Один на один",
     "display": "Отображение",
+    "loading_video_error": "Ошибка загрузки видео",
     "settings": {
       "source": "Источник",
       "embedCode": "Код для встраивания",
+      "link": "Ссылка",
       "airTemp": "Температура воздуха",
       "trackTemp": "Температура трассы",
       "condition": "Погода",
