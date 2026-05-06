@@ -27,9 +27,9 @@
                             [brake]="brake"
                         />
                         <div class="sector-indicator-grid">
-                            @for(sector of timingDataDriver?.Sectors | keyvalue; track sector.key){
+                            @for(sector of timingDataDriver?.Sectors | keyvalue; track sector.key; let i = $index){
                                 <div class="d-flex flex-col align-items-center">
-                                    <div class="f-s-12">S{{sector.key}}</div>
+                                    <div class="f-s-12">S{{i + 1}}</div>
                                     <div class="sector-indicator w-full"
                                         [class]="
                                             ($any(sector.value).OverallFastest)? 'bg-f1-purple':

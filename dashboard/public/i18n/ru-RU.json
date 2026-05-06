@@ -18,7 +18,8 @@
     "invalid_email": "Неверный email"
   },
   "notifications": {
-    "live_token_updated": "Live токен успешно обновлен"
+    "live_token_updated": "Live токен успешно обновлен",
+    "live_data_sync_success": "Live данные успешно синхронизированы"
   },
   "simulator": {
     "player": "Плеер симуляции",
@@ -159,7 +160,8 @@
   "admin": {
     "app_configuration": "Настройки приложения",
     "live_token": "Live токен",
-    "use_simulator": "Использовать симулятор"
+    "use_simulator": "Использовать симулятор",
+    "manual_sync": "Ручная синхронизация"
   },
   "schedule": {
     "next": "Следующий",

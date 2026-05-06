@@ -18,7 +18,8 @@
     "invalid_email": "Invalid email"
   },
   "notifications": {
-    "live_token_updated": "Live token updated successfully"
+    "live_token_updated": "Live token updated successfully",
+    "live_data_sync_success": "Live data synced successfully"
   },
   "simulator": {
     "player": "Simulation Player",
@@ -159,7 +160,8 @@
     "admin": {
       "app_configuration": "App Configuration",
       "live_token": "Live Token",
-      "use_simulator": "Use Simulator"
+      "use_simulator": "Use Simulator",
+      "manual_sync": "Manual Sync"
     },
     "schedule": {
       "next": "Next",

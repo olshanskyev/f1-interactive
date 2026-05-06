@@ -40,6 +40,8 @@ export class RaceControlMessagesWidget extends ContaineredWidget {
       .sort(sortUtc);
   });
 
+  currentLocale = this.settingsService.getLocaleSignal();
+
   private getIconColor(message: Message) {
     switch (message.Flag) {
       case 'YELLOW':
