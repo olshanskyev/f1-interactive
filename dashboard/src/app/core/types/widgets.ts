@@ -54,6 +54,10 @@ export enum WidgetType
     HeadToHeadWidget = 'HeadToHeadWidget',
 }
 
+export enum VideoSource {
+    VK = 'VK',
+    YouTube = 'YouTube'
+}
 export type SettingType = 'string' | 'number' | 'boolean' | string[];
 export interface WidgetSetting {type: SettingType, defaultValue?: any}
 export type WidgetSettings = Record<string, WidgetSetting>;

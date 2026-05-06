@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { WidgetComponent, WidgetType } from '@core/types/widgets';
+import { VideoSource, WidgetComponent, WidgetType } from '@core/types/widgets';
 import { HeadToHeadWidget, Leaderboard, RaceControlMessagesWidget, SessionInfoWidget, TeamRadioWidget, TrackMapWidget, VideoPlayerWidget, WeatherWidget } from '@shared';
 
 @Injectable({
@@ -71,10 +71,10 @@ export class WidgetFactory {
             type: WidgetType.VideoPlayerWidget,
             meta : {
                 settingsList: {
-                    source: {type: ['VK'/*,'YouYube'*/], defaultValue: 'VK'},
+                    source: {type: [VideoSource.VK], defaultValue: VideoSource.VK},
                     link: {type: 'string'},
                 },
-                defaultSizes: [{width: 380, height: 200}],
+                defaultSizes: [{width: 380, height: 220}],
             },
             widgetView: VideoPlayerWidget,
             widgetThumb: 'images/thumbs/video-player-widget-thumb.png',

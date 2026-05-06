@@ -42,7 +42,7 @@ To start the development server, run:
 npm start
 ```
 
-This will start a local development server at `http://localhost:4200/`. The application will automatically reload when source files are changed.
+This will start a local development server at `https://localhost`. The application will automatically reload when source files are changed.
 
 ### Building
 

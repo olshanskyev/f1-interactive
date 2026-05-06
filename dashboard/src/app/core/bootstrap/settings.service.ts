@@ -34,8 +34,8 @@ export class SettingsService {
 
   options: AppSettings = Object.assign(defaults, this.storedOptions);
 
-  languages = ['en-US', 'ru-RU'];
-  currentLocale = signal<string>(this.getTranslateLang());
+  private readonly languages = ['en-US', 'ru-RU'];
+  private readonly currentLocale = signal<string>(this.getTranslateLang());
 
   constructor() {
     this.translate.addLangs(this.languages);

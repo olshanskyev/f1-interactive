@@ -18,6 +18,8 @@ describe('SettingsInterceptor', () => {
         provideHttpClient(withInterceptors([settingsInterceptor])),
         provideHttpClientTesting(),
         provideTranslateService(),
+        // Explicitly provide the REAL service here to override the global mock
+        SettingsService
       ],
     });
 

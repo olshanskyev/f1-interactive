@@ -82,18 +82,10 @@ export class Login implements AfterViewInit {
         },
       });
   }
-  
+
   ngAfterViewInit(): void {
-      const oneTap = this.vkService.getOneTap();
-      if (this.vkButtonContainer()) {          
-          oneTap.render({
-              container: this.vkButtonContainer()!.nativeElement,
-              showAlternativeLogin: true,
-              styles: {
-                  height: 40,
-                  borderRadius: 50
-              }
-          })          
+      if (this.vkButtonContainer()) {
+        this.vkService.renderOneTap(this.vkButtonContainer()!);
       }
   }
 }

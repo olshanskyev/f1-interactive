@@ -1,5 +1,5 @@
-import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, catchError, iif, map, merge, Observable, of, share, switchMap, tap } from 'rxjs';
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { BehaviorSubject, catchError, iif, map, merge, of, share, switchMap, tap } from 'rxjs';
 import { filterObject, isEmptyObject } from './helpers';
 import { Token, User } from './interface';
 import { LoginService } from './login.service';
@@ -23,12 +23,12 @@ export class AuthService {
     share()
   );
 
-  constructor() {
-    this.vkService.onLoginSuccess((token) => this.vkLoggedIn(token))
-  }
+  private readonly _isLoggedIn = signal(this.check());
+  public readonly isLoggedIn = this._isLoggedIn.asReadonly();
+  public readonly isVkLoggedIn = computed(() => this._isLoggedIn() && this.tokenService.getAuthSystem() === 'vk');
 
-  init() {
-    return new Promise<void>(resolve => this.change$.subscribe(() => resolve()));
+  constructor() {
+    this.vkService.onLoginSuccess((token) => this.vkLoggedIn(token));
   }
 
   change() {
@@ -82,6 +82,7 @@ export class AuthService {
   }
 
   private assignUser() {
+    this._isLoggedIn.set(this.check());
     if (!this.check()) {
       return of({}).pipe(tap(user => this.user$.next(user)));
     }
