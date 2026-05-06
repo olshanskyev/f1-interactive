@@ -54,12 +54,24 @@ export class TokenService implements OnDestroy {
     return this.token?.valid() ?? false;
   }
 
+  getAuthSystem() {
+    return this.token?.authSystem;
+  }
+
+  getDeviceId() {
+    return this._token?.deviceId;
+  }
+
   getBearerToken() {
     return this.token?.getBearerToken() ?? '';
   }
 
   getRefreshToken() {
     return this.token?.refresh_token;
+  }
+
+  getAccessToken() {
+    return this.token?.access_token;
   }
 
   ngOnDestroy(): void {
@@ -85,7 +97,7 @@ export class TokenService implements OnDestroy {
   private buildRefresh() {
     this.clearRefresh();
     if (this.token?.needRefresh()) {
-      this.timer$ = timer(this.token.getRefreshTime() * 1000).subscribe(() => {
+      this.timer$ = timer(this.token.getRefreshTime() * 1000).subscribe(() => {        
         this.refresh$.next(this.token);
       });
     }

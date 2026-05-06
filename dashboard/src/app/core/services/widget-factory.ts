@@ -72,7 +72,7 @@ export class WidgetFactory {
             meta : {
                 settingsList: {
                     source: {type: ['VK'/*,'YouYube'*/], defaultValue: 'VK'},
-                    embedCode: {type: 'string'},
+                    link: {type: 'string'},
                 },
                 defaultSizes: [{width: 380, height: 200}],
             },

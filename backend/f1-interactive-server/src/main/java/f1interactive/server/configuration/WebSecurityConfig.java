@@ -65,7 +65,8 @@ public class WebSecurityConfig {
                                 "/auth/login",
                                 "/auth/refresh",
                                 "/live",
-                                "/schedule")
+                                "/schedule",
+                                "/vkproxy/**")
                             .permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         // all other requests need to be authenticated

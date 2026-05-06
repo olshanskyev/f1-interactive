@@ -113,6 +113,7 @@
     "settings": {
       "source": "Source",
       "embedCode": "Embed code",
+      "link": "Link",
       "airTemp": "Air Temperature",
       "trackTemp": "Track Temperature",
       "condition": "Condition",
