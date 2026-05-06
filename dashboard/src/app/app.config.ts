@@ -24,12 +24,14 @@ import {
   StartupService,
   TranslateLangService,
   MockLiveService,
+  ScheduleService,
 } from '@core';
 import { environment } from '@env/environment';
 import { routes } from './app.routes';
 
 import { LoginService } from '@core/authentication/login.service';
 import { LiveService } from '@core/services/live/live.service';
+import { MockScheduleService } from '@core/services/mock.schedule.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -65,6 +67,10 @@ export const appConfig: ApplicationConfig = {
         return (settings.getUseSimulator())?
           inject(SimulatorService) : inject(F1InteractiveService);
       }
+    },
+    {
+      provide: ScheduleService,
+      useClass: environment.standalone ? MockScheduleService : ScheduleService
     },
     {
       provide: MAT_CARD_CONFIG,
