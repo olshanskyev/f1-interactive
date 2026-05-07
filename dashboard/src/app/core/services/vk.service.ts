@@ -52,7 +52,7 @@ export class VKService {
         console.error('VK Authorization Error:', error);
     }
 
-    public renderOneTap(container: ElementRef<any>) {
+    public renderOneTap(container: ElementRef<any>, styles?: Partial<VKID.OneTapStyles>) {
         if (!this.initialized) {
             this.init();
         }
@@ -63,6 +63,7 @@ export class VKService {
                 styles: {
                     height: 40,
                     borderRadius: 50,
+                    ...styles
                 },
                 lang: (this.locale() === 'ru-RU') ? VKID.Languages.RUS : VKID.Languages.ENG
             });
