@@ -77,7 +77,7 @@ export class VideoPlayerWidget extends ContaineredWidget {
                 !this.authService.isVkLoggedIn() &&
                 this.vkButtonContainer()
             ) {
-                    this.vkService.renderOneTap(this.vkButtonContainer()!);
+                    this.vkService.renderOneTap(this.vkButtonContainer()!, {width: 300});
             }
         });
     }

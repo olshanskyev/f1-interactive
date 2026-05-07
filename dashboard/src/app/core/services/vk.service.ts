@@ -52,7 +52,7 @@ export class VKService {
         console.error('VK Authorization Error:', error);
     }
 
-    public renderOneTap(container: ElementRef<any>) {
+    public renderOneTap(container: ElementRef<any>, styles?: Partial<VKID.OneTapStyles>) {
         if (!this.initialized) {
             this.init();
         }
@@ -63,6 +63,7 @@ export class VKService {
                 styles: {
                     height: 40,
                     borderRadius: 50,
+                    ...styles
                 },
                 lang: (this.locale() === 'ru-RU') ? VKID.Languages.RUS : VKID.Languages.ENG
             });
@@ -115,11 +116,20 @@ export class VKService {
         ));
     }
 
-    public getVideo(ownerId: string, videoId: string) {
+    private buildApiUrl(method: string, params: Record<string, any> = {}): string {
         const accessToken = this.tokenService.getAccessToken();
-        let url = `${this.VK_API_URL}/video.get?videos=${ownerId}_${videoId}&v=5.199`;
-        if (accessToken)
+        let url = `${this.VK_API_URL}/${method}?v=5.199`;
+        if (accessToken) {
             url = `${url}&access_token=${accessToken}`;
+        }
+        for (const [key, value] of Object.entries(params)) {
+            url = `${url}&${key}=${value}`;
+        }
+        return url;
+    }
+
+    public getVideo(ownerId: string, videoId: string) {
+        const url = this.buildApiUrl('video.get', { videos: `${ownerId}_${videoId}` });
         return this.http.get<any>(url);
 
     }
