@@ -144,4 +144,25 @@ describe('AuthService', () => {
     tokenService.set(token);
     httpMock.expectOne('/user').flush({});
   });
+
+  it('should call refresh backend only once when multiple refresh subscribers', () => {
+    tokenService.set(Object.assign({ expires_in: 5, refresh_token: 'foo' }, token));
+    // consume the user request triggered by token set
+    httpMock.expectOne('/user').flush({});
+    const obs1 = authService.refresh();
+    const obs2 = authService.refresh();
+    let resultCount = 0;
+    obs1.subscribe(res => { expect(res).toBe(true); resultCount++; });
+    obs2.subscribe(res => { expect(res).toBe(true); resultCount++; });
+
+    const match = (req: HttpRequest<any>) => req.url === '/auth/refresh' && req.body.refresh_token === 'foo';
+    const matches = httpMock.match(match);
+    expect(matches.length).toBe(1);
+    matches[0].flush(token);
+    // consume the user request triggered by token refresh
+    httpMock.expectOne('/user').flush({});
+
+    expect(resultCount).toBe(2);
+    tokenService.ngOnDestroy();
+  });
 });

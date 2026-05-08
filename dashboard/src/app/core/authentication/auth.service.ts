@@ -1,5 +1,5 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { BehaviorSubject, catchError, iif, map, merge, of, share, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, iif, map, merge, of, share, shareReplay, switchMap, take, tap } from 'rxjs';
 import { filterObject, isEmptyObject } from './helpers';
 import { Token, User } from './interface';
 import { LoginService } from './login.service';
@@ -14,6 +14,7 @@ export class AuthService {
   private readonly tokenService = inject(TokenService);
   private readonly vkService = inject(VKService);
 
+  private refreshInFlight$: Observable<boolean> | null = null;
   private user$ = new BehaviorSubject<User>({});
   private change$ = merge(
     this.tokenService.change(),
@@ -50,17 +51,26 @@ export class AuthService {
     this.tokenService.set(token);
   }
 
-  refresh() {
+  refresh(): Observable<boolean> {
+    if (this.refreshInFlight$) {
+      return this.refreshInFlight$;
+    }
+
     const refreshToken = this.tokenService.getRefreshToken();
     const source = (this.tokenService.getAuthSystem() === 'vk')?
       this.vkService.refresh():
       this.loginService.refresh(filterObject({ refresh_token: refreshToken }));
 
-    return source.pipe(
+    this.refreshInFlight$ = source.pipe(
+      take(1),
       catchError(() => of(undefined)),
       tap(token => this.tokenService.set(token)),
-      map(() => this.check())
+      map(() => this.check()),
+      tap({ complete: () => this.refreshInFlight$ = null }),
+      shareReplay(1)
     );
+
+    return this.refreshInFlight$;
   }
 
   logout() {

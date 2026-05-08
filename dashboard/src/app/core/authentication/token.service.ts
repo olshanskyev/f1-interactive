@@ -97,9 +97,7 @@ export class TokenService implements OnDestroy {
   private buildRefresh() {
     this.clearRefresh();
     if (this.token?.needRefresh()) {
-      // avoid TOO_MANY_REQUESTS if refresh time is 0 or negative for some reason
-      const waitTime = Math.max(3, this.token.getRefreshTime());
-      this.timer$ = timer(waitTime * 1000).subscribe(() => {
+      this.timer$ = timer(this.token.getRefreshTime() * 1000).subscribe(() => {
         this.refresh$.next(this.token);
       });
     }
