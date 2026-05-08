@@ -112,6 +112,7 @@
     "head_to_head": "Head to Head",
     "display": "Display",
     "loading_video_error": "Failed to load video",
+    "video_not_found_error": "Video not found",
     "settings": {
       "source": "Source",
       "embedCode": "Embed code",
