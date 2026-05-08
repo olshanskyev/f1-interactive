@@ -2,22 +2,15 @@
  * VK Token Interceptor
  *
  * Intercepts responses from the VK API proxy. If an error code 5 (User authorization failed)
- * is detected, it attempts to refresh the token.
- *
- * Uses a single shared `refreshInFlight$` observable (via `shareReplay`) so that:
- * - Only one refresh call is made regardless of how many requests fail simultaneously.
- * - `shareReplay` without `refCount` keeps the refresh alive even if downstream
- *   subscribers (e.g. widgets using switchMap/combineLatest) unsubscribe mid-flight.
- * - Late subscribers (queued requests) receive the cached result immediately.
+ * is detected, it delegates to AuthService.refresh() which ensures only one refresh call
+ * is in flight at a time via shareReplay.
  */
 import { HttpEvent, HttpHandlerFn, HttpRequest, HttpResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '../authentication/auth.service';
 import { TokenService } from '../authentication/token.service';
 import { Observable, of } from 'rxjs';
-import { catchError, mergeMap, shareReplay, switchMap, take, tap } from 'rxjs/operators';
-
-let refreshInFlight$: Observable<boolean> | null = null;
+import { mergeMap, switchMap } from 'rxjs/operators';
 
 export function vkTokenInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn)
         : Observable<HttpEvent<unknown>> {
@@ -34,29 +27,15 @@ export function vkTokenInterceptor(req: HttpRequest<unknown>, next: HttpHandlerF
         return of(event);
       }
 
-      // Start a shared refresh if one isn't already in progress
-      if (!refreshInFlight$) {
-        if (!tokenService.valid() && tokenService.getRefreshToken()) {
-          refreshInFlight$ = authService.refresh().pipe(
-            take(1),
-            catchError(() => of(false)),
-            tap({
-              next: success => { if (!success) tokenService.clear(); },
-              complete: () => { refreshInFlight$ = null; }
-            }),
-            shareReplay(1)
-          );
-        } else {
-          return of(event);
-        }
+      if (tokenService.valid() || !tokenService.getRefreshToken()) {
+        return of(event);
       }
-
-      // All concurrent requests share the same refresh result and retry on success
-      return refreshInFlight$.pipe(
+      return authService.refresh().pipe(
         switchMap(success => {
           if (success) {
             return next(updateRequestToken(req, tokenService.getAccessToken() || ''));
           }
+          tokenService.clear();
           return of(event);
         })
       );

@@ -46,7 +46,7 @@ export class VideoPlayerWidget extends ContaineredWidget {
         return null;
     });
 
-    public src = toSignal(
+    src = toSignal(
         combineLatest([
             toObservable(this.videoParams),
             this.authService.change().pipe(startWith(null))
