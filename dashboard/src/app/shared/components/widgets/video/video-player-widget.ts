@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService, VKService } from '@core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { map, of, switchMap, combineLatest, startWith } from 'rxjs';
+import { map, of, switchMap, combineLatest, startWith, distinctUntilChanged, shareReplay, Observable } from 'rxjs';
 import { VideoSource } from '@core/types/widgets';
 
 @Component({
@@ -46,25 +46,46 @@ export class VideoPlayerWidget extends ContaineredWidget {
         return null;
     });
 
-    src = toSignal(
-        combineLatest([
-            toObservable(this.videoParams),
-            this.authService.change().pipe(startWith(null))
-        ]).pipe(
-            switchMap(([params]) => {
-                if (!params) return of(undefined);
-                if (this.sourceSetting() !== VideoSource.VK) return of(undefined);
+    private playerUrl: Observable<string> = combineLatest([
+        toObservable(this.videoParams),
+        this.authService.change().pipe(startWith(null))
+    ]).pipe(
+        switchMap(([params]) => {
+            if (!params || this.sourceSetting() !== VideoSource.VK) {
+                return of(undefined);
+            }
+            this.error.set('');
+            return this.vkService.getVideo(params.ownerId, params.videoId).pipe(
+                map(res => {
+                    if (res.error) {
+                        this.error.set(this.translate.instant('widget.loading_video_error') + '. ' + res.error.error_msg);
+                        return undefined;
+                    }
+                    if (!res.response?.items?.length) {
+                        this.error.set(this.translate.instant('widget.video_not_found_error'));
+                        return undefined;
+                    }
+                    return res.response.items[0]?.player;
+                })
+            );
+        }),
+        shareReplay(1)
+    );
 
-                this.error.set('');
-                return this.vkService.getVideo(params.ownerId, params.videoId).pipe(
-                    map(res => {
-                        if (res.error) {
-                            this.error.set(this.translate.instant('widget.loading_video_error') + '. ' + res.error.error_msg);
-                            return undefined;
-                        }
-                        return res.response.items[0]?.player;
-                    })
-                );
+    src = toSignal(
+        this.playerUrl.pipe(
+            distinctUntilChanged((prev, curr) => {
+                // checking if it is the same video, because VK returns different player url on each request
+                if (!prev) return false;
+
+                const getIds = (url: string | undefined) => {
+                    if (!url) return '';
+                    const oid = url.match(/oid=(?<oid>[-\d]+)/)?.groups?.['oid'];
+                    const id = url.match(/id=(?<id>\d+)/)?.groups?.['id'];
+                    return oid && id ? `${oid}_${id}` : url;
+                };
+
+                return getIds(prev) === getIds(curr);
             })
         ),
         { initialValue: undefined }
