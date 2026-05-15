@@ -78,6 +78,7 @@ export class AuthService {
       this.vkService.logout():
       this.loginService.logout();
     return source.pipe(
+      catchError(() => of(null)),
       tap(() => this.tokenService.clear()),
       map(() => !this.check())
     );
