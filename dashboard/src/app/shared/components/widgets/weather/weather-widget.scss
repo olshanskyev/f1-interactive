@@ -10,10 +10,12 @@
 }
 
 .carousel-item {
-  --r: 0.08;
-
-  gap: min-responsive(var(--r));
+  gap: 0.25rem;
   align-items: center;
+  div {
+    --r: 0.04;
+    gap: min-responsive(var(--r));
+  }
 }
 
 .weather-icon {

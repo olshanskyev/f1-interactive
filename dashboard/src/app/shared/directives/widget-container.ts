@@ -9,9 +9,9 @@ import { GridContainerComponent } from '@shared/components';
 @Directive({
     selector: 'div[widgetContainer]',
     host: {
-        '(cdkDragMoved)': 'onDragging($event)',
-        '(cdkDragStarted)': 'onDragStart($event)',
-        '(cdkDragEnded)': 'onDragEnd($event)',
+        '(cdkDragMoved)': 'onDragging($any($event))',
+        '(cdkDragStarted)': 'onDragStart($any($event))',
+        '(cdkDragEnded)': 'onDragEnd($any($event))',
     }
 })
 export class WidgetContainerDirective {

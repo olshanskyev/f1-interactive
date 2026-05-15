@@ -57,7 +57,7 @@
                     }
 
                     @if (driverDots() && positions() && center()) {
-                        @for (dot of driverDots(); track $index) {
+                        @for (dot of driverDots(); track dot.driver.RacingNumber) {
                             @if (dot.onTrack) {
                                 <g car-dot
                                     [attr.key]="'map.driver.' + dot.driver.RacingNumber"

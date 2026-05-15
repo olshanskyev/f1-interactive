@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, input, OnDestroy, signal, ViewChild, ChangeDetectionStrategy, effect } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, input, OnDestroy, signal, ViewChild, ChangeDetectionStrategy, effect, HostListener } from '@angular/core';
 import { FullScreenService } from '@core';
 import { DEFAULT_CELL_SIZE, LayoutGrid } from '@core/types/widgets';
 
@@ -26,7 +26,7 @@ export class GridContainerComponent implements AfterViewInit, OnDestroy {
     readonly savedLayoutGrid = input.required<LayoutGrid>();
     readonly displayGrid = input(false);
 
-    private gridCellSize = signal(0);
+    gridCellSize = signal(0);
 
     cellSize() {
         return this.gridCellSize.asReadonly();
@@ -68,6 +68,16 @@ export class GridContainerComponent implements AfterViewInit, OnDestroy {
             this.calculateLayout(this.currentWidth, this.currentHeight);
         });
         this.resizeObserver.observe(this.backgroundGrid.nativeElement);
+    }
+
+    @HostListener('window:resize')
+    onWindowResize(): void {
+        const headerHeight = (this.savedLayoutGrid().fixedRatio && !this.isFullScreen())? 80: 0;
+        if (this.backgroundGrid && this.backgroundGrid.nativeElement) {
+            this.currentWidth = this.backgroundGrid.nativeElement.getBoundingClientRect().width;
+        }
+        this.currentHeight = window.innerHeight - headerHeight;
+        this.calculateLayout(this.currentWidth, this.currentHeight);
     }
 
     private calculateLayout(availableWidth: number, availableHeight: number): void {
