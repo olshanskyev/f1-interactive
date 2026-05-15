@@ -34,7 +34,7 @@
 
 .widget-preview-border {
   border: 1px solid var(--mat-sys-inverse-primary) !important;
-  border-radius: 0.5rem !important;
+  border-radius: var(--container-border-radius) !important;
 }
 
 
@@ -64,7 +64,7 @@
   margin: var(--container-margin) !important;
   background-color: color-mix(in srgb, var(--mat-sys-surface-container), transparent 20%);
   border: 1px solid var(--mat-sys-outline-variant);
-  border-radius: 0.5rem !important;
+  border-radius: var(--container-border-radius) !important;
 }
 
 .sticky-list-header {
@@ -82,7 +82,7 @@
     margin-bottom: 1px;
     font-size: small;
     background-color: color-mix(in srgb, var(--mat-sys-surface-container), transparent 10%);
-    border-radius: 0.5rem;
+    border-radius: var(--container-border-radius);
     backdrop-filter: blur(2px);
 }
 

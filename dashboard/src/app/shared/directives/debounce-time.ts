@@ -3,7 +3,7 @@ import { Directive, input, model, numberAttribute, ElementRef, inject, effect } 
 @Directive({
     selector: 'input[debounceTime]',
     host: {
-        '(input)': 'onInput($event.target.value)'
+        '(input)': 'onInput($any($event.target).value)'
     }
 })
 export class DebounceTime<T> {

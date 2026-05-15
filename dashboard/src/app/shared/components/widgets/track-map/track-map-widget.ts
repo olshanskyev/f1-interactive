@@ -96,9 +96,13 @@ export class TrackMapWidget extends ContaineredWidget implements OnDestroy {
 
     driverDots = linkedSignal(() => {
         const activePositions = this.positions();
-        return Object.values(this.driverList()?.Lines ?? {})
+        const selectedSet = this.selectedDrivers();
+        const normalDots: any[] = [];
+        const selectedDots: any[] = [];
+
+        Object.values(this.driverList()?.Lines ?? {})
             .reverse() //ToDo? make sorting based on position (at the momeent based on driver number)
-            .map((driver) => {
+            .forEach((driver) => {
                 const num = driver.RacingNumber;
                 const timingData = this.timingData()?.Lines?.[num];
                 const hidden = timingData
@@ -108,13 +112,19 @@ export class TrackMapWidget extends ContaineredWidget implements OnDestroy {
                 const pos = activePositions?.[num];
                 const onTrack = !((pos?.X ?? 0) === 0 && (pos?.Y ?? 0) === 0);
 
-                return {
+                const dot = {
                     driver,
                     hidden,
                     onTrack,
                     pit: timingData ? timingData.InPit : false
                 };
-            });
+
+                selectedSet.has(num)?
+                    selectedDots.push(dot):
+                    normalDots.push(dot);
+        });
+
+        return [...normalDots, ...selectedDots];
     });
 
     mapResource = rxResource({

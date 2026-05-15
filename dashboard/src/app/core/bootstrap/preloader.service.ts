@@ -15,13 +15,23 @@ export class PreloaderService {
   hide() {
     const el = this.getElement();
     if (el) {
-      el.addEventListener('transitionend', () => {
-        el.className = 'global-loader-hidden';
-      });
+      const onTransitionEnd = () => {
+        el.classList.remove('global-loader-fade-out');
+        el.classList.add('global-loader-hidden');
+        el.style.pointerEvents = '';
+        el.removeEventListener('transitionend', onTransitionEnd);
+        clearTimeout(fallbackTimeout);
+      };
 
-      if (!el.classList.contains('global-loader-hidden')) {
-        el.className += ' global-loader-fade-out';
+      el.style.pointerEvents = 'none';
+      el.addEventListener('transitionend', onTransitionEnd);
+
+      if (!el.classList.contains('global-loader-fade-out') && !el.classList.contains('global-loader-hidden')) {
+        el.classList.add('global-loader-fade-out');
       }
+
+      // Fallback in case transitionend doesn't fire (e.g., interrupted navigation)
+      const fallbackTimeout = window.setTimeout(onTransitionEnd, 1000);
     }
   }
 }
