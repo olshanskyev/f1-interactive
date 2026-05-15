@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { ElementRef, inject, Injectable } from '@angular/core';
 import { Token, TokenService, User } from '@core/authentication';
 import * as VKID from '@vkid/sdk';
-import { map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { from } from 'rxjs';
 import { environment } from '@env/environment';
 import { SettingsService } from '@core';
@@ -113,7 +113,14 @@ export class VKService {
                     id: userInfo.user.user_id
                 };
             }
-        ));
+        ),
+        catchError((payload: any) => {
+            console.error('VK User Info Error:', payload);
+            if (payload.error === 'invalid_token')
+                this.tokenService.clear();
+            return of({});
+        })
+    );
     }
 
     private buildApiUrl(method: string, params: Record<string, any> = {}): string {

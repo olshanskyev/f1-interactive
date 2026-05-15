@@ -46,7 +46,7 @@ export class VideoPlayerWidget extends ContaineredWidget {
         return null;
     });
 
-    private playerUrl: Observable<string> = combineLatest([
+    private playerUrl: Observable<string | undefined> = combineLatest([
         toObservable(this.videoParams),
         this.authService.change().pipe(startWith(null))
     ]).pipe(
@@ -65,7 +65,11 @@ export class VideoPlayerWidget extends ContaineredWidget {
                         this.error.set(this.translate.instant('widget.video_not_found_error'));
                         return undefined;
                     }
-                    return res.response.items[0]?.player;
+                    const playerUrl = res.response.items[0]?.player;
+                    if (!playerUrl) return undefined;
+                    return playerUrl.includes('?')
+                        ? `${playerUrl}&playsinline=1`
+                        : `${playerUrl}?playsinline=1`;
                 })
             );
         }),
