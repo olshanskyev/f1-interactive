@@ -83,6 +83,7 @@
   "telemetry": "Telemetry",
   "best": "Best",
   "last": "Last",
+  "or": "OR",
   "weather": {
     "air": "Air",
     "track": "Track",

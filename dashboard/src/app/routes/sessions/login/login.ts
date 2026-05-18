@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, ElementRef, inject, viewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -13,6 +13,7 @@ import { filter } from 'rxjs/operators';
 
 import { AuthService } from '@core/authentication';
 import { VKService } from '@core';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-login',
@@ -28,6 +29,7 @@ import { VKService } from '@core';
     MatInputModule,
     MtxButtonModule,
     TranslateModule,
+    MatDividerModule
   ],
 })
 export class Login implements AfterViewInit {
@@ -38,7 +40,7 @@ export class Login implements AfterViewInit {
 
   vkButtonContainer = viewChild<ElementRef>('vkButtonContainer');
 
-  isSubmitting = false;
+  isSubmitting = signal(false);
 
   loginForm = this.fb.nonNullable.group({
     username: ['', [Validators.required]],
@@ -59,7 +61,7 @@ export class Login implements AfterViewInit {
   }
 
   login() {
-    this.isSubmitting = true;
+    this.isSubmitting.set(true);
 
     this.auth
       .login(this.username.value, this.password.value, this.rememberMe.value)
@@ -78,7 +80,7 @@ export class Login implements AfterViewInit {
               });
             });
           }
-          this.isSubmitting = false;
+          this.isSubmitting.set(false);
         },
       });
   }

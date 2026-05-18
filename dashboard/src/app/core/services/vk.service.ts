@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { ElementRef, inject, Injectable } from '@angular/core';
 import { Token, TokenService, User } from '@core/authentication';
 import * as VKID from '@vkid/sdk';
-import { catchError, map, Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { from } from 'rxjs';
 import { environment } from '@env/environment';
 import { SettingsService } from '@core';
@@ -21,15 +21,21 @@ export class VKService {
     private readonly VK_API_URL = '/vkproxy/method';
     private readonly locale = this.settings.getLocaleSignal();
 
-    private init() {
-        VKID.Config.init({
-            app: environment.vkAppId,
-            redirectUrl: environment.vkRedirectUrl,
-            responseMode: VKID.ConfigResponseMode.Callback,
-            source: VKID.ConfigSource.LOWCODE
-        });
-        this.oneTap = new VKID.OneTap();
-        this.oneTap
+    private initConfig() {
+        if (!this.initialized) {
+            VKID.Config.init({
+                app: environment.vkAppId,
+                redirectUrl: environment.vkRedirectUrl,
+                responseMode: VKID.ConfigResponseMode.Callback,
+                source: VKID.ConfigSource.LOWCODE
+            });
+            this.initialized = true;
+        }
+    }
+
+    private createOneTap(): VKID.OneTap {
+        const oneTap = new VKID.OneTap();
+        oneTap
             .on(VKID.WidgetEvents.ERROR, this.handleError)
             .on(VKID.OneTapInternalEvents.LOGIN_SUCCESS, (payload: any) => {
                 const code = payload.code;
@@ -41,7 +47,7 @@ export class VKService {
                     })
                     .catch(this.handleError);
             });
-        this.initialized = true;
+        return oneTap;
     }
 
     public onLoginSuccess(handler: (token: Token) => void) {
@@ -53,28 +59,24 @@ export class VKService {
     }
 
     public renderOneTap(container: ElementRef<any>, styles?: Partial<VKID.OneTapStyles>) {
-        if (!this.initialized) {
-            this.init();
-        }
-        if (this.oneTap) {
-            this.oneTap.render({
-                container: container.nativeElement,
-                showAlternativeLogin: true,
-                styles: {
-                    height: 40,
-                    borderRadius: 50,
-                    ...styles
-                },
-                lang: (this.locale() === 'ru-RU') ? VKID.Languages.RUS : VKID.Languages.ENG
-            });
-        }
+        this.initConfig();
+        this.oneTap = this.createOneTap();
+        container.nativeElement.innerHTML = '';
+        this.oneTap.render({
+            container: container.nativeElement,
+            showAlternativeLogin: true,
+            styles: {
+                height: 40,
+                borderRadius: 50,
+                ...styles
+            },
+            lang: (this.locale() === 'ru-RU') ? VKID.Languages.RUS : VKID.Languages.ENG
+        });
     }
 
     public refresh(): Observable<Token | undefined> {
         if (this.tokenService.getAuthSystem() === 'vk') {
-            if (!this.initialized) {
-                this.init();
-            }
+            this.initConfig();
             const refreshToken = this.tokenService.getRefreshToken();
             const deviceId = this.tokenService.getDeviceId();
             if (!refreshToken || !deviceId)
@@ -88,9 +90,7 @@ export class VKService {
     }
 
     public logout(): Observable<VKID.LogoutResult | undefined> {
-        if (!this.initialized) {
-            this.init();
-        }
+        this.initConfig();
         const accessToken = this.tokenService.getAccessToken();
         if (!accessToken)
             return of(undefined);
@@ -98,29 +98,18 @@ export class VKService {
     }
 
     public userInfo(): Observable<User> {
-        if (!this.initialized) {
-            this.init();
-        }
+        this.initConfig();
         const accessToken = this.tokenService.getAccessToken();
         if (!accessToken)
             return of({});
-        return from(VKID.Auth.userInfo(accessToken)).pipe(map (
-            userInfo => {
-                return {
-                    avatar: userInfo.user.avatar,
-                    name: userInfo.user.first_name,
-                    email: userInfo.user.email,
-                    id: userInfo.user.user_id
-                };
-            }
-        ),
-        catchError((payload: any) => {
-            console.error('VK User Info Error:', payload);
-            if (payload.error === 'invalid_token')
-                this.tokenService.clear();
-            return of({});
-        })
-    );
+        return from(VKID.Auth.userInfo(accessToken)).pipe(
+            map(userInfo => ({
+                avatar: userInfo.user.avatar,
+                name: userInfo.user.first_name,
+                email: userInfo.user.email,
+                id: userInfo.user.user_id
+            }))
+        );
     }
 
     private buildApiUrl(method: string, params: Record<string, any> = {}): string {

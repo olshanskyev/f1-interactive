@@ -23,10 +23,6 @@ export function tokenInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn)
     if (req.url.includes('/auth/logout')) {
       router.navigateByUrl('/');
     }
-
-    if (router.url.includes('/auth/login')) {
-      router.navigateByUrl('/');
-    }
   };
 
   if (tokenService.valid() && shouldAppendToken(req.url)) {

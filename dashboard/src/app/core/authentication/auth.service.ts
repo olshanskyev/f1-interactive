@@ -5,6 +5,7 @@ import { Token, User } from './interface';
 import { LoginService } from './login.service';
 import { TokenService } from './token.service';
 import { VKService } from '@core/services';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ export class AuthService {
   private readonly loginService = inject(LoginService);
   private readonly tokenService = inject(TokenService);
   private readonly vkService = inject(VKService);
-
+  private readonly router = inject(Router);
   private refreshInFlight$: Observable<boolean> | null = null;
   private user$ = new BehaviorSubject<User>({});
   private change$ = merge(
@@ -49,6 +50,7 @@ export class AuthService {
 
   vkLoggedIn(token: Token) {
     this.tokenService.set(token);
+    this.router.navigateByUrl('/');
   }
 
   refresh(): Observable<boolean> {
@@ -92,6 +94,18 @@ export class AuthService {
     return iif(() => this.check(), this.loginService.menu(), this.loginService.defaultMenu());
   }
 
+  private refreshOnceAndCall(fn: () => Observable<any>): Observable<any> {
+    return this.refresh().pipe(
+      switchMap(success => {
+        if (success) {
+          return fn();
+        }
+        this.tokenService.clear();
+        return of({});
+      })
+    );
+  }
+
   private assignUser() {
     this._isLoggedIn.set(this.check());
     if (!this.check()) {
@@ -102,10 +116,19 @@ export class AuthService {
       return of(this.user$.getValue());
     }
 
-    const source = (this.tokenService.getAuthSystem() === 'vk')?
+    const getUserSource = () => (this.tokenService.getAuthSystem() === 'vk')?
       this.vkService.userInfo():
       this.loginService.user();
-    return source.pipe(tap(user => this.user$.next(user)));
+
+    return getUserSource().pipe(
+      catchError((err) => {
+        if (err?.error === 'invalid_token') {
+          return this.refreshOnceAndCall(getUserSource);
+        }
+        return of({});
+      }),
+      tap(user => this.user$.next(user))
+    );
 
   }
 }
