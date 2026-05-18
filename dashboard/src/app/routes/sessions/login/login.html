@@ -47,13 +47,21 @@
           class="w-full m-y-16"
           matButton="filled"
           [disabled]="!!loginForm.invalid"
-          [loading]="isSubmitting"
+          [loading]="isSubmitting()"
           (click)="login()"
         >
           {{ 'login' | translate }}
         </button>
       </form>
-
+      <div class="d-flex flex-row align-items-center p-b-16">
+        <div class="flex-fill">
+          <mat-divider />
+        </div>
+        <span class="p-x-16 text-color-second">{{ 'or' | translate }}</span>
+        <div class="flex-fill">
+          <mat-divider />
+        </div>
+      </div>
       <div #vkButtonContainer>
       </div>
     </mat-card-content>

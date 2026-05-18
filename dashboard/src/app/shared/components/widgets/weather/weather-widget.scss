@@ -12,8 +12,10 @@
 .carousel-item {
   gap: 0.25rem;
   align-items: center;
+
   div {
     --r: 0.04;
+
     gap: min-responsive(var(--r));
   }
 }
