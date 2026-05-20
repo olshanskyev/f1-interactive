@@ -6,7 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { TranslateModule } from '@ngx-translate/core';
 import { filter } from 'rxjs/operators';
@@ -14,6 +14,7 @@ import { filter } from 'rxjs/operators';
 import { AuthService } from '@core/authentication';
 import { VKService } from '@core';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +30,9 @@ import { MatDividerModule } from '@angular/material/divider';
     MatInputModule,
     MtxButtonModule,
     TranslateModule,
-    MatDividerModule
+    MatDividerModule,
+    MatIconModule,
+    RouterLink
   ],
 })
 export class Login implements AfterViewInit {
