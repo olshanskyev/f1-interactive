@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { Location } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,6 +15,7 @@ import { filter } from 'rxjs/operators';
 import { AuthService } from '@core/authentication';
 import { VKService } from '@core';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
@@ -29,12 +31,14 @@ import { MatDividerModule } from '@angular/material/divider';
     MatInputModule,
     MtxButtonModule,
     TranslateModule,
-    MatDividerModule
+    MatDividerModule,
+    MatIconModule
   ],
 })
 export class Login implements AfterViewInit {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly location = inject(Location);
   private readonly auth = inject(AuthService);
   private readonly vkService = inject(VKService);
 
@@ -83,6 +87,14 @@ export class Login implements AfterViewInit {
           this.isSubmitting.set(false);
         },
       });
+  }
+
+  goBack() {
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigateByUrl('/');
+    }
   }
 
   ngAfterViewInit(): void {

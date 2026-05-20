@@ -1,6 +1,5 @@
 package f1interactive.server.configuration;
 
-import org.apache.hc.client5.http.ssl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

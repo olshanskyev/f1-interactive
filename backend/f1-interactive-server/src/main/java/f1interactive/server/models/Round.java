@@ -22,7 +22,7 @@ public class Round {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public String getLocation() { return location; }
-    public void setLocation(String name) { this.location = location; }
+    public void setLocation(String location) { this.location = location; }
     public String getCountryName() { return countryName; }
     public void setCountryName(String countryName) { this.countryName = countryName; }
     public ZonedDateTime getStart() { return start; }
