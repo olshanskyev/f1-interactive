@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { Location } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -6,7 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { TranslateModule } from '@ngx-translate/core';
 import { filter } from 'rxjs/operators';
@@ -31,13 +32,13 @@ import { MatIconModule } from '@angular/material/icon';
     MtxButtonModule,
     TranslateModule,
     MatDividerModule,
-    MatIconModule,
-    RouterLink
+    MatIconModule
   ],
 })
 export class Login implements AfterViewInit {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly location = inject(Location);
   private readonly auth = inject(AuthService);
   private readonly vkService = inject(VKService);
 
@@ -86,6 +87,14 @@ export class Login implements AfterViewInit {
           this.isSubmitting.set(false);
         },
       });
+  }
+
+  goBack() {
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigateByUrl('/');
+    }
   }
 
   ngAfterViewInit(): void {
