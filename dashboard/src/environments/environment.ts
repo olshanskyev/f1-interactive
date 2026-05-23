@@ -9,5 +9,6 @@ export const environment = {
   useHash: false,
   vkAppId: 54566649,
   vkRedirectUrl: 'https://localhost',
-  standalone: false
+  standalone: false,
+  umamiWebsiteId: ''
 };

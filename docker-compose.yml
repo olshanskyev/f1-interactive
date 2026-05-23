@@ -3,11 +3,14 @@ services:
     image: ghcr.io/olshanskyev/f1-interactive-dashboard:latest
     container_name: f1-dashboard
     environment:
-      - SUBSTITUTE_VARS=BASE_URL BASE_URL_SIMULATOR HOST CERT_PATH
+      - SUBSTITUTE_VARS=BASE_URL BASE_URL_SIMULATOR HOST CERT_PATH UMAMI_WEBSITE_ID VK_APP_ID VK_REDIRECT_URL
       - BASE_URL=${BASE_URL:-https://f1interactive.net}
       - BASE_URL_SIMULATOR=${BASE_URL_SIMULATOR:-}
       - HOST=${HOST:-f1interactive.net}
       - CERT_PATH=${CERT_PATH:-}
+      - UMAMI_WEBSITE_ID=${UMAMI_WEBSITE_ID:-}
+      - VK_APP_ID=${VK_APP_ID:-54566649}
+      - VK_REDIRECT_URL=${VK_REDIRECT_URL:-https://f1interactive.net}
     ports:
       - "80:80"
       - "443:443"
