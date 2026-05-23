@@ -20,11 +20,12 @@ export class App implements OnInit, AfterViewInit {
     this.settings.setDirection();
     this.settings.setTheme();
 
-    if (environment.production && environment.umamiWebsiteId && environment.umamiWebsiteId !== '__UMAMI_WEBSITE_ID__') {
+    const websiteId = environment.umamiWebsiteId;
+    if (environment.production && websiteId && !websiteId.startsWith('__UMAMI_')) {
       const script = this.document.createElement('script');
       script.defer = true;
       script.src = '/umami/script.js';
-      script.setAttribute('data-website-id', environment.umamiWebsiteId);
+      script.setAttribute('data-website-id', websiteId);
       this.document.head.appendChild(script);
     }
   }
