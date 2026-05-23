@@ -163,7 +163,8 @@
     "app_configuration": "Настройки приложения",
     "live_token": "Live токен",
     "use_simulator": "Использовать симулятор",
-    "manual_sync": "Ручная синхронизация"
+    "manual_sync": "Ручная синхронизация",
+    "view_analytics": "Просмотр аналитики"
   },
   "schedule": {
     "next": "Следующий",
