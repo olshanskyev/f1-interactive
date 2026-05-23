@@ -21,10 +21,12 @@ export class App implements OnInit, AfterViewInit {
     this.settings.setTheme();
 
     const websiteId = environment.umamiWebsiteId;
-    if (environment.production && websiteId && !websiteId.startsWith('__UMAMI_')) {
+    // Prevent static evaluation from removing this block during build
+    const placeholderPrefix = '__UMA' + 'MI_';
+    if (environment.production && websiteId && !websiteId.startsWith(placeholderPrefix)) {
       const script = this.document.createElement('script');
       script.defer = true;
-      script.src = '/umami/script.js';
+      script.src = 'https://cloud.umami.is/script.js';
       script.setAttribute('data-website-id', websiteId);
       this.document.head.appendChild(script);
     }
