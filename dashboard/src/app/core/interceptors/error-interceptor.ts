@@ -1,6 +1,7 @@
 import { HttpErrorResponse, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { isVkProxyRequest } from '@core/lib/url';
 import { HotToastService } from '@ngxpert/hot-toast';
 import { catchError, throwError } from 'rxjs';
 
@@ -34,11 +35,13 @@ export function errorInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn)
         });
       } else {
         console.error('ERROR', error);
-        if (error.status !== 0) { // host not reachable?
-          toast.error(getMessage(error));
-        }
-        if (error.status === STATUS.UNAUTHORIZED) {
-          router.navigateByUrl('/auth/login');
+        if (!isVkProxyRequest(req)) { // just proxy vk errors
+          if (error.status !== 0) { // host not reachable?
+            toast.error(getMessage(error));
+          }
+          if (error.status === STATUS.UNAUTHORIZED) {
+            router.navigateByUrl('/auth/login');
+          }
         }
       }
 

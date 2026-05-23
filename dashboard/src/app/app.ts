@@ -20,6 +20,7 @@ export class App implements OnInit, AfterViewInit {
     this.settings.setDirection();
     this.settings.setTheme();
 
+    // umami analytics integration
     const websiteId = environment.umamiWebsiteId;
     // Prevent static evaluation from removing this block during build
     const placeholderPrefix = '__UMA' + 'MI_';

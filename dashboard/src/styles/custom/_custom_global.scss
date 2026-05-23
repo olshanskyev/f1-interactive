@@ -1,3 +1,5 @@
+@use '../grid/breakpoints';
+
 .line-height-1 {
   line-height: 1;
 }
@@ -95,25 +97,31 @@
 }
 
 
-/* Sync overlay */
-.syncing-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  background-color: color-mix(in srgb, var(--mat-sys-secondary-container), transparent 10%);
+@keyframes expand-height {
+  from {
+    height: 0;
+  }
 
-  > .sync-indicator-content {
-    position: sticky;
-    top: 50vh;
-    transform: translateY(-50%);
+  to {
+    height: 100px;
   }
 }
 
-
+/* Sync overlay */
+.syncing-overlay {
+  position: sticky;
+  top: var(--mat-toolbar-standard-height);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+  background-color: color-mix(in srgb, var(--mat-sys-secondary-container), transparent 10%);
+  animation: expand-height 0.4s ease-out;
+  @include breakpoints.bp-lt(small) {
+    top: var(--mat-toolbar-mobile-height);
+  }
+}
 

@@ -17,6 +17,11 @@ services:
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
       - f1interactive-net
     restart: unless-stopped
@@ -33,6 +38,11 @@ services:
       - ADMIN_PWD=${ADMIN_PWD}
     volumes:
       - db_data:/var/lib/postgresql/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
       - f1interactive-net
     restart: unless-stopped
@@ -51,6 +61,11 @@ services:
       - ALLOWED_ORIGIN_PATTERNS=${ALLOWED_ORIGIN_PATTERNS:-https://f1interactive.net}
     depends_on:
       - db
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
       - f1interactive-net
     restart: unless-stopped

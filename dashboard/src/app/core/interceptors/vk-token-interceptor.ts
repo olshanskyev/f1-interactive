@@ -11,13 +11,14 @@ import { AuthService } from '../authentication/auth.service';
 import { TokenService } from '../authentication/token.service';
 import { Observable, of } from 'rxjs';
 import { mergeMap, switchMap } from 'rxjs/operators';
+import { isVkProxyRequest } from '@core/lib/url';
 
 export function vkTokenInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn)
         : Observable<HttpEvent<unknown>> {
   const authService = inject(AuthService);
   const tokenService = inject(TokenService);
 
-  if (!req.url.includes('/vkproxy')) {
+  if (!isVkProxyRequest(req)) {
     return next(req);
   }
 

@@ -59,6 +59,7 @@
 }
 
 .driver-card {
+    min-height: max-content !important;
     background: linear-gradient(to right, var(--gradient-first-color), var(--gradient-second-color));
 }
 

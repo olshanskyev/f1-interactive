@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { TokenService } from '@core/authentication';
 import { catchError, tap, throwError } from 'rxjs';
 import { BASE_URL, hasHttpScheme } from './base-url-interceptor';
+import { isVkProxyRequest } from '@core/lib/url';
 
 export function tokenInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn) {
   const router = inject(Router);
@@ -33,7 +34,7 @@ export function tokenInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn)
       })
     ).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 401) {
+        if (error.status === 401 && !isVkProxyRequest(req)) {
           tokenService.clear();
         }
         return throwError(() => error);

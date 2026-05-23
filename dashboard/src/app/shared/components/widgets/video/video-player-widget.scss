@@ -2,3 +2,10 @@
     background-color: var(--mat-sys-secondary-container);
     opacity: 0.8;
 }
+
+.spinner-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

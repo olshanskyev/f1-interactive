@@ -5,8 +5,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService, VKService } from '@core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { map, of, switchMap, combineLatest, startWith, distinctUntilChanged, shareReplay, Observable } from 'rxjs';
+import { map, of, switchMap, combineLatest, startWith, distinctUntilChanged, shareReplay, Observable, catchError, defer, finalize } from 'rxjs';
 import { VideoSource } from '@core/types/widgets';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
     selector: 'video-player-widget',
@@ -16,7 +17,8 @@ import { VideoSource } from '@core/types/widgets';
     imports: [
         SafeUrlPipe,
         MatIconModule,
-        TranslateModule
+        TranslateModule,
+        MatProgressSpinnerModule
     ]
 })
 export class VideoPlayerWidget extends ContaineredWidget {
@@ -24,11 +26,11 @@ export class VideoPlayerWidget extends ContaineredWidget {
     private readonly vkService = inject(VKService);
     private translate = inject(TranslateService);
     readonly authService = inject(AuthService);
-
     private vkButtonContainer = viewChild<ElementRef>('vkButtonContainer');
     VideoSource = VideoSource;
     sourceSetting: Signal<VideoSource> = computed(() => this.settings()?.['source']?.toString());
     error = signal<string>('');
+    isLoading = signal(false);
 
     private videoParams = computed(() => {
         const link = this.settings()?.['link']?.toString();
@@ -55,7 +57,15 @@ export class VideoPlayerWidget extends ContaineredWidget {
                 return of(undefined);
             }
             this.error.set('');
-            return this.vkService.getVideo(params.ownerId, params.videoId).pipe(
+            return defer(() =>  {
+                this.isLoading.set(true);
+                return this.vkService.getVideo(params.ownerId, params.videoId);
+            }).pipe(
+                catchError(err => {
+                    console.error(err);
+                    this.error.set(this.translate.instant('widget.loading_video_error'));
+                    return of(undefined);
+                }),
                 map(res => {
                     if (res.error) {
                         this.error.set(this.translate.instant('widget.loading_video_error') + '. ' + res.error.error_msg);
@@ -70,7 +80,8 @@ export class VideoPlayerWidget extends ContaineredWidget {
                     return playerUrl.includes('?')
                         ? `${playerUrl}&playsinline=1`
                         : `${playerUrl}?playsinline=1`;
-                })
+                }),
+                finalize(() => this.isLoading.set(false))
             );
         }),
         shareReplay(1)

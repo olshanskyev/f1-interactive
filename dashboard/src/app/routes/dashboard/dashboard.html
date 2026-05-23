@@ -1,6 +1,6 @@
 @if (syncLeftTime() > 0 || syncPassedTime() > 0) {
     <div class="syncing-overlay" data-nosnippet>
-        <div class="sync-indicator-content d-flex gap-8 flex-col align-items-center">
+        <div class="d-flex gap-8 flex-col align-items-center">
             <div class="d-flex gap-8">
                 <mat-icon>sync</mat-icon>
                 <div>{{'syncing' | translate}} {{((syncLeftTime() > 0) ? syncLeftTime() / 1000 : syncPassedTime() / 1000) | number:'1.0-1'}} {{'time.s' | translate}}</div>
