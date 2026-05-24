@@ -114,6 +114,7 @@
     "display": "Отображение",
     "loading_video_error": "Ошибка загрузки видео",
     "video_not_found_error": "Видео не найдено",
+    "video_content_restricted_error": "Видео недоступно",
     "settings": {
       "source": "Источник",
       "embedCode": "Код для встраивания",

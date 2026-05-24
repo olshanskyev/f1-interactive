@@ -114,6 +114,7 @@
     "display": "Display",
     "loading_video_error": "Failed to load video",
     "video_not_found_error": "Video not found",
+    "video_content_restricted_error": "Video content is restricted",
     "settings": {
       "source": "Source",
       "embedCode": "Embed code",
