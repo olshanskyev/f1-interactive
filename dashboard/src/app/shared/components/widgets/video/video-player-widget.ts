@@ -75,6 +75,10 @@ export class VideoPlayerWidget extends ContaineredWidget {
                         this.error.set(this.translate.instant('widget.video_not_found_error'));
                         return undefined;
                     }
+                    if (res.response.items[0].content_restricted) {
+                        this.error.set(this.translate.instant('widget.video_content_restricted_error'));
+                        return undefined;
+                    }
                     const playerUrl = res.response.items[0]?.player;
                     if (!playerUrl) return undefined;
                     return playerUrl.includes('?')
