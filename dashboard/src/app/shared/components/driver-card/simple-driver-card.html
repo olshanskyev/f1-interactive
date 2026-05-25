@@ -1,0 +1,25 @@
+<div class="d-flex flex-row gap-8 simple-driver-container">
+    <img class="photo"
+        loading="lazy" decoding="async"
+        [alt]="driver().BroadcastName"
+        [src]="photoUrl()"
+        [style.background-color]="'#' + driver().TeamColour + '20'"
+        [style.border-color]="'#' + driver().TeamColour"
+    />
+    <div class="driver-text-container">
+        <div class="driver-name f-s-14">
+            {{driver().FirstName}} {{driver().LastName}}
+        </div>
+        <div class="driver-name-tla f-s-14">
+            {{driver().Tla}}
+        </div>
+        <div class="text-color-second team-name f-s-12 line-height-1 p-y-2">
+            {{driver().TeamName}}
+        </div>
+        @if(position()) {
+            <div class="position-badge" [style.background-color]="'#' + driver().TeamColour">
+                P{{position()}}
+            </div>
+        }
+    </div>
+</div>

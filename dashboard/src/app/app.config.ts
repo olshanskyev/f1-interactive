@@ -8,11 +8,7 @@ import {
   provideZonelessChangeDetection,
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
-
-import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
 import { MAT_CARD_CONFIG } from '@angular/material/card';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
-import { provideDateFnsDatetimeAdapter } from '@ng-matero/extensions-date-fns-adapter';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideHotToastConfig } from '@ngxpert/hot-toast';
@@ -28,12 +24,14 @@ import {
   StartupService,
   TranslateLangService,
   MockLiveService,
+  ScheduleService,
 } from '@core';
 import { environment } from '@env/environment';
 import { routes } from './app.routes';
 
 import { LoginService } from '@core/authentication/login.service';
 import { LiveService } from '@core/services/live/live.service';
+import { MockScheduleService } from '@core/services/mock.schedule.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -70,10 +68,9 @@ export const appConfig: ApplicationConfig = {
           inject(SimulatorService) : inject(F1InteractiveService);
       }
     },
-
     {
-      provide: MAT_DATE_LOCALE,
-      useFactory: () => inject(SettingsService).getLocale(),
+      provide: ScheduleService,
+      useClass: environment.standalone ? MockScheduleService : ScheduleService
     },
     {
       provide: MAT_CARD_CONFIG,
@@ -81,36 +78,5 @@ export const appConfig: ApplicationConfig = {
         appearance: 'outlined',
       },
     },
-    provideDateFnsAdapter({
-      parse: {
-        dateInput: 'yyyy-MM-dd',
-      },
-      display: {
-        dateInput: 'yyyy-MM-dd',
-        monthYearLabel: 'yyyy MMM',
-        dateA11yLabel: 'LL',
-        monthYearA11yLabel: 'yyyy MMM',
-      },
-    }),
-    provideDateFnsDatetimeAdapter({
-      parse: {
-        dateInput: 'yyyy-MM-dd',
-        yearInput: 'yyyy',
-        monthInput: 'MMMM',
-        datetimeInput: 'yyyy-MM-dd HH:mm',
-        timeInput: 'HH:mm',
-      },
-      display: {
-        dateInput: 'yyyy-MM-dd',
-        yearInput: 'yyyy',
-        monthInput: 'MMMM',
-        datetimeInput: 'yyyy-MM-dd HH:mm',
-        timeInput: 'HH:mm',
-        monthYearLabel: 'yyyy MMMM',
-        dateA11yLabel: 'LL',
-        monthYearA11yLabel: 'MMMM yyyy',
-        popupHeaderDateLabel: 'MMM dd, E',
-      },
-    }),
   ],
 };

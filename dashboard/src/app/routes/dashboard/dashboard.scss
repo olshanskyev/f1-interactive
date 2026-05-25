@@ -16,6 +16,7 @@
     grid-template-areas: "weather"
                          "session-info"
                          "track-map"
+                         "head-to-head"
                          ;
     grid-template-columns: 1fr;
 }
@@ -32,6 +33,7 @@
         "weather"
         "session-info"
         "track-map"
+        "head-to-head"
         "leaderboard"
         "race-control-messages"
         "team-radio"
@@ -72,14 +74,18 @@
     grid-area: track-map;
 }
 
+#head-to-head {
+    grid-area: head-to-head;
+}
+
 #race-control-messages {
     grid-area: race-control-messages;
-    height: max-content;
+    height: max-content !important;
 }
 
 #team-radio {
     grid-area: team-radio;
-    height: max-content;
+    height: max-content !important;
 }
 
 .widget {
@@ -175,6 +181,10 @@
     z-index: 100;
 }
 
-.pinned {
+.lowest-z-index {
     z-index: 1;
+}
+
+.head-to-head-form-field {
+    width: 150px;
 }

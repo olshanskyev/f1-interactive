@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal, Signal, ViewEncapsulation } from '@angular/core';
+import { Component, inject, signal, ViewEncapsulation } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { WidgetFactory } from '@core';
 import { WidgetComponent, WidgetType } from '@core/types/widgets';
 import { TranslateModule } from '@ngx-translate/core';
@@ -26,7 +26,6 @@ import { isMobile } from '@core/lib/device';
 export class SelectWidgetDialog {
     private readonly widgetFactory = inject(WidgetFactory);
     readonly dialogRef = inject(MatDialogRef);
-    data = inject<{ cellSize: Signal<number> }>(MAT_DIALOG_DATA);
     widgetHeight = signal<number>(0);
     widgetWidth = signal<number>(0);
     isMobile = signal(isMobile);
@@ -37,8 +36,8 @@ export class SelectWidgetDialog {
     }
 
     onDragStarted(widget: WidgetComponent) {
-        this.widgetHeight.set(this.data.cellSize() * widget.meta.defaultSizes[0].rowSpan);
-        this.widgetWidth.set(this.data.cellSize() * widget.meta.defaultSizes[0].colSpan);
+        this.widgetHeight.set(widget.meta.defaultSizes[0].height);
+        this.widgetWidth.set(widget.meta.defaultSizes[0].width);
         this.dialogRef.addPanelClass('invisible-dialog');
     }
 

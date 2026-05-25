@@ -1,0 +1,154 @@
+<div class="font-formula"
+    [class.default-widget-container]="container"
+>
+    <div class="p-y-8 head-to-head-widget-container">
+        <div class="select-driver-container">
+            <select-driver-widget />
+        </div>
+
+        <ng-template #driverCardHeader let-driverId="driverId" let-driverItem="driverItem" let-pos="pos">
+            <div class="d-flex p-x-8 icon-button-5 p-b-8">
+                <simple-driver-card [driver]="driverItem" [position]="pos" />
+                <button matIconButton (click)="deselect(driverId)">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </ng-template>
+        <div class="d-flex two-drivers-container m-b-8">
+            @if (mode() === 'telemetry') {
+                <ng-template #driverCardTelemetry let-driverId="driverId" let-driverItem="driverItem" let-pos="pos" let-speed="speed" let-rpm="rpm" let-gear="gear" let-throttle="throttle" let-brake="brake" let-timingDataDriver="timingDataDriver">
+                    <div class="d-flex flex-col driver-card w-full">
+                        <ng-container *ngTemplateOutlet="driverCardHeader; context: { driverId: driverId, driverItem: driverItem, pos: pos }" />
+                        <speedo
+                            [speed]="speed"
+                            [rpm]="rpm"
+                            [gear]="gear"
+                            [throttle]="throttle"
+                            [brake]="brake"
+                        />
+                        <div class="sector-indicator-grid">
+                            @for(sector of timingDataDriver?.Sectors | keyvalue; track sector.key; let i = $index){
+                                <div class="d-flex flex-col align-items-center">
+                                    <div class="f-s-12">S{{i + 1}}</div>
+                                    <div class="sector-indicator w-full"
+                                        [class]="
+                                            ($any(sector.value).OverallFastest)? 'bg-f1-purple':
+                                            ($any(sector.value).PersonalFastest)? 'bg-f1-green':
+                                            ($any(sector.value).Value)? 'bg-f1-yellow' : 'bg-color-inactive'
+                                        "
+                                    ></div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </ng-template>
+
+                @if (driverItem1()) {
+                    <ng-container *ngTemplateOutlet="driverCardTelemetry; context: { driverId: driver1()!, driverItem: driverItem1()!, pos: pos1(), speed: speed1(), rpm: rpm1(), gear: gear1(), throttle: throttle1(), brake: brake1(), timingDataDriver: timingDataDriver1() }" />
+                }
+                @if (driverItem2()) {
+                    <ng-container *ngTemplateOutlet="driverCardTelemetry; context: { driverId: driver2()!, driverItem: driverItem2()!, pos: pos2(), speed: speed2(), rpm: rpm2(), gear: gear2(), throttle: throttle2(), brake: brake2(), timingDataDriver: timingDataDriver2() }" />
+                }
+                @if (!driverItem1() && !driverItem2()) {
+                    <div class="text-color-second d-flex align-items-center justify-content-center">
+                        <speedo
+                        [speed]="0"
+                        [rpm]="0"
+                        [gear]="0"
+                        [throttle]="0"
+                        [brake]="0"
+                        />
+                        <span class="select-driver-span">{{'widget.select_driver' | translate}}</span>
+                    </div>
+                }
+            } @else {
+                 <ng-template #headToHeadRow let-name="name" let-firstValue="firstValue" let-secondValue="secondValue" >
+                    <div class="left">
+                        @if (firstValue){
+                            {{firstValue}}
+                        }
+                    </div>
+                    <div class="head-to-head-param center">
+                        {{name}}
+                    </div>
+                    @if (secondValue && firstValue) {
+                        @let lapInterval = secondValue | interval: firstValue;
+                        <div class="right"
+                            [class]="(lapInterval.sign === '+')? 'text-f1-yellow': 'text-f1-green'"
+                        >
+                                {{lapInterval.sign}}{{lapInterval.value}}
+                        </div>
+                    } @else {
+                        <div class="right"></div>
+                    }
+                </ng-template>
+
+                <div class="d-flex flex-col w-full dual-driver-card">
+                    <div class="d-flex w-full">
+                        <ng-template #headToHeadSkeleton>
+                            <div class="head-to-head-skeleton">
+                                <div>{{'widget.select_driver' | translate}}</div>
+                            </div>
+                        </ng-template>
+                        <div class="w-50 h-full">
+                            @if (driverItem1()) {
+                                <ng-container *ngTemplateOutlet="driverCardHeader; context: { driverId: driver1()!, driverItem: driverItem1()!, pos: pos1()}" />
+                            } @else {
+                                <ng-container *ngTemplateOutlet="headToHeadSkeleton" />
+                            }
+                            </div>
+                        <div class="w-50 h-full">
+                            @if (driverItem2()) {
+                                <ng-container *ngTemplateOutlet="driverCardHeader; context: { driverId: driver2()!, driverItem: driverItem2()!, pos: pos2()}" />
+                            } @else {
+                                <ng-container *ngTemplateOutlet="headToHeadSkeleton" />
+                            }
+                            </div>
+                    </div>
+
+                    <div class="times-grid f-s-14">
+
+                        <!-- lap -->
+                        @let firstValueLap = (mode() === 'best')? timingDataDriver1()?.BestLapTime?.Value : timingDataDriver1()?.LastLapTime?.Value;
+                        @let secondValueLap = (mode() === 'best')? timingDataDriver2()?.BestLapTime?.Value : timingDataDriver2()?.LastLapTime?.Value;
+                        <mat-divider class="all-columns"/>
+                        <ng-container *ngTemplateOutlet="headToHeadRow; context: { name: 'lap' | translate, firstValue: firstValueLap, secondValue: secondValueLap }" />
+
+                        <!-- S1 -->
+                        @let firstValueS1 = (mode() === 'best')? timingStatDriver1()?.BestSectors?.[0]?.Value : timingDataDriver1()?.Sectors?.[0]?.Value;
+                        @let secondValueS1 = (mode() === 'best')? timingStatDriver2()?.BestSectors?.[0]?.Value : timingDataDriver2()?.Sectors?.[0]?.Value;
+                        <mat-divider class="all-columns"/>
+                        <ng-container *ngTemplateOutlet="headToHeadRow; context: { name: 'S1', firstValue: firstValueS1, secondValue: secondValueS1 }" />
+
+                        <!-- S2 -->
+                        @let firstValueS2 = (mode() === 'best')? timingStatDriver1()?.BestSectors?.[1]?.Value : timingDataDriver1()?.Sectors?.[1]?.Value;
+                        @let secondValueS2 = (mode() === 'best')? timingStatDriver2()?.BestSectors?.[1]?.Value : timingDataDriver2()?.Sectors?.[1]?.Value;
+                        <mat-divider class="all-columns"/>
+                        <ng-container *ngTemplateOutlet="headToHeadRow; context: { name: 'S2', firstValue: firstValueS2, secondValue: secondValueS2 }" />
+
+                        <!-- S3 -->
+                        @let firstValueS3 = (mode() === 'best')? timingStatDriver1()?.BestSectors?.[2]?.Value : timingDataDriver1()?.Sectors?.[2]?.Value;
+                        @let secondValueS3 = (mode() === 'best')? timingStatDriver2()?.BestSectors?.[2]?.Value : timingDataDriver2()?.Sectors?.[2]?.Value;
+                        <mat-divider class="all-columns"/>
+                        <ng-container *ngTemplateOutlet="headToHeadRow; context: { name: 'S3', firstValue: firstValueS3, secondValue: secondValueS3 }" />
+
+                        <mat-divider class="all-columns"/>
+                        <div class="left">
+                             <current-tyres-chip [timingAppData]="timingAppDataDriver1()"/>
+                        </div>
+                        <div class="head-to-head-param center">
+                            {{'tyres' | translate}}
+                        </div>
+                        <div class="right d-flex justify-content-end">
+                            <current-tyres-chip [timingAppData]="timingAppDataDriver2()"/>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            }
+        </div>
+    </div>
+
+</div>

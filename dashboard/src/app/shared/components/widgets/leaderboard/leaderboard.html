@@ -1,4 +1,6 @@
-<div class="font-formula h-full d-flex flex-col default-widget-container" >
+<div class="font-formula h-full d-flex flex-col"
+  [class.default-widget-container]="container"
+>
     @if (settingsMode() === 'all') {
       <div class="table-buttons">
         <mat-chip-listbox [(ngModel)]="mode" required >
@@ -12,7 +14,7 @@
     }
     <div class="scroll-wrapper">
       <div class="vertical-scroll-line" [class.is-scrolled]="isScrolled()"></div>
-      <div class="scroll-container p-b-8" (scroll)="onScroll($event)">
+      <div class="scroll-container p-b-8 rounded" (scroll)="onScroll($event)">
         <div class="h-full min-w-full w-fit p-x-8">
           <div class="main-grid"
             [class.leaderboard-laps-template-columns]="mode() === 'laps'"

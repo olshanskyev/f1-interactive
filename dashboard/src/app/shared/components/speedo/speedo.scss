@@ -1,0 +1,108 @@
+.speedo-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+
+  .svg-container {
+    width: 100%;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+
+      .track {
+        fill: none;
+        stroke: rgb(200 200 200 / 0.2);
+        stroke-width: 12;
+        stroke-linecap: round;
+      }
+
+      .fill {
+        fill: none;
+        stroke: #1583FF; /* Blue for speed */
+        stroke-width: 12;
+        stroke-linecap: round;
+        transition: stroke-dashoffset 0.3s linear;
+      }
+
+      .throttle-track, .throttle-fill, .brake-track, .brake-fill {
+        stroke-width: 6;
+      }
+
+      .throttle-fill {
+        stroke: #4caf50; /* Green for throttle */
+      }
+
+      .brake-fill {
+        stroke: #f44336; /* Red for brake */
+        transition: stroke-dashoffset 0.1s linear; /* Faster response for brake */
+      }
+    }
+  }
+
+  .values {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+
+    .speed-value {
+      width: 100%;
+      container-type: inline-size;
+
+      .number {
+        font-size: clamp(1rem, 15cqw, 2.5rem);
+        font-weight: bold;
+        line-height: 1;
+      }
+
+      .unit {
+        font-size: 0.6rem;
+        color: var(--second-color);
+      }
+    }
+
+    .rpm-value {
+      width: 100%;
+      container-type: inline-size;
+
+      .number {
+        font-size: clamp(0.8rem, 8cqw, 2rem);
+        font-weight: 500;
+      }
+
+      .unit {
+        font-size: 0.6rem;
+        color: var(--second-color);
+      }
+    }
+  }
+
+  .gear-value {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    width: 20%;
+    container-type: inline-size;
+    text-align: center;
+    background-color: var(--mat-sys-primary-container);
+    border-radius: 4px;
+    transform: translateX(-50%);
+
+    .number {
+      font-size: clamp(0.8rem, 25cqw, 2rem);
+      font-weight: bold;
+      color: var(--mat-sys-on-primary-container);
+    }
+  }
+}

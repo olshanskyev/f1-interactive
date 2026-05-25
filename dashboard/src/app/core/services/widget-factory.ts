@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { WidgetComponent, WidgetType } from '@core/types/widgets';
-import { Leaderboard, RaceControlMessagesWidget, SessionInfoWidget, TeamRadioWidget, TrackMapWidget, VideoPlayerWidget, WeatherWidget } from '@shared';
+import { VideoSource, WidgetComponent, WidgetType } from '@core/types/widgets';
+import { HeadToHeadWidget, Leaderboard, RaceControlMessagesWidget, SessionInfoWidget, TeamRadioWidget, TrackMapWidget, VideoPlayerWidget, WeatherWidget } from '@shared';
 
 @Injectable({
     providedIn: 'root'
@@ -8,29 +8,6 @@ import { Leaderboard, RaceControlMessagesWidget, SessionInfoWidget, TeamRadioWid
 export class WidgetFactory {
 
     private widgets = new Map<WidgetType, WidgetComponent>([
-        [WidgetType.VideoPlayerWidget, {
-            type: WidgetType.VideoPlayerWidget,
-            meta : {
-                settingsList: {
-                    source: {type: ['VK'/*,'YouYube'*/], defaultValue: 'VK'},
-                    embedCode: {type: 'string'},
-                },
-                defaultSizes: [{colSpan: 16, rowSpan: 9}],
-            },
-            widgetView: VideoPlayerWidget,
-            widgetThumb: 'images/thumbs/video-player-widget-thumb.png',
-        }],
-        [WidgetType.TrackMapWidget, {
-            type: WidgetType.TrackMapWidget,
-            meta : {
-                settingsList: {
-
-                },
-                defaultSizes: [{colSpan: 16, rowSpan: 9}],
-            },
-            widgetView: TrackMapWidget,
-            widgetThumb: 'images/thumbs/track-map-widget-thumb.png',
-        }],
         [WidgetType.LeaderboardWidget, {
             type: WidgetType.LeaderboardWidget,
             meta : {
@@ -38,16 +15,38 @@ export class WidgetFactory {
                     showHeader: {type: 'boolean', defaultValue: true},
                     mode: {type: ['all', 'laps', 'sectors', 'speeds', 'tyres'], defaultValue: 'all'},
                 },
-                defaultSizes: [{colSpan: 16, rowSpan: 9}],
+                defaultSizes: [{width: 380, height: 600}],
             },
             widgetView: Leaderboard,
             widgetThumb: 'images/thumbs/leaderboard-widget-thumb.png',
+        }],
+        [WidgetType.TrackMapWidget, {
+            type: WidgetType.TrackMapWidget,
+            meta : {
+                settingsList: {
+
+                },
+                defaultSizes: [{width: 380, height: 300}],
+            },
+            widgetView: TrackMapWidget,
+            widgetThumb: 'images/thumbs/track-map-widget-thumb.png',
+        }],
+        [WidgetType.HeadToHeadWidget, {
+            type: WidgetType.HeadToHeadWidget,
+            meta: {
+                settingsList: {
+                    mode: {type: ['telemetry', 'last', 'best'], defaultValue: 'telemetry'},
+                },
+                defaultSizes: [{width: 380, height: 300}],
+            },
+            widgetView: HeadToHeadWidget,
+            widgetThumb: 'images/thumbs/head-to-head-widget-thumb.png',
         }],
         [WidgetType.SessionInfoWidget, {
             type: WidgetType.SessionInfoWidget,
             meta : {
                 settingsList: {},
-                defaultSizes: [{colSpan: 20, rowSpan: 8}],
+                defaultSizes: [{width: 380, height: 160}],
             },
             widgetView: SessionInfoWidget,
             widgetThumb: 'images/thumbs/session-info-widget-thumb.png',
@@ -63,16 +62,28 @@ export class WidgetFactory {
                     pressure: {type: 'boolean', defaultValue: true},
                     wind: {type: 'boolean', defaultValue: true}
                 },
-                defaultSizes: [{colSpan: 14, rowSpan: 2}],
+                defaultSizes: [{width: 300, height: 100}],
             },
             widgetView: WeatherWidget,
             widgetThumb: 'images/thumbs/weather-widget-thumb.png',
+        }],
+        [WidgetType.VideoPlayerWidget, {
+            type: WidgetType.VideoPlayerWidget,
+            meta : {
+                settingsList: {
+                    source: {type: [VideoSource.VK], defaultValue: VideoSource.VK},
+                    link: {type: 'string'},
+                },
+                defaultSizes: [{width: 380, height: 220}],
+            },
+            widgetView: VideoPlayerWidget,
+            widgetThumb: 'images/thumbs/video-player-widget-thumb.png',
         }],
         [WidgetType.RaceControlMessagesWidget, {
             type: WidgetType.RaceControlMessagesWidget,
             meta: {
                 settingsList: {},
-                defaultSizes: [{ colSpan: 16, rowSpan: 9 }],
+                defaultSizes: [{width: 380, height: 400}],
             },
             widgetView: RaceControlMessagesWidget,
             widgetThumb: 'images/thumbs/race-control-messages-widget-thumb.png',
@@ -81,7 +92,7 @@ export class WidgetFactory {
             type: WidgetType.TeamRadioWidget,
             meta: {
                 settingsList: {},
-                defaultSizes: [{ colSpan: 16, rowSpan: 9 }],
+                defaultSizes: [{width: 380, height: 400}],
             },
             widgetView: TeamRadioWidget,
             widgetThumb: 'images/thumbs/team-radio-widget-thumb.png',

@@ -3,10 +3,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { AuthService } from '@core';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-user',
@@ -16,10 +17,12 @@ import { AuthService } from '@core';
     </button>
 
     <mat-menu #menu="matMenu">
-      <button routerLink="/profile/settings" mat-menu-item>
-        <mat-icon>edit</mat-icon>
-        <span>{{ 'edit_profile' | translate }}</span>
-      </button>
+      @if (user()?.name) {
+        <button mat-menu-item disabled>
+          <span>{{ user()?.name }}</span>
+        </button>
+        <mat-divider/>
+      }
       <button mat-menu-item (click)="logout()">
         <mat-icon>exit_to_app</mat-icon>
         <span>{{ 'logout' | translate }}</span>
@@ -33,8 +36,8 @@ import { AuthService } from '@core';
       border-radius: 50rem;
     }
   `,
-  imports: [RouterLink, MatButtonModule, MatIconModule,
-    MatMenuModule, TranslateModule],
+  imports: [MatButtonModule, MatIconModule,
+    MatMenuModule, TranslateModule, MatDividerModule],
 })
 export class UserButton {
   private readonly auth = inject(AuthService);

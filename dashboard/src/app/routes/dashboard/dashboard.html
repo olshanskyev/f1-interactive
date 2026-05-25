@@ -1,6 +1,6 @@
 @if (syncLeftTime() > 0 || syncPassedTime() > 0) {
     <div class="syncing-overlay" data-nosnippet>
-        <div class="sync-indicator-content d-flex gap-8 flex-col align-items-center">
+        <div class="d-flex gap-8 flex-col align-items-center">
             <div class="d-flex gap-8">
                 <mat-icon>sync</mat-icon>
                 <div>{{'syncing' | translate}} {{((syncLeftTime() > 0) ? syncLeftTime() / 1000 : syncPassedTime() / 1000) | number:'1.0-1'}} {{'time.s' | translate}}</div>
@@ -19,13 +19,12 @@
 @if (userLayout(); as layout) {
     <div data-nosnippet>
         <grid-container #gridContainer
-            [gridRows]="layout.gridSize.gridRows"
-            [gridColumns]="layout.gridSize.gridColumns"
+            [savedLayoutGrid]="layout.grid"
             [displayGrid]="isEditing()" class="w-full">
             @for (item of displayWidgets(); track $index) {
                 <div class="widget"
-                    [class]="(isEditing() && !item.pinned)?'draggable':''"
-                    [class.pinned]="isEditing() && item.pinned"
+                    [class.draggable]="isEditing() && !item.pinned"
+                    [class.lowest-z-index]="item.type === 'VideoPlayerWidget'"
                     [widgetContainer]= "{
                         position: item.position,
                         size: item.size
@@ -77,9 +76,10 @@
         </grid-container>
         @if (isEditing()) {
             <tools-panel [(selectedLayout)]="userLayout"
-                [cellSize]="gridContainer.cellSize()()"
                 cdkDrag class="tools-panel"
                 (widgetAdded)="onWidgetAdded($event)"
+                [calculatedRows]="gridContainer.rows()()"
+                [calculatedColumns]="gridContainer.columns()()"
             />
         }
     </div>
@@ -87,17 +87,46 @@
 } @else {
     <div data-nosnippet class="grid-container">
         <div class="main-grid">
-            <div id="leaderboard" class="overflow-x-auto">
+            <div id="leaderboard" class="overflow-x-auto default-widget-container">
                 <leaderboard/>
             </div>
             <div id="right-panel" class="right-panel">
-                <weather-widget id="weather"/>
-                <session-info-widget id="session-info"/>
-                <track-map-widget id="track-map"/>
+                <weather-widget id="weather" class="default-widget-container"/>
+                <session-info-widget id="session-info" class="default-widget-container"/>
+                <div class="default-widget-container">
+                    <track-map-widget id="track-map"/>
+                    <mat-expansion-panel
+                        class="head-to-head-expanstion-panel" [expanded]="showHeadToHead()"
+                            (opened)="onHeadToHeadOpened()"
+                            (closed)="onHeadToHeadClosed()"
+                        >
+                        <mat-expansion-panel-header>
+                            <mat-panel-title class="text-nowrap">{{'widget.head_to_head' | translate}}</mat-panel-title>
+                            <mat-panel-description>
+                                @if (showHeadToHead()) {
+                                    <mat-form-field (click)="$event.stopPropagation()" class="form-field-5 f-s-14 m-y-8 head-to-head-form-field" appearance="outline" subscriptSizing="dynamic">
+                                        <mat-label>{{ 'widget.display' | translate }}</mat-label>
+                                        <mat-select class="f-s-14"
+                                            [(value)]="headToHeadMode"
+                                            (selectionChange)="headToHeadModeChanged($event.value)"
+                                            >
+                                            @for (mode of headToHeadModes; track mode) {
+                                                <mat-option [value]="mode">{{ mode | translate }}</mat-option>
+                                            }
+                                        </mat-select>
+                                    </mat-form-field>
+                                }
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        @if (showHeadToHead()){
+                            <head-to-head-widget id="head-to-head" [settings]="{mode: headToHeadMode()}"/>
+                        }
+                    </mat-expansion-panel>
+                </div>
             </div>
             <div id="bottom-panel" class="bottom-panel overflow-x-auto">
-                <race-control-messages-widget id="race-control-messages"/>
-                <team-radio-widget id="team-radio"/>
+                <race-control-messages-widget id="race-control-messages" class="default-widget-container"/>
+                <team-radio-widget id="team-radio" class="default-widget-container"/>
             </div>
         </div>
     </div>

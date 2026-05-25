@@ -13,5 +13,7 @@ export interface Token {
   token_type?: string;
   expires_in?: number;
   exp?: number;
+  auth_system?: 'f1interactive' | 'vk';
+  device_id?: string;
   refresh_token?: string;
 }

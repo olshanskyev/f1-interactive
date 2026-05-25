@@ -67,3 +67,34 @@ mat-card-header + mat-card-content {
       padding: 0 0.3rem !important;
   }
 }
+
+.tools-panel {
+  --mat-expansion-header-expanded-state-height: 3rem;
+
+  .mat-expansion-panel-body {
+    padding: 0.5rem 1rem;
+  }
+}
+
+.head-to-head-expanstion-panel {
+  --mat-expansion-header-expanded-state-height: 3rem;
+  --mat-expansion-container-background-color: transparent;
+  --mat-expansion-container-shape: 0rem;
+
+  .mat-expansion-panel-content {
+    line-height: inherit;
+  }
+
+  .mat-expansion-panel-body {
+    padding: 0;
+  }
+
+  .mat-expansion-panel-header.mat-expanded {
+    background-color: var(--mat-sys-surface-container-highest) !important;
+  }
+
+  .mat-expansion-panel-header.mat-expanded:hover,
+  .mat-expansion-panel-header.mat-expanded:focus {
+    background-color: var(--mat-sys-surface-container-highest) !important;
+  }
+}

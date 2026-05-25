@@ -20,30 +20,48 @@ export class WakeLockService {
         });
     }
 
-    requestWakeLock() {
-        if (!this.useLock) return;
-        if (document.visibilityState !== 'visible') return;
-        if (!('wakeLock' in navigator)) return;
+    private isRequesting = false;
+    private readonly EVENTS = ['click', 'pointerup', 'touchend', 'keydown'];
 
-        (navigator as any).wakeLock.request('screen')
-        .then((lock: any) => {
-            this.wakeLock = lock;
+    private toggleListeners(add: boolean) {
+        this.EVENTS.forEach(evt =>
+            document[add ? 'addEventListener' : 'removeEventListener'](evt, this.retryListener, { passive: true } as any)
+        );
+    }
+
+    private retryListener = () => {
+        const nav = navigator as any;
+        if (nav.userActivation && !nav.userActivation.isActive) return;
+        if (!this.wakeLock && !this.isRequesting) this.requestWakeLock();
+    };
+
+    async requestWakeLock() {
+        if (!this.useLock || document.visibilityState !== 'visible' || !('wakeLock' in navigator) || this.isRequesting) return;
+
+        this.isRequesting = true;
+        try {
+            this.wakeLock = await (navigator as any).wakeLock.request('screen');
+            this.toggleListeners(false); // Clean up listeners on success
             this._isActive.set(true);
             this.shouldRecover = true;
+
             this.wakeLock.onrelease = () => {
                 this._isActive.set(false);
                 this.wakeLock = null;
             };
-        })
-        .catch((err: any) => {
+        } catch (err: any) {
             this._isActive.set(false);
-            if (err.name !== 'NotAllowedError') {
+
+            if (err.name === 'NotAllowedError') {
+                this.shouldRecover = true;
+                this.toggleListeners(true); // Start silently waiting for a valid user gesture
+            } else {
                 this.shouldRecover = false;
                 console.error('Wake Lock request failed', err);
-            } else {
-                console.warn('Wake Lock: Page not visible or focused yet.');
             }
-        });
+        } finally {
+            this.isRequesting = false;
+        }
     }
 
     releaseWakeLock() {

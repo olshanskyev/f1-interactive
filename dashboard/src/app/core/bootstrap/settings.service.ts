@@ -1,11 +1,14 @@
 import { Direction } from '@angular/cdk/bidi';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { Injectable, inject, DOCUMENT } from '@angular/core';
+import { Injectable, inject, DOCUMENT, signal } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AppDirectionality, LocalStorageService } from '@shared';
-import { enUS, Locale } from 'date-fns/locale';
 import { BehaviorSubject } from 'rxjs';
 import { AppSettings, AppTheme, defaults } from '../settings';
+import { registerLocaleData } from '@angular/common';
+import localeRu from '@angular/common/locales/ru';
+
+registerLocaleData(localeRu, 'ru');
 
 @Injectable({
   providedIn: 'root',
@@ -31,9 +34,8 @@ export class SettingsService {
 
   options: AppSettings = Object.assign(defaults, this.storedOptions);
 
-  languages = ['en-US'];
-
-  localeMap: Record<string, Locale> = { 'en-US': enUS};
+  private readonly languages = ['en-US', 'ru-RU'];
+  private readonly currentLocale = signal<string>(this.getTranslateLang());
 
   constructor() {
     this.translate.addLangs(this.languages);
@@ -93,12 +95,13 @@ export class SettingsService {
   setLanguage(language?: string) {
     if (language) {
       this.setOptions({ language });
+      this.translate.use(language);
+      this.currentLocale.set(language);
     }
-    this.translate.use(this.getTranslateLang());
   }
 
-  getLocale() {
-    return this.localeMap[this.getTranslateLang()];
+  getLocaleSignal() {
+    return this.currentLocale.asReadonly();
   }
 
   getUseSimulator() {
@@ -123,6 +126,14 @@ export class SettingsService {
 
   getUseLock() {
     return this.options.useLock;
+  }
+
+  getShowHeadToHead() {
+    return this.options.showHeadToHead;
+  }
+
+  getHeadToHeadMode() {
+    return this.options.headToHeadMode;
   }
 
 }

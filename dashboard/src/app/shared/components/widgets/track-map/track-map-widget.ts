@@ -1,12 +1,12 @@
 import { Component, computed, inject, linkedSignal, signal, OnDestroy, Signal, ChangeDetectionStrategy } from '@angular/core';
 import { ContaineredWidget } from '../containered-widget';
-import { CircuitService } from '@core';
+import { CircuitService, DriverSelectionService } from '@core';
 import { createMapPoints, createMiniSectors, createSectors, findYellowSectors, getSectorColor, MapSector, MiniSector, prioritizeColoredSectors, rad, rotate } from '@core/lib/map';
 import { getTrackStatusMessage } from '@core/lib/track-status-message';
 import { TrackPosition } from '@core/types/map.type';
 
 import { CarDot } from './car-dot/car-dot';
-import { Positions, SegmentsItem } from '@core/types/f1types';
+import { CarPosition, SegmentsItem } from '@core/types/f1types';
 import { of, tap } from 'rxjs';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
@@ -30,6 +30,7 @@ interface Corner {
 export class TrackMapWidget extends ContaineredWidget implements OnDestroy {
 
     private readonly circuitService = inject(CircuitService);
+    private readonly driverSelectionService = inject(DriverSelectionService);
     private sessionInfo = this.liveService.getSessionInfoSignal();
     private sessionInfoKey = computed(() => this.sessionInfo()?.Meeting.Circuit.Key);
 
@@ -37,6 +38,8 @@ export class TrackMapWidget extends ContaineredWidget implements OnDestroy {
     private trackStatus = this.liveService.getTrackStatusSignal();
     private driverList = this.liveService.getDriverListSignal();
     private timingData = this.liveService.getTimingDataSignal();
+    selectedDrivers = this.driverSelectionService.getSelectedDrivers();
+
     positions = computed(() => {
         if (this.liveService.isPositionZAvailable()) {
             return this.liveService.getPositionsLiveSignal('max')();
@@ -93,9 +96,13 @@ export class TrackMapWidget extends ContaineredWidget implements OnDestroy {
 
     driverDots = linkedSignal(() => {
         const activePositions = this.positions();
-        return Object.values(this.driverList()?.Lines ?? {})
+        const selectedSet = this.selectedDrivers();
+        const normalDots: any[] = [];
+        const selectedDots: any[] = [];
+
+        Object.values(this.driverList()?.Lines ?? {})
             .reverse() //ToDo? make sorting based on position (at the momeent based on driver number)
-            .map((driver) => {
+            .forEach((driver) => {
                 const num = driver.RacingNumber;
                 const timingData = this.timingData()?.Lines?.[num];
                 const hidden = timingData
@@ -105,13 +112,19 @@ export class TrackMapWidget extends ContaineredWidget implements OnDestroy {
                 const pos = activePositions?.[num];
                 const onTrack = !((pos?.X ?? 0) === 0 && (pos?.Y ?? 0) === 0);
 
-                return {
+                const dot = {
                     driver,
                     hidden,
                     onTrack,
                     pit: timingData ? timingData.InPit : false
                 };
-            });
+
+                selectedSet.has(num)?
+                    selectedDots.push(dot):
+                    normalDots.push(dot);
+        });
+
+        return [...normalDots, ...selectedDots];
     });
 
     mapResource = rxResource({
@@ -232,12 +245,12 @@ export class TrackMapWidget extends ContaineredWidget implements OnDestroy {
      * 2. based on ratio of completed segments to total segments and applying that ratio to track points (fallback if mini sectors data is not available or doesn't match segments count)
      * @returns
      */
-    private getPositionsBySegmentsSignal(): Signal<Positions | undefined> {
+    private getPositionsBySegmentsSignal(): Signal<Record<string, CarPosition> | undefined> {
         return computed(() => {
             const timingData = this.timingData();
 
             if (!timingData || this.trackPoints().length === 0) return undefined;
-            const res: Positions = {};
+            const res: Record<string, CarPosition> = {};
             Object.entries(timingData.Lines).forEach(([driverId, itemTimingData]) => {
                 if (itemTimingData.Sectors) {
                     const allSegments = Object.values(itemTimingData.Sectors).flatMap(

@@ -18,5 +18,17 @@
     </mat-form-field>
     <button mat-raised-button type="submit" [disabled]="!token">{{ 'submit' | translate }}</button>
   </form>
+
+  <button class="m-b-16" matButton="filled" type="button" (click)="manualSync()">
+    {{ 'admin.manual_sync' | translate }}
+  </button>
+
+  @if (analyticsLink) {
+    <div>
+      <a matButton="text" color="primary" href="{{ analyticsLink }}" target="_blank" rel="noopener">
+        {{ 'admin.view_analytics' | translate }}
+      </a>
+    </div>
+  }
 </div>
 

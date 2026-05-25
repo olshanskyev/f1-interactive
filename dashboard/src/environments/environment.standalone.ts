@@ -7,5 +7,8 @@ export const environment = {
   baseUrl: 'http://localhost:8080/api',
   baseUrlSimulator: 'http://localhost:8081/api',
   useHash: false,
-  standalone: true
+  vkAppId: 54566649,
+  vkRedirectUrl: 'https://f1interactive.net',
+  standalone: true,
+  umamiWebsiteId: ''
 };

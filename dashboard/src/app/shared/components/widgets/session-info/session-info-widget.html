@@ -1,4 +1,6 @@
-<div class="font-formula default-widget-container p-8" >
+<div class="font-formula p-8"
+    [class.default-widget-container]="container"
+>
     @if (sessionInfo(); as sessionInfo) {
         <div
             class="session-info-container"

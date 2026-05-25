@@ -1,0 +1,17 @@
+.buttons-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+
+    button {
+      width: 1.75rem;
+      height: 1.75rem;
+
+      mat-icon {
+        width: var(--small-icons-size);
+        height: var(--small-icons-size) !important;
+        font-size: var(--small-icons-size);
+      }
+    }
+}

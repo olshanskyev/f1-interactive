@@ -94,6 +94,8 @@
           },
           "defaultConfiguration": "development",
           "options": {
+            "ssl": true,
+            "port": 443,
             "buildTarget": "f1-interactive-dashboard:build",
             "proxyConfig": "proxy.config.js"
           }

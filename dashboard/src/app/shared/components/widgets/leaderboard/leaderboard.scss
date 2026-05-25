@@ -67,7 +67,7 @@
 }
 
 .elimination-zone {
-    background-color: rgba(80, 0, 0, 0.95) !important;
+    background-color: rgb(80 0 0 / 0.95) !important;
 }
 
 .position-number {
@@ -105,9 +105,6 @@
     align-items: center;
 }
 
-.grid-item {
-    background-color: var(--mat-sys-surface-container);
-}
 //1st column
 .sticky-header-row > *:nth-child(1),
 .grid-item > *:nth-child(1) {
@@ -130,6 +127,10 @@
 
 .out-driver {
     opacity: 0.5;
+}
+
+.rounded {
+    border-radius: var(--container-border-radius) !important;
 }
 
 

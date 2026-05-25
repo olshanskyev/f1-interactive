@@ -1,5 +1,6 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { SettingsService } from '@core/bootstrap';
+import { isMobile } from '@core/lib/device';
 
 import { Layout, LayoutGrids } from '@core/types/widgets';
 import { LocalStorageService } from '@shared';
@@ -26,7 +27,7 @@ export class LayoutsService {
         return {
             id: this.generateId(),
             layoutName: 'My Layout',
-            gridSize: LayoutGrids.landscape,
+            grid: (isMobile) ? LayoutGrids.portrait : LayoutGrids.landscape,
             widgets: []
         };
     }

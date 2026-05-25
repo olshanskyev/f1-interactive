@@ -1,16 +1,27 @@
-<svg:circle [attr.r]="180" />
-<svg:text
-    class="font-formula"
-    [style.font-weight]="'bold'"
-    [style.font-size.px]="280"
-    [style.transform]="'translateX(150px) translateY(-120px)'"
->
-    {{ name() }}
-</svg:text>
+<svg:circle [attr.r]="(favouriteDriver())?300:180" />
 
-@if (favouriteDriver()) {
-    <svg:circle
-        [attr.r]="180"
-        class="dot-favourite"
-    />
-}
+<svg:g [attr.transform]="'translate(' + ((favouriteDriver()) ? 250 : 100) + ',' + ((favouriteDriver()) ? -750 : -550) + ')'">
+    <svg:rect
+        class="driver-bg"
+        [class.favourite-bg]="favouriteDriver()"
+        x="0" y="0"
+        [attr.width]="favouriteDriver() ? 1500 : 1100"
+        [attr.height]="favouriteDriver() ? 620 : 480"
+        rx="240" ry="240" />
+
+    @if (favouriteDriver()) {
+        <svg:rect
+            class="favourite-team-color"
+            x="200" y="120"
+            width="80" height="380" />
+    }
+
+    <svg:text
+        class="driver-text"
+        [class.favourite-text]="favouriteDriver()"
+        [attr.x]="favouriteDriver() ? 890 : 550"
+        [attr.y]="favouriteDriver() ? 455 : 340"
+        text-anchor="middle">
+        {{ name() }}
+    </svg:text>
+</svg:g>

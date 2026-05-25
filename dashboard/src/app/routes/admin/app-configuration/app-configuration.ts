@@ -9,6 +9,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import packageInfo from '../../../../../package.json';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-configuration',
@@ -32,6 +33,9 @@ export class AppConfigurationComponent {
   token = '';
   version = packageInfo.version;
   backendVersion = toSignal(this.serverConfigurationService.getVersion());
+  analyticsLink = (environment.umamiWebsiteId)?
+    'https://cloud.umami.is/analytics/eu/websites/' + environment.umamiWebsiteId :
+    undefined;
 
   onSubmitToken() {
     if (this.token) {
@@ -47,5 +51,11 @@ export class AppConfigurationComponent {
   applyUseSimulator(checked: boolean) {
     this.settings.setOptions({ useSimulator: checked });
     window.location.reload();
+  }
+
+  manualSync() {
+    this.serverConfigurationService.syncLiveData().subscribe(() => {
+      this.hotToast.success(this.translate.instant('notifications.live_data_sync_success'));
+    });
   }
 }

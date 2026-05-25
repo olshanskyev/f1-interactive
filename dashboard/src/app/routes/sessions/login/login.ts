@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Location } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -12,6 +13,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { filter } from 'rxjs/operators';
 
 import { AuthService } from '@core/authentication';
+import { VKService } from '@core';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
@@ -27,14 +31,20 @@ import { AuthService } from '@core/authentication';
     MatInputModule,
     MtxButtonModule,
     TranslateModule,
+    MatDividerModule,
+    MatIconModule
   ],
 })
-export class Login {
+export class Login implements AfterViewInit {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly location = inject(Location);
   private readonly auth = inject(AuthService);
+  private readonly vkService = inject(VKService);
 
-  isSubmitting = false;
+  vkButtonContainer = viewChild<ElementRef>('vkButtonContainer');
+
+  isSubmitting = signal(false);
 
   loginForm = this.fb.nonNullable.group({
     username: ['', [Validators.required]],
@@ -55,7 +65,7 @@ export class Login {
   }
 
   login() {
-    this.isSubmitting = true;
+    this.isSubmitting.set(true);
 
     this.auth
       .login(this.username.value, this.password.value, this.rememberMe.value)
@@ -74,8 +84,22 @@ export class Login {
               });
             });
           }
-          this.isSubmitting = false;
+          this.isSubmitting.set(false);
         },
       });
+  }
+
+  goBack() {
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigateByUrl('/');
+    }
+  }
+
+  ngAfterViewInit(): void {
+      if (this.vkButtonContainer()) {
+        this.vkService.renderOneTap(this.vkButtonContainer()!);
+      }
   }
 }

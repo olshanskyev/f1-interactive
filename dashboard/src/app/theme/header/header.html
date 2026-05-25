@@ -23,7 +23,7 @@
     </button>
   }
 
-  @if (authService.check()) {
+  @if (authService.isLoggedIn()) {
     <app-user />
   } @else {
     <button matIconButton routerLink="/auth/login">

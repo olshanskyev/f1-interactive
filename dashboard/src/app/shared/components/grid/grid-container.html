@@ -2,7 +2,6 @@
     <!-- backgound grid -->
 
     <div #backgroundGrid class="grid-container background-grid"
-        [class.full-screen]="isFullScreen()"
         [class.portrait]="isPortrait()">
         @if(displayGrid()) {
             @for (i of [].constructor(gridRows()*gridColumns()); track $index) {
@@ -13,7 +12,6 @@
     </div>
 
     <div class="grid-container overlay-grid"
-        [class.full-screen]="isFullScreen()"
         [class.portrait]="isPortrait()">
         <ng-content/>
     </div>

@@ -1,15 +1,18 @@
 package f1interactive.server.controller;
 
-import f1interactive.server.services.UsersService;
-import f1interactive.server.services.JwtTokenService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import f1interactive.server.services.JwtTokenService;
 
 @RestController
 @RequestMapping("/auth")
@@ -18,8 +21,6 @@ class AuthController {
     record RefreshTokenRequest (String refresh_token) {}
     record JwtResponse(String access_token, String refresh_token, String token_type) {}
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
-    @Autowired
-    private UsersService usersService;
 
     @Autowired
     private JwtTokenService jwtTokenService;

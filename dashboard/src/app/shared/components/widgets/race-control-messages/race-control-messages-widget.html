@@ -1,4 +1,6 @@
-<div class="font-formula default-widget-container p-b-4">
+<div class="font-formula p-b-4"
+  [class.default-widget-container]="container"
+>
   <div class="container">
     <div class="sticky-list-header ">
       <div>{{'widget.RaceControlMessagesWidget' | translate}}</div>
@@ -23,7 +25,7 @@
                   <span class="f-s-12 line-height-1" matListItemTitle>{{ message.Message }}</span>
                   <div class="text-color-second d-flex align-items-center gap-4">
                     <mat-icon class="small-icon">av_timer</mat-icon>
-                    <span class="f-s-10">{{ message.Utc | date:'HH:mm:ss' }}</span>
+                    <span class="f-s-10">{{ message.Utc | date:'mediumTime':'':currentLocale() }}</span>
                   </div>
                 </div>
 

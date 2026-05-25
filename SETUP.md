@@ -101,7 +101,7 @@ docker run -d --network f1interactive-net -p 8080:8080 \
 ```
 
 Comments:
-ALLOWED_ORIGIN_PATTERNS f.e. "http://localhost:4200"
+ALLOWED_ORIGIN_PATTERNS f.e. "https://localhost"
 
 ### tools
 

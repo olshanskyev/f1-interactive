@@ -1,19 +1,32 @@
 <div class="h-full">
-    @if(!editMode() && src()) {
+    @if(src()) {
     <iframe [src]="src()! | safeUrl"
+        [style.pointer-events]="editMode() ? 'none' : 'auto'"
         width="100%"
         height="100%"
         style="background-color: #000"
         frameborder="0"
-        allow="
-        encrypted-media">
+        allowfullscreen="1"
+        allow="autoplay; encrypted-media; fullscreen; picture-in-picture">
     </iframe>
     } @else {
-         <div class="h-full bg-color-inactive d-flex justify-content-center dynamic-header-size">
+         <div class="h-full d-flex justify-content-center align-items-center dynamic-header-size video-skeleton flex-col">
+                @if (isLoading()) {
+                    <mat-spinner class="spinner-center" [diameter]="48" />
+                }
                 <h1 class="d-flex align-items-center gap-8">
                     <mat-icon>video_camera_back</mat-icon>
                     {{'widget.video' | translate}}
                 </h1>
+                @if (sourceSetting() === VideoSource.VK && !authService.isVkLoggedIn()) {
+                    <div #vkButtonContainer>
+                    </div>
+                }
+                @if (error() && error() !== '') {
+                    <div class="f-s-12 text-f1-red p-t-4">
+                        {{error()}}
+                    </div>
+                }
         </div>
     }
 </div>

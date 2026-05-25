@@ -8,7 +8,7 @@ import { LiveService } from './live.service';
 export class SyncService {
 
     private readonly liveService = inject(LiveService);
-    private readonly MAX_DELAY = 60000; // 60 seconds max delay
+    private readonly MAX_DELAY = 80000; // 80 seconds max delay
 
     private delayMs = 0;
     private syncTotalMs = signal(0);

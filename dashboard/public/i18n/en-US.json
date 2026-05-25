@@ -19,26 +19,17 @@
   },
   "notifications": {
     "live_token_updated": "Live token updated successfully",
-    "schedule_cache_cleared": "Schedule cache cleared successfully"
+    "live_data_sync_success": "Live data synced successfully"
   },
   "simulator": {
     "player": "Simulation Player",
     "file_not_selected": "File Not Selected"
   },
   "en_us": "English",
+  "ru_ru": "Russian",
   "system": "System",
   "position": "Position",
   "name": "Name",
-  "weight": "Weight",
-  "symbol": "Symbol",
-  "gender": "Gender",
-  "mobile": "Mobile",
-  "tele": "Telephone",
-  "birthday": "Birthday",
-  "city": "City",
-  "address": "Address",
-  "website": "Website",
-  "company": "Company",
   "email": "Email",
   "operation": "Operation",
   "edit": "Edit",
@@ -74,6 +65,7 @@
   "tyres": "Tyres",
   "interval": "Interval",
   "lap_time": "Lap Time",
+  "lap": "Lap",
   "mini_sectors": "Mini Sectors",
   "driver": "Driver",
   "all": "All",
@@ -88,6 +80,10 @@
   "delay_sec": "Delay, s",
   "syncing": "Syncing...",
   "sync_smaller": "or you can set a smaller interval",
+  "telemetry": "Telemetry",
+  "best": "Best",
+  "last": "Last",
+  "or": "OR",
   "weather": {
     "air": "Air",
     "track": "Track",
@@ -107,14 +103,22 @@
     "TrackMapWidget": "Track Map",
     "RaceControlMessagesWidget": "Race Control Messages",
     "TeamRadioWidget": "Team Radio",
+    "HeadToHeadWidget": "Head to Head",
     "loading_track_map_error": "Failed to load track map",
     "loading_track_map": "Loading track map...",
     "no_data": "No data",
     "no_messages": "No messages yet",
     "no_team_radio": "No team radio yet",
+    "select_driver": "Select a Driver",
+    "head_to_head": "Head to Head",
+    "display": "Display",
+    "loading_video_error": "Failed to load video",
+    "video_not_found_error": "Video not found",
+    "video_content_restricted_error": "Video content is restricted",
     "settings": {
       "source": "Source",
       "embedCode": "Embed code",
+      "link": "Link",
       "airTemp": "Air Temperature",
       "trackTemp": "Track Temperature",
       "condition": "Condition",
@@ -129,16 +133,17 @@
     "layout": "Layout",
     "layout_name": "Layout Name",
     "my_layouts": "My Layouts",
-    "layout_settings": "Layout Settings",
     "default_layout": "Default Layout",
     "create_layout": "Create Layout",
-    "layout_presets": "Layout Presets",
     "grid": "Grid",
     "add_widget": "Add Widget",
     "grid_size": {
       "landscape": "Landscape (16:9)",
-      "mobile_portrait": "Mobile Portrait"
-    }
+      "portrait": "Portrait (flexible)"
+    },
+    "rows": "Rows",
+    "cell_size": "Cell Size",
+    "tools": "Tools"
   },
   "status": {
       "AllClear": "Track Clear",
@@ -159,7 +164,8 @@
       "app_configuration": "App Configuration",
       "live_token": "Live Token",
       "use_simulator": "Use Simulator",
-      "clear_schedule_cache": "Clear Schedule Cache"
+      "manual_sync": "Manual Sync",
+      "view_analytics": "View Analytics"
     },
     "schedule": {
       "next": "Next",

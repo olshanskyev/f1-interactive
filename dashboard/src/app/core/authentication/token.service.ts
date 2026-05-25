@@ -54,12 +54,24 @@ export class TokenService implements OnDestroy {
     return this.token?.valid() ?? false;
   }
 
+  getAuthSystem() {
+    return this.token?.authSystem;
+  }
+
+  getDeviceId() {
+    return this._token?.deviceId;
+  }
+
   getBearerToken() {
     return this.token?.getBearerToken() ?? '';
   }
 
   getRefreshToken() {
     return this.token?.refresh_token;
+  }
+
+  getAccessToken() {
+    return this.token?.access_token;
   }
 
   ngOnDestroy(): void {

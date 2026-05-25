@@ -8,9 +8,9 @@
   --body-background-color: var(--mat-sys-surface-container);
   --link-color: var(--mat-sys-primary);
   --link-hover-color: var(--mat-sys-primary);
-  --code-border-color: light-dark(rgba(19, 28, 43, .08), rgba(218, 226, 249, .08));
-  --code-background-color: light-dark(rgba(19, 28, 43, .04), rgba(218, 226, 249, .04));
-  --header-background-color: light-dark(rgba(239, 237, 240, .8), rgba(31, 32, 34, .8));
+  --code-border-color: light-dark(rgb(19 28 43 / .08), rgb(218 226 249 / .08));
+  --code-background-color: light-dark(rgb(19 28 43 / .04), rgb(218 226 249 / .04));
+  --header-background-color: light-dark(rgb(239 237 240 / .8), rgb(31 32 34 / .8));
   --user-panel-background-color: var(--mat-sys-surface-container);
   --user-panel-hover-background-color: var(--mat-sys-surface-variant);
   --sidemenu-heading-hover-background-color: var(--mat-sys-surface-container-highest);
@@ -27,6 +27,7 @@
   --small-icons-size: 18px;
   --container-margin: 0.2rem;
   --default-list-height: 400px;
+  --container-border-radius: 0.5rem;
 }
 
 *,

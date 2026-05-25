@@ -20,6 +20,14 @@ export abstract class BaseToken {
     return this.attributes.exp;
   }
 
+  get authSystem() {
+    return this.attributes.auth_system;
+  }
+
+  get deviceId() {
+    return this.attributes.device_id;
+  }
+
   valid() {
     return this.hasAccessToken() && !this.isExpired();
   }
@@ -35,7 +43,7 @@ export abstract class BaseToken {
   }
 
   getRefreshTime() {
-    return timeLeft((this.exp ?? 0) - 5);
+    return timeLeft((this.exp ?? 0) - 15);
   }
 
   private hasAccessToken() {

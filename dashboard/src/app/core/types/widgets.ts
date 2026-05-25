@@ -16,19 +16,29 @@ export interface WidgetComponent {
     widgetThumb: string
 }
 
-export interface LayoutGridSize {
-        gridColumns: number,
-        gridRows: number,
+export interface LayoutGrid {
+        fixedRatio: boolean,
+        ratio?: string,
+        fixedWidth: boolean,
+        rows?: number,
+        columns?: number
 }
 
-export const LayoutGrids = {
+export const Ratio = {
+    landscape: '16x9',
+};
+
+export const DEFAULT_CELL_SIZE = 20;
+
+export const LayoutGrids: Record<string, LayoutGrid> = {
     landscape: {
-        gridColumns: 64,
-        gridRows: 36
+        fixedRatio: true,
+        ratio: Ratio.landscape,
+        fixedWidth: false
     },
-    mobile_portrait: {
-        gridColumns: 24,
-        gridRows: 57
+    portrait: {
+        fixedRatio: false,
+        fixedWidth: true
     }
 };
 
@@ -41,8 +51,13 @@ export enum WidgetType
     TrackMapWidget = 'TrackMapWidget',
     RaceControlMessagesWidget = 'RaceControlMessagesWidget',
     TeamRadioWidget = 'TeamRadioWidget',
+    HeadToHeadWidget = 'HeadToHeadWidget',
 }
 
+export enum VideoSource {
+    VK = 'VK',
+    YouTube = 'YouTube'
+}
 export type SettingType = 'string' | 'number' | 'boolean' | string[];
 export interface WidgetSetting {type: SettingType, defaultValue?: any}
 export type WidgetSettings = Record<string, WidgetSetting>;
@@ -61,11 +76,11 @@ export type DisplayWidget = LayoutWidget & WidgetComponent;
 export interface Layout {
     id: string;
     layoutName: string;
-    gridSize: LayoutGridSize,
+    grid: LayoutGrid,
     widgets: LayoutWidget[];
 }
 
 export interface WidgetMetadata {
     settingsList: WidgetSettings;
-    defaultSizes: WidgetSize[];
+    defaultSizes: {width: number, height: number}[];
 }
