@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { SettingsService } from '@core';
-import { SyncService } from '@core/services/live/sync.service';
+import { MAX_DELAY_SEC, SyncService } from '@core/services/live/sync.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { DebounceTime } from '@shared/directives/debounce-time';
 
@@ -58,7 +58,7 @@ export class DelayPanel {
     settingsService = inject(SettingsService);
     isPaused = signal(false);
     delay = signal(this.settingsService.getDelayMs() / 1000);
-    maxDelaySec = 60;
+    maxDelaySec = MAX_DELAY_SEC;
 
     updateSettings() {
         this.settingsService.setOptions({ delayMs: this.delay() * 1000 });
