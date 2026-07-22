@@ -4,10 +4,11 @@ import { Observable, fromEvent, merge, of, retry, switchMap, tap, timeout, filte
 import { SseClient } from 'ngx-sse-client';
 import { StateHandler } from './state/state-handler';
 import { inflate } from '@core/lib/inflate';
-import { PositionZ, CarPosition, CarDataZ, CarData } from '@core/types/f1types';
+import { PositionZ, CarPosition, CarDataZ, CarData, TimingDataLinesItem } from '@core/types/f1types';
 import { BundleContainer } from '@core/lib/bundle-container';
 import { DelayedQueue } from '@core/lib/delayed_queue';
 import { isMobile } from '@core/lib/device';
+import { sortTimingDataByPosition } from '@core/lib/sorting';
 
 export interface UpdateEventRecord {
   className: string;
@@ -270,5 +271,18 @@ export abstract class LiveService {
 
   getSessionIsOngoingSignal() {
     return this.sessionIsOngoingSignal;
+  }
+
+  private sortedTimingDataSignal = computed(() => {
+    const lines = this.getTimingDataSignal()()?.Lines;
+    if (!lines) {
+      return new Map<string, TimingDataLinesItem>();
+    }
+
+    return sortTimingDataByPosition(lines);
+  });
+
+  getSortedTimingDataSignal() {
+    return this.sortedTimingDataSignal;
   }
 }

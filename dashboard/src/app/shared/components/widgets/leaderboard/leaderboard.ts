@@ -1,11 +1,9 @@
-import { Component, computed, effect, inject, linkedSignal, signal, ChangeDetectionStrategy, Pipe, PipeTransform } from '@angular/core';
+import { Component, computed, linkedSignal, signal, ChangeDetectionStrategy, Pipe, PipeTransform } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TimingDataLinesItem } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';
 import { LeaderboardLap } from './leaderboard-lap/leaderboard-lap';
-import { areMapKeySequencesEqual, calculateSequenceChanges } from '@core/lib/arrays-maps';
 import { ContaineredWidget } from '../containered-widget';
-import { ViewTransitionService } from '../../../../core/services/view-transition.service';
 import {MatTabsModule} from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipSelectionChange, MatChipsModule } from '@angular/material/chips';
@@ -14,8 +12,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { LeaderboardSector } from './leaderboard-sector/leaderboard-sector';
 import { LeaderboardSpeed } from './leaderboard-speed/leaderboard-speed';
 import { LeaderboardTyres } from './leaderboard-tyres/leaderboard-tyres';
-import { sortTimingDataByPosition } from '@core/lib/sorting';
 import { DriverChip } from './driver-chip/driver-chip';
+import { createAnimatedTimingMap } from '../animated-timing-map';
 
 @Pipe({
   name: 'isDriverOut',
@@ -51,7 +49,8 @@ export class IsDriverOutPipe implements PipeTransform {
 })
 export class Leaderboard extends ContaineredWidget {
 
-  timingDataMap = signal<Map<string, TimingDataLinesItem>>(new Map());
+  private animated = createAnimatedTimingMap(this.liveService.getSortedTimingDataSignal());
+
   driverList = this.liveService.getDriverListSignal();
   timingData = this.liveService.getTimingDataSignal();
   timingAppData = this.liveService.getTimingAppDataSignal();
@@ -68,14 +67,13 @@ export class Leaderboard extends ContaineredWidget {
   showHeader = computed(() => this.settings()?.['showHeader'] ?? true);
   mode = linkedSignal(() =>(this.settingsMode() === 'all') ? 'laps' : this.settingsMode());
 
-  movements = signal<Record<string, 'up' | 'down' | null>>({});
   isScrolled = signal(false);
 
-  // Snapshot computed so template lookups are cheap and only re-evaluate when `movements` changes
-  movementsSnapshot = computed(() => this.movements());
-
-  // Stable array of [id, timingData] entries for template iteration (avoids Map->Array work in template)
-  entriesArray = computed(() => Array.from(this.timingDataMap().entries()));
+  // Position-change animation state shared with select-driver via the helper
+  timingDataMap = this.animated.timingDataMap;
+  movements = this.animated.movements;
+  movementsSnapshot = this.animated.movementsSnapshot;
+  entriesArray = this.animated.entriesArray;
 
   // Set of positions considered in the elimination zone based on session year and qualifying part
   eliminationPositions = computed(() => {
@@ -90,33 +88,6 @@ export class Leaderboard extends ContaineredWidget {
     }
     return set;
   });
-
-  private viewTransitionService = inject(ViewTransitionService);
-  private transitionVersion = 0;
-
-  constructor() {
-    super();
-    effect(() => { // for animating driver positions changing
-      if (this.timingData()) {
-        // sorting driver positions based on TimingData.Lines.Line
-        const newTimingDataMap = sortTimingDataByPosition(this.timingData()!.Lines);
-        if (!areMapKeySequencesEqual(this.timingDataMap(), newTimingDataMap)) { // avoid unnecessary transitions
-          const version = ++this.transitionVersion;
-          this.movements.set(calculateSequenceChanges(this.timingDataMap(), newTimingDataMap));
-          this.viewTransitionService.requestTransition(() =>
-            this.timingDataMap.set(newTimingDataMap)
-          ).then(() => {
-            setTimeout(() => {
-              // Only clear movements if no newer transition has been requested
-              if (this.transitionVersion === version) {
-                this.movements.set({});
-              }
-            }, 2000);
-          });
-        }
-      }
-    });
-  }
 
   onScroll(event: Event) {
     const target = event.target as HTMLElement;

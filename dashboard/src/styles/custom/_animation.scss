@@ -29,6 +29,23 @@
     }
 }
 
+@keyframes value-update {
+    0% {
+        color: inherit;
+        transform: scale(1);
+    }
+
+    50% {
+        color: var(--f1-green);
+        transform: scale(1.1);
+    }
+
+    100% {
+        color: inherit;
+        transform: scale(1);
+    }
+}
+
 .animated-first-element > :first-child {
     animation: slide-in 1s ease-out forwards, bg-highlight 3s ease-out forwards;
 }

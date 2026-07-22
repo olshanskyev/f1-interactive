@@ -1,10 +1,11 @@
-import { Component, input, computed, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, input, computed, ChangeDetectionStrategy, inject, linkedSignal } from '@angular/core';
 import { LiveService } from '@core/services/live/live.service';
 import { TimingDataLinesItem, TimingStatsLinesItem } from '@core/types/f1types';
 
 @Component({
     selector: 'lap-chip',
     templateUrl: './lap-chip.html',
+    styleUrl: './lap-chip.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LapChip {
@@ -23,6 +24,12 @@ export class LapChip {
         if (this.timingData()?.KnockedOut) return this.lastNotEmptyLapTime()?.Value ?? '';
         if (this.qualifyingPart()) return this.timingData()?.BestLapTimes?.[this.qualifyingPart()! - 1]?.Value ?? '';
         return '';
+    });
+
+    // Animate only on subsequent updates, not on the first value (previous is undefined initially)
+    animateQualificationLap = linkedSignal<string, boolean>({
+        source: () => this.qualificationLapTime(),
+        computation: (current, previous) => previous !== undefined && previous.source !== current
     });
 
     lastLapClass = computed(() => {

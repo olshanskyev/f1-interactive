@@ -26,11 +26,7 @@
     <div class="d-flex gap-8">
       @for(sector of timingData()?.Sectors | keyvalue; track sector.key) {
         <div class="d-flex flex-col justify-content-center">
-          <div class="d-flex flex-row gap-2 p-b-4">
-            @for(segment of sector.value.Segments | keyvalue: keepOrder; track segment.key) {
-              <div [class]="segment.value.Status | segmentClass" style="width: 10px; height: 5px; border-radius: 2px;"></div>
-            }
-          </div>
+          <mini-sectors-chip [segments]="sector.value.Segments" />
           @if (sector.value.Value) {
             <div class="d-flex line-height-1 f-s-12" [class]="(sector.value.OverallFastest)?'text-f1-purple':
                   (sector.value.PersonalFastest)?'text-f1-green':''">
