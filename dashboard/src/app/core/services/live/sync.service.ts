@@ -1,14 +1,15 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { LiveService } from './live.service';
 
-
+export const MAX_DELAY_SEC = 80; // 80 seconds max delay
 @Injectable({
   providedIn: 'root',
 })
 export class SyncService {
 
     private readonly liveService = inject(LiveService);
-    private readonly MAX_DELAY = 80000; // 80 seconds max delay
+
+    private readonly MAX_DELAY_MS = MAX_DELAY_SEC * 1000;
 
     private delayMs = 0;
     private syncTotalMs = signal(0);
@@ -19,7 +20,7 @@ export class SyncService {
 
     private startTimer(pausedState: boolean) {
         this.timer = setInterval(() => {
-            if (pausedState && this.passedMs() >= this.MAX_DELAY) {
+            if (pausedState && this.passedMs() >= this.MAX_DELAY_MS) {
                 this.clearTimer();
                 return;
             }
@@ -68,7 +69,7 @@ export class SyncService {
             this.syncTotalMs.set(0);
         }
         this.passedMs.set(this.delayMs);
-        this.liveService.setDelay(this.MAX_DELAY);
+        this.liveService.setDelay(this.MAX_DELAY_MS);
         this.startTimer(true);
     }
 
