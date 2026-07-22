@@ -1,0 +1,5 @@
+<div class="d-flex flex-row gap-2 p-b-4">
+        @for(segment of segments() | keyvalue: keepOrder; track segment.key) {
+        <div [class]="segment.value.Status | segmentClass" style="width: 10px; height: 5px; border-radius: 2px;"></div>
+        }
+</div>

@@ -13,6 +13,7 @@ export class SimpleDriverCard {
 
   photoUrl = computed(() => {
     const src = getDriverPhotoByTLA(this.driver().Tla);
-    return (!src) ? this.driver().HeadshotUrl: src;
+    const headShotUrl = this.driver().HeadshotUrl;
+    return (!src) ? (!headShotUrl ? 'images/driver_fallback.png' : headShotUrl) : src;
   });
 }

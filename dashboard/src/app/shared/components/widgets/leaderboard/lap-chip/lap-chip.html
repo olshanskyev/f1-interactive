@@ -3,7 +3,9 @@
                 <div class="f-s-14"
                 [class.text-color-inactive]="!timingStat()?.PersonalBestLapTime?.Value"
                 >
-                        {{qualificationLapTime() || 'No Time'}}
+                        @for (value of [qualificationLapTime()]; track value) {
+                                <span [class.value-update]="animateQualificationLap()">{{value || 'No Time'}}</span>
+                        }
                 </div>
         } @else {
                 <p class="m-0 f-s-14"
