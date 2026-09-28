@@ -2,7 +2,6 @@ import { HttpErrorResponse, HttpHandlerFn, HttpRequest } from '@angular/common/h
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { isVkProxyRequest } from '@core/lib/url';
-import { HotToastService } from '@ngxpert/hot-toast';
 import { catchError, throwError } from 'rxjs';
 
 export enum STATUS {
@@ -14,8 +13,7 @@ export enum STATUS {
 
 export function errorInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn) {
   const router = inject(Router);
-  const toast = inject(HotToastService);
-  const errorPages = [STATUS.FORBIDDEN, STATUS.NOT_FOUND, STATUS.INTERNAL_SERVER_ERROR];
+  const errorPages = [STATUS.FORBIDDEN, STATUS.INTERNAL_SERVER_ERROR];
 
   const getMessage = (error: HttpErrorResponse) => {
     if (error.error?.message) {
@@ -37,7 +35,7 @@ export function errorInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn)
         console.error('ERROR', error);
         if (!isVkProxyRequest(req)) { // just proxy vk errors
           if (error.status !== 0) { // host not reachable?
-            toast.error(getMessage(error));
+            console.log(getMessage(error));
           }
           if (error.status === STATUS.UNAUTHORIZED) {
             router.navigateByUrl('/auth/login');

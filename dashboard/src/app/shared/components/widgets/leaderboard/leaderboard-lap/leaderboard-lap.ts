@@ -1,5 +1,5 @@
 import { KeyValuePipe } from '@angular/common';
-import { Component, input, PipeTransform, Pipe, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TimingAppDataLinesItem, TimingDataLinesItem, TimingStatsLinesItem } from '@core/types/f1types';
 import { TranslateModule } from '@ngx-translate/core';
