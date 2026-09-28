@@ -510,6 +510,40 @@
     ]
   },
   {
+    "name": "GULF AIR BAHRAIN GRAND PRIX IN MALAYSIA 2026",
+    "location": "Sepang",
+    "countryName": "Malaysia",
+    "start": "2026-10-02T04:30:00Z",
+    "end": "2026-10-04T09:00:00Z",
+    "sessions": [
+      {
+        "kind": "Practice 1",
+        "start": "2026-10-02T04:30:00Z",
+        "end": "2026-10-02T05:30:00Z"
+      },
+      {
+        "kind": "Practice 2",
+        "start": "2026-10-02T08:00:00Z",
+        "end": "2026-10-02T09:00:00Z"
+      },
+      {
+        "kind": "Practice 3",
+        "start": "2026-10-03T04:30:00Z",
+        "end": "2026-10-03T05:30:00Z"
+      },
+      {
+        "kind": "Qualifying",
+        "start": "2026-10-03T08:00:00Z",
+        "end": "2026-10-03T09:00:00Z"
+      },
+      {
+        "kind": "Race",
+        "start": "2026-10-04T07:00:00Z",
+        "end": "2026-10-04T09:00:00Z"
+      }
+    ]
+  },
+  {
     "name": "SINGAPORE AIRLINES SINGAPORE GRAND PRIX 2026",
     "location": "Marina Bay",
     "countryName": "Singapore",
