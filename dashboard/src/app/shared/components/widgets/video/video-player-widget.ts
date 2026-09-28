@@ -8,6 +8,7 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { map, of, switchMap, combineLatest, startWith, distinctUntilChanged, shareReplay, Observable, catchError, defer, finalize } from 'rxjs';
 import { VideoSource } from '@core/types/widgets';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { parseVkVideoLink } from './video-player-widget.utils';
 
 @Component({
     selector: 'video-player-widget',
@@ -36,16 +37,10 @@ export class VideoPlayerWidget extends ContaineredWidget {
         const link = this.settings()?.['link']?.toString();
         const source = this.sourceSetting();
 
-        if (link && source === VideoSource.VK) {
-            const match = link.match(/video(?<ownerId>[-\d]+)_(?<videoId>\d+)/);
-            if (match?.groups) {
-            return {
-                ownerId: match.groups['ownerId'],
-                videoId: match.groups['videoId']
-            };
-            }
+        if (link && link.trim().length > 0 && source === VideoSource.VK) {
+            return parseVkVideoLink(link);
         }
-        return null;
+        return undefined;
     });
 
     private playerUrl: Observable<string | undefined> = combineLatest([
@@ -53,9 +48,14 @@ export class VideoPlayerWidget extends ContaineredWidget {
         this.authService.change().pipe(startWith(null))
     ]).pipe(
         switchMap(([params]) => {
-            if (!params || this.sourceSetting() !== VideoSource.VK) {
+            if (params === undefined || this.sourceSetting() !== VideoSource.VK) {
                 return of(undefined);
             }
+            if (params === null) { // parsing error
+                this.error.set(this.translate.instant('widget.invalid_video_link_error'));
+                return of(undefined);
+            }
+
             this.error.set('');
             return defer(() =>  {
                 this.isLoading.set(true);
