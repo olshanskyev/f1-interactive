@@ -2,7 +2,6 @@ import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { HotToastService, provideHotToastConfig } from '@ngxpert/hot-toast';
 import { errorInterceptor } from './error-interceptor';
 import { describe, beforeEach, afterEach, it, vi, expect } from 'vitest';
 
@@ -10,7 +9,6 @@ describe('ErrorInterceptor', () => {
   let httpMock: HttpTestingController;
   let http: HttpClient;
   let router: Router;
-  let toast: HotToastService;
   const emptyFn = () => {};
 
   function assertStatus(status: number, statusText: string) {
@@ -30,48 +28,42 @@ describe('ErrorInterceptor', () => {
       providers: [
         provideHttpClient(withInterceptors([errorInterceptor])),
         provideHttpClientTesting(),
-        provideHotToastConfig(),
       ],
     });
 
     httpMock = TestBed.inject(HttpTestingController);
     http = TestBed.inject(HttpClient);
     router = TestBed.inject(Router);
-    toast = TestBed.inject(HotToastService);
   });
 
   afterEach(() => httpMock.verify());
 
-  /*it('should handle status code 401', () => {
+  it('should handle status code 401', () => {
     vi.spyOn(router, 'navigateByUrl');
-    vi.spyOn(toast, 'error');
+    vi.spyOn(console, 'log');
 
     http.get('/user').subscribe({ next: emptyFn, error: emptyFn, complete: emptyFn });
     httpMock.expectOne('/user').flush({}, { status: 401, statusText: 'Unauthorized' });
 
-    expect(toast.error).toHaveBeenCalledWith('401 Unauthorized');
+    expect(console.log).toHaveBeenCalledWith('401 Unauthorized');
     expect(router.navigateByUrl).toHaveBeenCalledWith('/auth/login');
-  });*/
+  });
 
   it('should handle status code 403', () => {
     assertStatus(403, 'Forbidden');
   });
 
-  /*it('should handle status code 404', () => {
-    assertStatus(404, 'Not Found');
-  });*/
-
   it('should handle status code 500', () => {
     assertStatus(500, 'Internal Server Error');
   });
 
-  /*it('should handle others status code', () => {
-    vi.spyOn(toast, 'error');
+  it('should handle others status code', () => {
+    vi.spyOn(console, 'log');
 
     http.get('/user').subscribe({ next: emptyFn, error: emptyFn, complete: emptyFn });
 
     httpMock.expectOne('/user').flush({}, { status: 504, statusText: 'Gateway Timeout' });
 
-    expect(toast.error).toHaveBeenCalledWith('504 Gateway Timeout');
-  });*/
+    expect(console.log).toHaveBeenCalledWith('504 Gateway Timeout');
+  });
 });
