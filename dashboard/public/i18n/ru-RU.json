@@ -115,6 +115,7 @@
     "loading_video_error": "Ошибка загрузки видео",
     "video_not_found_error": "Видео не найдено",
     "video_content_restricted_error": "Видео недоступно",
+    "invalid_video_link_error": "Неверная ссылка на видео",
     "settings": {
       "source": "Источник",
       "embedCode": "Код для встраивания",
