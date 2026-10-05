@@ -108,14 +108,9 @@ class RootController {
     }
 
     @GetMapping(path = "/live", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter live() throws IOException {
+    public SseEmitter live() {
         synchronized (initStateMutex) {
-            SseEmitter subscribe = publisher.subscribe();
-            if (stateHandler.getState() != null) { // send one time init state
-                SseEmitter.SseEventBuilder event = SseEmitter.event().data(stateHandler.getState()).name("init");
-                subscribe.send(event);
-            }
-            return subscribe;
+            return publisher.subscribe("init", stateHandler.getState());
         }
     }
 

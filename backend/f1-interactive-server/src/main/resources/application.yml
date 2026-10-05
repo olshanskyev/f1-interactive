@@ -6,6 +6,14 @@ server:
     contextPath: /api
   ssl:
     enabled: false
+  tomcat:
+    # also bounds blocking writes, so stalled SSE clients fail fast
+    connection-timeout: 15s
+f1interactive:
+  heartbeatIntervalMillis: 15000
+  sse:
+    maxPendingEvents: 300
+    slowSendWarnMillis: 5000
 ---
 spring:
   config:
