@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DonateButton } from '@shared/donate-button/donate-button';
 
 @Component({
   selector: 'app-footer',
@@ -10,7 +11,7 @@ import { Component } from '@angular/core';
         </p>
         <p class="m-b-8">
           Have an idea? Drop me an email anytime: <a href="mailto:olshanskyev@gmail.com" class="email-btn">olshanskyev@gmail.com</a>.
-          You can <a href="https://buymeacoffee.com/olshanskyev">buy me a coffee</a> to support me.
+          You can support the project: <app-donate-button />
         </p>
       </div>
       <span class="tooltip p-t-2">
@@ -20,6 +21,7 @@ import { Component } from '@angular/core';
     </div>
   `,
   imports: [
+    DonateButton
   ],
   styles: `
     .tooltip {
