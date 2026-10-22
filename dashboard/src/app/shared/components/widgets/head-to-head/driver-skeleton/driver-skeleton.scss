@@ -1,0 +1,23 @@
+:host {
+    display: contents;
+}
+
+.head-to-head-skeleton {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+
+    div {
+        align-content: center;
+        width: 50%;
+        min-height: 2.5rem;
+        padding: 0.5rem;
+        font-size: 0.75rem;
+        color: var(--mat-sys-on-secondary-container);
+        text-align: center;
+        background-color: var(--mat-sys-secondary-container);
+        border: 1px solid transparent;
+        border-radius: 0.5rem;
+    }
+}

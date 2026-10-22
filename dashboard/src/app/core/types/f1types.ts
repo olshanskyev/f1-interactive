@@ -298,6 +298,7 @@ export interface SegmentsItem {
 export interface BestLapTime {
     Value: string;
     Lap: number;
+	BestSectors?: Record<number, BestSectorsItem>;
 	_deleted: Record<number, string>;
 }
 

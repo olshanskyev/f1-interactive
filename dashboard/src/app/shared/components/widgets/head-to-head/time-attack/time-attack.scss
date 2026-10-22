@@ -1,0 +1,18 @@
+@use '../head-to-head';
+
+:host {
+    display: contents;
+}
+
+.best-lap-header {
+    @include head-to-head.gradient-background;
+
+    margin-inline: 8px;
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: var(--container-border-radius) !important;
+}
+
+.drivers-container {
+    flex: 1;
+    min-height: 150px !important;
+}

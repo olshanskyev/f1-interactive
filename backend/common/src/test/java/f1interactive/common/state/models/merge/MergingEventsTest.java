@@ -168,7 +168,7 @@ public class MergingEventsTest {
             }
         }
 
-        assertEquals(20, root.timingData.lines.size());
+        assertEquals(21, root.timingData.lines.size());
         assertEquals(3, root.timingData.lines.get("1").sectors.values.size());
         assertEquals(0, root.timingData.lines.get("1").sectors.values.get(1).status);
         assertEquals(2049, root.timingData.lines.get("1").sectors.values.get(2).segments.values.get(2).status);
@@ -181,6 +181,14 @@ public class MergingEventsTest {
         assertEquals(2048, root.timingData.lines.get("44").sectors.values.get(1).segments.values.get(4).status);
         assertEquals(3, root.timingData.lines.get("44").sectors.values.size());
         assertEquals(9, root.timingData.lines.get("44").sectors.values.get(1).segments.values.size());
+
+        // testing bestSectors
+        assertEquals(3, root.timingData.lines.get("3").sectors.values.size());
+        assertEquals(3, root.timingData.lines.get("3").bestLapTime.bestSectors.size());
+        assertEquals("26.832", root.timingData.lines.get("3").bestLapTime.bestSectors.get(0).value);
+        assertEquals("38.649", root.timingData.lines.get("3").bestLapTime.bestSectors.get(1).value);
+        assertEquals("25.675", root.timingData.lines.get("3").bestLapTime.bestSectors.get(2).value);
+        assertEquals("1:31.156", root.timingData.lines.get("3").bestLapTime.value);
     }
 
     @Test

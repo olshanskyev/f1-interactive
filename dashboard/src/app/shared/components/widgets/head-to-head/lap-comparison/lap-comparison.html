@@ -1,0 +1,39 @@
+<div class="d-flex flex-col w-full dual-driver-card">
+    <div class="d-flex w-full">
+        <div class="w-50 h-full">
+            @if (driver1(); as driver) {
+                <head-to-head-driver-header [driver]="driver" />
+            } @else {
+                <head-to-head-driver-skeleton />
+            }
+        </div>
+        <div class="w-50 h-full">
+            @if (driver2(); as driver) {
+                <head-to-head-driver-header [driver]="driver" />
+            } @else {
+                <head-to-head-driver-skeleton />
+            }
+        </div>
+    </div>
+
+    <div class="times-grid f-s-14">
+        <mat-divider class="all-columns"/>
+        <head-to-head-comparison-row [name]="'lap' | translate" [firstValue]="lap1()" [secondValue]="lap2()" />
+
+        @for (i of sectorIndexes; track i) {
+            <mat-divider class="all-columns"/>
+            <head-to-head-comparison-row [name]="'S' + (i + 1)" [firstValue]="sectors1()[i]" [secondValue]="sectors2()[i]" />
+        }
+
+        <mat-divider class="all-columns"/>
+        <div class="left">
+            <current-tyres-chip [timingAppData]="driver1()?.timingAppData"/>
+        </div>
+        <div class="head-to-head-param center">
+            {{'tyres' | translate}}
+        </div>
+        <div class="right d-flex justify-content-end">
+            <current-tyres-chip [timingAppData]="driver2()?.timingAppData"/>
+        </div>
+    </div>
+</div>

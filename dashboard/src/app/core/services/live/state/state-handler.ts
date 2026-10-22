@@ -46,6 +46,9 @@ export class StateHandler {
             'LapCount': signal<LapCount | undefined>(undefined),
     };
 
+    // a new object on every fastest lap, so consumers recompute even when the same driver improves
+    readonly fastestLapDriver = signal<{ driver: string } | undefined>(undefined);
+
     get fullStateSignal() {
         return this._state.asReadonly();
     };
@@ -60,6 +63,10 @@ export class StateHandler {
        (Object.keys(this.updateSignals) as AvailableSignalsType[]).forEach(key => {
             this.updateSignal(key, this._state()![key]);
         });
+        // LastLapTime.OverallFastest resets on the holder's next lap, but TimingStats is consistent within the init state
+        const driver = Object.entries(initState.TimingStats?.Lines ?? {})
+            .find(([, item]) => item.PersonalBestLapTime?.Position === 1)?.[0];
+        this.fastestLapDriver.set(driver ? { driver } : undefined);
     }
 
     updateState(updateRecord: UpdateEventRecord) {
@@ -86,11 +93,27 @@ export class StateHandler {
 
 
             }
+
+            if (key === 'TimingData') {
+                const stateLines = mergedState.TimingData?.Lines;
+                // the flag is not resent when the holder improves again, so a new best lap with the flag still set also counts
+                const driver = Object.entries((
+                    updateRecord.updateEvent as Partial<TimingData>
+                ).Lines ?? {})
+                    .find(([driver, line]) => line.LastLapTime?.OverallFastest === true ||
+                        (
+                            line.BestLapTime?.Value &&
+                            stateLines?.[driver]?.LastLapTime?.OverallFastest === true
+                        ))?.[0];
+                if (driver)
+                    this.fastestLapDriver.set({ driver });
+            }
         }
     }
 
     clearState() {
         this._state.set(undefined);
+        this.fastestLapDriver.set(undefined);
     }
 
     private isObject(obj: any): boolean {

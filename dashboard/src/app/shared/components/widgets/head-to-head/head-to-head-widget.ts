@@ -1,35 +1,26 @@
-import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, linkedSignal } from '@angular/core';
 import { ContaineredWidget } from '../containered-widget';
 import { SpeedoComponent } from '@shared/components/speedo/speedo';
-import { CarData } from '@core/types/f1types';
-import { SimpleDriverCard } from '@shared/components/driver-card/simple-driver-card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { SelectDriverWidget } from '../select-driver/select-driver-widget';
 import { TranslateModule } from '@ngx-translate/core';
 import { DriverSelectionService } from '@core/services/driver-selection.service';
-import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
-import { MatDividerModule } from '@angular/material/divider';
-import { IntervalPipe } from '@shared/pipes';
-import { CurrentTyresChip } from '../leaderboard/current-tyres-chip/current-tyres-chip';
+import { HeadToHeadDriver } from './head-to-head-driver';
+import { HeadToHeadTelemetryCard } from './telemetry-card/telemetry-card';
+import { HeadToHeadLapComparison } from './lap-comparison/lap-comparison';
+import { HeadToHeadTimeAttack } from './time-attack/time-attack';
 
-export const headToHeadModes = ['telemetry', 'last', 'best'] as const;
+export const headToHeadModes = ['telemetry', 'time_attack','last', 'best'] as const;
 export type HeadToHeadMode = (typeof headToHeadModes)[number];
 
 @Component({
   selector: 'head-to-head-widget',
   imports: [
     SpeedoComponent,
-    SimpleDriverCard,
-    MatButtonModule,
-    MatIconModule,
     SelectDriverWidget,
     TranslateModule,
-    KeyValuePipe,
-    NgTemplateOutlet,
-    MatDividerModule,
-    IntervalPipe,
-    CurrentTyresChip
+    HeadToHeadTelemetryCard,
+    HeadToHeadLapComparison,
+    HeadToHeadTimeAttack
   ],
   templateUrl: './head-to-head-widget.html',
   styleUrl: './head-to-head-widget.scss',
@@ -51,45 +42,35 @@ export class HeadToHeadWidget extends ContaineredWidget {
     private readonly settingsMode = computed(() => this.settings()?.['mode'] ?? 'telemetry');
     mode = linkedSignal<HeadToHeadMode>(() =>this.settingsMode());
 
-    driver1 = this.driverSelectionService.getDriver1();
-    driver2 = this.driverSelectionService.getDriver2();
+    private readonly driver1 = this.driverSelectionService.getDriver1();
+    private readonly driver2 = this.driverSelectionService.getDriver2();
 
-    driverItem1 = computed(() => (this.driver1() ?
-      this.driverList()?.Lines?.[this.driver1()!] :
-      undefined));
-    driverItem2 = computed(() => (this.driver2() ?
-      this.driverList()?.Lines?.[this.driver2()!] :
-      undefined));
+    headToHeadDriver1 = computed(() => this.toHeadToHeadDriver(this.driver1()));
+    headToHeadDriver2 = computed(() => this.toHeadToHeadDriver(this.driver2()));
 
-    timingDataDriver1 = computed(() => this.timingData()?.Lines?.[this.driver1() ?? '']);
-    timingDataDriver2 = computed(() => this.timingData()?.Lines?.[this.driver2() ?? '']);
+    // kept separate from headToHeadDriver so high-frequency telemetry doesn't re-render lap comparison
+    channels1 = computed(() => this.getChannels(this.driver1()));
+    channels2 = computed(() => this.getChannels(this.driver2()));
 
-    timingStatDriver1 = computed(() => this.timingStats()?.Lines?.[this.driver1() ?? '']);
-    timingStatDriver2 = computed(() => this.timingStats()?.Lines?.[this.driver2() ?? '']);
+    bestLapTime = this.liveService.getBestLapTimeSignal();
+    bestDriver = computed(() => this.toHeadToHeadDriver(this.bestLapTime()?.driver));
 
-    timingAppDataDriver1 = computed(() => this.timingAppData()?.Lines?.[this.driver1() ?? '']);
-    timingAppDataDriver2 = computed(() => this.timingAppData()?.Lines?.[this.driver2() ?? '']);
-
-    pos1 = computed(() => this.timingDataDriver1()?.Line ?? 0);
-    pos2 = computed(() => this.timingDataDriver2()?.Line ?? 0);
-
-    getChannelValue(driver: string | undefined, channel: keyof CarData['Channels']): number | undefined {
-        if (!this.carData() || !driver) return undefined;
-        return this.carData()![driver]?.Channels[channel];
+    private toHeadToHeadDriver(id: string | undefined): HeadToHeadDriver | undefined {
+        const item = id ? this.driverList()?.Lines?.[id] : undefined;
+        if (!id || !item) return undefined;
+        const timingData = this.timingData()?.Lines?.[id];
+        return {
+            id,
+            item,
+            position: timingData?.Line ?? 0,
+            timingData,
+            timingStats: this.timingStats()?.Lines?.[id],
+            timingAppData: this.timingAppData()?.Lines?.[id]
+        };
     }
-    speed1 = computed(() => this.getChannelValue(this.driver1(), 2) ?? 0);
-    speed2 = computed(() => this.getChannelValue(this.driver2(), 2) ?? 0);
-    rpm1 = computed(() => this.getChannelValue(this.driver1(), 0) ?? 0);
-    rpm2 = computed(() => this.getChannelValue(this.driver2(), 0) ?? 0);
-    gear1 = computed(() => this.getChannelValue(this.driver1(), 3) ?? 0);
-    gear2 = computed(() => this.getChannelValue(this.driver2(), 3) ?? 0);
-    throttle1 = computed(() => this.getChannelValue(this.driver1(), 4) ?? 0);
-    throttle2 = computed(() => this.getChannelValue(this.driver2(), 4) ?? 0);
-    brake1 = computed(() => this.getChannelValue(this.driver1(), 5) ?? 0);
-    brake2 = computed(() => this.getChannelValue(this.driver2(), 5) ?? 0);
 
-    deselect(driverId: string) {
-      this.driverSelectionService.deselect(driverId);
+    private getChannels(id: string | undefined) {
+        return id ? this.carData()?.[id]?.Channels : undefined;
     }
 
 }
