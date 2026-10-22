@@ -1,0 +1,6 @@
+@use '../head-to-head';
+
+// renders its cells directly into the parent grid
+:host {
+    display: contents;
+}

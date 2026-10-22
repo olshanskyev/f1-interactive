@@ -83,6 +83,8 @@
   "telemetry": "Telemetry",
   "best": "Best",
   "last": "Last",
+  "time_attack": "Time Attack",
+  "not_set": "Not Set",
   "or": "OR",
   "weather": {
     "air": "Air",

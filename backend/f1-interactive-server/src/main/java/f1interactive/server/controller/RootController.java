@@ -63,20 +63,25 @@ class RootController {
         }
     }
 
+    private boolean isNewSessionEvent(UpdateEvent updateEvent) {
+        if (updateEvent instanceof SessionInfo newSessionInfo) {
+            SessionInfo currentSessionInfo = stateHandler.getState().sessionInfo;
+            return (currentSessionInfo == null ||
+                    (newSessionInfo.key != null && !newSessionInfo.key.equals(currentSessionInfo.key))
+            );
+        }
+        return false;
+    }
+
     private void onUpdate(String type, String message, String time) {
         UpdateEvent updateEvent = EventsParser.parseUpdateEvent(type, message);
         EventsParser.UpdateEventRecord updateEventRecord = new EventsParser.UpdateEventRecord(type, updateEvent, System.currentTimeMillis());
-        if (updateEventRecord.updateEvent() instanceof SessionInfo newSessionInfo) {
-            // try to sync data with f1 if new session starts
-            SessionInfo currentSessionInfo = stateHandler.getState().sessionInfo;
-            if (currentSessionInfo == null ||
-                    (newSessionInfo.key != null && !newSessionInfo.key.equals(currentSessionInfo.key))
-            ) {
+        // try to sync data with f1 if new session starts
+        if (isNewSessionEvent(updateEventRecord.updateEvent())) {
                 logger.info("New session started, syncing...");
                 f1Client.disconnect();
                 f1Client.connect();
                 return;
-            }
         }
         synchronized (initStateMutex) {
             stateHandler.updateState(updateEvent);

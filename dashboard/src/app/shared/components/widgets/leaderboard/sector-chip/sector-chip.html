@@ -1,0 +1,14 @@
+@let item = sector();
+<div class="d-flex flex-col justify-content-center">
+  <mini-sectors-chip [segments]="item?.Segments" />
+  @if (item?.Value) {
+    <div class="d-flex line-height-1 f-s-12" [class]="(item?.OverallFastest)?'text-f1-purple':
+          (item?.PersonalFastest)?'text-f1-green':''">
+      {{item?.Value}}
+    </div>
+  } @else {
+    <div class="d-flex line-height-1 f-s-12 text-color-inactive">
+      {{item?.PreviousValue || '-'}}
+    </div>
+  }
+</div>

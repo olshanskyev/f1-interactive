@@ -1,0 +1,20 @@
+@let first = firstValue();
+@let second = secondValue();
+<div class="left">
+    @if (first) {
+        {{first}}
+    }
+</div>
+<div class="head-to-head-param center">
+    {{name()}}
+</div>
+@if (second && first) {
+    @let lapInterval = second | interval: first;
+    <div class="right"
+        [class]="(lapInterval.sign === '+')? 'text-f1-yellow': 'text-f1-green'"
+    >
+        {{lapInterval.sign}}{{lapInterval.value}}
+    </div>
+} @else {
+    <div class="right"></div>
+}

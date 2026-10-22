@@ -1,0 +1,30 @@
+@use '../head-to-head';
+
+:host {
+    display: contents;
+}
+
+.dual-driver-card {
+    height: 100%;
+    min-height: 0;
+    background: linear-gradient(to right,
+    var(--gradient-first-color) 0%,
+    var(--gradient-second-color) 50%,
+    var(--gradient-first-color) 50%,
+    var(--gradient-second-color) 100%
+    );
+}
+
+.times-grid {
+    display: grid;
+    grid-template-columns: 1fr 100px 1fr;
+    gap: 0.5rem;
+    width: 100%;
+    min-height: 8rem;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+}
+
+.all-columns {
+    grid-column: 1 / -1;
+}
