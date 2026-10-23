@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-donate-button',
@@ -20,14 +21,15 @@ import { MatMenuModule } from '@angular/material/menu';
     </mat-menu>
 
     <button matButton [matMenuTriggerFor]="menu">
-        <mat-icon>paid</mat-icon>Support
+        <mat-icon>paid</mat-icon>{{ 'support' | translate }}
     </button>
 
   `,
   imports: [
     MatButtonModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
+    TranslateModule
 ],
   styles: `
     button {

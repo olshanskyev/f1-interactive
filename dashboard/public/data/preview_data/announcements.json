@@ -1,0 +1,11 @@
+{
+  "announcements": [
+    {
+      "id": "preview",
+      "text": {
+        "en-US": "New: this is a preview announcement.",
+        "ru-RU": "Новое: это тестовое объявление."
+      }
+    }
+  ]
+}

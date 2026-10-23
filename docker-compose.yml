@@ -17,6 +17,8 @@ services:
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
+      # Directory (not single file) mount: editors replace files, which breaks single-file bind mounts
+      - ./announcements:/usr/share/nginx/announcements:ro
     logging:
       driver: "json-file"
       options:

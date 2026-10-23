@@ -8,6 +8,7 @@ import { NgProgressRouter } from 'ngx-progressbar/router';
 import { Subscription, filter } from 'rxjs';
 
 import { FullScreenService, SettingsService } from '@core';
+import { AnnouncementBanner } from '../announcement-banner/announcement-banner';
 import { Header } from '../header/header';
 import { Sidebar } from '../sidebar/sidebar';
 
@@ -25,6 +26,7 @@ const MONITOR_MEDIAQUERY = 'screen and (min-width: 600px)';
     MatSidenavModule,
     NgProgressbar,
     NgProgressRouter,
+    AnnouncementBanner,
     Header,
     Sidebar,
   ],

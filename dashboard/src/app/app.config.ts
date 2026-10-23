@@ -23,15 +23,13 @@ import {
   SimulatorService,
   StartupService,
   TranslateLangService,
-  MockLiveService,
-  ScheduleService,
 } from '@core';
 import { environment } from '@env/environment';
+import { environmentProviders } from '@env/providers';
 import { routes } from './app.routes';
 
 import { LoginService } from '@core/authentication/login.service';
 import { LiveService } from '@core/services/live/live.service';
-import { MockScheduleService } from '@core/services/mock.schedule.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -60,17 +58,10 @@ export const appConfig: ApplicationConfig = {
     {
       provide: LiveService,
       useFactory: () => {
-        if (environment.standalone) {
-          return inject(MockLiveService);
-        }
         const settings: SettingsService = inject(SettingsService);
         return (settings.getUseSimulator())?
           inject(SimulatorService) : inject(F1InteractiveService);
       }
-    },
-    {
-      provide: ScheduleService,
-      useClass: environment.standalone ? MockScheduleService : ScheduleService
     },
     {
       provide: MAT_CARD_CONFIG,
@@ -78,5 +69,7 @@ export const appConfig: ApplicationConfig = {
         appearance: 'outlined',
       },
     },
+    // Last, so standalone mocks override the providers above
+    ...environmentProviders,
   ],
 };
