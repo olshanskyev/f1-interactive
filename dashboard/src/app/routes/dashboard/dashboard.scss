@@ -13,18 +13,37 @@
 
 .right-panel {
     display: grid;
-    grid-template-areas: "weather"
-                         "session-info"
-                         "track-map"
-                         "head-to-head"
-                         ;
-    grid-template-columns: 1fr;
+    grid-template: "weather" auto
+                   "session-info" auto
+                   "track-panel" minmax(0, 1fr) / 1fr;
+    align-self: stretch;
+    min-height: 0;
+    contain: size;
 }
 
 .bottom-panel {
     display: grid;
     grid-template-areas: "race-control-messages team-radio";
     grid-template-columns: 33% 33%;
+}
+
+.track-panel {
+    display: flex;
+    flex-direction: column;
+    grid-area: track-panel;
+    min-height: 0;
+}
+
+#track-map {
+    display: grid;
+    flex: 1 1 0;
+    grid-area: track-map;
+    grid-template-rows: minmax(0, 1fr);
+    min-height: 0;
+}
+
+.head-to-head-expanstion-panel {
+    flex-shrink: 0;
 }
 
 @container (width <= 1200px) {
@@ -48,6 +67,15 @@
     #bottom-panel {
         display: contents;
     }
+
+    .track-panel {
+        display: block;
+        grid-area: auto;
+    }
+
+    #track-map {
+        display: block;
+    }
 }
 
 #right-panel {
@@ -68,10 +96,6 @@
 
 #session-info {
     grid-area: session-info;
-}
-
-#track-map {
-    grid-area: track-map;
 }
 
 #head-to-head {
