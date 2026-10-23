@@ -44,6 +44,16 @@
 
 .head-to-head-expanstion-panel {
     flex-shrink: 0;
+
+    // Header content must not widen the grid column; it shrinks/truncates instead
+    mat-expansion-panel-header {
+        contain: inline-size;
+    }
+
+    // Material gives the description flex-grow: 2; keep it at content width so the title takes the rest
+    mat-panel-description {
+        flex: 0 1 auto;
+    }
 }
 
 @container (width <= 1200px) {

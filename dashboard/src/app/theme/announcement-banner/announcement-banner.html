@@ -3,11 +3,11 @@
     <mat-icon class="flex-shrink-0">campaign</mat-icon>
     <span class="flex-fill">{{ message.text }}</span>
 
-    <div class="d-flex align-items-center gap-4">
-      <app-donate-button/>
+    <div class="announcement-actions d-flex align-items-center gap-4">
       <button mat-icon-button [attr.aria-label]="'close' | translate" (click)="dismiss(message.id)">
         <mat-icon>close</mat-icon>
       </button>
+      <app-donate-button/>
     </div>
   </div>
 }

@@ -1,3 +1,5 @@
+@use '../../../styles/grid/breakpoints';
+
 :host {
   display: block;
 }
@@ -6,4 +8,14 @@
   color: var(--mat-sys-on-primary-container);
   background-color: var(--mat-sys-primary-container);
   border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+// Close comes first in the DOM so it sits on top when stacked on mobile
+.announcement-actions {
+  flex-direction: row-reverse;
+
+  @include breakpoints.bp-lt(small) {
+    flex-direction: column;
+    align-items: flex-end !important;
+  }
 }
