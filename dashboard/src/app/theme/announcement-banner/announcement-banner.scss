@@ -1,0 +1,9 @@
+:host {
+  display: block;
+}
+
+.announcement {
+  color: var(--mat-sys-on-primary-container);
+  background-color: var(--mat-sys-primary-container);
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}

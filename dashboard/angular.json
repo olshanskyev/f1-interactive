@@ -73,6 +73,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.standalone.ts"
+                },
+                {
+                  "replace": "src/environments/providers.ts",
+                  "with": "src/environments/providers.standalone.ts"
                 }
               ]
             }

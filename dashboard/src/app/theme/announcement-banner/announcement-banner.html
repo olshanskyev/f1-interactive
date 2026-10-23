@@ -1,0 +1,13 @@
+@for (message of messages(); track message.id) {
+  <div class="announcement d-flex align-items-center gap-12 p-y-4 p-r-8 p-l-16" role="status">
+    <mat-icon class="flex-shrink-0">campaign</mat-icon>
+    <span class="flex-fill">{{ message.text }}</span>
+
+    <div class="d-flex align-items-center gap-4">
+      <app-donate-button/>
+      <button mat-icon-button [attr.aria-label]="'close' | translate" (click)="dismiss(message.id)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+}
