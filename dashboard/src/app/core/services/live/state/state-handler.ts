@@ -1,6 +1,7 @@
 import { signal, WritableSignal } from '@angular/core';
 import { DriverList, ExtrapolatedClock, LapCount, RaceControlMessages, Root, SessionData, SessionInfo, SessionStatus, TeamRadio, TimingAppData, TimingData, TimingStats, TrackStatus, WeatherData } from '@core/types/f1types';
 import { UpdateEventRecord } from '../live.service';
+import { lapTimeToSeconds } from '@core/lib/lap-time';
 
 interface SignalTypeMap {
     WeatherData: WeatherData;
@@ -97,20 +98,37 @@ export class StateHandler {
             }
 
             if (key === 'TimingData') {
+                const eventLines = (updateRecord.updateEvent as Partial<TimingData>).Lines ?? {};
                 const stateLines = mergedState.TimingData?.Lines;
                 // the flag is not resent when the holder improves again, so a new best lap with the flag still set also counts
-                const driver = Object.entries((
-                    updateRecord.updateEvent as Partial<TimingData>
-                ).Lines ?? {})
+                const driver = Object.entries(eventLines)
                     .find(([driver, line]) => line.LastLapTime?.OverallFastest === true ||
                         (
                             line.BestLapTime?.Value &&
                             stateLines?.[driver]?.LastLapTime?.OverallFastest === true
                         ))?.[0];
-                if (driver)
+                if (driver) {
                     this.fastestLapDriver.set({ driver });
+                } else {
+                    // a deleted fastest lap flags no new holder, so it has to be found by the best lap times
+                    const holder = this.fastestLapDriver()?.driver;
+                    if (holder && eventLines[holder]?.BestLapTime?.Value !== undefined)
+                        this.fastestLapDriver.set(this.findFastestLapDriver(stateLines));
+                }
             }
         }
+    }
+
+    private findFastestLapDriver(lines: TimingData['Lines'] | undefined): { driver: string } | undefined {
+        let fastest: { driver: string, seconds: number } | undefined;
+        for (const [driver, line] of Object.entries(lines ?? {})) {
+            const value = line.BestLapTime?.Value;
+            if (!value) continue;
+            const seconds = lapTimeToSeconds(value);
+            if (!fastest || seconds < fastest.seconds)
+                fastest = { driver, seconds };
+        }
+        return fastest ? { driver: fastest.driver } : undefined;
     }
 
     clearState() {
