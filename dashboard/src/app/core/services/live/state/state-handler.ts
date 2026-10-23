@@ -63,9 +63,11 @@ export class StateHandler {
        (Object.keys(this.updateSignals) as AvailableSignalsType[]).forEach(key => {
             this.updateSignal(key, this._state()![key]);
         });
-        // LastLapTime.OverallFastest resets on the holder's next lap, but TimingStats is consistent within the init state
+        // LastLapTime.OverallFastest resets on the holder's next lap, but TimingStats is consistent within the init state;
+        // a reset PersonalBestLapTime keeps the Position of the previous session, so the Value must be set
         const driver = Object.entries(initState.TimingStats?.Lines ?? {})
-            .find(([, item]) => item.PersonalBestLapTime?.Position === 1)?.[0];
+            .find(([, item]) => item.PersonalBestLapTime?.Position === 1
+            && item.PersonalBestLapTime.Value)?.[0];
         this.fastestLapDriver.set(driver ? { driver } : undefined);
     }
 

@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component, computed, effect, inject, linkedSig
 import { ContaineredWidget } from '../containered-widget';
 import { SpeedoComponent } from '@shared/components/speedo/speedo';
 import { SelectDriverWidget } from '../select-driver/select-driver-widget';
-import { TranslateModule } from '@ngx-translate/core';
 import { DriverSelectionService } from '@core/services/driver-selection.service';
 import { HeadToHeadDriver } from './head-to-head-driver';
 import { HeadToHeadTelemetryCard } from './telemetry-card/telemetry-card';
 import { HeadToHeadLapComparison } from './lap-comparison/lap-comparison';
 import { HeadToHeadTimeAttack } from './time-attack/time-attack';
+import { HeadToHeadDriverSkeleton } from './driver-skeleton/driver-skeleton';
 
 export const headToHeadModes = ['telemetry', 'time_attack','last', 'best'] as const;
 export type HeadToHeadMode = (typeof headToHeadModes)[number];
@@ -17,10 +17,10 @@ export type HeadToHeadMode = (typeof headToHeadModes)[number];
   imports: [
     SpeedoComponent,
     SelectDriverWidget,
-    TranslateModule,
     HeadToHeadTelemetryCard,
     HeadToHeadLapComparison,
-    HeadToHeadTimeAttack
+    HeadToHeadTimeAttack,
+    HeadToHeadDriverSkeleton
   ],
   templateUrl: './head-to-head-widget.html',
   styleUrl: './head-to-head-widget.scss',
