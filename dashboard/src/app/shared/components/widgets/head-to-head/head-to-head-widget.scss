@@ -27,11 +27,9 @@
     overflow-y: auto;
 }
 
-.select-driver-span {
+.skeleton-overlay {
     position: absolute;
-    padding: 0.5rem;
-    color: var(--mat-sys-on-secondary-container);
-    background-color: var(--mat-sys-secondary-container);
-    border: 1px solid transparent;
-    border-radius: 0.5rem;
+    inset: 0;
+    display: flex;
+    align-items: center;
 }
