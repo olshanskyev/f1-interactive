@@ -5,11 +5,6 @@ import { MiniSectorsChip } from '../mini-sectors-chip/mini-sectors-chip';
 @Component({
   selector: 'sector-chip',
   templateUrl: './sector-chip.html',
-  styles: `
-        :host {
-            align-content: center;
-        }
-    `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MiniSectorsChip],
 })
