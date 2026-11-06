@@ -25,6 +25,7 @@ export const DRIVER_PHOTO_BY_TLA: Record<string, string> = {
 	TSU: 'https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000001/common/f1/2026/racingbulls/yuktsu01/2026racingbullsyuktsu01right.webp',
 	HER: 'https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000001/common/f1/2026/cadillac/colher01/2026cadillaccolher01right.webp',
 	HIR: 'https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000001/common/f1/2026/haasf1team/ryohir01/2026haasf1teamryohir01right.webp',
+	CAM: 'https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000001/common/f1/2026/haasf1team/rafcam01/2026haasf1teamrafcam01right.webp',
 };
 
 export function getDriverPhotoByTLA(tla: string): string | undefined {
