@@ -4,3 +4,8 @@ TimingData,{"Lines":{"1":{"Sectors":{"2":{"Segments":{"2":{"Status":2051}}}}}}},
 TimingData,{"Lines":{"1":{"Sectors":{"2":{"Segments":{"3":{"Status":2051}}}}}}},2025-12-07T13:04:39.432Z
 TimingData,{"Lines":{"1":{"Sectors":{"2":{"Segments":{"2":{"Status":2049}}}}},"22":{"Sectors":{"2":{"Segments":{"2":{"Status":2051}}}}}}},2025-12-07T13:04:41.113Z
 TimingData,{"Lines":{"81":{"GapToLeader":"+0.534","IntervalToPositionAhead":{"Value":"+0.534"}}}},2025-12-07T13:04:37.79Z
+TimingData,{"Lines":{"3":{"Sectors":{"0":{"Value":"26.832","OverallFastest":true}}}}},2026-10-09T13:35:12.784Z
+TimingData,{"Lines":{"3":{"Sectors":{"0":{"PreviousValue":"26.832"},"1":{"PersonalFastest":true},"2":{"PersonalFastest":true}}}}},2026-10-09T13:35:16.409Z
+TimingData,{"Lines":{"3":{"Sectors":{"1":{"Value":"38.649"}},"Speeds":{"I2":{"Value":"285","OverallFastest":true,"PersonalFastest":true}}}}},2026-10-09T13:35:51.46Z
+TimingData,{"Lines":{"3":{"Sectors":{"1":{"PreviousValue":"38.649"}}}}},2026-10-09T13:35:52.517Z
+TimingData,{"Lines":{"3":{"BestLapTimes":{"2":{"Value":"1:31.156","Lap":14.0}},"Line":1.0,"Position":"1","NumberOfLaps":15.0,"Sectors":{"2":{"Value":"25.675","PersonalFastest":false}},"Speeds":{"FL":{"Value":"260"}},"BestLapTime":{"Value":"1:31.156","Lap":14.0},"LastLapTime":{"Value":"1:31.156","OverallFastest":true,"PersonalFastest":true}}}},2026-10-09T13:36:17.065Z

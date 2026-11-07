@@ -7,7 +7,7 @@ import { LapChip } from '../lap-chip/lap-chip';
 import { IntervalChip } from '../interval-chip/interval-chip';
 import { CurrentTyresChip } from '../current-tyres-chip/current-tyres-chip';
 import { LapCountChip } from '../lap-count-chip/lap-count-chip';
-import { MiniSectorsChip } from '../mini-sectors-chip/mini-sectors-chip';
+import { SectorChip } from '../sector-chip/sector-chip';
 
 @Component({
   selector: 'leaderboard-lap',
@@ -19,7 +19,7 @@ import { MiniSectorsChip } from '../mini-sectors-chip/mini-sectors-chip';
     IntervalChip,
     CurrentTyresChip,
     LapCountChip,
-    MiniSectorsChip
+    SectorChip
   ],
 })
 export class LeaderboardLap {

@@ -35,7 +35,7 @@ export class WidgetFactory {
             type: WidgetType.HeadToHeadWidget,
             meta: {
                 settingsList: {
-                    mode: {type: ['telemetry', 'last', 'best'], defaultValue: 'telemetry'},
+                    mode: {type: ['telemetry', 'time_attack', 'last', 'best'], defaultValue: 'telemetry'},
                 },
                 defaultSizes: [{width: 380, height: 300}],
             },

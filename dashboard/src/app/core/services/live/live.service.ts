@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { computed, inject, Injectable, Signal, WritableSignal } from '@angular/core';
+import { computed, inject, Injectable, Signal, untracked, WritableSignal } from '@angular/core';
 import { Observable, fromEvent, merge, of, retry, switchMap, tap, timeout, filter, finalize, debounceTime } from 'rxjs';
 import { SseClient } from 'ngx-sse-client';
 import { StateHandler } from './state/state-handler';
 import { inflate } from '@core/lib/inflate';
-import { PositionZ, CarPosition, CarDataZ, CarData, TimingDataLinesItem } from '@core/types/f1types';
+import { PositionZ, CarPosition, CarDataZ, CarData, TimingDataLinesItem, BestLapTime } from '@core/types/f1types';
 import { BundleContainer } from '@core/lib/bundle-container';
 import { DelayedQueue } from '@core/lib/delayed_queue';
 import { isMobile } from '@core/lib/device';
@@ -284,5 +284,38 @@ export abstract class LiveService {
 
   getSortedTimingDataSignal() {
     return this.sortedTimingDataSignal;
+  }
+
+  private bestLapTimeSignal = computed<{
+    driver: string,
+    bestLapTime: BestLapTime
+  } | undefined>(() => {
+    if (this.qualifyingPartSignal()) {
+      // timing stats keep the session-wide best, while in qualifying the best lap is the current leader's in this part
+      const leader = this.sortedTimingDataSignal().entries().next().value;
+      return leader?.[1].BestLapTime?.Value
+        ? { driver: leader[0], bestLapTime: leader[1].BestLapTime }
+        : undefined;
+    }
+
+    const bestDriver = this.stateHandler.fastestLapDriver()?.driver;
+    if (!bestDriver) {
+      return undefined;
+    }
+    const bestLapTime = untracked(
+      () => this.getTimingDataSignal()()
+    )?.Lines[bestDriver]?.BestLapTime;
+
+    return bestLapTime?.Value ? { driver: bestDriver, bestLapTime } : undefined;
+  },
+  {
+    equal: (a, b) =>
+      a?.driver === b?.driver &&
+      a?.bestLapTime?.Value === b?.bestLapTime?.Value,
+  });
+
+
+  getBestLapTimeSignal() {
+    return this.bestLapTimeSignal;
   }
 }

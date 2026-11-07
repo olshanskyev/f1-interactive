@@ -1,0 +1,19 @@
+<div class="d-flex flex-col w-full gap-8">
+    <div class="d-flex align-items-center justify-content-between p-8 best-lap-header">
+        @if (bestDriver(); as driver) {
+            <simple-driver-card [driver]="driver.item" [position]="driver.position" />
+        }
+        <div class="d-flex flex-col align-items-end gap-2">
+            <div class="head-to-head-param p-x-8 f-s-12">{{'best' | translate}}</div>
+            <div class="text-f1-purple f-s-18">{{bestLapTime()?.Value || 'not_set' | translate}}</div>
+        </div>
+    </div>
+
+    <div class="d-flex w-full drivers-container">
+        @for (driver of drivers(); track driver.id) {
+            <head-to-head-time-attack-card [driver]="driver" [bestSectors]="bestLapTime()?.BestSectors" />
+        } @empty {
+            <head-to-head-driver-skeleton />
+        }
+    </div>
+</div>

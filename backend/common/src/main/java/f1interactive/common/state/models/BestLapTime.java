@@ -7,11 +7,16 @@ import f1interactive.common.state.models.deserializer.ArrayWrapperSerializer;
 import tools.jackson.databind.annotation.JsonDeserialize;
 import tools.jackson.databind.annotation.JsonSerialize;
 
+import java.util.LinkedHashMap;
+
 public class BestLapTime{
     @JsonProperty("Value")
     public String value;
     @JsonProperty("Lap") 
     public Integer lap;
+
+    @JsonProperty("BestSectors")
+    public LinkedHashMap<Integer, BestSectorsItem> bestSectors;
 
     @JsonProperty("_deleted")
     @JsonDeserialize(using = ArrayWrapperDeserializer.class)

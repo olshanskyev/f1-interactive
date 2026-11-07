@@ -1,0 +1,24 @@
+<div class="d-flex flex-col driver-card w-full">
+    <head-to-head-driver-header [driver]="driver()" />
+    <speedo
+        [speed]="speed()"
+        [rpm]="rpm()"
+        [gear]="gear()"
+        [throttle]="throttle()"
+        [brake]="brake()"
+    />
+    <div class="sector-indicator-grid">
+        @for(sector of driver().timingData?.Sectors | keyvalue; track sector.key; let i = $index){
+            <div class="d-flex flex-col align-items-center">
+                <div class="f-s-12">S{{i + 1}}</div>
+                <div class="sector-indicator w-full"
+                    [class]="
+                        (sector.value.OverallFastest)? 'bg-f1-purple':
+                        (sector.value.PersonalFastest)? 'bg-f1-green':
+                        (sector.value.Value)? 'bg-f1-yellow' : 'bg-color-inactive'
+                    "
+                ></div>
+            </div>
+        }
+    </div>
+</div>

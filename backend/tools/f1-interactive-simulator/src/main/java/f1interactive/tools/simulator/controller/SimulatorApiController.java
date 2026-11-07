@@ -155,14 +155,11 @@ class SimulatorApiController {
     }
 
     @GetMapping(path = "/live", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter live() throws IOException {
+    public SseEmitter live() {
         synchronized (initStateMutex) {
-            SseEmitter subscribe = publisher.subscribe();
-            if (simulator != null && stateHandler.getState() != null) { // send one time init state
-                SseEmitter.SseEventBuilder event = SseEmitter.event().data(new SimulatorEvent(simulator.getCurrentPosition(),stateHandler.getState())).name("init");
-                subscribe.send(event);
-            }
-            return subscribe;
+            if (simulator != null && stateHandler.getState() != null)
+                return publisher.subscribe("init", new SimulatorEvent(simulator.getCurrentPosition(), stateHandler.getState()));
+            return publisher.subscribe();
         }
     }
 

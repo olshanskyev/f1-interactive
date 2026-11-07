@@ -40,6 +40,7 @@
     display: grid;
     grid-template-columns: subgrid;
     grid-column: 1 / -1;
+    align-items: center;
     will-change: transform;
 }
 
@@ -74,6 +75,7 @@
     display: flex;
     flex-wrap: wrap;
     place-content: center center;
+    height: 100%;
 }
 
 .sticky-header-row {

@@ -1,6 +1,7 @@
 import { signal, WritableSignal } from '@angular/core';
 import { DriverList, ExtrapolatedClock, LapCount, RaceControlMessages, Root, SessionData, SessionInfo, SessionStatus, TeamRadio, TimingAppData, TimingData, TimingStats, TrackStatus, WeatherData } from '@core/types/f1types';
 import { UpdateEventRecord } from '../live.service';
+import { lapTimeToSeconds } from '@core/lib/lap-time';
 
 interface SignalTypeMap {
     WeatherData: WeatherData;
@@ -46,6 +47,9 @@ export class StateHandler {
             'LapCount': signal<LapCount | undefined>(undefined),
     };
 
+    // a new object on every fastest lap, so consumers recompute even when the same driver improves
+    readonly fastestLapDriver = signal<{ driver: string } | undefined>(undefined);
+
     get fullStateSignal() {
         return this._state.asReadonly();
     };
@@ -60,6 +64,12 @@ export class StateHandler {
        (Object.keys(this.updateSignals) as AvailableSignalsType[]).forEach(key => {
             this.updateSignal(key, this._state()![key]);
         });
+        // LastLapTime.OverallFastest resets on the holder's next lap, but TimingStats is consistent within the init state;
+        // a reset PersonalBestLapTime keeps the Position of the previous session, so the Value must be set
+        const driver = Object.entries(initState.TimingStats?.Lines ?? {})
+            .find(([, item]) => item.PersonalBestLapTime?.Position === 1
+            && item.PersonalBestLapTime.Value)?.[0];
+        this.fastestLapDriver.set(driver ? { driver } : undefined);
     }
 
     updateState(updateRecord: UpdateEventRecord) {
@@ -86,11 +96,44 @@ export class StateHandler {
 
 
             }
+
+            if (key === 'TimingData') {
+                const eventLines = (updateRecord.updateEvent as Partial<TimingData>).Lines ?? {};
+                const stateLines = mergedState.TimingData?.Lines;
+                // the flag is not resent when the holder improves again, so a new best lap with the flag still set also counts
+                const driver = Object.entries(eventLines)
+                    .find(([driver, line]) => line.LastLapTime?.OverallFastest === true ||
+                        (
+                            line.BestLapTime?.Value &&
+                            stateLines?.[driver]?.LastLapTime?.OverallFastest === true
+                        ))?.[0];
+                if (driver) {
+                    this.fastestLapDriver.set({ driver });
+                } else {
+                    // a deleted fastest lap flags no new holder, so it has to be found by the best lap times
+                    const holder = this.fastestLapDriver()?.driver;
+                    if (holder && eventLines[holder]?.BestLapTime?.Value !== undefined)
+                        this.fastestLapDriver.set(this.findFastestLapDriver(stateLines));
+                }
+            }
         }
+    }
+
+    private findFastestLapDriver(lines: TimingData['Lines'] | undefined): { driver: string } | undefined {
+        let fastest: { driver: string, seconds: number } | undefined;
+        for (const [driver, line] of Object.entries(lines ?? {})) {
+            const value = line.BestLapTime?.Value;
+            if (!value) continue;
+            const seconds = lapTimeToSeconds(value);
+            if (!fastest || seconds < fastest.seconds)
+                fastest = { driver, seconds };
+        }
+        return fastest ? { driver: fastest.driver } : undefined;
     }
 
     clearState() {
         this._state.set(undefined);
+        this.fastestLapDriver.set(undefined);
     }
 
     private isObject(obj: any): boolean {

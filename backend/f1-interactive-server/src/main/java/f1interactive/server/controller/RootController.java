@@ -63,20 +63,25 @@ class RootController {
         }
     }
 
+    private boolean isNewSessionEvent(UpdateEvent updateEvent) {
+        if (updateEvent instanceof SessionInfo newSessionInfo) {
+            SessionInfo currentSessionInfo = stateHandler.getState().sessionInfo;
+            return (currentSessionInfo == null ||
+                    (newSessionInfo.key != null && !newSessionInfo.key.equals(currentSessionInfo.key))
+            );
+        }
+        return false;
+    }
+
     private void onUpdate(String type, String message, String time) {
         UpdateEvent updateEvent = EventsParser.parseUpdateEvent(type, message);
         EventsParser.UpdateEventRecord updateEventRecord = new EventsParser.UpdateEventRecord(type, updateEvent, System.currentTimeMillis());
-        if (updateEventRecord.updateEvent() instanceof SessionInfo newSessionInfo) {
-            // try to sync data with f1 if new session starts
-            SessionInfo currentSessionInfo = stateHandler.getState().sessionInfo;
-            if (currentSessionInfo == null ||
-                    (newSessionInfo.key != null && !newSessionInfo.key.equals(currentSessionInfo.key))
-            ) {
+        // try to sync data with f1 if new session starts
+        if (isNewSessionEvent(updateEventRecord.updateEvent())) {
                 logger.info("New session started, syncing...");
                 f1Client.disconnect();
                 f1Client.connect();
                 return;
-            }
         }
         synchronized (initStateMutex) {
             stateHandler.updateState(updateEvent);
@@ -108,14 +113,9 @@ class RootController {
     }
 
     @GetMapping(path = "/live", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter live() throws IOException {
+    public SseEmitter live() {
         synchronized (initStateMutex) {
-            SseEmitter subscribe = publisher.subscribe();
-            if (stateHandler.getState() != null) { // send one time init state
-                SseEmitter.SseEventBuilder event = SseEmitter.event().data(stateHandler.getState()).name("init");
-                subscribe.send(event);
-            }
-            return subscribe;
+            return publisher.subscribe("init", stateHandler.getState());
         }
     }
 

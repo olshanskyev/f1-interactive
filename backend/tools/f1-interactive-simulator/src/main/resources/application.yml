@@ -17,7 +17,7 @@ spring:
     default-property-inclusion: non_null
 f1interactive:
   heartbeatIntervalMillis: 15000
-  multithreading:
-    threadsToParallelEvents: 5
-    threadsToParallelConsumers: 2
-    # total number of threads = threadsToParallelEvents * threadsToParallelConsumers
+  sse:
+    # higher limit: fast playback produces bursts
+    maxPendingEvents: 2000
+    slowSendWarnMillis: 5000

@@ -1,0 +1,29 @@
+<div class="d-flex flex-col driver-card time-attack-card">
+    <head-to-head-driver-header [driver]="driver()" />
+    <div class="sectors-grid f-s-14">
+        @for (row of sectors(); track $index; let i = $index) {
+            <div class="head-to-head-param p-x-8">S{{i + 1}}</div>
+            <sector-chip [sector]="row.sector" />
+            <ng-container *ngTemplateOutlet="diffCell; context: { $implicit: row.diff }" />
+        }
+        <div class="head-to-head-param p-x-8">&Delta;</div>
+        @let lap = lapTime();
+        <div [class]="(lap?.OverallFastest)? 'text-f1-purple': (lap?.PersonalFastest)? 'text-f1-green': ''">
+            {{lap?.Value}}
+        </div>
+        <ng-container *ngTemplateOutlet="diffCell; context: { $implicit: totalDiff() }" />
+    </div>
+</div>
+
+<ng-template #diffCell let-diff>
+    <div class="right diff">
+        @if (diff) {
+            <span [class]="(diff.sign === '+')? 'text-f1-yellow': 'text-f1-green'">
+                {{diff.sign}}{{diff.value}}
+            </span>
+        } @else {
+            <!-- reserves the size of a diff, so both cards keep their rows aligned -->
+            <span class="diff-placeholder">+0.000</span>
+        }
+    </div>
+</ng-template>

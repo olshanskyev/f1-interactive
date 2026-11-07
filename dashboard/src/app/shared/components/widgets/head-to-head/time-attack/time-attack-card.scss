@@ -1,0 +1,37 @@
+@use '../head-to-head';
+
+:host {
+    display: contents;
+}
+
+// equal share of the row and allowed to shrink below its content, like the w-50 columns of the lap comparison
+.time-attack-card {
+    flex: 1 1 0;
+    min-width: 0;
+    container-type: inline-size;
+}
+
+.sectors-grid {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr) max-content;
+    gap: 0.5rem;
+    align-items: center;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+}
+
+@container (width <= 240px) {
+    .sectors-grid {
+        grid-template-columns: max-content minmax(0, 1fr);
+        row-gap: 0.25rem;
+    }
+
+    .diff {
+        grid-column: 2;
+        text-align: left;
+    }
+}
+
+.diff-placeholder {
+    visibility: hidden;
+}

@@ -1,0 +1,23 @@
+// styles shared by the head-to-head modes
+@mixin gradient-background {
+    background: linear-gradient(to right, var(--gradient-first-color), var(--gradient-second-color));
+}
+
+.driver-card {
+    height: 100%;
+    min-height: max-content;
+
+    @include gradient-background;
+}
+
+.head-to-head-param {
+    align-content: center;
+    text-align: center;
+    background: rgb(255 255 255 / 0.1);
+    border-radius: 1rem;
+    backdrop-filter: blur(5px);
+}
+
+.left { text-align: left; }
+.center { text-align: center; }
+.right { text-align: right; }

@@ -17,7 +17,7 @@ export interface AppSettings {
   delayMs: number;
   useLock: boolean;
   showHeadToHead: boolean;
-  headToHeadMode: 'telemetry' | 'last' | 'best';
+  headToHeadMode: 'telemetry' | 'last' | 'best' | 'time_attack';
 }
 
 export const defaults: AppSettings = {

@@ -93,7 +93,7 @@
             <div id="right-panel" class="right-panel">
                 <weather-widget id="weather" class="default-widget-container"/>
                 <session-info-widget id="session-info" class="default-widget-container"/>
-                <div class="default-widget-container">
+                <div class="default-widget-container track-panel">
                     <track-map-widget id="track-map"/>
                     <mat-expansion-panel
                         class="head-to-head-expanstion-panel" [expanded]="showHeadToHead()"
@@ -101,8 +101,10 @@
                             (closed)="onHeadToHeadClosed()"
                         >
                         <mat-expansion-panel-header>
-                            <mat-panel-title class="text-nowrap">{{'widget.head_to_head' | translate}}</mat-panel-title>
-                            <mat-panel-description>
+                            <mat-panel-title class="min-w-0">
+                                <span class="text-nowrap overflow-hidden text-ellipsis">{{'widget.HeadToHeadWidget' | translate}}</span>
+                            </mat-panel-title>
+                            <mat-panel-description class="min-w-0">
                                 @if (showHeadToHead()) {
                                     <mat-form-field (click)="$event.stopPropagation()" class="form-field-5 f-s-14 m-y-8 head-to-head-form-field" appearance="outline" subscriptSizing="dynamic">
                                         <mat-label>{{ 'widget.display' | translate }}</mat-label>
